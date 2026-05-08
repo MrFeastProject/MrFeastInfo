@@ -9,1271 +9,228 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        /* ТЁМНАЯ ТЕМА */
-        body.dark-theme {
-            background: #121212;
-        }
-
-        body.dark-theme .app-container {
-            background: #1e1e1e;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-
-        body.dark-theme .app-header {
-            background: #1e1e1e;
-        }
-
-        body.dark-theme .menu-icon span {
-            background: #9aa0a6;
-        }
-
-        body.dark-theme .logo-text {
-            background: linear-gradient(135deg, #00E676, #00B0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        body.dark-theme .header-actions i {
-            color: #9aa0a6;
-        }
-
-        body.dark-theme .search-bar {
-            background: #2d2d2d;
-        }
-
-        body.dark-theme .search-bar i,
-        body.dark-theme .search-bar span {
-            color: #9aa0a6;
-        }
-
-        body.dark-theme .nav-tabs {
-            background: #1e1e1e;
-            border-bottom-color: #3d3d3d;
-        }
-
-        body.dark-theme .nav-tab {
-            color: #9aa0a6;
-        }
-
-        body.dark-theme .nav-tab.active {
-            color: #00E676;
-            border-bottom-color: #00E676;
-        }
-
-        body.dark-theme .app-item {
-            border-bottom-color: #3d3d3d;
-            background: #1e1e1e;
-        }
-
-        body.dark-theme .app-item:hover {
-            background: #2d2d2d;
-        }
-
-        body.dark-theme .app-item-name {
-            color: #ffffff !important;
-        }
-
-        body.dark-theme .app-item-dev {
-            color: #aaaaaa !important;
-        }
-
-        body.dark-theme .app-item-badge {
-            background: #1a3a2a;
-            color: #00E676;
-        }
-
-        body.dark-theme .app-detail-page,
-        body.dark-theme .online-detail-page {
-            background: #1e1e1e;
-        }
-
-        body.dark-theme .app-title-section h1,
-        body.dark-theme .online-title-section h1 {
-            color: #ffffff !important;
-        }
-
-        body.dark-theme .developer,
-        body.dark-theme .online-developer {
-            color: #00E676 !important;
-        }
-
-        body.dark-theme .tag {
-            background: #1a3a2a;
-            color: #00E676 !important;
-        }
-
-        body.dark-theme .tag-highlight {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white !important;
-        }
-
-        body.dark-theme .description-card,
-        body.dark-theme .online-description-card {
-            background: #2d2d2d;
-            border-color: #3d3d3d;
-        }
-
-        body.dark-theme .description-card h3,
-        body.dark-theme .online-description-card h3 {
-            color: #ffffff !important;
-        }
-
-        body.dark-theme .description-card p,
-        body.dark-theme .online-description-card p {
-            color: #bbbbbb !important;
-        }
-
-        body.dark-theme .info-card {
-            background: #2d2d2d;
-            border-color: #3d3d3d;
-        }
-
-        body.dark-theme .info-label {
-            color: #aaaaaa !important;
-        }
-
-        body.dark-theme .info-value {
-            color: #ffffff !important;
-        }
-
-        body.dark-theme .back-button {
-            color: #00E676;
-        }
-
-        body.dark-theme .back-button span {
-            color: #00E676;
-        }
-
-        body.dark-theme .news-card {
-            background: #2d2d2d;
-            border-color: #3d3d3d;
-        }
-        body.dark-theme .news-title {
-            color: #ffffff !important;
-        }
-        body.dark-theme .news-date {
-            color: #aaaaaa !important;
-        }
-        body.dark-theme .news-version {
-            background: #1a3a2a;
-            color: #00E676;
-        }
-        body.dark-theme .news-changes li {
-            color: #ffffff !important;
-            border-bottom-color: #3d3d3d;
-        }
-        body.dark-theme .news-header h2 {
-            color: #ffffff !important;
-        }
-        body.dark-theme .news-header p {
-            color: #aaaaaa !important;
-        }
-        body.dark-theme .coming-soon {
-            background: linear-gradient(135deg, #0f2a2a, #1a1a3a);
-        }
-        body.dark-theme .coming-soon span {
-            color: white;
-        }
-
-        body.dark-theme .online-service-card {
-            background: rgba(30, 30, 35, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        body.dark-theme .online-service-name {
-            color: #ffffff !important;
-        }
-        body.dark-theme .online-service-desc {
-            color: #bbbbbb !important;
-        }
-        body.dark-theme .service-chip {
-            background: rgba(0, 230, 118, 0.2);
-            color: #00E676;
-        }
-        body.dark-theme .online-service-btn {
-            background: rgba(0, 230, 118, 0.12);
-            color: #00E676;
-            border: 1px solid rgba(0, 230, 118, 0.3);
-        }
-        body.dark-theme .online-service-btn:hover {
-            background: #00E676;
-            color: #121212;
-        }
-        body.dark-theme .online-service-icon {
-            background: linear-gradient(145deg, #252530, #1e1e28);
-        }
-        body.dark-theme .online-service-icon i {
-            color: #00E676;
-        }
-        body.dark-theme .online-header h2 {
-            color: #ffffff !important;
-            background: linear-gradient(135deg, #00E676, #00B0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-        body.dark-theme .online-header p {
-            color: #bbbbbb !important;
-        }
-
-        body.dark-theme .modal-content {
-            background: #2d2d2d !important;
-        }
-        body.dark-theme .settings-header h3,
-        body.dark-theme .profile-info h3 {
-            color: #ffffff !important;
-        }
-        body.dark-theme .settings-item {
-            border-bottom-color: #3d3d3d;
-        }
-        body.dark-theme .settings-item-left span,
-        body.dark-theme .profile-item span {
-            color: #ffffff !important;
-        }
-        body.dark-theme .profile-name {
-            color: #ffffff !important;
-        }
-        body.dark-theme .profile-email {
-            color: #aaaaaa !important;
-        }
-        body.dark-theme .wishlist-btn {
-            background: #2d2d2d;
-            border-color: #3d3d3d;
-        }
-        body.dark-theme .wishlist-btn i {
-            color: #aaaaaa;
-        }
-        body.dark-theme .scan-title,
-        body.dark-theme .scan-item-left span {
-            color: #ffffff !important;
-        }
-        body.dark-theme .scan-subtitle {
-            color: #aaaaaa !important;
-        }
-        body.dark-theme .scan-item {
-            border-bottom-color: #3d3d3d;
-        }
-        body.dark-theme .scan-message {
-            background: #1a3a2a;
-        }
-        body.dark-theme .scan-message span {
-            color: #00E676;
-        }
-
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            background: #ffffff;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            transition: background 0.3s;
-        }
-
-        .app-header {
-            padding: 16px 16px 8px;
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: background 0.3s;
-        }
-
-        .header-top {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .menu-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            cursor: pointer;
-        }
-
-        .menu-icon span {
-            height: 2px;
-            background: #5f6368;
-            border-radius: 1px;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .app-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #00E676, #00B0FF);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .app-logo-icon i {
-            color: white;
-            font-size: 18px;
-        }
-
-        .logo-text {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #00E676, #00B0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 16px;
-        }
-
-        .header-actions i {
-            color: #5f6368;
-            font-size: 20px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .header-actions i:hover {
-            color: #01875f;
-        }
-
-        .search-bar {
-            background: #f1f3f4;
-            border-radius: 28px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .search-bar i {
-            color: #5f6368;
-            font-size: 16px;
-        }
-
-        .search-bar span {
-            color: #5f6368;
-            font-size: 16px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            padding: 8px 16px;
-            gap: 24px;
-            border-bottom: 1px solid #e8eaed;
-            background: white;
-        }
-
-        .nav-tab {
-            color: #5f6368;
-            font-size: 14px;
-            font-weight: 500;
-            padding-bottom: 12px;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-        }
-
-        .nav-tab.active {
-            color: #01875f;
-            border-bottom-color: #01875f;
-        }
-
-        .tab-page {
-            display: none;
-        }
-
-        .tab-page.active {
-            display: block;
-        }
-
-        .apps-list {
-            padding: 8px 0;
-        }
-
-        .app-item {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            border-bottom: 1px solid #e8eaed;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .app-item:hover {
-            background: #f8f9fa;
-        }
-
-        .app-item-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 16px;
-            overflow: hidden;
-        }
-
-        .app-item-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .app-item-info {
-            flex: 1;
-        }
-
-        .app-item-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: #202124;
-            margin-bottom: 4px;
-        }
-
-        .app-item-dev {
-            font-size: 13px;
-            color: #5f6368;
-        }
-
-        .app-item-badge {
-            background: #e8f5e9;
-            color: #01875f;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* ОНЛАЙН - КАРТОЧКИ ДЛЯ СПИСКА */
-        .online-page {
-            padding: 20px 16px;
-        }
-
-        .online-header {
-            margin-bottom: 28px;
-        }
-
-        .online-header h2 {
-            font-size: 26px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00C853, #00B0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 6px;
-        }
-
-        .online-header p {
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        .services-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .online-service-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
-            padding: 16px;
-            border: 1px solid rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        .online-service-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            background: white;
-        }
-
-        .online-service-icon {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(145deg, #f0f9ff, #e6f7ef);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .online-service-icon i {
-            font-size: 26px;
-            color: #01875f;
-        }
-
-        .online-service-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .online-service-name {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1f2a3e;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .service-chip {
-            background: rgba(0,230,118,0.15);
-            padding: 2px 8px;
-            border-radius: 30px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #01875f;
-        }
-
-        .online-service-desc {
-            font-size: 12px;
-            color: #5f6b7e;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .online-service-desc i {
-            font-size: 11px;
-            color: #01875f;
-            flex-shrink: 0;
-        }
-
-        .online-service-btn {
-            background: rgba(0, 135, 95, 0.1);
-            border: 1px solid rgba(0, 135, 95, 0.25);
-            border-radius: 40px;
-            padding: 8px 18px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #01875f;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-
-        .online-service-btn:hover {
-            background: #01875f;
-            color: white;
-            border-color: #01875f;
-        }
-
-        .online-service-btn:hover i {
-            transform: translateX(3px);
-            color: white;
-        }
-
-        /* СТРАНИЦЫ ДЕТАЛЕЙ ОНЛАЙН-СЕРВИСОВ */
-        .online-detail-page {
-            display: none;
-            padding: 16px;
-            background: white;
-            min-height: 100vh;
-        }
-
-        .online-detail-page.active {
-            display: block;
-        }
-
-        .online-detail-header {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .online-icon-large {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(145deg, #f0f9ff, #e6f7ef);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .online-icon-large i {
-            font-size: 36px;
-            color: #01875f;
-        }
-
-        .online-title-section h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #202124;
-            margin-bottom: 4px;
-        }
-
-        .online-developer {
-            color: #01875f;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .online-tags {
-            display: flex;
-            gap: 8px;
-            margin: 16px 0;
-            flex-wrap: wrap;
-        }
-
-        .online-description-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #e8eaed;
-        }
-
-        .online-description-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #202124;
-            margin-bottom: 12px;
-        }
-
-        .online-description-card p {
-            color: #5f6368;
-            line-height: 1.5;
-            font-size: 14px;
-        }
-
-        .online-action-buttons {
-            margin-top: 24px;
-        }
-
-        .online-launch-btn {
-            background: #01875f;
-            color: white;
-            border: none;
-            border-radius: 28px;
-            padding: 14px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .online-launch-btn:hover {
-            background: #016b4c;
-            transform: scale(1.01);
-        }
-
-        /* Детали приложений (без изменений) */
-        .app-detail-page {
-            display: none;
-            padding: 16px;
-            background: white;
-        }
-
-        .app-detail-page.active {
-            display: block;
-        }
-
-        .back-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            cursor: pointer;
-            color: #01875f;
-            font-weight: 500;
-            width: fit-content;
-        }
-
-        .back-button i {
-            font-size: 20px;
-        }
-
-        .app-detail-header {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .app-icon-large {
-            width: 72px;
-            height: 72px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .app-icon-large img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .app-title-section h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #202124;
-            margin-bottom: 4px;
-        }
-
-        .developer {
-            color: #01875f;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .tags {
-            display: flex;
-            gap: 8px;
-            margin: 16px 0;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #e8f5e9;
-            color: #01875f;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .tag-highlight {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .install-btn {
-            background: #01875f;
-            color: white;
-            border: none;
-            border-radius: 28px;
-            padding: 14px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            flex: 1;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .install-btn:disabled {
-            background: #e8eaed;
-            color: #9aa0a6;
-            cursor: not-allowed;
-        }
-
-        .install-btn.installed {
-            background: #e8f5e9;
-            color: #01875f;
-        }
-
-        .os-warning {
-            background: #fef7e0;
-            border: 1px solid #fbbc04;
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .os-warning i {
-            color: #fbbc04;
-            font-size: 20px;
-        }
-
-        .os-warning span {
-            color: #202124;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .wishlist-btn {
-            background: white;
-            border: 1px solid #dadce0;
-            border-radius: 28px;
-            padding: 14px;
-            aspect-ratio: 1;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .description-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #e8eaed;
-        }
-
-        .description-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #202124;
-            margin-bottom: 12px;
-        }
-
-        .description-card p {
-            color: #5f6368;
-            line-height: 1.5;
-            font-size: 14px;
-        }
-
-        .ai-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid #e8eaed;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e8eaed;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        .info-value {
-            color: #202124;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .beta-badge {
-            background: linear-gradient(135deg, #FF9800, #FF5722);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        /* НОВОСТИ */
-        .news-feed {
-            padding: 16px;
-        }
-
-        .news-header {
-            margin-bottom: 20px;
-        }
-
-        .news-header h2 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #202124;
-            margin-bottom: 4px;
-        }
-
-        .news-header p {
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        .news-card {
-            background: white;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid #e8eaed;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-        }
-
-        .news-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .news-badge {
-            background: #01875f;
-            color: white;
-            padding: 4px 14px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .news-date {
-            color: #5f6368;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .news-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: #202124;
-            margin-bottom: 10px;
-        }
-
-        .news-version {
-            background: #e8f5e9;
-            color: #01875f;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .news-changes {
-            list-style: none;
-        }
-
-        .news-changes li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 0;
-            color: #202124;
-            font-size: 14px;
-            font-weight: 500;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .news-changes li:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .news-changes li i {
-            color: #01875f;
-            font-size: 16px;
-            width: 22px;
-            text-align: center;
-        }
-
-        .coming-soon {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 16px 20px;
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 8px;
-        }
-
-        .coming-soon span {
-            font-weight: 700;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .coming-soon i {
-            font-size: 20px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: translateX(0); }
-            50% { opacity: 0.6; transform: translateX(3px); }
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 28px;
-            padding: 24px;
-            max-width: 400px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .settings-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .settings-header h3 {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .settings-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 0;
-            border-bottom: 1px solid #e8eaed;
-        }
-
-        .settings-item-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .theme-toggle {
-            width: 50px;
-            height: 26px;
-            background: #e8eaed;
-            border-radius: 13px;
-            position: relative;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .theme-toggle.active {
-            background: #01875f;
-        }
-
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.3s;
-        }
-
-        .theme-toggle.active::before {
-            transform: translateX(24px);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .profile-avatar {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, #00E676, #00B0FF);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-avatar i {
-            font-size: 32px;
-            color: white;
-        }
-
-        .profile-info h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .profile-name {
-            color: #202124;
-        }
-
-        .profile-email {
-            color: #5f6368;
-            font-size: 14px;
-            word-break: break-all;
-        }
-
-        .profile-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 0;
-            border-bottom: 1px solid #e8eaed;
-            cursor: pointer;
-        }
-
-        .scan-modal .modal-content {
-            padding: 32px 24px;
-        }
-
-        .scan-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .scan-shield {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, #00E676, #00B0FF);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-        }
-
-        .scan-shield i {
-            font-size: 32px;
-            color: white;
-        }
-
-        .scan-title {
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        .scan-items {
-            margin: 24px 0;
-        }
-
-        .scan-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #e8eaed;
-        }
-
-        .scan-status {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .status-pending { color: #fbbc04; }
-        .status-checking { color: #1a73e8; }
-        .status-clean { color: #01875f; }
-
-        .scan-progress-bar {
-            height: 4px;
-            background: #e8eaed;
-            border-radius: 2px;
-            margin: 8px 0 20px;
-            overflow: hidden;
-        }
-
-        .scan-progress-fill {
-            height: 100%;
-            background: #01875f;
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .scan-message {
-            text-align: center;
-            padding: 16px;
-            background: #e8f5e9;
-            border-radius: 16px;
-            margin-top: 20px;
-        }
-
-        .scan-close-btn {
-            width: 100%;
-            background: #01875f;
-            color: white;
-            border: none;
-            border-radius: 28px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 24px;
-            cursor: pointer;
-        }
-
-        .scan-close-btn:disabled {
-            background: #e8eaed;
-            color: #5f6368;
-            cursor: not-allowed;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; min-height: 100vh; -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s; }
+        body.dark-theme { background: #121212; }
+        body.dark-theme .app-container { background: #1e1e1e; box-shadow: 0 0 20px rgba(0,0,0,0.3); }
+        body.dark-theme .app-header { background: #1e1e1e; }
+        body.dark-theme .menu-icon span { background: #9aa0a6; }
+        body.dark-theme .logo-text { background: linear-gradient(135deg, #00E676, #00B0FF); -webkit-background-clip: text; background-clip: text; }
+        body.dark-theme .header-actions i { color: #9aa0a6; }
+        body.dark-theme .search-bar { background: #2d2d2d; }
+        body.dark-theme .search-bar i, body.dark-theme .search-bar span { color: #9aa0a6; }
+        body.dark-theme .nav-tabs { background: #1e1e1e; border-bottom-color: #3d3d3d; }
+        body.dark-theme .nav-tab { color: #9aa0a6; }
+        body.dark-theme .nav-tab.active { color: #00E676; border-bottom-color: #00E676; }
+        body.dark-theme .app-item { border-bottom-color: #3d3d3d; background: #1e1e1e; }
+        body.dark-theme .app-item:hover { background: #2d2d2d; }
+        body.dark-theme .app-item-name { color: #ffffff !important; }
+        body.dark-theme .app-item-dev { color: #aaaaaa !important; }
+        body.dark-theme .app-item-badge { background: #1a3a2a; color: #00E676; }
+        body.dark-theme .app-detail-page, body.dark-theme .online-detail-page { background: #1e1e1e; }
+        body.dark-theme .app-title-section h1, body.dark-theme .online-title-section h1 { color: #ffffff !important; }
+        body.dark-theme .developer, body.dark-theme .online-developer { color: #00E676 !important; }
+        body.dark-theme .tag { background: #1a3a2a; color: #00E676 !important; }
+        body.dark-theme .tag-highlight { background: linear-gradient(135deg, #667eea, #764ba2); color: white !important; }
+        body.dark-theme .description-card, body.dark-theme .online-description-card { background: #2d2d2d; border-color: #3d3d3d; }
+        body.dark-theme .description-card h3, body.dark-theme .online-description-card h3 { color: #ffffff !important; }
+        body.dark-theme .description-card p, body.dark-theme .online-description-card p { color: #bbbbbb !important; }
+        body.dark-theme .info-card { background: #2d2d2d; border-color: #3d3d3d; }
+        body.dark-theme .info-label { color: #aaaaaa !important; }
+        body.dark-theme .info-value { color: #ffffff !important; }
+        body.dark-theme .back-button { color: #00E676; }
+        body.dark-theme .back-button span { color: #00E676; }
+        body.dark-theme .news-card { background: #2d2d2d; border-color: #3d3d3d; }
+        body.dark-theme .news-title { color: #ffffff !important; }
+        body.dark-theme .news-date { color: #aaaaaa !important; }
+        body.dark-theme .news-version { background: #1a3a2a; color: #00E676; }
+        body.dark-theme .news-changes li { color: #ffffff !important; border-bottom-color: #3d3d3d; }
+        body.dark-theme .news-header h2 { color: #ffffff !important; }
+        body.dark-theme .news-header p { color: #aaaaaa !important; }
+        body.dark-theme .coming-soon { background: linear-gradient(135deg, #0f2a2a, #1a1a3a); }
+        body.dark-theme .coming-soon span { color: white; }
+        body.dark-theme .online-service-card { background: rgba(30, 30, 35, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+        body.dark-theme .online-service-name { color: #ffffff !important; }
+        body.dark-theme .online-service-desc { color: #bbbbbb !important; }
+        body.dark-theme .service-chip { background: rgba(0, 230, 118, 0.2); color: #00E676; }
+        body.dark-theme .online-service-btn { background: rgba(0, 230, 118, 0.12); color: #00E676; border: 1px solid rgba(0, 230, 118, 0.3); }
+        body.dark-theme .online-service-btn:hover { background: #00E676; color: #121212; }
+        body.dark-theme .online-service-icon { background: linear-gradient(145deg, #252530, #1e1e28); }
+        body.dark-theme .online-service-icon i { color: #00E676; }
+        body.dark-theme .online-header h2 { color: #ffffff !important; background: linear-gradient(135deg, #00E676, #00B0FF); -webkit-background-clip: text; background-clip: text; }
+        body.dark-theme .online-header p { color: #bbbbbb !important; }
+        body.dark-theme .modal-content { background: #2d2d2d !important; }
+        body.dark-theme .settings-header h3, body.dark-theme .profile-info h3 { color: #ffffff !important; }
+        body.dark-theme .settings-item { border-bottom-color: #3d3d3d; }
+        body.dark-theme .settings-item-left span, body.dark-theme .profile-item span { color: #ffffff !important; }
+        body.dark-theme .profile-name { color: #ffffff !important; }
+        body.dark-theme .profile-email { color: #aaaaaa !important; }
+        body.dark-theme .wishlist-btn { background: #2d2d2d; border-color: #3d3d3d; }
+        body.dark-theme .wishlist-btn i { color: #aaaaaa; }
+        body.dark-theme .wishlist-btn.active i { color: #FFD700; }
+        body.dark-theme .scan-title, body.dark-theme .scan-item-left span { color: #ffffff !important; }
+        body.dark-theme .scan-subtitle { color: #aaaaaa !important; }
+        body.dark-theme .scan-item { border-bottom-color: #3d3d3d; }
+        body.dark-theme .scan-message { background: #1a3a2a; }
+        body.dark-theme .scan-message span { color: #00E676; }
+
+        .app-container { max-width: 480px; margin: 0 auto; background: #ffffff; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); transition: background 0.3s; position: relative; }
+        .app-header { padding: 16px 16px 8px; background: white; position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
+        .header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .menu-icon { width: 24px; height: 24px; display: flex; flex-direction: column; justify-content: space-around; cursor: pointer; }
+        .menu-icon span { height: 2px; background: #5f6368; border-radius: 1px; }
+        .logo-area { display: flex; align-items: center; gap: 8px; }
+        .app-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #00E676, #00B0FF); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .app-logo-icon i { color: white; font-size: 18px; }
+        .logo-text { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #00E676, #00B0FF); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .header-actions { margin-left: auto; display: flex; gap: 16px; }
+        .header-actions i { color: #5f6368; font-size: 20px; cursor: pointer; transition: color 0.2s; }
+        .header-actions i:hover { color: #01875f; }
+        .search-bar { background: #f1f3f4; border-radius: 28px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+        .search-bar i { color: #5f6368; font-size: 16px; }
+        .search-bar span { color: #5f6368; font-size: 16px; }
+        .nav-tabs { display: flex; padding: 8px 16px; gap: 16px; border-bottom: 1px solid #e8eaed; background: white; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .nav-tab { color: #5f6368; font-size: 14px; font-weight: 500; padding-bottom: 12px; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; }
+        .nav-tab.active { color: #01875f; border-bottom-color: #01875f; }
+        .tab-page { display: none; }
+        .tab-page.active { display: block; }
+        .apps-list { padding: 8px 0; }
+        .app-item { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #e8eaed; cursor: pointer; transition: background 0.2s; gap: 12px; }
+        .app-item:hover { background: #f8f9fa; }
+        .app-item-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+        .app-item-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .app-item-info { flex: 1; min-width: 0; }
+        .app-item-name { font-size: 15px; font-weight: 600; color: #202124; margin-bottom: 2px; }
+        .app-item-dev { font-size: 12px; color: #5f6368; }
+        .app-item-badge { background: #e8f5e9; color: #01875f; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+        .online-page { padding: 16px; }
+        .online-header { margin-bottom: 20px; }
+        .online-header h2 { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #00C853, #00B0FF); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 4px; }
+        .online-header p { color: #5f6368; font-size: 13px; }
+        .services-grid { display: flex; flex-direction: column; gap: 12px; }
+        .online-service-card { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 14px; border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .online-service-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); background: white; }
+        .online-service-icon { width: 44px; height: 44px; background: linear-gradient(145deg, #f0f9ff, #e6f7ef); border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .online-service-icon i { font-size: 22px; color: #01875f; }
+        .online-service-info { flex: 1; min-width: 0; }
+        .online-service-name { font-size: 15px; font-weight: 700; color: #1f2a3e; margin-bottom: 2px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+        .service-chip { background: rgba(0,230,118,0.15); padding: 2px 6px; border-radius: 30px; font-size: 9px; font-weight: 700; color: #01875f; }
+        .online-service-desc { font-size: 11px; color: #5f6b7e; display: flex; align-items: center; gap: 4px; }
+        .online-service-desc i { font-size: 10px; color: #01875f; }
+        .online-service-btn { background: rgba(0, 135, 95, 0.1); border: 1px solid rgba(0, 135, 95, 0.25); border-radius: 40px; padding: 8px 14px; font-size: 12px; font-weight: 600; color: #01875f; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0; transition: all 0.2s; }
+        .online-service-btn:hover { background: #01875f; color: white; border-color: #01875f; }
+        .online-service-btn i { font-size: 11px; }
+        .online-service-btn:hover i { transform: translateX(3px); color: white; }
+        .online-detail-page { display: none; padding: 16px; background: white; min-height: 100vh; }
+        .online-detail-page.active { display: block; }
+        .online-detail-header { display: flex; gap: 14px; margin-bottom: 16px; align-items: center; }
+        .online-icon-large { width: 60px; height: 60px; background: linear-gradient(145deg, #f0f9ff, #e6f7ef); border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .online-icon-large i { font-size: 30px; color: #01875f; }
+        .online-title-section h1 { font-size: 20px; font-weight: 700; color: #202124; margin-bottom: 2px; }
+        .online-developer { color: #01875f; font-size: 13px; font-weight: 600; }
+        .online-tags { display: flex; gap: 6px; margin: 12px 0; flex-wrap: wrap; }
+        .online-description-card { background: white; border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid #e8eaed; }
+        .online-description-card h3 { font-size: 16px; font-weight: 600; color: #202124; margin-bottom: 10px; }
+        .online-description-card p { color: #5f6368; line-height: 1.5; font-size: 13px; }
+        .online-action-buttons { margin-top: 20px; }
+        .online-launch-btn { background: #01875f; color: white; border: none; border-radius: 24px; padding: 12px 20px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .online-launch-btn:hover { background: #016b4c; transform: scale(1.01); }
+        .app-detail-page { display: none; padding: 12px; background: white; }
+        .app-detail-page.active { display: block; }
+        .back-button { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; cursor: pointer; color: #01875f; font-weight: 500; width: fit-content; font-size: 14px; padding: 4px 0; }
+        .back-button i { font-size: 18px; }
+        .app-detail-header { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
+        .app-icon-large { width: 60px; height: 60px; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .app-icon-large img { width: 100%; height: 100%; object-fit: cover; }
+        .app-title-section { flex: 1; min-width: 0; }
+        .app-title-section h1 { font-size: 18px; font-weight: 700; color: #202124; margin-bottom: 2px; word-break: break-word; }
+        .developer { color: #01875f; font-size: 12px; font-weight: 600; }
+        .tags { display: flex; gap: 6px; margin: 12px 0; flex-wrap: wrap; }
+        .tag { background: #e8f5e9; color: #01875f; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+        .tag-highlight { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .action-buttons { display: flex; gap: 10px; margin-bottom: 16px; }
+        .install-btn { background: #01875f; color: white; border: none; border-radius: 24px; padding: 12px 16px; font-size: 14px; font-weight: 600; flex: 1; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; }
+        .install-btn:disabled { background: #e8eaed; color: #9aa0a6; cursor: not-allowed; }
+        .install-btn.installed { background: #e8f5e9; color: #01875f; }
+        .os-warning { background: #fef7e0; border: 1px solid #fbbc04; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .os-warning i { color: #fbbc04; font-size: 18px; flex-shrink: 0; }
+        .os-warning span { color: #202124; font-size: 13px; font-weight: 500; }
+        .wishlist-btn { background: white; border: 1px solid #dadce0; border-radius: 24px; padding: 12px; aspect-ratio: 1; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 46px; height: 46px; }
+        .wishlist-btn.active { background: #fff9e6; border-color: #FFD700; }
+        .wishlist-btn.active i { color: #FFD700; }
+        .description-card { background: white; border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid #e8eaed; }
+        .description-card h3 { font-size: 16px; font-weight: 600; color: #202124; margin-bottom: 10px; }
+        .description-card p { color: #5f6368; line-height: 1.5; font-size: 13px; }
+        .ai-badge { display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+        .info-card { background: white; border-radius: 14px; padding: 12px; border: 1px solid #e8eaed; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e8eaed; gap: 8px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #5f6368; font-size: 13px; flex-shrink: 0; }
+        .info-value { color: #202124; font-weight: 500; font-size: 13px; text-align: right; word-break: break-word; }
+        .beta-badge { background: linear-gradient(135deg, #FF9800, #FF5722); color: white; padding: 2px 6px; border-radius: 20px; font-size: 10px; font-weight: 600; margin-left: 4px; }
+        .news-feed { padding: 12px; }
+        .news-header { margin-bottom: 16px; }
+        .news-header h2 { font-size: 20px; font-weight: 700; color: #202124; margin-bottom: 2px; }
+        .news-header p { color: #5f6368; font-size: 13px; }
+        .news-card { background: white; border-radius: 20px; padding: 16px; margin-bottom: 12px; border: 1px solid #e8eaed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .news-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+        .news-badge { background: #01875f; color: white; padding: 3px 10px; border-radius: 30px; font-size: 11px; font-weight: 700; }
+        .news-date { color: #5f6368; font-size: 12px; font-weight: 500; }
+        .news-title { font-size: 16px; font-weight: 800; color: #202124; margin-bottom: 8px; }
+        .news-version { background: #e8f5e9; color: #01875f; padding: 4px 10px; border-radius: 30px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; }
+        .news-changes { list-style: none; }
+        .news-changes li { display: flex; align-items: center; gap: 8px; padding: 8px 0; color: #202124; font-size: 13px; font-weight: 500; border-bottom: 1px solid #f0f0f0; }
+        .news-changes li:last-child { border-bottom: none; padding-bottom: 0; }
+        .news-changes li i { color: #01875f; font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+        .coming-soon { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 14px 16px; border-radius: 24px; display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .coming-soon span { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+        .coming-soon i { font-size: 18px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: translateX(0); } 50% { opacity: 0.6; transform: translateX(3px); } }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: none; align-items: flex-end; justify-content: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; border-radius: 24px 24px 0 0; padding: 20px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
+        .settings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e8eaed; }
+        .settings-header h3 { font-size: 18px; font-weight: 700; }
+        .settings-header i { font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; transition: background 0.2s; }
+        .settings-header i:hover { background: #f1f3f4; }
+        .settings-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #e8eaed; }
+        .settings-item-left { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        .theme-toggle { width: 50px; height: 26px; background: #e8eaed; border-radius: 13px; position: relative; cursor: pointer; transition: background 0.3s; flex-shrink: 0; }
+        .theme-toggle.active { background: #01875f; }
+        .theme-toggle::before { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.3s; }
+        .theme-toggle.active::before { transform: translateX(24px); }
+        .profile-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e8eaed; }
+        .profile-avatar { width: 56px; height: 56px; background: linear-gradient(135deg, #00E676, #00B0FF); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .profile-avatar i { font-size: 28px; color: white; }
+        .profile-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+        .profile-name { color: #202124; }
+        .profile-email { color: #5f6368; font-size: 13px; word-break: break-all; }
+        .profile-item { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-bottom: 1px solid #e8eaed; cursor: pointer; font-size: 14px; }
+        .profile-item i { font-size: 16px; width: 24px; text-align: center; color: #5f6368; }
+        .scan-modal .modal-content { padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .scan-header { text-align: center; margin-bottom: 20px; }
+        .scan-shield { width: 56px; height: 56px; background: linear-gradient(135deg, #00E676, #00B0FF); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+        .scan-shield i { font-size: 28px; color: white; }
+        .scan-title { font-size: 18px; font-weight: 700; color: #202124; }
+        .scan-subtitle { font-size: 13px; color: #5f6368; margin-top: 2px; }
+        .scan-items { margin: 16px 0; }
+        .scan-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e8eaed; gap: 8px; }
+        .scan-item-left { display: flex; align-items: center; gap: 8px; font-size: 13px; flex: 1; min-width: 0; }
+        .scan-item-left i { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+        .scan-status { font-weight: 600; font-size: 12px; flex-shrink: 0; }
+        .status-pending { color: #fbbc04; } .status-checking { color: #1a73e8; } .status-clean { color: #01875f; }
+        .scan-progress-bar { height: 4px; background: #e8eaed; border-radius: 2px; margin: 12px 0 16px; overflow: hidden; }
+        .scan-progress-fill { height: 100%; background: #01875f; width: 0%; transition: width 0.3s; }
+        .scan-message { text-align: center; padding: 12px; background: #e8f5e9; border-radius: 12px; margin-top: 16px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .scan-message i { color: #01875f; font-size: 18px; }
+        .scan-message span { color: #01875f; font-weight: 500; }
+        .scan-close-btn { width: 100%; background: #01875f; color: white; border: none; border-radius: 24px; padding: 14px; font-size: 15px; font-weight: 600; margin-top: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .scan-close-btn:disabled { background: #e8eaed; color: #5f6368; cursor: not-allowed; }
+        .favorites-menu-item { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-bottom: 1px solid #e8eaed; cursor: pointer; font-size: 14px; }
+        .favorites-menu-item i { width: 24px; text-align: center; font-size: 16px; }
+        .favorites-badge { background: #e8f5e9; color: #01875f; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: auto; }
+        @media (min-width: 481px) { .modal-content { border-radius: 24px; width: 400px; max-height: 80vh; } .scan-modal .modal-content { border-radius: 24px; width: 380px; } }
+        @media (max-width: 360px) { .app-item { padding: 10px 12px; } .app-item-icon { width: 42px; height: 42px; border-radius: 12px; } .app-item-name { font-size: 14px; } .app-item-dev { font-size: 11px; } .app-item-badge { font-size: 10px; padding: 3px 8px; } .nav-tabs { gap: 12px; padding: 8px 12px; } .nav-tab { font-size: 13px; } .action-buttons { gap: 8px; } .install-btn { font-size: 13px; padding: 10px 14px; } .wishlist-btn { width: 42px; height: 42px; padding: 10px; } .app-detail-header { gap: 10px; } .app-icon-large { width: 50px; height: 50px; border-radius: 14px; } .app-title-section h1 { font-size: 16px; } }
     </style>
 </head>
 <body>
@@ -1293,399 +250,126 @@
             <div class="nav-tab" data-tab="news">Новости</div>
         </nav>
 
-        <!-- Приложения -->
         <div class="tab-page active" id="pageApps">
             <div class="apps-list">
-                <div class="app-item" data-app="protect">
-                    <div class="app-item-icon"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div>
-                    <div class="app-item-info"><div class="app-item-name">FeastCyber_SafetyCore</div><div class="app-item-dev">MrFeastProject • Инструменты</div></div>
-                    <span class="app-item-badge">AI Powered</span>
-                </div>
-                <div class="app-item" data-app="antivirus">
-                    <div class="app-item-icon"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div>
-                    <div class="app-item-info"><div class="app-item-name">FeastCyberSecurity</div><div class="app-item-dev">MrFeastProject • Инструменты</div></div>
-                    <span class="app-item-badge">Антивирус</span>
-                </div>
+                <div class="app-item" data-app="protect"><div class="app-item-icon"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-item-info"><div class="app-item-name">FeastCyber_SafetyCore</div><div class="app-item-dev">MrFeastProject • Инструменты</div></div><span class="app-item-badge">AI Powered</span></div>
+                <div class="app-item" data-app="antivirus"><div class="app-item-icon"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-item-info"><div class="app-item-name">FeastCyberSecurity</div><div class="app-item-dev">MrFeastProject • Инструменты</div></div><span class="app-item-badge">Антивирус</span></div>
+                <div class="app-item" data-app="tgwsproxy"><div class="app-item-icon"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/unnamed.png" alt="TG WS Proxy"></div><div class="app-item-info"><div class="app-item-name">TG WS Proxy</div><div class="app-item-dev">GitHub Releases • VPN/Proxy</div></div><span class="app-item-badge">Pre-release</span></div>
             </div>
         </div>
 
-        <!-- Онлайн - список сервисов (карточки) -->
         <div class="tab-page online-page" id="pageOnline">
             <div class="online-header"><h2>Онлайн игры и приложения</h2><p>Нажми на карточку для подробного описания</p></div>
             <div class="services-grid">
-                <div class="online-service-card" data-online="clicker">
-                    <div class="online-service-icon"><i class="fas fa-gamepad"></i></div>
-                    <div class="online-service-info">
-                        <div class="online-service-name">MrFeast Clicker <span class="service-chip">#Кликер</span></div>
-                        <div class="online-service-desc"><i class="fas fa-chart-line"></i> Прокачка, магазин, достижения</div>
-                    </div>
-                    <div class="online-service-btn">Подробнее <i class="fas fa-arrow-right"></i></div>
-                </div>
-                
-                <div class="online-service-card" data-online="vpn">
-                    <div class="online-service-icon"><i class="fas fa-shield-virus"></i></div>
-                    <div class="online-service-info">
-                        <div class="online-service-name">FeastVPN BoostTG <span class="service-chip">#VPN</span></div>
-                        <div class="online-service-desc"><i class="fas fa-bolt"></i> Хороший и стабильный VPN для Telegram</div>
-                    </div>
-                    <div class="online-service-btn">Подробнее <i class="fas fa-arrow-right"></i></div>
-                </div>
-
-                <div class="online-service-card" data-online="security">
-                    <div class="online-service-icon"><i class="fas fa-microchip"></i></div>
-                    <div class="online-service-info">
-                        <div class="online-service-name">FeastCyberSecurity <span class="service-chip">#AI Security</span></div>
-                        <div class="online-service-desc"><i class="fas fa-brain"></i> Онлайн проверка файлов с AI движком от MrFeastProject</div>
-                    </div>
-                    <div class="online-service-btn">Подробнее <i class="fas fa-arrow-right"></i></div>
-                </div>
+                <div class="online-service-card" data-online="clicker"><div class="online-service-icon"><i class="fas fa-gamepad"></i></div><div class="online-service-info"><div class="online-service-name">MrFeast Clicker <span class="service-chip">#Кликер</span></div><div class="online-service-desc"><i class="fas fa-chart-line"></i> Прокачка, магазин, достижения</div></div><div class="online-service-btn">Подробнее <i class="fas fa-arrow-right"></i></div></div>
+                <div class="online-service-card" data-online="vpn"><div class="online-service-icon"><i class="fas fa-shield-virus"></i></div><div class="online-service-info"><div class="online-service-name">FeastVPN BoostTG <span class="service-chip">#VPN</span></div><div class="online-service-desc"><i class="fas fa-bolt"></i> Хороший и стабильный VPN для Telegram</div></div><div class="online-service-btn">Подробнее <i class="fas fa-arrow-right"></i></div></div>
+                <div class="online-service-card" data-online="security"><div class="online-service-icon"><i class="fas fa-microchip"></i></div><div class="online-service-info"><div class="online-service-name">FeastCyberSecurity <span class="service-chip">#AI Security</span></div><div class="online-service-desc"><i class="fas fa-brain"></i> Онлайн проверка файлов с AI движком от MrFeastProject</div></div><div class="online-service-btn">Подробнее <i class="fas fa-arrow-right"></i></div></div>
             </div>
         </div>
 
-        <!-- Страницы деталей онлайн-сервисов -->
-        <!-- MrFeast Clicker детали -->
-        <div class="online-detail-page" id="onlineClicker">
-            <div class="back-button" id="backOnline1"><i class="fas fa-arrow-left"></i><span>Назад</span></div>
-            <div class="online-detail-header">
-                <div class="online-icon-large"><i class="fas fa-gamepad"></i></div>
-                <div class="online-title-section">
-                    <h1>MrFeast Clicker</h1>
-                    <div class="online-developer">MrFeastProject</div>
-                </div>
-            </div>
-            <div class="online-tags">
-                <span class="tag">#Кликер</span>
-                <span class="tag">Экономическая игра</span>
-                <span class="tag-highlight">Популярное</span>
-            </div>
-            <div class="online-description-card">
-                <h3>Об игре</h3>
-                <p><strong>MrFeast Clicker</strong> — увлекательная кликер-игра, где вы зарабатываете виртуальную валюту, прокачиваете персонажа, открываете новые уровни и соревнуетесь с друзьями. Покупайте улучшения в магазине, открывайте достижения и становитесь настоящим магнатом!</p>
-                <p>Особенности: автокликер, ежедневные бонусы, система престижа и уникальные события.</p>
-            </div>
-            <div class="online-action-buttons">
-                <button class="online-launch-btn" onclick="window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/FeastClicker.html', '_blank')">
-                    <i class="fas fa-play"></i> Запустить игру
-                </button>
-            </div>
-        </div>
+        <div class="online-detail-page" id="onlineClicker"><div class="back-button" id="backOnline1"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="online-detail-header"><div class="online-icon-large"><i class="fas fa-gamepad"></i></div><div class="online-title-section"><h1>MrFeast Clicker</h1><div class="online-developer">MrFeastProject</div></div></div><div class="online-tags"><span class="tag">#Кликер</span><span class="tag">Экономическая игра</span><span class="tag-highlight">Популярное</span></div><div class="online-description-card"><h3>Об игре</h3><p><strong>MrFeast Clicker</strong> — увлекательная кликер-игра, где вы зарабатываете виртуальную валюту, прокачиваете персонажа, открываете новые уровни и соревнуетесь с друзьями. Покупайте улучшения в магазине, открывайте достижения и становитесь настоящим магнатом!</p><p>Особенности: автокликер, ежедневные бонусы, система престижа и уникальные события.</p></div><div class="online-action-buttons"><button class="online-launch-btn" onclick="window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/FeastClicker.html', '_blank')"><i class="fas fa-play"></i> Запустить игру</button></div></div>
+        <div class="online-detail-page" id="onlineVpn"><div class="back-button" id="backOnline2"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="online-detail-header"><div class="online-icon-large"><i class="fas fa-shield-virus"></i></div><div class="online-title-section"><h1>FeastVPN BoostTG</h1><div class="online-developer">MrFeastProject</div></div></div><div class="online-tags"><span class="tag">#VPN</span><span class="tag">Telegram VPN</span><span class="tag-highlight">Безопасно</span></div><div class="online-description-card"><h3>О сервисе</h3><p><strong>FeastVPN BoostTG</strong> — это специализированный VPN-сервис для Telegram, обеспечивающий высокую скорость соединения и стабильную работу. 16 MTProto серверов по всему миру гарантируют надёжное подключение и защиту ваших данных.</p><p>Особенности: безлимитный трафик, шифрование нового поколения, поддержка всех платформ и моментальное переключение между серверами.</p></div><div class="online-action-buttons"><button class="online-launch-btn" onclick="window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/VPNSite.html', '_blank')"><i class="fas fa-plug"></i> Подключить VPN</button></div></div>
+        <div class="online-detail-page" id="onlineSecurity"><div class="back-button" id="backOnline3"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="online-detail-header"><div class="online-icon-large"><i class="fas fa-microchip"></i></div><div class="online-title-section"><h1>FeastCyberSecurity</h1><div class="online-developer">MrFeastProject</div></div></div><div class="online-tags"><span class="tag">#AI Security</span><span class="tag">Антивирус онлайн</span><span class="tag-highlight">AI Powered</span></div><div class="online-description-card"><h3>О сервисе <span class="ai-badge">AI Powered</span></h3><p><strong>FeastCyberSecurity</strong> — это онлайн-сервис проверки файлов на вирусы с использованием современного AI движка от MrFeastProject. Просто загрузите любой файл, и нейросеть проанализирует его поведение, проверит цифровые подписи и определит угрозы в реальном времени.</p><p>Особенности: поддержка любых типов файлов, глубокая эвристика, облачная база сигнатур и полная конфиденциальность.</p></div><div class="online-action-buttons"><button class="online-launch-btn" onclick="window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/FeastCyberSecurity.html', '_blank')"><i class="fas fa-shield-alt"></i> Проверить файл</button></div></div>
 
-        <!-- FeastVPN BoostTG детали -->
-        <div class="online-detail-page" id="onlineVpn">
-            <div class="back-button" id="backOnline2"><i class="fas fa-arrow-left"></i><span>Назад</span></div>
-            <div class="online-detail-header">
-                <div class="online-icon-large"><i class="fas fa-shield-virus"></i></div>
-                <div class="online-title-section">
-                    <h1>FeastVPN BoostTG</h1>
-                    <div class="online-developer">MrFeastProject</div>
-                </div>
-            </div>
-            <div class="online-tags">
-                <span class="tag">#VPN</span>
-                <span class="tag">Telegram VPN</span>
-                <span class="tag-highlight">Безопасно</span>
-            </div>
-            <div class="online-description-card">
-                <h3>О сервисе</h3>
-                <p><strong>FeastVPN BoostTG</strong> — это специализированный VPN-сервис для Telegram, обеспечивающий высокую скорость соединения и стабильную работу. 16 MTProto серверов по всему миру гарантируют надёжное подключение и защиту ваших данных.</p>
-                <p>Особенности: безлимитный трафик, шифрование нового поколения, поддержка всех платформ и моментальное переключение между серверами.</p>
-            </div>
-            <div class="online-action-buttons">
-                <button class="online-launch-btn" onclick="window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/VPNSite.html', '_blank')">
-                    <i class="fas fa-plug"></i> Подключить VPN
-                </button>
-            </div>
-        </div>
-
-        <!-- FeastCyberSecurity детали -->
-        <div class="online-detail-page" id="onlineSecurity">
-            <div class="back-button" id="backOnline3"><i class="fas fa-arrow-left"></i><span>Назад</span></div>
-            <div class="online-detail-header">
-                <div class="online-icon-large"><i class="fas fa-microchip"></i></div>
-                <div class="online-title-section">
-                    <h1>FeastCyberSecurity</h1>
-                    <div class="online-developer">MrFeastProject</div>
-                </div>
-            </div>
-            <div class="online-tags">
-                <span class="tag">#AI Security</span>
-                <span class="tag">Антивирус онлайн</span>
-                <span class="tag-highlight">AI Powered</span>
-            </div>
-            <div class="online-description-card">
-                <h3>О сервисе <span class="ai-badge">AI Powered</span></h3>
-                <p><strong>FeastCyberSecurity</strong> — это онлайн-сервис проверки файлов на вирусы с использованием современного AI движка от MrFeastProject. Просто загрузите любой файл, и нейросеть проанализирует его поведение, проверит цифровые подписи и определит угрозы в реальном времени.</p>
-                <p>Особенности: поддержка любых типов файлов, глубокая эвристика, облачная база сигнатур и полная конфиденциальность.</p>
-            </div>
-            <div class="online-action-buttons">
-                <button class="online-launch-btn" onclick="window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/FeastCyberSecurity.html', '_blank')">
-                    <i class="fas fa-shield-alt"></i> Проверить файл
-                </button>
-            </div>
-        </div>
-
-        <!-- НОВОСТИ -->
         <div class="tab-page news-feed" id="pageNews">
-            <div class="news-header">
-                <h2>Новости</h2>
-                <p>Самая свежая информация</p>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-card-header">
-                    <span class="news-badge">Новость #3</span>
-                    <span class="news-date">27 апреля 2026</span>
-                </div>
-                <div class="news-title">Выпуск обновления 1.0.2</div>
-                <div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.2 (V1)</div>
-                <ul class="news-changes">
-                    <li><i class="fas fa-bug"></i> <span>Исправлены баги</span></li>
-                    <li><i class="fas fa-plus-circle"></i> <span>Добавлен онлайн сервис проверки на вирусы от MrFeastProject</span></li>
-                </ul>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-card-header">
-                    <span class="news-badge">Новость #2</span>
-                    <span class="news-date">23 апреля 2026</span>
-                </div>
-                <div class="news-title">Исправление ошибок и новое</div>
-                <div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.1 (V2)</div>
-                <ul class="news-changes">
-                    <li><i class="fas fa-plus-circle"></i> <span>Добавлено: 1 онлайн игра и 1 онлайн приложение (VPN для Telegram) от MrFeastProject</span></li>
-                    <li><i class="fas fa-bug"></i> <span>Исправлены многие критические ошибки и прочие ошибки/баги тоже</span></li>
-                </ul>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-card-header">
-                    <span class="news-badge">Новость #1</span>
-                    <span class="news-date">22 апреля 2026</span>
-                </div>
-                <div class="news-title">Открытие сайта</div>
-                <div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.1 (V1)</div>
-                <ul class="news-changes">
-                    <li><i class="fas fa-check-circle"></i> <span>Открытие сайта</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span>Добавлено 2 приложения</span></li>
-                </ul>
-            </div>
-            
-            <div class="coming-soon">
-                <span><i class="fas fa-rocket"></i> Новое обновление скоро!</span>
-                <i class="fas fa-arrow-right"></i>
-            </div>
+            <div class="news-header"><h2>Новости</h2><p>Самая свежая информация</p></div>
+            <div class="news-card"><div class="news-card-header"><span class="news-badge">Новость #4</span><span class="news-date">8 мая 2026</span></div><div class="news-title">Новое приложение и функции</div><div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.2 (V2)</div><ul class="news-changes"><li><i class="fas fa-plus-circle"></i><span>Добавлено новое приложение</span></li><li><i class="fas fa-star"></i><span>Добавлена новая функция «Избранное»</span></li></ul></div>
+            <div class="news-card"><div class="news-card-header"><span class="news-badge">Новость #3</span><span class="news-date">27 апреля 2026</span></div><div class="news-title">Выпуск обновления 1.0.2</div><div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.2 (V1)</div><ul class="news-changes"><li><i class="fas fa-bug"></i><span>Исправлены баги</span></li><li><i class="fas fa-plus-circle"></i><span>Добавлен онлайн сервис проверки на вирусы от MrFeastProject</span></li></ul></div>
+            <div class="news-card"><div class="news-card-header"><span class="news-badge">Новость #2</span><span class="news-date">23 апреля 2026</span></div><div class="news-title">Исправление ошибок и новое</div><div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.1 (V2)</div><ul class="news-changes"><li><i class="fas fa-plus-circle"></i><span>Добавлено: 1 онлайн игра и 1 онлайн приложение (VPN для Telegram) от MrFeastProject</span></li><li><i class="fas fa-bug"></i><span>Исправлены многие критические ошибки и прочие ошибки/баги тоже</span></li></ul></div>
+            <div class="news-card"><div class="news-card-header"><span class="news-badge">Новость #1</span><span class="news-date">22 апреля 2026</span></div><div class="news-title">Открытие сайта</div><div class="news-version"><i class="fas fa-tag"></i> Версия сайта: 1.0.1 (V1)</div><ul class="news-changes"><li><i class="fas fa-check-circle"></i><span>Открытие сайта</span></li><li><i class="fas fa-check-circle"></i><span>Добавлено 2 приложения</span></li></ul></div>
+            <div class="coming-soon"><span><i class="fas fa-rocket"></i> Новое обновление скоро!</span><i class="fas fa-arrow-right"></i></div>
         </div>
 
-        <!-- Детали приложений -->
-        <div class="app-detail-page" id="appProtect">
-            <div class="back-button" id="backBtn1"><i class="fas fa-arrow-left"></i><span>Назад</span></div>
-            <div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyber_SafetyCore</h1><div class="developer">MrFeastProject</div></div></div>
-            <div class="os-warning" id="osWarning1" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div>
-            <div class="tags"><span class="tag">#1 в Инструменты</span><span class="tag">AI защита</span><span class="tag-highlight">Выбор редакции</span></div>
-            <div class="action-buttons"><button class="install-btn" id="downloadBtn1"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn"><i class="far fa-bookmark"></i></button></div>
-            <div class="description-card"><h3>Об этом приложении <span class="ai-badge">AI Powered</span></h3><p><strong>FeastCyber_SafetyCore</strong> — фоновый процесс на базе AI движка от MrFeastProject для Windows 10/11.<br><br>Обеспечивает многоуровневую защиту в реальном времени.</p></div>
-            <div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">12 апреля 21:21</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">37 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.1<span class="beta-badge">Beta</span></span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div>
-        </div>
-
-        <div class="app-detail-page" id="appAntivirus">
-            <div class="back-button" id="backBtn2"><i class="fas fa-arrow-left"></i><span>Назад</span></div>
-            <div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyberSecurity</h1><div class="developer">MrFeastProject</div></div></div>
-            <div class="os-warning" id="osWarning2" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div>
-            <div class="tags"><span class="tag">Антивирус</span><span class="tag">Защита</span><span class="tag-highlight">Premium</span></div>
-            <div class="action-buttons"><button class="install-btn" id="downloadBtn2"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn"><i class="far fa-bookmark"></i></button></div>
-            <div class="description-card"><h3>Об этом приложении</h3><p><strong>FeastCyberSecurity</strong> — мощный антивирус для защиты вашего компьютера от вирусов, троянов, шпионского ПО и других угроз. Регулярные обновления баз и облачная защита в реальном времени.</p></div>
-            <div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">14 февраля 19:12</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">47~53 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.6.9</span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div>
-        </div>
+        <div class="app-detail-page" id="appProtect"><div class="back-button" id="backBtn1"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyber_SafetyCore</h1><div class="developer">MrFeastProject</div></div></div><div class="os-warning" id="osWarning1" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div><div class="tags"><span class="tag">#1 в Инструменты</span><span class="tag">AI защита</span><span class="tag-highlight">Выбор редакции</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn1"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn" data-app="protect" id="wishlistBtn1"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении <span class="ai-badge">AI Powered</span></h3><p><strong>FeastCyber_SafetyCore</strong> — фоновый процесс на базе AI движка от MrFeastProject для Windows 10/11.<br><br>Обеспечивает многоуровневую защиту в реальном времени.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">12 апреля 21:21</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">37 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.1<span class="beta-badge">Beta</span></span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div></div>
+        <div class="app-detail-page" id="appAntivirus"><div class="back-button" id="backBtn2"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyberSecurity</h1><div class="developer">MrFeastProject</div></div></div><div class="os-warning" id="osWarning2" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div><div class="tags"><span class="tag">Антивирус</span><span class="tag">Защита</span><span class="tag-highlight">Premium</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn2"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn" data-app="antivirus" id="wishlistBtn2"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении</h3><p><strong>FeastCyberSecurity</strong> — мощный антивирус для защиты вашего компьютера от вирусов, троянов, шпионского ПО и других угроз. Регулярные обновления баз и облачная защита в реальном времени.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">14 февраля 19:12</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">47~53 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.6.9</span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div></div>
+        <div class="app-detail-page" id="appTgwsproxy"><div class="back-button" id="backBtn3"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/unnamed.png" alt="TG WS Proxy" style="width: 100%; height: 100%; object-fit: cover;"></div><div class="app-title-section"><h1>TG WS Proxy</h1><div class="developer">GitHub Releases</div></div></div><div class="tags"><span class="tag">VPN/Proxy</span><span class="tag">Обход блокировок</span><span class="tag-highlight">Pre-release</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn3"><i class="fas fa-download"></i> Скачать</button><button class="wishlist-btn" data-app="tgwsproxy" id="wishlistBtn3"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении</h3><p><strong>TG WS Proxy</strong> — инструмент для создания локального прокси-сервера, предназначенного для обхода блокировок Telegram.<br><br>Позволяет настроить собственный WebSocket-прокси и обеспечить стабильный доступ к мессенджеру.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.3.0<span class="beta-badge">Pre-release</span></span></div><div class="info-row"><span class="info-label">Автор</span><span class="info-value">GitHub Releases</span></div><div class="info-row"><span class="info-label">Категория</span><span class="info-value">VPN/Proxy</span></div><div class="info-row"><span class="info-label">Платформа</span><span class="info-value">Android</span></div></div></div>
     </div>
 
-    <!-- Модалки -->
-    <div class="modal-overlay" id="settingsModal"><div class="modal-content"><div class="settings-header"><h3>Настройки</h3><i class="fas fa-times" id="closeSettings"></i></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-moon"></i><span>Тёмная тема</span></div><div class="theme-toggle" id="themeToggle"></div></div></div></div>
-    
-    <div class="modal-overlay" id="profileModal">
-        <div class="modal-content">
-            <div class="settings-header"><h3>Профиль</h3><i class="fas fa-times" id="closeProfile"></i></div>
-            <div class="profile-header">
-                <div class="profile-avatar"><i class="fas fa-user"></i></div>
-                <div class="profile-info">
-                    <h3 class="profile-name" id="profileName">FeastUser</h3>
-                    <div class="profile-email" id="profileEmail">feast@project.local</div>
-                </div>
-            </div>
-            <div class="profile-item"><i class="fas fa-user-cog"></i><span>Настройки аккаунта</span></div>
-            <div class="profile-item"><i class="fas fa-history"></i><span>История загрузок</span></div>
-            <div class="profile-item"><i class="fas fa-sign-out-alt"></i><span>Выйти</span></div>
-        </div>
-    </div>
-
+    <div class="modal-overlay" id="settingsModal"><div class="modal-content"><div class="settings-header"><h3>Настройки</h3><i class="fas fa-times" id="closeSettings"></i></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-moon"></i><span>Тёмная тема</span></div><div class="theme-toggle" id="themeToggle"></div></div><div class="favorites-menu-item" id="favoritesMenuItem"><i class="fas fa-bookmark" style="color: #01875f;"></i><span>Избранное</span><span class="favorites-badge" id="favoritesCount">0</span></div></div></div>
+    <div class="modal-overlay" id="profileModal"><div class="modal-content"><div class="settings-header"><h3>Профиль</h3><i class="fas fa-times" id="closeProfile"></i></div><div class="profile-header"><div class="profile-avatar"><i class="fas fa-user"></i></div><div class="profile-info"><h3 class="profile-name" id="profileName">FeastUser</h3><div class="profile-email" id="profileEmail">feast@project.local</div></div></div><div class="profile-item"><i class="fas fa-user-cog"></i><span>Настройки аккаунта</span></div><div class="profile-item"><i class="fas fa-history"></i><span>История загрузок</span></div><div class="profile-item" id="favoritesProfileItem"><i class="fas fa-bookmark" style="color: #01875f;"></i><span>Избранное</span><span class="favorites-badge" id="favoritesCountProfile">0</span></div><div class="profile-item"><i class="fas fa-sign-out-alt"></i><span>Выйти</span></div></div></div>
     <div class="modal-overlay scan-modal" id="scanModal"><div class="modal-content"><div class="scan-header"><div class="scan-shield"><i class="fas fa-shield"></i></div><div class="scan-title">FeastCyberSecurity</div><div class="scan-subtitle">SiteProtect · Проверка безопасности</div></div><div class="scan-items"><div class="scan-item"><div class="scan-item-left"><i class="fas fa-certificate"></i><span>Цифровая подпись</span></div><span class="scan-status status-pending" id="status1">Ожидание</span></div><div class="scan-item"><div class="scan-item-left"><i class="fas fa-virus"></i><span>Сканирование вирусов</span></div><span class="scan-status status-pending" id="status2">Ожидание</span></div><div class="scan-item"><div class="scan-item-left"><i class="fas fa-globe"></i><span>Репутация в сети</span></div><span class="scan-status status-pending" id="status3">Ожидание</span></div><div class="scan-item"><div class="scan-item-left"><i class="fas fa-brain"></i><span>AI анализ поведения</span></div><span class="scan-status status-pending" id="status4">Ожидание</span></div></div><div class="scan-progress-bar"><div class="scan-progress-fill" id="scanProgressFill"></div></div><div class="scan-message" id="scanMessage" style="display: none;"><i class="fas fa-check-circle"></i><span>Все проверки пройдены. Файл чист и безопасен!</span></div><button class="scan-close-btn" id="scanCloseBtn" disabled><i class="fas fa-spinner fa-spin"></i> Проверка...</button></div></div>
 
     <script>
-        // Генерация уникальной постоянной почты
-        function getOrCreateUserEmail() {
-            const STORAGE_KEY = 'feast_user_email';
-            let savedEmail = localStorage.getItem(STORAGE_KEY);
-            if (savedEmail) return savedEmail;
-            let randomDigits = '';
-            for (let i = 0; i < 10; i++) randomDigits += Math.floor(Math.random() * 10);
-            const newEmail = `FeastUser_${randomDigits}.com`;
-            localStorage.setItem(STORAGE_KEY, newEmail);
-            return newEmail;
-        }
+        function getOrCreateUserEmail(){const e=localStorage.getItem('feast_user_email');if(e)return e;let t='';for(let e=0;e<10;e++)t+=Math.floor(10*Math.random());const o=`FeastUser_${t}.com`;return localStorage.setItem('feast_user_email',o),o}
+        const userEmail=getOrCreateUserEmail();
         
-        const userEmail = getOrCreateUserEmail();
-        
-        const FILE_URLS = {
-            protect: 'https://github.com/mrfeastroblox-cmd/MrFeastShop_Dowload/releases/download/tag-1/CyberSecurity_SafetyCore.exe',
-            antivirus: 'https://github.com/mrfeastroblox-cmd/MrFeastShop_Dowload/releases/download/tag-1/Feast_Cyber.Security.exe'
+        const FILE_URLS={
+            protect:'https://github.com/mrfeastroblox-cmd/MrFeastShop_Dowload/releases/download/tag-1/CyberSecurity_SafetyCore.exe',
+            antivirus:'https://github.com/mrfeastroblox-cmd/MrFeastShop_Dowload/releases/download/tag-1/Feast_Cyber.Security.exe',
+            tgwsproxy:'https://github.com/mrfeastroblox-cmd/MrFeastShop_Dowload/releases/download/tag-1/v1.3.0-pre-release-universal.apk'
+        };
+        const FILE_NAMES={
+            protect:'FeastCyber_SafetyCore.exe',
+            antivirus:'FeastCyberSecurity.exe',
+            tgwsproxy:'TG_WS_Proxy_v1.3.0.apk'
         };
 
-        let currentApp = 'protect';
-        const pageApps = document.getElementById('pageApps');
-        const pageOnline = document.getElementById('pageOnline');
-        const pageNews = document.getElementById('pageNews');
-        const appProtect = document.getElementById('appProtect');
-        const appAntivirus = document.getElementById('appAntivirus');
-        
-        // Онлайн детальные страницы
-        const onlineClicker = document.getElementById('onlineClicker');
-        const onlineVpn = document.getElementById('onlineVpn');
-        const onlineSecurity = document.getElementById('onlineSecurity');
-        
-        const modal = document.getElementById('scanModal');
-        const scanCloseBtn = document.getElementById('scanCloseBtn');
-        const scanProgressFill = document.getElementById('scanProgressFill');
-        const scanMessage = document.getElementById('scanMessage');
-        const settingsModal = document.getElementById('settingsModal');
-        const profileModal = document.getElementById('profileModal');
-        const themeToggle = document.getElementById('themeToggle');
-        const profileEmailSpan = document.getElementById('profileEmail');
-        const profileNameSpan = document.getElementById('profileName');
-        const statuses = [document.getElementById('status1'),document.getElementById('status2'),document.getElementById('status3'),document.getElementById('status4')];
-
-        if (profileEmailSpan) profileEmailSpan.textContent = userEmail;
-        if (profileNameSpan) profileNameSpan.textContent = userEmail.split('_')[0];
-
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') { document.body.classList.add('dark-theme'); themeToggle.classList.add('active'); }
-        themeToggle.addEventListener('click', () => { document.body.classList.toggle('dark-theme'); themeToggle.classList.toggle('active'); localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); });
-
-        document.getElementById('menuBtn').addEventListener('click', () => settingsModal.classList.add('active'));
-        document.getElementById('profileBtn').addEventListener('click', () => profileModal.classList.add('active'));
-        document.getElementById('closeSettings').addEventListener('click', () => settingsModal.classList.remove('active'));
-        document.getElementById('closeProfile').addEventListener('click', () => profileModal.classList.remove('active'));
-        settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.remove('active'); });
-        profileModal.addEventListener('click', (e) => { if (e.target === profileModal) profileModal.classList.remove('active'); });
-
-        // Переключение вкладок
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.online-detail-page').forEach(p => p.classList.remove('active'));
-                appProtect.classList.remove('active');
-                appAntivirus.classList.remove('active');
-                const tabName = this.dataset.tab;
-                if (tabName === 'apps') pageApps.classList.add('active');
-                else if (tabName === 'online') pageOnline.classList.add('active');
-                else if (tabName === 'news') pageNews.classList.add('active');
-            });
-        });
-
-        // Открытие деталей онлайн-сервисов
-        document.querySelectorAll('[data-online]').forEach(card => {
-            card.addEventListener('click', function() {
-                const type = this.dataset.online;
-                pageOnline.classList.remove('active');
-                if (type === 'clicker') onlineClicker.classList.add('active');
-                else if (type === 'vpn') onlineVpn.classList.add('active');
-                else if (type === 'security') onlineSecurity.classList.add('active');
-            });
-        });
-
-        // Кнопки "Назад" для онлайн-деталей
-        document.getElementById('backOnline1').addEventListener('click', () => {
-            onlineClicker.classList.remove('active');
-            pageOnline.classList.add('active');
-        });
-        document.getElementById('backOnline2').addEventListener('click', () => {
-            onlineVpn.classList.remove('active');
-            pageOnline.classList.add('active');
-        });
-        document.getElementById('backOnline3').addEventListener('click', () => {
-            onlineSecurity.classList.remove('active');
-            pageOnline.classList.add('active');
-        });
-
-        function isWindows10Or11() { return navigator.userAgent.indexOf('Windows NT 10.0') !== -1; }
-        if (!isWindows10Or11()) { document.getElementById('downloadBtn1').disabled = true; document.getElementById('downloadBtn2').disabled = true; document.getElementById('osWarning1').style.display = 'flex'; document.getElementById('osWarning2').style.display = 'flex'; }
-
-        document.querySelectorAll('[data-app]').forEach(item => {
-            item.addEventListener('click', function() {
-                const app = this.dataset.app;
-                currentApp = app;
-                pageApps.classList.remove('active');
-                if (app === 'protect') { appProtect.classList.add('active'); appAntivirus.classList.remove('active'); }
-                else if (app === 'antivirus') { appAntivirus.classList.add('active'); appProtect.classList.remove('active'); }
-            });
-        });
-
-        document.getElementById('backBtn1').addEventListener('click', () => { appProtect.classList.remove('active'); pageApps.classList.add('active'); });
-        document.getElementById('backBtn2').addEventListener('click', () => { appAntivirus.classList.remove('active'); pageApps.classList.add('active'); });
-
-        function startScan(appType) {
-            if (!isWindows10Or11()) { alert('Это приложение доступно только для Windows 10/11'); return; }
-            currentApp = appType;
-            modal.classList.add('active');
-            scanProgressFill.style.width = '0%';
-            scanMessage.style.display = 'none';
-            scanCloseBtn.disabled = true;
-            scanCloseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Проверка...';
-            statuses.forEach(status => { status.textContent = 'Ожидание'; status.className = 'scan-status status-pending'; });
-            const steps = [
-                { index: 0, text: 'Проверка...', class: 'status-checking', time: 400 },
-                { index: 1, text: 'Проверка...', class: 'status-checking', time: 600 },
-                { index: 2, text: 'Проверка...', class: 'status-checking', time: 500 },
-                { index: 3, text: 'Анализ...', class: 'status-checking', time: 700 }
-            ];
-            let progress = 0;
-            function processStep(stepIndex) {
-                if (stepIndex >= steps.length) {
-                    setTimeout(() => {
-                        scanProgressFill.style.width = '100%';
-                        scanMessage.style.display = 'block';
-                        scanCloseBtn.disabled = false;
-                        scanCloseBtn.innerHTML = '<i class="fas fa-download"></i> Скачать сейчас';
-                        statuses.forEach(status => { status.textContent = '✓ Чисто'; status.className = 'scan-status status-clean'; });
-                        scanCloseBtn.onclick = () => {
-                            modal.classList.remove('active');
-                            const link = document.createElement('a');
-                            link.href = FILE_URLS[currentApp];
-                            link.download = currentApp === 'protect' ? 'FeastCyber_SafetyCore.exe' : 'FeastCyberSecurity.exe';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                            const btn = currentApp === 'protect' ? document.getElementById('downloadBtn1') : document.getElementById('downloadBtn2');
-                            btn.innerHTML = '<i class="fas fa-check"></i> Установлено';
-                            btn.classList.add('installed');
-                        };
-                    }, 200);
-                    return;
-                }
-                const step = steps[stepIndex];
-                const status = statuses[step.index];
-                status.textContent = step.text;
-                status.className = `scan-status ${step.class}`;
-                progress += 25;
-                scanProgressFill.style.width = progress + '%';
-                setTimeout(() => { status.textContent = '✓ Чисто'; status.className = 'scan-status status-clean'; processStep(stepIndex + 1); }, step.time);
-            }
-            setTimeout(() => processStep(0), 200);
+        function downloadFile(e){
+            const t=FILE_URLS[e];
+            if(!t){alert('Ошибка: файл не найден.');return}
+            const o=document.createElement('a');
+            o.href=t;
+            o.download=FILE_NAMES[e]||'download';
+            o.style.display='none';
+            document.body.appendChild(o);
+            o.click();
+            setTimeout(()=>{document.body.removeChild(o)},1000);
+            const n=document.getElementById('downloadBtn'+(e==='protect'?'1':e==='antivirus'?'2':'3'));
+            if(n){n.innerHTML='<i class="fas fa-check"></i> Установлено';n.classList.add('installed')}
         }
 
-        document.getElementById('downloadBtn1').addEventListener('click', () => startScan('protect'));
-        document.getElementById('downloadBtn2').addEventListener('click', () => startScan('antivirus'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+        function getFavorites(){const e=localStorage.getItem('feast_favorites');return e?JSON.parse(e):[]}
+        function saveFavorites(e){localStorage.setItem('feast_favorites',JSON.stringify(e)),updateFavoritesUI()}
+        function toggleFavorite(e,t){let o=getFavorites();o.includes(e)?(o=o.filter(t=>t!==e),t&&(t.classList.remove('active'),t.querySelector('i').className='far fa-bookmark')):(o.push(e),t&&(t.classList.add('active'),t.querySelector('i').className='fas fa-bookmark')),saveFavorites(o)}
+        function updateFavoritesUI(){const e=getFavorites(),t=e.length;document.getElementById('favoritesCount').textContent=t;document.getElementById('favoritesCountProfile').textContent=t;document.querySelectorAll('.wishlist-btn').forEach(t=>{const o=t.dataset.app;o&&(e.includes(o)?(t.classList.add('active'),t.querySelector('i').className='fas fa-bookmark'):(t.classList.remove('active'),t.querySelector('i').className='far fa-bookmark'))})}
+
+        let currentApp='protect';
+        const pageApps=document.getElementById('pageApps'),pageOnline=document.getElementById('pageOnline'),pageNews=document.getElementById('pageNews');
+        const appProtect=document.getElementById('appProtect'),appAntivirus=document.getElementById('appAntivirus'),appTgwsproxy=document.getElementById('appTgwsproxy');
+        const onlineClicker=document.getElementById('onlineClicker'),onlineVpn=document.getElementById('onlineVpn'),onlineSecurity=document.getElementById('onlineSecurity');
+        const modal=document.getElementById('scanModal'),scanCloseBtn=document.getElementById('scanCloseBtn');
+        const scanProgressFill=document.getElementById('scanProgressFill'),scanMessage=document.getElementById('scanMessage');
+        const settingsModal=document.getElementById('settingsModal'),profileModal=document.getElementById('profileModal');
+        const themeToggle=document.getElementById('themeToggle');
+        const profileEmailSpan=document.getElementById('profileEmail'),profileNameSpan=document.getElementById('profileName');
+        const statuses=[document.getElementById('status1'),document.getElementById('status2'),document.getElementById('status3'),document.getElementById('status4')];
+
+        profileEmailSpan&&(profileEmailSpan.textContent=userEmail);
+        profileNameSpan&&(profileNameSpan.textContent=userEmail.split('_')[0]);
+        'dark'===localStorage.getItem('theme')&&(document.body.classList.add('dark-theme'),themeToggle.classList.add('active'));
+        themeToggle.addEventListener('click',()=>{document.body.classList.toggle('dark-theme'),themeToggle.classList.toggle('active'),localStorage.setItem('theme',document.body.classList.contains('dark-theme')?'dark':'light')});
+        document.getElementById('menuBtn').addEventListener('click',()=>settingsModal.classList.add('active'));
+        document.getElementById('profileBtn').addEventListener('click',()=>profileModal.classList.add('active'));
+        document.getElementById('closeSettings').addEventListener('click',()=>settingsModal.classList.remove('active'));
+        document.getElementById('closeProfile').addEventListener('click',()=>profileModal.classList.remove('active'));
+        settingsModal.addEventListener('click',e=>{e.target===settingsModal&&settingsModal.classList.remove('active')});
+        profileModal.addEventListener('click',e=>{e.target===profileModal&&profileModal.classList.remove('active')});
+        document.getElementById('favoritesMenuItem').addEventListener('click',()=>{settingsModal.classList.remove('active'),showFavorites()});
+        document.getElementById('favoritesProfileItem').addEventListener('click',()=>{profileModal.classList.remove('active'),showFavorites()});
+
+        function showFavorites(){const e=getFavorites();if(0===e.length)return void alert('У вас пока нет избранных приложений. Нажмите на закладку на странице приложения, чтобы добавить его в избранное.');document.querySelectorAll('.nav-tab').forEach(e=>e.classList.remove('active')),document.querySelector('.nav-tab[data-tab="apps"]').classList.add('active'),document.querySelectorAll('.tab-page').forEach(e=>e.classList.remove('active')),document.querySelectorAll('.online-detail-page').forEach(e=>e.classList.remove('active')),appProtect.classList.remove('active'),appAntivirus.classList.remove('active'),appTgwsproxy.classList.remove('active'),pageApps.classList.add('active'),document.querySelectorAll('.app-item').forEach(t=>{t.style.display=e.includes(t.dataset.app)?'flex':'none'});let t=document.getElementById('showAllFavoritesBtn');t||((t=document.createElement('button')).id='showAllFavoritesBtn',t.textContent='Показать все приложения',t.style.cssText='width: 90%; margin: 16px auto; display: block; padding: 12px; background: #01875f; color: white; border: none; border-radius: 24px; font-size: 14px; font-weight: 600; cursor: pointer;',t.addEventListener('click',()=>{document.querySelectorAll('.app-item').forEach(e=>e.style.display='flex'),t.remove()}),pageApps.appendChild(t))}
+
+        document.querySelectorAll('.nav-tab').forEach(e=>{e.addEventListener('click',function(){document.querySelectorAll('.nav-tab').forEach(e=>e.classList.remove('active')),this.classList.add('active'),document.querySelectorAll('.tab-page').forEach(e=>e.classList.remove('active')),document.querySelectorAll('.online-detail-page').forEach(e=>e.classList.remove('active')),appProtect.classList.remove('active'),appAntivirus.classList.remove('active'),appTgwsproxy.classList.remove('active');const e=document.getElementById('showAllFavoritesBtn');e&&e.remove(),document.querySelectorAll('.app-item').forEach(e=>e.style.display='flex');const t=this.dataset.tab;'apps'===t?pageApps.classList.add('active'):'online'===t?pageOnline.classList.add('active'):'news'===t&&pageNews.classList.add('active')})});
+        document.querySelectorAll('[data-online]').forEach(e=>{e.addEventListener('click',function(){const e=this.dataset.online;pageOnline.classList.remove('active'),'clicker'===e?onlineClicker.classList.add('active'):'vpn'===e?onlineVpn.classList.add('active'):'security'===e&&onlineSecurity.classList.add('active')})});
+        document.getElementById('backOnline1').addEventListener('click',()=>{onlineClicker.classList.remove('active'),pageOnline.classList.add('active')});
+        document.getElementById('backOnline2').addEventListener('click',()=>{onlineVpn.classList.remove('active'),pageOnline.classList.add('active')});
+        document.getElementById('backOnline3').addEventListener('click',()=>{onlineSecurity.classList.remove('active'),pageOnline.classList.add('active')});
+
+        function isWindows10Or11(){return-1!==navigator.userAgent.indexOf('Windows NT 10.0')}
+        isWindows10Or11()||(document.getElementById('downloadBtn1').disabled=!0,document.getElementById('downloadBtn2').disabled=!0,document.getElementById('osWarning1').style.display='flex',document.getElementById('osWarning2').style.display='flex');
+        document.querySelectorAll('[data-app]').forEach(e=>{e.addEventListener('click',function(){const e=this.dataset.app;currentApp=e,pageApps.classList.remove('active'),appProtect.classList.remove('active'),appAntivirus.classList.remove('active'),appTgwsproxy.classList.remove('active'),'protect'===e?appProtect.classList.add('active'):'antivirus'===e?appAntivirus.classList.add('active'):'tgwsproxy'===e&&appTgwsproxy.classList.add('active'),updateFavoritesUI()})});
+        document.getElementById('backBtn1').addEventListener('click',()=>{appProtect.classList.remove('active'),pageApps.classList.add('active')});
+        document.getElementById('backBtn2').addEventListener('click',()=>{appAntivirus.classList.remove('active'),pageApps.classList.add('active')});
+        document.getElementById('backBtn3').addEventListener('click',()=>{appTgwsproxy.classList.remove('active'),pageApps.classList.add('active')});
+        document.querySelectorAll('.wishlist-btn').forEach(e=>{e.addEventListener('click',function(e){e.stopPropagation();const t=this.dataset.app;toggleFavorite(t,this)})});
+
+        function startScan(e){currentApp=e,modal.classList.add('active'),scanProgressFill.style.width='0%',scanMessage.style.display='none',scanCloseBtn.disabled=!0,scanCloseBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Проверка...',statuses.forEach(e=>{e.textContent='Ожидание',e.className='scan-status status-pending'});const t=[{index:0,text:'Проверка...',class:'status-checking',time:400},{index:1,text:'Проверка...',class:'status-checking',time:600},{index:2,text:'Проверка...',class:'status-checking',time:500},{index:3,text:'Анализ...',class:'status-checking',time:700}];let o=0;!function e(a){if(a>=t.length)return void setTimeout(()=>{scanProgressFill.style.width='100%',scanMessage.style.display='flex',scanCloseBtn.disabled=!1,scanCloseBtn.innerHTML='<i class="fas fa-download"></i> Скачать сейчас',statuses.forEach(e=>{e.textContent='✓ Чисто',e.className='scan-status status-clean'}),scanCloseBtn.onclick=()=>{modal.classList.remove('active'),downloadFile(currentApp)}},200);const n=t[a],l=statuses[n.index];l.textContent=n.text,l.className=`scan-status ${n.class}`,o+=25,scanProgressFill.style.width=o+'%',setTimeout(()=>{l.textContent='✓ Чисто',l.className='scan-status status-clean',e(a+1)},n.time)}(0)}
+
+        document.getElementById('downloadBtn1').addEventListener('click',()=>startScan('protect'));
+        document.getElementById('downloadBtn2').addEventListener('click',()=>startScan('antivirus'));
+        document.getElementById('downloadBtn3').addEventListener('click',()=>startScan('tgwsproxy'));
+        modal.addEventListener('click',e=>{e.target===modal&&modal.classList.remove('active')});
+        updateFavoritesUI();
     </script>
 </body>
 </html>
