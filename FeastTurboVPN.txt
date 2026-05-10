@@ -38,3 +38,12 @@ vless://9aeead67-cdc0-4469-b1cf-f277ae8b1a2b@srv80.towersflowerss.com:443?securi
 
 # 🇳🇱 FeastTurboVPN #8 [Telegram]
 vless://9aeead67-cdc0-4469-b1cf-f277ae8b1a2b@srv105.towersflowerss.com:443?path=%2F&security=&encryption=none&type=ws#%F0%9F%87%B3%F0%9F%87%B1%20FeastTurboVPN%20%238%20%5BTelegram%5D
+
+# 🇳🇱 FeastTurboVPN #9 [Telegram]
+vless://117b8d45-3517-4337-8d32-d1b32d31ae0e@89.124.97.26:443?security=reality&encryption=none&pbk=JWN14ZXHabJ95J6_EvbdMwprCSkMr4PzSWs_Refd50w&headerType=none&fp=randomized&type=tcp&flow=xtls-rprx-vision&sni=yahoo.com&sid=31cdd9a1ba5755db#%F0%9F%87%B3%F0%9F%87%B1%20FeastTurboVPN%20%239%20%5BTelegram%5D
+
+# 🇳🇱 FeastTurboVPN #10 [Telegram]
+vless://117b8d45-3517-4337-8d32-d1b32d31ae0e@146.103.123.114:443?security=reality&encryption=none&pbk=JWN14ZXHabJ95J6_EvbdMwprCSkMr4PzSWs_Refd50w&headerType=none&fp=randomized&type=tcp&flow=xtls-rprx-vision&sni=yahoo.com&sid=31cdd9a1ba5755db#%F0%9F%87%B3%F0%9F%87%B1%20FeastTurboVPN%20%2310%20%5BTelegram%5D
+
+# 🇳🇱 FeastTurboVPN #11 [Telegram]
+vless://117b8d45-3517-4337-8d32-d1b32d31ae0e@46.151.26.41:443?security=reality&encryption=none&pbk=JWN14ZXHabJ95J6_EvbdMwprCSkMr4PzSWs_Refd50w&headerType=none&fp=randomized&type=tcp&flow=xtls-rprx-vision&sni=yahoo.com&sid=31cdd9a1ba5755db#%F0%9F%87%B3%F0%9F%87%B1%20FeastTurboVPN%20%2311%20%5BTelegram%5D
