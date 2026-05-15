@@ -30,7 +30,6 @@
       overflow-y: auto;
     }
 
-    /* Улучшенные анимированные неоновые круги */
     .background-circles {
       position: fixed;
       top: 0;
@@ -143,6 +142,44 @@
       }
     }
 
+    /* Основной контейнер с отступами */
+    .main-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 800px;
+      padding: 3rem 1rem 1rem 1rem;
+    }
+
+    /* Кнопка настроек - в правом верхнем углу */
+    .settings-btn {
+      position: absolute;
+      top: 0;
+      right: 1rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 5;
+      font-size: 1.1rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .settings-btn:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+      transform: rotate(90deg);
+    }
+
     .glass-panel {
       background: rgba(10, 15, 28, 0.9);
       backdrop-filter: blur(30px);
@@ -152,10 +189,8 @@
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(56, 189, 248, 0.1), 0 0 100px rgba(56, 189, 248, 0.1);
       padding: 2.5rem 2rem;
       width: 100%;
-      max-width: 700px;
       transition: all 0.3s ease;
       position: relative;
-      z-index: 1;
     }
 
     .logo-area {
@@ -187,6 +222,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-align: center;
     }
 
     .subtitle {
@@ -284,7 +320,7 @@
       border: 1px solid rgba(56, 189, 248, 0.2);
       border-radius: 1.2rem;
       padding: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
       font-family: 'Courier New', monospace;
       font-size: 0.8rem;
       color: #38bdf8;
@@ -312,6 +348,42 @@
       background: rgba(56, 189, 248, 0.2);
       border-color: #38bdf8;
       box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+
+    /* Прогресс бар хеширования */
+    .hash-progress-container {
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .hash-progress-container.active {
+      display: block;
+    }
+
+    .hash-progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .hash-progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .hash-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+      width: 0%;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
     }
 
     .scan-btn {
@@ -383,8 +455,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2.5rem;
+      gap: 2rem;
       padding: 2rem;
+      max-width: 90vw;
     }
 
     .scanning-file-icon {
@@ -394,6 +467,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .file-shape {
@@ -449,7 +523,6 @@
       width: 55%;
     }
 
-    /* ПЛАВНАЯ сканирующая линия */
     .scan-line {
       position: absolute;
       left: 2px;
@@ -503,7 +576,6 @@
       }
     }
 
-    /* Свечение от сканера */
     .scan-glow {
       position: absolute;
       left: 0;
@@ -623,18 +695,44 @@
 
     .scanning-info {
       display: flex;
-      gap: 2rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
       color: #94a3b8;
       font-size: 0.9rem;
+      width: 100%;
+      max-width: 400px;
     }
 
-    .scanning-info-item {
+    .scanning-file-name-row {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      width: 100%;
+      justify-content: center;
     }
 
-    .scanning-info-item i {
+    .scanning-file-name-row i {
+      color: #38bdf8;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .scanning-file-name-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 350px;
+    }
+
+    .scanning-ai-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .scanning-ai-row i {
       color: #38bdf8;
       font-size: 0.8rem;
     }
@@ -844,8 +942,11 @@
     }
 
     @media (max-width: 500px) {
+      .main-wrapper {
+        padding: 2.5rem 0.5rem 0.5rem 0.5rem;
+      }
       .glass-panel {
-        padding: 1.8rem 1.2rem;
+        padding: 2rem 1.2rem 1.8rem;
       }
       h1 {
         font-size: 1.8rem;
@@ -856,11 +957,18 @@
       .result-text {
         font-size: 1.5rem;
       }
+      .scanning-file-name-text {
+        max-width: 200px;
+      }
+      .settings-btn {
+        right: 0.5rem;
+        width: 38px;
+        height: 38px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Улучшенные анимированные неоновые круги -->
   <div class="background-circles">
     <div class="circle"></div>
     <div class="circle"></div>
@@ -888,7 +996,7 @@
       </div>
       
       <div class="scanning-text">
-        <span id="scanningStatus">Calculating hash...</span>
+        <span id="scanningStatus">Calculating hash</span>
         <div class="scanning-dots">
           <div class="scanning-dot"></div>
           <div class="scanning-dot"></div>
@@ -901,11 +1009,11 @@
       </div>
       
       <div class="scanning-info">
-        <div class="scanning-info-item">
+        <div class="scanning-file-name-row">
           <i class="fas fa-file"></i>
-          <span id="scanningFileName">-</span>
+          <span class="scanning-file-name-text" id="scanningFileName">-</span>
         </div>
-        <div class="scanning-info-item">
+        <div class="scanning-ai-row">
           <i class="fas fa-shield-virus"></i>
           <span>AI Analysis</span>
         </div>
@@ -913,65 +1021,81 @@
     </div>
   </div>
 
-  <div class="glass-panel">
-    <div class="logo-area">
-      <i class="fas fa-shield-haltered shield-icon"></i>
-      <h1>FeastCyberSecurity</h1>
-    </div>
-    <div class="subtitle">
-      <i class="fas fa-microchip"></i> AI-Powered Threat Detection
-    </div>
+  <div class="main-wrapper">
+    <!-- Кнопка настроек - теперь над glass-panel -->
+    <button class="settings-btn" id="settingsButton" title="Settings">
+      <i class="fas fa-cog"></i>
+    </button>
 
-    <!-- Загрузка файла для проверки -->
-    <div class="upload-card" id="dropZone">
-      <label for="fileInput" class="file-label">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <span>Drop file here or click to upload</span>
-        <span style="font-size:0.75rem; font-weight:400; color:#6b7280;">Any file type supported</span>
-      </label>
-      <input type="file" id="fileInput" class="file-input">
-      <div id="fileNameDisplay" class="file-name-display">
-        <i class="far fa-file-alt"></i> No file selected
+    <div class="glass-panel">
+      <div class="logo-area">
+        <i class="fas fa-shield-haltered shield-icon"></i>
+        <h1>FeastCyberSecurity</h1>
       </div>
-    </div>
+      <div class="subtitle">
+        <i class="fas fa-microchip"></i> AI-Powered Threat Detection
+      </div>
 
-    <!-- Отображение SHA-256 -->
-    <div class="hash-section">
-      <div class="hash-label">
-        <i class="fas fa-fingerprint"></i> <span>SHA-256 Hash</span>
-      </div>
-      <div class="hash-display" id="hashDisplay">
-        <span style="color: #94a3b8; font-style: italic;">Upload a file to generate hash...</span>
-      </div>
-      <button class="scan-btn" id="scanButton" disabled>
-        <i class="fas fa-shield-virus"></i> Scan with AI
-      </button>
-    </div>
-
-    <!-- Современное окно результата -->
-    <div class="result-container" id="resultContainer" style="display: none;">
-      <div class="result-box" id="resultBox">
-        <div class="result-icon-wrapper">
-          <div class="result-icon-bg"></div>
-          <div class="result-icon" id="resultIcon"></div>
-        </div>
-        <div class="result-text" id="resultText"></div>
-        <div class="ai-badge" id="aiBadge"></div>
-        <div class="result-details">
-          <div class="detail-item">
-            <i class="fas fa-weight-hanging"></i>
-            <span id="fileSize">Size: -</span>
-          </div>
-          <div class="detail-item">
-            <i class="fas fa-tag"></i>
-            <span id="fileType">Type: -</span>
-          </div>
+      <div class="upload-card" id="dropZone">
+        <label for="fileInput" class="file-label">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span>Drop file here or click to upload</span>
+          <span style="font-size:0.75rem; font-weight:400; color:#6b7280;">Any file type supported</span>
+        </label>
+        <input type="file" id="fileInput" class="file-input">
+        <div id="fileNameDisplay" class="file-name-display">
+          <i class="far fa-file-alt"></i> No file selected
         </div>
       </div>
-    </div>
 
-    <div class="footer-note">
-      <i class="fas fa-lock" style="margin-right: 0.3rem;"></i> FeastCyberSecurity • Advanced Threat Detection
+      <div class="hash-section">
+        <div class="hash-label">
+          <i class="fas fa-fingerprint"></i> <span>SHA-256 Hash</span>
+        </div>
+        <div class="hash-display" id="hashDisplay">
+          <span style="color: #94a3b8; font-style: italic;">Upload a file to generate hash</span>
+        </div>
+        
+        <!-- Прогресс бар хеширования -->
+        <div class="hash-progress-container" id="hashProgressContainer">
+          <div class="hash-progress-info">
+            <span id="hashProgressText">Processing</span>
+            <span id="hashProgressPercent">0%</span>
+          </div>
+          <div class="hash-progress-bar">
+            <div class="hash-progress-fill" id="hashProgressFill"></div>
+          </div>
+        </div>
+        
+        <button class="scan-btn" id="scanButton" disabled>
+          <i class="fas fa-shield-virus"></i> Scan with AI
+        </button>
+      </div>
+
+      <div class="result-container" id="resultContainer" style="display: none;">
+        <div class="result-box" id="resultBox">
+          <div class="result-icon-wrapper">
+            <div class="result-icon-bg"></div>
+            <div class="result-icon" id="resultIcon"></div>
+          </div>
+          <div class="result-text" id="resultText"></div>
+          <div class="ai-badge" id="aiBadge"></div>
+          <div class="result-details">
+            <div class="detail-item">
+              <i class="fas fa-weight-hanging"></i>
+              <span id="fileSize">Size: -</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-tag"></i>
+              <span id="fileType">Type: -</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        <i class="fas fa-lock" style="margin-right: 0.3rem;"></i> FeastCyberSecurity • Advanced Threat Detection
+      </div>
     </div>
   </div>
 
@@ -999,6 +1123,16 @@
       const scanningOverlay = document.getElementById('scanningOverlay');
       const scanningFileName = document.getElementById('scanningFileName');
       const scanningStatus = document.getElementById('scanningStatus');
+      const settingsButton = document.getElementById('settingsButton');
+      const hashProgressContainer = document.getElementById('hashProgressContainer');
+      const hashProgressFill = document.getElementById('hashProgressFill');
+      const hashProgressText = document.getElementById('hashProgressText');
+      const hashProgressPercent = document.getElementById('hashProgressPercent');
+
+      // Кнопка настроек (пока заглушка)
+      settingsButton.addEventListener('click', function() {
+        alert('Settings will be available soon!');
+      });
 
       function formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
@@ -1045,33 +1179,61 @@
         }
       }
 
+      // Чтение файла чанками по 50MB с прогрессом
       function calculateSHA256(file) {
         return new Promise((resolve, reject) => {
+          const chunkSize = 1024 * 1024 * 50; // 50MB чанки
+          const chunks = Math.ceil(file.size / chunkSize);
+          const sha256 = CryptoJS.algo.SHA256.create();
+          let currentChunk = 0;
+          
           const reader = new FileReader();
+          
           reader.onload = function(e) {
             try {
               const wordArray = CryptoJS.lib.WordArray.create(e.target.result);
-              const hash = CryptoJS.SHA256(wordArray).toString();
-              resolve(hash);
+              sha256.update(wordArray);
+              currentChunk++;
+              
+              // Обновление прогресса
+              const progress = Math.round((currentChunk / chunks) * 100);
+              hashProgressFill.style.width = progress + '%';
+              hashProgressPercent.textContent = progress + '%';
+              
+              if (currentChunk < chunks) {
+                loadNext();
+              } else {
+                hashProgressText.textContent = 'Completed';
+                const hash = sha256.finalize().toString();
+                resolve(hash);
+              }
             } catch (error) {
               reject(error);
             }
           };
+          
           reader.onerror = reject;
-          reader.readAsArrayBuffer(file);
+          
+          function loadNext() {
+            const start = currentChunk * chunkSize;
+            const end = Math.min(start + chunkSize, file.size);
+            const blob = file.slice(start, end);
+            reader.readAsArrayBuffer(blob);
+          }
+          
+          loadNext();
         });
       }
 
-      // Анимация сканирования с ПЛАВНОЙ движущейся полосой
       async function showScanningAnimation() {
         scanningOverlay.style.display = 'flex';
         scanningFileName.textContent = currentFile ? currentFile.name : 'Unknown file';
         
         const stages = [
-          { text: 'Calculating hash...', duration: 1000 },
-          { text: 'Scanning file...', duration: 2000 },
-          { text: 'AI Analysis...', duration: 2000 },
-          { text: 'Checking database...', duration: 1500 }
+          { text: 'Calculating hash', duration: 1000 },
+          { text: 'Scanning file', duration: 2000 },
+          { text: 'AI Analysis', duration: 2000 },
+          { text: 'Checking database', duration: 1500 }
         ];
         
         for (const stage of stages) {
@@ -1086,18 +1248,22 @@
       async function processFile(file) {
         if (!file) {
           fileNameDisplay.innerHTML = '<i class="far fa-file-alt"></i> No file selected';
-          hashDisplay.innerHTML = '<span style="color: #94a3b8; font-style: italic;">Upload a file to generate hash...</span>';
+          hashDisplay.innerHTML = '<span style="color: #94a3b8; font-style: italic;">Upload a file to generate hash</span>';
           scanButton.disabled = true;
           hideResult();
+          hideHashProgress();
           currentFile = null;
           return;
         }
 
         currentFile = file;
         fileNameDisplay.innerHTML = `<i class="far fa-file-alt"></i> ${file.name}`;
-        hashDisplay.innerHTML = '<span class="loading-spinner"></span> Calculating SHA-256...';
+        hashDisplay.innerHTML = '<span class="loading-spinner"></span> Calculating SHA-256';
         scanButton.disabled = true;
         hideResult();
+        
+        // Показываем прогресс бар
+        showHashProgress();
 
         try {
           const hash = await calculateSHA256(file);
@@ -1108,11 +1274,28 @@
             </button>
           `;
           scanButton.disabled = false;
+          
+          // Скрываем прогресс бар через небольшую задержку
+          setTimeout(hideHashProgress, 1000);
         } catch (error) {
           console.error('Error calculating hash:', error);
           hashDisplay.innerHTML = '<span style="color: #f87171;">Error calculating hash</span>';
           scanButton.disabled = true;
+          hideHashProgress();
         }
+      }
+
+      function showHashProgress() {
+        hashProgressContainer.classList.add('active');
+        hashProgressFill.style.width = '0%';
+        hashProgressPercent.textContent = '0%';
+        hashProgressText.textContent = 'Processing';
+      }
+
+      function hideHashProgress() {
+        hashProgressContainer.classList.remove('active');
+        hashProgressFill.style.width = '0%';
+        hashProgressPercent.textContent = '0%';
       }
 
       fileInput.addEventListener('change', function(e) {
@@ -1173,19 +1356,19 @@
 
       async function performScan() {
         if (!signaturesLoaded) {
-          alert('Signature database is still loading...');
+          alert('Signature database is still loading');
           return;
         }
 
         const hashElement = hashDisplay.querySelector('span');
         if (!hashElement) {
-          alert('Please upload a file first.');
+          alert('Please upload a file first');
           return;
         }
 
         const hash = hashElement.textContent.trim();
         if (!hash || hash.includes('...') || hash.includes('Error')) {
-          alert('Please upload a valid file.');
+          alert('Please upload a valid file');
           return;
         }
 
@@ -1209,6 +1392,7 @@
       });
 
       hideResult();
+      hideHashProgress();
       scanButton.disabled = true;
     })();
   </script>
