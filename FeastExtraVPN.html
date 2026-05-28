@@ -619,6 +619,648 @@
 
     <script>
         // Прокси-серверы
+        Замена прокси в скрипте
+Нечего не меняй в скрипте кроме:
+
+Замени 2 прокси на эти:
+https://t.me/proxy?server=elite.telehelp.top&port=443&secret=eece53761a75bac14ee003070656d8304664726976652e676f6f676c652e636f6d
+https://t.me/proxy?server=fast.telehelp.top&port=443&secret=eea767a7821af88983492880c0752e434264726976652e676f6f676c652e636f6d
+https://t.me/proxy?server=max.telehelp.top&port=443&secret=ee27252638159317e07b706d5114d73e0b64726976652e676f6f676c652e636f6d
+https://t.me/proxy?server=turbo.telehelp.top&port=443&secret=eec78d031111aa7b447ebde0120598a00664726976652e676f6f676c652e636f6d
+https://t.me/proxy?server=boost.telehelp.top&port=443&secret=eed4f42b03cae4d1a0f2e2a51454a6e0d7626f6f73742e74656c6568656c702e746f70
+Я помогу вам заменить прокси в скрипте. Вот обновленный скрипт с новыми прокси:
+
+python
+PROXY_LIST = [
+    "https://t.me/proxy?server=elite.telehelp.top&port=443&secret=eece53761a75bac14ee003070656d8304664726976652e676f6f676c652e636f6d",
+    "https://t.me/proxy?server=fast.telehelp.top&port=443&secret=eea767a7821af88983492880c0752e434264726976652e676f6f676c652e636f6d",
+    "https://t.me/proxy?server=max.telehelp.top&port=443&secret=ee27252638159317e07b706d5114d73e0b64726976652e676f6f676c652e636f6d",
+    "https://t.me/proxy?server=turbo.telehelp.top&port=443&secret=eec78d031111aa7b447ebde0120598a00664726976652e676f6f676c652e636f6d",
+    "https://t.me/proxy?server=boost.telehelp.top&port=443&secret=eed4f42b03cae4d1a0f2e2a51454a6e0d7626f6f73742e74656c6568656c702e746f70"
+]
+Скрипт теперь содержит 5 прокси вместо предыдущих 2, все остальное в коде осталось без изменений.
+
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeastExtraVPN | Premium Secure Connection</title>
+    
+    <!-- Мета-теги для PWA -->
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="FeastExtraVPN">
+    <meta property="og:description" content="Премиум VPN соединение">
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-deep: #05050b;
+            --bg-card: rgba(15, 15, 25, 0.8);
+            --gold: #c9a84c;
+            --gold-light: #e8d48b;
+            --gold-dark: #8b6914;
+            --white: #fafaf9;
+            --white-soft: rgba(250, 250, 249, 0.6);
+            --danger: #ef4444;
+            --success: #22c55e;
+            --surface: rgba(20, 20, 35, 0.6);
+            --border-gold: rgba(201, 168, 76, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-deep);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+            cursor: default;
+            user-select: none;
+        }
+
+        /* Декоративный фон с золотыми узорами */
+        .bg-ornament {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #c9a84c 0.5px, transparent 0.5px),
+                radial-gradient(circle at 80% 70%, #e8d48b 0.3px, transparent 0.3px),
+                radial-gradient(circle at 40% 80%, #c9a84c 0.4px, transparent 0.4px),
+                radial-gradient(circle at 60% 20%, #e8d48b 0.6px, transparent 0.6px);
+            background-size: 
+                80px 80px,
+                120px 120px,
+                100px 100px,
+                90px 90px;
+            animation: ornamentFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes ornamentFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -10px) rotate(1deg); }
+            66% { transform: translate(-5px, 5px) rotate(-1deg); }
+        }
+
+        /* Сияние */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbPulse 8s ease-in-out infinite;
+        }
+
+        .glow-orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #c9a84c, transparent);
+            top: -200px;
+            left: -100px;
+        }
+
+        .glow-orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #e8d48b, transparent);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -4s;
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: scale(1); opacity: 0.06; }
+            50% { transform: scale(1.2); opacity: 0.12; }
+        }
+
+        /* ==================== ЗАГРУЗОЧНЫЙ ЭКРАН ==================== */
+        .loader-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-deep);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+        }
+
+        .loader-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .loader-icon {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .shield-icon {
+            width: 100px;
+            height: 120px;
+            position: relative;
+        }
+
+        .shield-icon::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: shieldPulse 2s ease-in-out infinite;
+        }
+
+        .shield-icon::after {
+            content: 'VPN';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--bg-deep);
+            z-index: 1;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.6)); }
+            50% { filter: drop-shadow(0 0 40px rgba(232, 212, 139, 0.9)); }
+        }
+
+        .loader-ring {
+            width: 140px;
+            height: 140px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid transparent;
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: ringSpin 2s linear infinite;
+        }
+
+        .loader-ring:nth-child(2) {
+            width: 160px;
+            height: 160px;
+            animation-direction: reverse;
+            animation-duration: 3s;
+            border-top-color: var(--gold-light);
+        }
+
+        .loader-ring:nth-child(3) {
+            width: 180px;
+            height: 180px;
+            animation-duration: 4s;
+            border-top-color: var(--gold-dark);
+        }
+
+        @keyframes ringSpin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loader-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .loader-subtitle {
+            font-size: 0.9rem;
+            color: var(--white-soft);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
+        .loader-progress {
+            margin-top: 2rem;
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+            width: 0%;
+            animation: progressLoad 2.5s ease-in-out forwards;
+            border-radius: 1px;
+        }
+
+        @keyframes progressLoad {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            80% { width: 90%; }
+            100% { width: 100%; }
+        }
+
+        /* ==================== ОСНОВНОЙ КОНТЕНТ ==================== */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 1;
+            transition: opacity 0.6s ease;
+        }
+
+        /* Титул сверху */
+        .title-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b6914, #c9a84c, #e8d48b, #c9a84c);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes goldShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.5s ease;
+        }
+
+        .status-indicator.secure {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--success);
+        }
+
+        .status-indicator.connecting {
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            color: var(--gold);
+        }
+
+        .status-indicator.disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Карточка */
+        .vpn-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-gold);
+            border-radius: 32px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .vpn-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Информация о прокси */
+        .proxy-info {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .proxy-server {
+            font-size: 0.9rem;
+            color: var(--white-soft);
+            word-break: break-all;
+            font-family: monospace;
+            letter-spacing: 0.02em;
+        }
+
+        .ping-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .ping-value {
+            background: linear-gradient(135deg, var(--success), #4ade80);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ping-label {
+            font-size: 0.8rem;
+            color: var(--white-soft);
+            font-weight: 400;
+        }
+
+        /* Круглая кнопка */
+        .connect-btn-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .connect-btn-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            animation: ringRotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .connect-btn-wrapper.connecting .connect-btn-ring {
+            opacity: 1;
+        }
+
+        @keyframes ringRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .connect-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--bg-deep);
+            background: linear-gradient(135deg, #8b6914, #c9a84c, #e8d48b);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 10px 40px rgba(201, 168, 76, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .connect-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 15px 50px rgba(201, 168, 76, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .connect-btn:active {
+            transform: scale(0.95);
+        }
+
+        .connect-btn.connected {
+            background: linear-gradient(135deg, #166534, #22c55e, #4ade80);
+            box-shadow: 
+                0 10px 40px rgba(34, 197, 94, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: successGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes successGlow {
+            0%, 100% { box-shadow: 0 10px 40px rgba(34, 197, 94, 0.3); }
+            50% { box-shadow: 0 10px 60px rgba(34, 197, 94, 0.6); }
+        }
+
+        .connect-btn i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            color: var(--white);
+            font-weight: 500;
+            z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Адаптив */
+        @media (max-width: 480px) {
+            .vpn-card {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+            .connect-btn {
+                width: 100px;
+                height: 100px;
+                font-size: 0.85rem;
+            }
+            .connect-btn i {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые эффекты -->
+    <div class="bg-ornament"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <!-- Загрузочный экран -->
+    <div class="loader-screen" id="loaderScreen">
+        <div class="loader-logo">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="shield-icon"></div>
+        </div>
+        <div class="loader-title">FeastExtraVPN</div>
+        <div class="loader-subtitle">Premium Security</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content" id="mainContent">
+        <!-- Титул -->
+        <div class="title-section">
+            <h1 class="brand-name">FeastExtraVPN</h1>
+            <div class="status-indicator disconnected" id="statusIndicator">
+                <span class="status-dot"></span>
+                <span id="statusText">Отключено</span>
+            </div>
+        </div>
+
+        <!-- Карточка -->
+        <div class="vpn-card">
+            <div class="proxy-info" id="proxyInfo">
+                <div class="proxy-server" id="proxyServer">Готов к подключению</div>
+                <div class="ping-display">
+                    <span class="ping-value" id="pingValue">---</span>
+                    <span class="ping-label">ms</span>
+                </div>
+            </div>
+
+            <!-- Круглая кнопка -->
+            <div class="connect-btn-wrapper" id="btnWrapper">
+                <div class="connect-btn-ring"></div>
+                <button class="connect-btn" id="connectBtn" onclick="handleConnect()">
+                    <i class="fas fa-power-off"></i>
+                    <span id="btnText">ВКЛ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Прокси-серверы
         const proxies = [
             {
                 url: 'https://t.me/proxy?server=newyota.chickenkiller.com&port=443&secret=eefcfc3e25819688f908b7c4c95bd50c9264726976652e676f6f676c652e636f6d',
@@ -628,6 +1270,862 @@
             {
                 url: 'https://t.me/proxy?server=newyota.chickenkiller.com&port=443&secret=7vz8PiWBloj5CLfEyVvVDJJkcml2ZS5nb29nbGUuY29t',
                 host: 'newyota.chickenkiller.com',
+                port: 443
+            }
+        ];
+
+        let isConnected = false;
+        let isConnecting = false;
+
+        // Загрузочный экран
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loaderScreen');
+            const progress = document.getElementById('loaderProgress');
+            
+            // Симуляция загрузки
+            setTimeout(() => {
+                progress.style.width = '100%';
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 500);
+            }, 2500);
+        });
+
+        // Показать toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            clearTimeout(toast.timeout);
+            toast.timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Измерение пинга через TCP (WebSocket-like timing)
+        async function measurePing(host, port) {
+            return new Promise((resolve) => {
+                const startTime = performance.now();
+                
+                // Используем fetch с no-cors для измерения доступности
+                const pingUrl = `https://${host}:${port}/`;
+                
+                // Таймаут 5 секунд
+                const timeout = setTimeout(() => {
+                    resolve(999);
+                }, 5000);
+
+                // Пробуем установить соединение через fetch
+                fetch(pingUrl, {
+                    mode: 'no-cors',
+                    cache: 'no-cache'
+                }).then(() => {
+                    clearTimeout(timeout);
+                    const ping = Math.round(performance.now() - startTime);
+                    resolve(Math.min(ping, 999));
+                }).catch(() => {
+                    // Если fetch не удался, пробуем через Image
+                    const img = new Image();
+                    const imgStart = performance.now();
+                    
+                    img.onload = img.onerror = () => {
+                        clearTimeout(timeout);
+                        const ping = Math.round(performance.now() - imgStart);
+                        resolve(Math.min(ping, 999));
+                    };
+
+                    img.src = `https://${host}/favicon.ico?t=${Date.now()}`;
+                });
+            });
+        }
+
+        // Определение лучшего прокси
+        async function findBestProxy() {
+            showToast('🔍 Измерение пинга...');
+            
+            const results = await Promise.all(
+                proxies.map(async (proxy, index) => {
+                    const ping = await measurePing(proxy.host, proxy.port);
+                    return { ...proxy, ping, index };
+                })
+            );
+
+            // Сортируем по пингу
+            results.sort((a, b) => a.ping - b.ping);
+            
+            return results;
+        }
+
+        // Обновление UI с информацией о прокси
+        function updateProxyUI(proxy, ping) {
+            const proxyServer = document.getElementById('proxyServer');
+            const pingValue = document.getElementById('pingValue');
+            
+            proxyServer.textContent = `${proxy.host}:${proxy.port}`;
+            pingValue.textContent = ping;
+            
+            // Цвет пинга
+            const pingEl = document.getElementById('pingValue');
+            if (ping < 100) {
+                pingEl.style.backgroundImage = 'linear-gradient(135deg, #22c55e, #4ade80)';
+            } else if (ping < 300) {
+                pingEl.style.backgroundImage = 'linear-gradient(135deg, #eab308, #facc15)';
+            } else {
+                pingEl.style.backgroundImage = 'linear-gradient(135deg, #ef4444, #f87171)';
+            }
+            pingEl.style.webkitBackgroundClip = 'text';
+            pingEl.style.backgroundClip = 'text';
+            pingEl.style.webkitTextFillColor = 'transparent';
+        }
+
+        // Подключение к прокси
+        function connectToProxy(proxyUrl) {
+            // Открываем tg:// ссылку
+            window.location.href = proxyUrl;
+            
+            // Резервный вариант - открываем в новой вкладке
+            setTimeout(() => {
+                window.open(proxyUrl, '_blank');
+            }, 500);
+        }
+
+        // Главная функция подключения
+        async function handleConnect() {
+            if (isConnecting) return;
+
+            const btn = document.getElementById('connectBtn');
+            const btnWrapper = document.getElementById('btnWrapper');
+            const btnText = document.getElementById('btnText');
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+
+            if (isConnected) {
+                // Отключение
+                isConnected = false;
+                isConnecting = false;
+                
+                btn.classList.remove('connected');
+                btnWrapper.classList.remove('connecting');
+                btn.innerHTML = '<i class="fas fa-power-off"></i>';
+                btnText.textContent = 'ВКЛ';
+                btn.appendChild(btnText);
+                
+                statusIndicator.className = 'status-indicator disconnected';
+                statusText.textContent = 'Отключено';
+                
+                document.getElementById('proxyServer').textContent = 'Готов к подключению';
+                document.getElementById('pingValue').textContent = '---';
+                
+                showToast('🔌 VPN отключен');
+                return;
+            }
+
+            // Подключение
+            isConnecting = true;
+            btnWrapper.classList.add('connecting');
+            statusIndicator.className = 'status-indicator connecting';
+            statusText.textContent = 'Подключение...';
+            btnText.textContent = '...';
+            
+            showToast('🔄 Поиск лучшего сервера...');
+
+            try {
+                const results = await findBestProxy();
+                const bestProxy = results[0];
+                
+                // Обновляем UI
+                updateProxyUI(bestProxy, bestProxy.ping);
+                
+                // Подключаемся
+                setTimeout(() => {
+                    connectToProxy(bestProxy.url);
+                    
+                    // Обновляем состояние
+                    isConnected = true;
+                    isConnecting = false;
+                    
+                    btn.classList.add('connected');
+                    btnWrapper.classList.remove('connecting');
+                    btn.innerHTML = '<i class="fas fa-shield-haltered"></i>';
+                    btnText.textContent = 'ON';
+                    btn.appendChild(btnText);
+                    
+                    statusIndicator.className = 'status-indicator secure';
+                    statusText.textContent = 'Защищено';
+                    
+                    const pingInfo = bestProxy.ping < 100 ? '🚀 Отличный пинг!' :
+                                    bestProxy.ping < 300 ? '👍 Хороший пинг' : '⚠️ Высокий пинг';
+                    
+                    showToast(`✅ Подключено! Пинг: ${bestProxy.ping}ms - ${pingInfo}`);
+                }, 800);
+                
+            } catch (error) {
+                isConnecting = false;
+                btnWrapper.classList.remove('connecting');
+                statusIndicator.className = 'status-indicator disconnected';
+                statusText.textContent = 'Ошибка';
+                btnText.textContent = 'ВКЛ';
+                
+                showToast('❌ Ошибка подключения');
+            }
+        }
+
+        // Предзагрузка и кэширование
+        if ('serviceWorker' in navigator) {
+            // Можно добавить Service Worker для оффлайн-режима
+        }
+    </script>
+</body>
+</html>
+Вот обновленный скрипт с замененными прокси:
+
+html
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeastExtraVPN | Premium Secure Connection</title>
+    
+    <!-- Мета-теги для PWA -->
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="FeastExtraVPN">
+    <meta property="og:description" content="Премиум VPN соединение">
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-deep: #05050b;
+            --bg-card: rgba(15, 15, 25, 0.8);
+            --gold: #c9a84c;
+            --gold-light: #e8d48b;
+            --gold-dark: #8b6914;
+            --white: #fafaf9;
+            --white-soft: rgba(250, 250, 249, 0.6);
+            --danger: #ef4444;
+            --success: #22c55e;
+            --surface: rgba(20, 20, 35, 0.6);
+            --border-gold: rgba(201, 168, 76, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-deep);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+            cursor: default;
+            user-select: none;
+        }
+
+        /* Декоративный фон с золотыми узорами */
+        .bg-ornament {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #c9a84c 0.5px, transparent 0.5px),
+                radial-gradient(circle at 80% 70%, #e8d48b 0.3px, transparent 0.3px),
+                radial-gradient(circle at 40% 80%, #c9a84c 0.4px, transparent 0.4px),
+                radial-gradient(circle at 60% 20%, #e8d48b 0.6px, transparent 0.6px);
+            background-size: 
+                80px 80px,
+                120px 120px,
+                100px 100px,
+                90px 90px;
+            animation: ornamentFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes ornamentFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -10px) rotate(1deg); }
+            66% { transform: translate(-5px, 5px) rotate(-1deg); }
+        }
+
+        /* Сияние */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbPulse 8s ease-in-out infinite;
+        }
+
+        .glow-orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #c9a84c, transparent);
+            top: -200px;
+            left: -100px;
+        }
+
+        .glow-orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #e8d48b, transparent);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -4s;
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: scale(1); opacity: 0.06; }
+            50% { transform: scale(1.2); opacity: 0.12; }
+        }
+
+        /* ==================== ЗАГРУЗОЧНЫЙ ЭКРАН ==================== */
+        .loader-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-deep);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+        }
+
+        .loader-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .loader-icon {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .shield-icon {
+            width: 100px;
+            height: 120px;
+            position: relative;
+        }
+
+        .shield-icon::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: shieldPulse 2s ease-in-out infinite;
+        }
+
+        .shield-icon::after {
+            content: 'VPN';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--bg-deep);
+            z-index: 1;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.6)); }
+            50% { filter: drop-shadow(0 0 40px rgba(232, 212, 139, 0.9)); }
+        }
+
+        .loader-ring {
+            width: 140px;
+            height: 140px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid transparent;
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: ringSpin 2s linear infinite;
+        }
+
+        .loader-ring:nth-child(2) {
+            width: 160px;
+            height: 160px;
+            animation-direction: reverse;
+            animation-duration: 3s;
+            border-top-color: var(--gold-light);
+        }
+
+        .loader-ring:nth-child(3) {
+            width: 180px;
+            height: 180px;
+            animation-duration: 4s;
+            border-top-color: var(--gold-dark);
+        }
+
+        @keyframes ringSpin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loader-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .loader-subtitle {
+            font-size: 0.9rem;
+            color: var(--white-soft);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
+        .loader-progress {
+            margin-top: 2rem;
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+            width: 0%;
+            animation: progressLoad 2.5s ease-in-out forwards;
+            border-radius: 1px;
+        }
+
+        @keyframes progressLoad {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            80% { width: 90%; }
+            100% { width: 100%; }
+        }
+
+        /* ==================== ОСНОВНОЙ КОНТЕНТ ==================== */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 1;
+            transition: opacity 0.6s ease;
+        }
+
+        /* Титул сверху */
+        .title-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b6914, #c9a84c, #e8d48b, #c9a84c);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes goldShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.5s ease;
+        }
+
+        .status-indicator.secure {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--success);
+        }
+
+        .status-indicator.connecting {
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            color: var(--gold);
+        }
+
+        .status-indicator.disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Карточка */
+        .vpn-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-gold);
+            border-radius: 32px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .vpn-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Информация о прокси */
+        .proxy-info {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .proxy-server {
+            font-size: 0.9rem;
+            color: var(--white-soft);
+            word-break: break-all;
+            font-family: monospace;
+            letter-spacing: 0.02em;
+        }
+
+        .ping-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .ping-value {
+            background: linear-gradient(135deg, var(--success), #4ade80);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ping-label {
+            font-size: 0.8rem;
+            color: var(--white-soft);
+            font-weight: 400;
+        }
+
+        /* Круглая кнопка */
+        .connect-btn-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .connect-btn-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            animation: ringRotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .connect-btn-wrapper.connecting .connect-btn-ring {
+            opacity: 1;
+        }
+
+        @keyframes ringRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .connect-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--bg-deep);
+            background: linear-gradient(135deg, #8b6914, #c9a84c, #e8d48b);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 10px 40px rgba(201, 168, 76, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .connect-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 15px 50px rgba(201, 168, 76, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .connect-btn:active {
+            transform: scale(0.95);
+        }
+
+        .connect-btn.connected {
+            background: linear-gradient(135deg, #166534, #22c55e, #4ade80);
+            box-shadow: 
+                0 10px 40px rgba(34, 197, 94, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: successGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes successGlow {
+            0%, 100% { box-shadow: 0 10px 40px rgba(34, 197, 94, 0.3); }
+            50% { box-shadow: 0 10px 60px rgba(34, 197, 94, 0.6); }
+        }
+
+        .connect-btn i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            color: var(--white);
+            font-weight: 500;
+            z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Адаптив */
+        @media (max-width: 480px) {
+            .vpn-card {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+            .connect-btn {
+                width: 100px;
+                height: 100px;
+                font-size: 0.85rem;
+            }
+            .connect-btn i {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые эффекты -->
+    <div class="bg-ornament"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <!-- Загрузочный экран -->
+    <div class="loader-screen" id="loaderScreen">
+        <div class="loader-logo">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="shield-icon"></div>
+        </div>
+        <div class="loader-title">FeastExtraVPN</div>
+        <div class="loader-subtitle">Premium Security</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content" id="mainContent">
+        <!-- Титул -->
+        <div class="title-section">
+            <h1 class="brand-name">FeastExtraVPN</h1>
+            <div class="status-indicator disconnected" id="statusIndicator">
+                <span class="status-dot"></span>
+                <span id="statusText">Отключено</span>
+            </div>
+        </div>
+
+        <!-- Карточка -->
+        <div class="vpn-card">
+            <div class="proxy-info" id="proxyInfo">
+                <div class="proxy-server" id="proxyServer">Готов к подключению</div>
+                <div class="ping-display">
+                    <span class="ping-value" id="pingValue">---</span>
+                    <span class="ping-label">ms</span>
+                </div>
+            </div>
+
+            <!-- Круглая кнопка -->
+            <div class="connect-btn-wrapper" id="btnWrapper">
+                <div class="connect-btn-ring"></div>
+                <button class="connect-btn" id="connectBtn" onclick="handleConnect()">
+                    <i class="fas fa-power-off"></i>
+                    <span id="btnText">ВКЛ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Прокси-серверы
+        const proxies = [
+            {
+                url: 'https://t.me/proxy?server=elite.telehelp.top&port=443&secret=eece53761a75bac14ee003070656d8304664726976652e676f6f676c652e636f6d',
+                host: 'elite.telehelp.top',
+                port: 443
+            },
+            {
+                url: 'https://t.me/proxy?server=fast.telehelp.top&port=443&secret=eea767a7821af88983492880c0752e434264726976652e676f6f676c652e636f6d',
+                host: 'fast.telehelp.top',
+                port: 443
+            },
+            {
+                url: 'https://t.me/proxy?server=max.telehelp.top&port=443&secret=ee27252638159317e07b706d5114d73e0b64726976652e676f6f676c652e636f6d',
+                host: 'max.telehelp.top',
+                port: 443
+            },
+            {
+                url: 'https://t.me/proxy?server=turbo.telehelp.top&port=443&secret=eec78d031111aa7b447ebde0120598a00664726976652e676f6f676c652e636f6d',
+                host: 'turbo.telehelp.top',
+                port: 443
+            },
+            {
+                url: 'https://t.me/proxy?server=boost.telehelp.top&port=443&secret=eed4f42b03cae4d1a0f2e2a51454a6e0d7626f6f73742e74656c6568656c702e746f70',
+                host: 'boost.telehelp.top',
                 port: 443
             }
         ];
