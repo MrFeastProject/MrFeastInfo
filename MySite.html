@@ -73,6 +73,9 @@
         body.dark-theme .scan-item { border-bottom-color: #3d3d3d; }
         body.dark-theme .scan-message { background: #1a3a2a; }
         body.dark-theme .scan-message span { color: #00E676; }
+        body.dark-theme .dropdown-menu { background: #2d2d2d; border-color: #3d3d3d; }
+        body.dark-theme .dropdown-item { color: #ffffff; }
+        body.dark-theme .dropdown-item:hover { background: #3d3d3d; }
 
         .app-container { max-width: 480px; margin: 0 auto; background: #ffffff; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); transition: background 0.3s; position: relative; }
         .app-header { padding: 16px 16px 8px; background: white; position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
@@ -148,7 +151,7 @@
         .tags { display: flex; gap: 6px; margin: 12px 0; flex-wrap: wrap; }
         .tag { background: #e8f5e9; color: #01875f; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
         .tag-highlight { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .action-buttons { display: flex; gap: 10px; margin-bottom: 16px; }
+        .action-buttons { display: flex; gap: 10px; margin-bottom: 12px; }
         .install-btn { background: #01875f; color: white; border: none; border-radius: 24px; padding: 12px 16px; font-size: 14px; font-weight: 600; flex: 1; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; }
         .install-btn:disabled { background: #e8eaed; color: #9aa0a6; cursor: not-allowed; }
         .install-btn.installed { background: #e8f5e9; color: #01875f; }
@@ -158,6 +161,30 @@
         .wishlist-btn { background: white; border: 1px solid #dadce0; border-radius: 24px; padding: 12px; aspect-ratio: 1; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 46px; height: 46px; }
         .wishlist-btn.active { background: #fff9e6; border-color: #FFD700; }
         .wishlist-btn.active i { color: #FFD700; }
+        
+        /* Стили для выпадающей кнопки */
+        .dropdown-wrapper { position: relative; margin-bottom: 16px; }
+        .dropdown-btn { width: 100%; background: #f1f3f4; border: 1px solid #e8eaed; border-radius: 24px; padding: 10px 16px; font-size: 14px; font-weight: 500; color: #202124; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; }
+        .dropdown-btn:hover { background: #e8eaed; }
+        .dropdown-btn i { color: #5f6368; font-size: 12px; transition: transform 0.2s; }
+        .dropdown-btn.active i { transform: rotate(180deg); }
+        .dropdown-menu { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: white; border: 1px solid #e8eaed; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; z-index: 100; display: none; }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 12px 16px; font-size: 14px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 10px; }
+        .dropdown-item:hover { background: #f1f3f4; }
+        .dropdown-item i { width: 20px; font-size: 14px; color: #01875f; }
+        .dropdown-item.selected { background: #e8f5e9; color: #01875f; font-weight: 500; }
+        .device-badge { font-size: 11px; margin-left: 8px; color: #01875f; }
+        .os-requirement { display: none; background: #e8f5e9; border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; font-size: 13px; font-weight: 500; color: #01875f; align-items: center; gap: 8px; }
+        .os-requirement i { font-size: 14px; }
+        body.dark-theme .dropdown-btn { background: #2d2d2d; border-color: #3d3d3d; color: #ffffff; }
+        body.dark-theme .dropdown-btn i { color: #9aa0a6; }
+        body.dark-theme .dropdown-menu { background: #2d2d2d; border-color: #3d3d3d; }
+        body.dark-theme .dropdown-item { color: #ffffff; }
+        body.dark-theme .dropdown-item:hover { background: #3d3d3d; }
+        body.dark-theme .dropdown-item.selected { background: #1a3a2a; color: #00E676; }
+        body.dark-theme .os-requirement { background: #1a3a2a; color: #00E676; }
+
         .description-card { background: white; border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid #e8eaed; }
         .description-card h3 { font-size: 16px; font-weight: 600; color: #202124; margin-bottom: 10px; }
         .description-card p { color: #5f6368; line-height: 1.5; font-size: 13px; }
@@ -168,6 +195,7 @@
         .info-label { color: #5f6368; font-size: 13px; flex-shrink: 0; }
         .info-value { color: #202124; font-weight: 500; font-size: 13px; text-align: right; word-break: break-word; }
         .beta-badge { background: linear-gradient(135deg, #FF9800, #FF5722); color: white; padding: 2px 6px; border-radius: 20px; font-size: 10px; font-weight: 600; margin-left: 4px; }
+        .pre-release-badge { background: linear-gradient(135deg, #FF9800, #FF5722); color: white; padding: 2px 6px; border-radius: 20px; font-size: 10px; font-weight: 600; margin-left: 4px; }
         .news-feed { padding: 12px; }
         .news-header { margin-bottom: 16px; }
         .news-header h2 { font-size: 20px; font-weight: 700; color: #202124; margin-bottom: 2px; }
@@ -281,8 +309,46 @@
         </div>
 
         <div class="app-detail-page" id="appProtect"><div class="back-button" id="backBtn1"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyber_SafetyCore</h1><div class="developer">MrFeastProject</div></div></div><div class="os-warning" id="osWarning1" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div><div class="tags"><span class="tag">#1 в Инструменты</span><span class="tag">AI защита</span><span class="tag-highlight">Выбор редакции</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn1"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn" data-app="protect" id="wishlistBtn1"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении <span class="ai-badge">AI Powered</span></h3><p><strong>FeastCyber_SafetyCore</strong> — фоновый процесс на базе AI движка от MrFeastProject для Windows 10/11.<br><br>Обеспечивает многоуровневую защиту в реальном времени.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">12 апреля 21:21</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">37 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.1<span class="beta-badge">Beta</span></span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div></div>
-        <div class="app-detail-page" id="appAntivirus"><div class="back-button" id="backBtn2"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyberSecurity</h1><div class="developer">MrFeastProject</div></div></div><div class="os-warning" id="osWarning2" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div><div class="tags"><span class="tag">Антивирус</span><span class="tag">Защита</span><span class="tag-highlight">Premium</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn2"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn" data-app="antivirus" id="wishlistBtn2"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении</h3><p><strong>FeastCyberSecurity</strong> — мощный антивирус для защиты вашего компьютера от вирусов, троянов, шпионского ПО и других угроз. Регулярные обновления баз и облачная защита в реальном времени.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">14 февраля 19:12</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">47~53 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.6.9</span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div></div>
-        <div class="app-detail-page" id="appTgwsproxy"><div class="back-button" id="backBtn3"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/unnamed.png" alt="TG WS Proxy" style="width: 100%; height: 100%; object-fit: cover;"></div><div class="app-title-section"><h1>TG WS Proxy</h1><div class="developer">GitHub Releases</div></div></div><div class="tags"><span class="tag">VPN/Proxy</span><span class="tag">Обход блокировок</span><span class="tag-highlight">Pre-release</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn3"><i class="fas fa-download"></i> Скачать</button><button class="wishlist-btn" data-app="tgwsproxy" id="wishlistBtn3"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении</h3><p><strong>TG WS Proxy</strong> — инструмент для создания локального прокси-сервера, предназначенного для обхода блокировок Telegram.<br><br>Позволяет настроить собственный WebSocket-прокси и обеспечить стабильный доступ к мессенджеру.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.3.0<span class="beta-badge">Pre-release</span></span></div><div class="info-row"><span class="info-label">Автор</span><span class="info-value">GitHub Releases</span></div><div class="info-row"><span class="info-label">Категория</span><span class="info-value">VPN/Proxy</span></div><div class="info-row"><span class="info-label">Платформа</span><span class="info-value">Android</span></div></div></div>
+        <div class="app-detail-page" id="appAntivirus"><div class="back-button" id="backBtn2"><i class="fas fa-arrow-left"></i><span>Назад</span></div><div class="app-detail-header"><div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/IMG_20260421_185944_424.jpg" alt="icon"></div><div class="app-title-section"><h1>FeastCyberSecurity</h1><div class="developer">MrFeastProject</div></div></div><div class="os-warning" id="osWarning2" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span>Это приложение доступно только для Windows 10/11</span></div><div class="tags"><span class="tag">Антивирус</span><span class="tag">Защита</span><span class="tag-highlight">Premium</span></div><div class="action-buttons"><button class="install-btn" id="downloadBtn2"><i class="fas fa-download"></i> Установить</button><button class="wishlist-btn" data-app="antivirus" id="wishlistBtn2"><i class="far fa-bookmark"></i></button></div><div class="description-card"><h3>Об этом приложении</h3><p><strong>FeastCyberSecurity</strong> — мощный антивирус для защиты вашего компьютера от вирусов, троянов, шпионского ПО и других угроз. Регулярные обновления баз и облачная защита в реальном времени.</p></div><div class="info-card"><div class="info-row"><span class="info-label">Обновлено</span><span class="info-value">14 февраля 19:12</span></div><div class="info-row"><span class="info-label">Размер</span><span class="info-value">47 МБ</span></div><div class="info-row"><span class="info-label">Версия</span><span class="info-value">1.0.6.9</span></div><div class="info-row"><span class="info-label">ОС</span><span class="info-value">Windows 10/11</span></div></div></div>
+        
+        <div class="app-detail-page" id="appTgwsproxy">
+            <div class="back-button" id="backBtn3"><i class="fas fa-arrow-left"></i><span>Назад</span></div>
+            <div class="app-detail-header">
+                <div class="app-icon-large"><img src="https://raw.githubusercontent.com/mrfeastroblox-cmd/MrFeastShop_Dowload/refs/heads/main/unnamed.png" alt="TG WS Proxy" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <div class="app-title-section"><h1>TG WS Proxy</h1><div class="developer">GitHub Releases</div></div>
+            </div>
+            <div class="tags"><span class="tag">VPN/Proxy</span><span class="tag">Обход блокировок</span><span class="tag-highlight">Pre-release</span></div>
+            <div class="action-buttons"><button class="install-btn" id="downloadBtn3"><i class="fas fa-download"></i> Скачать</button><button class="wishlist-btn" data-app="tgwsproxy" id="wishlistBtn3"><i class="far fa-bookmark"></i></button></div>
+            
+            <!-- Красивая выпадающая кнопка "Тип устройства" -->
+            <div class="dropdown-wrapper">
+                <div class="dropdown-btn" id="deviceDropdownBtn">
+                    <span><i class="fas fa-mobile-alt" style="margin-right: 8px;"></i> Тип устройства: <strong id="selectedDeviceLabel">Android</strong></span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu" id="deviceDropdownMenu">
+                    <div class="dropdown-item" data-device="android">
+                        <i class="fas fa-mobile-alt"></i> Android
+                        <span class="device-badge">7.0+</span>
+                    </div>
+                    <div class="dropdown-item" data-device="windows">
+                        <i class="fab fa-windows"></i> Windows
+                        <span class="device-badge">10/11</span>
+                    </div>
+                </div>
+            </div>
+            <div class="os-requirement" id="tgProxyOsRequirement"><i class="fab fa-windows"></i> ОС: Windows 10/11</div>
+            <div class="os-warning" id="osWarningTG" style="display: none;"><i class="fas fa-exclamation-triangle"></i><span id="osWarningTGText">Это приложение доступно только для Windows 10/11</span></div>
+            
+            <div class="description-card"><h3>Об этом приложении</h3><p><strong>TG WS Proxy</strong> — инструмент для создания локального прокси-сервера, предназначенного для обхода блокировок Telegram.<br><br>Позволяет настроить собственный WebSocket-прокси и обеспечить стабильный доступ к мессенджеру.</p></div>
+            <div class="info-card">
+                <div class="info-row"><span class="info-label">Версия</span><span class="info-value" id="tgVersionValue">1.3.0 <span class="pre-release-badge">Pre-release</span></span></div>
+                <div class="info-row"><span class="info-label">Размер</span><span class="info-value" id="tgSizeValue">24 МБ</span></div>
+                <div class="info-row"><span class="info-label">Автор</span><span class="info-value">GitHub Releases</span></div>
+                <div class="info-row"><span class="info-label">Категория</span><span class="info-value">VPN/Proxy</span></div>
+                <div class="info-row"><span class="info-label">ОС</span><span class="info-value" id="tgOsValue">Android 7.0+</span></div>
+            </div>
+        </div>
     </div>
 
     <div class="modal-overlay" id="settingsModal"><div class="modal-content"><div class="settings-header"><h3>Настройки</h3><i class="fas fa-times" id="closeSettings"></i></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-moon"></i><span>Тёмная тема</span></div><div class="theme-toggle" id="themeToggle"></div></div><div class="favorites-menu-item" id="favoritesMenuItem"><i class="fas fa-bookmark" style="color: #01875f;"></i><span>Избранное</span><span class="favorites-badge" id="favoritesCount">0</span></div></div></div>
@@ -356,18 +422,133 @@
         document.getElementById('backOnline3').addEventListener('click',()=>{onlineSecurity.classList.remove('active'),pageOnline.classList.add('active')});
 
         function isWindows10Or11(){return-1!==navigator.userAgent.indexOf('Windows NT 10.0')}
-        isWindows10Or11()||(document.getElementById('downloadBtn1').disabled=!0,document.getElementById('downloadBtn2').disabled=!0,document.getElementById('osWarning1').style.display='flex',document.getElementById('osWarning2').style.display='flex');
+        const isWindowsDevice = isWindows10Or11();
+        isWindowsDevice||(document.getElementById('downloadBtn1').disabled=!0,document.getElementById('downloadBtn2').disabled=!0,document.getElementById('osWarning1').style.display='flex',document.getElementById('osWarning2').style.display='flex');
+        
         document.querySelectorAll('[data-app]').forEach(e=>{e.addEventListener('click',function(){const e=this.dataset.app;currentApp=e,pageApps.classList.remove('active'),appProtect.classList.remove('active'),appAntivirus.classList.remove('active'),appTgwsproxy.classList.remove('active'),'protect'===e?appProtect.classList.add('active'):'antivirus'===e?appAntivirus.classList.add('active'):'tgwsproxy'===e&&appTgwsproxy.classList.add('active'),updateFavoritesUI()})});
         document.getElementById('backBtn1').addEventListener('click',()=>{appProtect.classList.remove('active'),pageApps.classList.add('active')});
         document.getElementById('backBtn2').addEventListener('click',()=>{appAntivirus.classList.remove('active'),pageApps.classList.add('active')});
         document.getElementById('backBtn3').addEventListener('click',()=>{appTgwsproxy.classList.remove('active'),pageApps.classList.add('active')});
         document.querySelectorAll('.wishlist-btn').forEach(e=>{e.addEventListener('click',function(e){e.stopPropagation();const t=this.dataset.app;toggleFavorite(t,this)})});
 
+        // Элементы для обновления информации
+        const tgVersionSpan = document.getElementById('tgVersionValue');
+        const tgOsSpan = document.getElementById('tgOsValue');
+        const tgSizeSpan = document.getElementById('tgSizeValue');
+        const downloadBtn3 = document.getElementById('downloadBtn3');
+        const osWarningTG = document.getElementById('osWarningTG');
+        const osWarningTGText = document.getElementById('osWarningTGText');
+
+        // Выпадающее меню для выбора устройства TG WS Proxy
+        const dropdownBtn = document.getElementById('deviceDropdownBtn');
+        const dropdownMenu = document.getElementById('deviceDropdownMenu');
+        const selectedDeviceLabel = document.getElementById('selectedDeviceLabel');
+        const tgOsReqDiv = document.getElementById('tgProxyOsRequirement');
+        let currentDevice = 'android';
+
+        function closeDropdown() {
+            dropdownMenu.classList.remove('show');
+            dropdownBtn.classList.remove('active');
+        }
+
+        function openDropdown() {
+            dropdownMenu.classList.add('show');
+            dropdownBtn.classList.add('active');
+        }
+
+        function checkDeviceCompatibility(selectedDevice) {
+            const needWindows = selectedDevice === 'windows';
+            const isWindowsOS = isWindowsDevice;
+            
+            if (needWindows && !isWindowsOS) {
+                downloadBtn3.disabled = true;
+                osWarningTG.style.display = 'flex';
+                osWarningTGText.innerHTML = 'Это приложение (Windows версия) доступно только для Windows 10/11';
+                return false;
+            } else if (!needWindows && isWindowsOS) {
+                downloadBtn3.disabled = true;
+                osWarningTG.style.display = 'flex';
+                osWarningTGText.innerHTML = 'Это приложение (Android версия) доступно только для Android 7.0+';
+                return false;
+            } else {
+                downloadBtn3.disabled = false;
+                osWarningTG.style.display = 'none';
+                return true;
+            }
+        }
+
+        function setDevice(device) {
+            currentDevice = device;
+            const isWindows = device === 'windows';
+            
+            if (isWindows) {
+                selectedDeviceLabel.innerHTML = '<i class="fab fa-windows" style="margin-right: 4px;"></i> Windows';
+                FILE_URLS.tgwsproxy = 'https://github.com/Flowseal/tg-ws-proxy/releases/download/v1.7.0/TgWsProxy_windows.exe';
+                FILE_NAMES.tgwsproxy = 'TG_WS_Proxy_v1.7.0.exe';
+                tgOsReqDiv.style.display = 'flex';
+                // Обновляем информацию в карточке (без слов Android/Windows)
+                tgVersionSpan.innerHTML = '1.7.0';
+                tgOsSpan.innerHTML = 'Windows 10/11';
+                tgSizeSpan.innerHTML = '21 МБ';
+            } else {
+                selectedDeviceLabel.innerHTML = '<i class="fas fa-mobile-alt" style="margin-right: 4px;"></i> Android';
+                FILE_URLS.tgwsproxy = 'https://github.com/mrfeastroblox-cmd/MrFeastShop_Dowload/releases/download/tag-1/v1.3.0-pre-release-universal.apk';
+                FILE_NAMES.tgwsproxy = 'TG_WS_Proxy_v1.3.0.apk';
+                tgOsReqDiv.style.display = 'none';
+                // Обновляем информацию в карточке (без слов Android/Windows)
+                tgVersionSpan.innerHTML = '1.3.0 <span class="pre-release-badge">Pre-release</span>';
+                tgOsSpan.innerHTML = 'Android 7.0+';
+                tgSizeSpan.innerHTML = '24 МБ';
+            }
+            
+            // Проверяем совместимость с устройством и блокируем кнопку если нужно
+            checkDeviceCompatibility(device);
+            
+            // Обновляем выделение в меню
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                if (item.dataset.device === device) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            closeDropdown();
+        }
+
+        // Обработчики для выпадающего меню
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (dropdownMenu.classList.contains('show')) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        });
+
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const device = item.dataset.device;
+                if (device) setDevice(device);
+            });
+        });
+
+        // Закрытие при клике вне меню
+        document.addEventListener('click', (e) => {
+            if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        // Инициализация (Android по умолчанию) с проверкой совместимости
+        setDevice('android');
+
         function startScan(e){currentApp=e,modal.classList.add('active'),scanProgressFill.style.width='0%',scanMessage.style.display='none',scanCloseBtn.disabled=!0,scanCloseBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Проверка...',statuses.forEach(e=>{e.textContent='Ожидание',e.className='scan-status status-pending'});const t=[{index:0,text:'Проверка...',class:'status-checking',time:400},{index:1,text:'Проверка...',class:'status-checking',time:600},{index:2,text:'Проверка...',class:'status-checking',time:500},{index:3,text:'Анализ...',class:'status-checking',time:700}];let o=0;!function e(a){if(a>=t.length)return void setTimeout(()=>{scanProgressFill.style.width='100%',scanMessage.style.display='flex',scanCloseBtn.disabled=!1,scanCloseBtn.innerHTML='<i class="fas fa-download"></i> Скачать сейчас',statuses.forEach(e=>{e.textContent='✓ Чисто',e.className='scan-status status-clean'}),scanCloseBtn.onclick=()=>{modal.classList.remove('active'),downloadFile(currentApp)}},200);const n=t[a],l=statuses[n.index];l.textContent=n.text,l.className=`scan-status ${n.class}`,o+=25,scanProgressFill.style.width=o+'%',setTimeout(()=>{l.textContent='✓ Чисто',l.className='scan-status status-clean',e(a+1)},n.time)}(0)}
 
-        document.getElementById('downloadBtn1').addEventListener('click',()=>startScan('protect'));
-        document.getElementById('downloadBtn2').addEventListener('click',()=>startScan('antivirus'));
-        document.getElementById('downloadBtn3').addEventListener('click',()=>startScan('tgwsproxy'));
+        document.getElementById('downloadBtn1').addEventListener('click',()=>{if(!downloadBtn1.disabled) startScan('protect')});
+        document.getElementById('downloadBtn2').addEventListener('click',()=>{if(!downloadBtn2.disabled) startScan('antivirus')});
+        document.getElementById('downloadBtn3').addEventListener('click',()=>{if(!downloadBtn3.disabled) startScan('tgwsproxy')});
         modal.addEventListener('click',e=>{e.target===modal&&modal.classList.remove('active')});
         updateFavoritesUI();
     </script>
