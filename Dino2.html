@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -45,6 +46,173 @@
             height: 100vh;
             height: 100dvh;
             justify-content: center;
+        }
+
+        .difficulty-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            gap: 20px;
+        }
+
+        .difficulty-screen.hidden {
+            display: none;
+        }
+
+        .difficulty-title {
+            color: #00ff88;
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-subtitle {
+            color: #8b949e;
+            font-size: clamp(11px, 2.5vw, 14px);
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .difficulty-btn {
+            background: transparent;
+            border: 2px solid #30363d;
+            color: #c9d1d9;
+            padding: 14px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(14px, 3vw, 18px);
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .difficulty-btn:active {
+            transform: scale(0.95);
+        }
+
+        .difficulty-btn.easy {
+            border-color: #00ff88;
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+
+        .difficulty-btn.easy:active,
+        .difficulty-btn.easy:hover {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .difficulty-btn.medium {
+            border-color: #ffdd00;
+            color: #ffdd00;
+            text-shadow: 0 0 10px rgba(255, 221, 0, 0.4);
+        }
+
+        .difficulty-btn.medium:active,
+        .difficulty-btn.medium:hover {
+            background: rgba(255, 221, 0, 0.1);
+            box-shadow: 0 0 25px rgba(255, 221, 0, 0.3);
+        }
+
+        .difficulty-btn.hard {
+            border-color: #ff4444;
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+        }
+
+        .difficulty-btn.hard:active,
+        .difficulty-btn.hard:hover {
+            background: rgba(255, 68, 68, 0.1);
+            box-shadow: 0 0 25px rgba(255, 68, 68, 0.3);
+        }
+
+        .difficulty-desc {
+            font-size: 0.6em;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        .death-buttons {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 15;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .death-buttons.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .death-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(14px, 3vw, 18px);
+            letter-spacing: 2px;
+            color: #fff;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .death-btn:active {
+            transform: scale(0.95);
+        }
+
+        .death-btn.restart {
+            border-color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+        }
+
+        .death-btn.restart:active {
+            background: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .death-btn.menu {
+            border-color: #ffdd00;
+            text-shadow: 0 0 10px rgba(255, 221, 0, 0.6);
+        }
+
+        .death-btn.menu:active {
+            background: rgba(255, 221, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 221, 0, 0.3);
         }
 
         .level-indicator-bar {
@@ -362,7 +530,7 @@
 
         .game-over-overlay {
             position: absolute;
-            top: 50%;
+            top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
             color: #ff4444;
@@ -437,6 +605,25 @@
 </head>
 <body>
     <div class="game-wrapper">
+        <div class="difficulty-screen" id="difficultyScreen">
+            <div class="difficulty-title">DINO 2.0</div>
+            <div class="difficulty-subtitle">ВЫБЕРИ СЛОЖНОСТЬ</div>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn easy" id="btnEasy">
+                    EASY
+                    <span class="difficulty-desc">Как обычно</span>
+                </button>
+                <button class="difficulty-btn medium" id="btnMedium">
+                    MEDIUM
+                    <span class="difficulty-desc">Быстрее в 2 раза</span>
+                </button>
+                <button class="difficulty-btn hard" id="btnHard">
+                    HARD
+                    <span class="difficulty-desc">В 3 раза быстрее</span>
+                </button>
+            </div>
+        </div>
+
         <div class="level-indicator-bar" id="levelIndicatorBar">
             <span class="level-badge-indicator" id="levelBadgeIndicator">УР. 1</span>
             <div class="level-progress-container">
@@ -453,6 +640,10 @@
         <div class="game-container" id="gameContainer">
             <canvas id="gameCanvas"></canvas>
             <div class="game-over-overlay" id="gameOverOverlay">GAME OVER</div>
+            <div class="death-buttons" id="deathButtons">
+                <button class="death-btn restart" id="btnRestart">ЗАНОВО</button>
+                <button class="death-btn menu" id="btnMenu">МЕНЮ</button>
+            </div>
             <div class="level-notification" id="levelNotification">
                 <span id="levelTitle"></span>
                 <span class="level-description" id="levelDesc"></span>
@@ -483,6 +674,7 @@
             const ctx = canvas.getContext('2d');
             const gameContainer = document.getElementById('gameContainer');
             const gameOverOverlay = document.getElementById('gameOverOverlay');
+            const deathButtons = document.getElementById('deathButtons');
             const tapHint = document.getElementById('tapHint');
             const scoreDisplay = document.getElementById('score');
             const comboDisplay = document.getElementById('comboDisplay');
@@ -491,6 +683,7 @@
             const levelNotification = document.getElementById('levelNotification');
             const levelTitle = document.getElementById('levelTitle');
             const levelDesc = document.getElementById('levelDesc');
+            const difficultyScreen = document.getElementById('difficultyScreen');
 
             const levelIndicatorBar = document.getElementById('levelIndicatorBar');
             const levelBadgeIndicator = document.getElementById('levelBadgeIndicator');
@@ -500,6 +693,9 @@
 
             const GAME_WIDTH = 800;
             const GAME_HEIGHT = 450;
+
+            let speedMultiplier = 1;
+            let animationId = null;
 
             function resizeCanvas() {
                 const containerWidth = gameContainer.clientWidth;
@@ -517,7 +713,6 @@
             const DINO_HEIGHT = 50;
             const DINO_WIDTH = 44;
 
-            // ============ СБАЛАНСИРОВАННЫЕ УРОВНИ (оптимальные промежутки) ============
             const levelConfig = {
                 1: { name: 'УРОВЕНЬ 1', desc: 'Разминка', speed: 5.5, spawnInterval: 115, special: 'single_easy' },
                 2: { name: 'УРОВЕНЬ 2', desc: 'Первые шипы', speed: 5.8, spawnInterval: 105, special: 'single_normal' },
@@ -578,6 +773,8 @@
             let scorePopTimer = 0;
             let nearMissTimer = 0;
             let levelTransitionTimer = 0;
+            let inputQueue = [];
+            let lastTapTime = 0;
 
             const savedHighScore = localStorage.getItem('dino2_optimal_highScore');
             if (savedHighScore) {
@@ -668,8 +865,7 @@
                     p.vy += 0.06;
                     p.life -= p.decay;
                     p.rotation += p.rotationSpeed;
-                    if (p.type === 'spark') { p.vx *= 0.97;
-                        p.vy *= 0.97; }
+                    if (p.type === 'spark') { p.vx *= 0.97; p.vy *= 0.97; }
                     if (p.life <= 0) particles.splice(i, 1);
                 }
             }
@@ -715,8 +911,7 @@
                 const glowColor = invincible > 0 ?
                     `rgba(255, 221, 0, ${0.2 + Math.sin(frameCount * 0.5) * 0.1})` :
                     'rgba(0, 255, 136, 0.15)';
-                const glowGradient = ctx.createRadialGradient(x + width / 2, y + height / 2, width * 0.5, x + width / 2, y +
-                    height / 2, width * 1.8);
+                const glowGradient = ctx.createRadialGradient(x + width / 2, y + height / 2, width * 0.5, x + width / 2, y + height / 2, width * 1.8);
                 glowGradient.addColorStop(0, glowColor);
                 glowGradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
                 ctx.fillStyle = glowGradient;
@@ -963,8 +1158,7 @@
             function drawCactus(ctx, x, y, width, height, type) {
                 ctx.save();
                 const pulseIntensity = Math.sin(frameCount * 0.05 + x) * 0.1 + 0.2;
-                const glowGradient = ctx.createRadialGradient(x + width / 2, y + height / 2, width * 0.3, x + width / 2, y +
-                    height / 2, width * 1.2);
+                const glowGradient = ctx.createRadialGradient(x + width / 2, y + height / 2, width * 0.3, x + width / 2, y + height / 2, width * 1.2);
                 glowGradient.addColorStop(0, `rgba(255, 68, 68, ${pulseIntensity})`);
                 glowGradient.addColorStop(1, 'rgba(255, 68, 68, 0)');
                 ctx.fillStyle = glowGradient;
@@ -1341,145 +1535,50 @@
                     case 'single_easy':
                         if (Math.random() < 0.65) spawnObstacle('cactus');
                         break;
-
                     case 'single_normal':
-                        if (Math.random() < 0.75) {
-                            spawnObstacle(Math.random() < 0.65 ? 'cactus' : 'bird');
-                        }
+                        if (Math.random() < 0.75) spawnObstacle(Math.random() < 0.65 ? 'cactus' : 'bird');
                         break;
-
                     case 'bird_intro':
-                        if (Math.random() < 0.7) {
-                            spawnObstacle(Math.random() < 0.55 ? 'bird' : 'cactus');
-                        }
+                        if (Math.random() < 0.7) spawnObstacle(Math.random() < 0.55 ? 'bird' : 'cactus');
                         break;
-
                     case 'double_cactus':
-                        // Два кактуса с ОПТИМАЛЬНЫМ промежутком — можно перепрыгнуть одним прыжком
-                        if (Math.random() < 0.65) {
-                            spawnObstacle('cactus');
-                            spawnObstacle('cactus', undefined, 85);
-                        } else {
-                            spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
-                        }
+                        if (Math.random() < 0.65) { spawnObstacle('cactus'); spawnObstacle('cactus', undefined, 85); }
+                        else spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
                         break;
-
                     case 'mixed_wave':
-                        // Кактус + птица — компактно, но проходимо
-                        if (Math.random() < 0.6) {
-                            spawnObstacle('cactus');
-                            spawnObstacle('bird', undefined, 75);
-                        } else {
-                            spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
-                        }
+                        if (Math.random() < 0.6) { spawnObstacle('cactus'); spawnObstacle('bird', undefined, 75); }
+                        else spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
                         break;
-
                     case 'double_bird':
-                        // Две птицы на РАЗНОЙ высоте, компактно
                         if (Math.random() < 0.6) {
                             spawnObstacle('bird');
-                            const secondBirdY = GROUND_Y - 50 - Math.random() * 80;
-                            obstacles.push({
-                                x: GAME_WIDTH + 95,
-                                y: secondBirdY,
-                                width: 35,
-                                height: 25,
-                                type: 'bird',
-                                wingPhase: Math.random() * Math.PI * 2,
-                                passed: false
-                            });
-                        } else {
-                            spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
-                        }
+                            obstacles.push({ x: GAME_WIDTH + 95, y: GROUND_Y - 50 - Math.random() * 80, width: 35, height: 25, type: 'bird', wingPhase: Math.random() * Math.PI * 2, passed: false });
+                        } else spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
                         break;
-
                     case 'triple_threat':
-                        // Три препятствия, ритмичные промежутки
-                        if (Math.random() < 0.5) {
-                            spawnObstacle('cactus');
-                            spawnObstacle('bird', undefined, 80);
-                            spawnObstacle('cactus', undefined, 160);
-                        } else {
-                            spawnObstacle('bird');
-                            spawnObstacle('cactus', undefined, 80);
-                            spawnObstacle('bird', undefined, 160);
-                        }
+                        if (Math.random() < 0.5) { spawnObstacle('cactus'); spawnObstacle('bird', undefined, 80); spawnObstacle('cactus', undefined, 160); }
+                        else { spawnObstacle('bird'); spawnObstacle('cactus', undefined, 80); spawnObstacle('bird', undefined, 160); }
                         break;
-
                     case 'high_low':
-                        obstacles.push({
-                            x: GAME_WIDTH + 20,
-                            y: GROUND_Y - 100,
-                            width: 35,
-                            height: 25,
-                            type: 'bird',
-                            wingPhase: Math.random() * Math.PI * 2,
-                            passed: false
-                        });
+                        obstacles.push({ x: GAME_WIDTH + 20, y: GROUND_Y - 100, width: 35, height: 25, type: 'bird', wingPhase: Math.random() * Math.PI * 2, passed: false });
                         spawnObstacle('cactus', undefined, 80);
                         break;
-
                     case 'bird_swarm':
-                        for (let i = 0; i < 3; i++) {
-                            const birdY = GROUND_Y - 40 - i * 30;
-                            obstacles.push({
-                                x: GAME_WIDTH + 20 + i * 85,
-                                y: birdY,
-                                width: 35,
-                                height: 25,
-                                type: 'bird',
-                                wingPhase: Math.random() * Math.PI * 2,
-                                passed: false
-                            });
-                        }
+                        for (let i = 0; i < 3; i++) obstacles.push({ x: GAME_WIDTH + 20 + i * 85, y: GROUND_Y - 40 - i * 30, width: 35, height: 25, type: 'bird', wingPhase: Math.random() * Math.PI * 2, passed: false });
                         break;
-
                     case 'boss_mode':
-                        obstacles.push({
-                            x: GAME_WIDTH + 20,
-                            y: GROUND_Y - 65,
-                            width: 35,
-                            height: 65,
-                            type: 'cactus',
-                            variant: 2,
-                            passed: false
-                        });
-                        obstacles.push({
-                            x: GAME_WIDTH + 90,
-                            y: GROUND_Y - 90,
-                            width: 35,
-                            height: 25,
-                            type: 'bird',
-                            wingPhase: Math.random() * Math.PI * 2,
-                            passed: false
-                        });
-                        obstacles.push({
-                            x: GAME_WIDTH + 160,
-                            y: GROUND_Y - 55,
-                            width: 35,
-                            height: 25,
-                            type: 'bird',
-                            wingPhase: Math.random() * Math.PI * 2,
-                            passed: false
-                        });
+                        obstacles.push({ x: GAME_WIDTH + 20, y: GROUND_Y - 65, width: 35, height: 65, type: 'cactus', variant: 2, passed: false });
+                        obstacles.push({ x: GAME_WIDTH + 90, y: GROUND_Y - 90, width: 35, height: 25, type: 'bird', wingPhase: Math.random() * Math.PI * 2, passed: false });
+                        obstacles.push({ x: GAME_WIDTH + 160, y: GROUND_Y - 55, width: 35, height: 25, type: 'bird', wingPhase: Math.random() * Math.PI * 2, passed: false });
                         break;
-
                     case 'inferno':
-                        spawnObstacle('cactus');
-                        spawnObstacle('bird', undefined, 70);
-                        spawnObstacle('cactus', undefined, 140);
+                        spawnObstacle('cactus'); spawnObstacle('bird', undefined, 70); spawnObstacle('cactus', undefined, 140);
                         break;
-
                     case 'speed_demon':
                         spawnObstacle(Math.random() < 0.5 ? 'cactus' : 'bird');
                         break;
-
                     default:
-                        if (Math.random() < 0.55) {
-                            spawnObstacle('cactus');
-                        } else {
-                            spawnObstacle('bird');
-                        }
+                        spawnObstacle(Math.random() < 0.55 ? 'cactus' : 'bird');
                 }
             }
 
@@ -1487,12 +1586,12 @@
                 gameOver = true;
                 gameRunning = false;
                 gameOverOverlay.classList.add('visible');
+                deathButtons.classList.add('visible');
                 tapHint.style.display = 'none';
                 comboDisplay.classList.remove('active');
                 screenShake = 20;
                 createParticles(dino.x + dino.width / 2, dino.y + dino.height / 2, 50, '#ff4444', 'burst');
                 createParticles(dino.x + dino.width / 2, dino.y + dino.height / 2, 30, '#ff8800', 'spark');
-
                 if (score > highScore) {
                     highScore = score;
                     highScoreDisplay.textContent = String(highScore).padStart(5, '0');
@@ -1501,7 +1600,8 @@
                 }
             }
 
-            function resetGame() {
+            function restartFromDeath() {
+                // Перезапуск с самого начала (с тем же множителем сложности)
                 dino.y = GROUND_Y - DINO_HEIGHT;
                 dino.vy = 0;
                 dino.isJumping = false;
@@ -1511,8 +1611,8 @@
                 obstacles = [];
                 score = 0;
                 currentLevel = 1;
-                gameSpeed = levelConfig[1].speed;
-                spawnInterval = levelConfig[1].spawnInterval;
+                gameSpeed = levelConfig[1].speed * speedMultiplier;
+                spawnInterval = Math.max(Math.floor(levelConfig[1].spawnInterval / speedMultiplier), 25);
                 gameRunning = true;
                 gameStarted = true;
                 gameOver = false;
@@ -1525,6 +1625,40 @@
                 scoreDisplay.textContent = '00000';
                 scoreDisplay.classList.remove('pop');
                 gameOverOverlay.classList.remove('visible');
+                deathButtons.classList.remove('visible');
+                tapHint.style.display = 'none';
+                comboDisplay.classList.remove('active');
+                gameContainer.classList.remove('level-warning', 'level-danger');
+                particles = [];
+                screenShake = 0;
+                updateLevelIndicator();
+            }
+
+            function resetGame() {
+                dino.y = GROUND_Y - DINO_HEIGHT;
+                dino.vy = 0;
+                dino.isJumping = false;
+                dino.jumpCount = 0;
+                dino.invincible = 0;
+                dino.roarTimer = 0;
+                obstacles = [];
+                score = 0;
+                currentLevel = 1;
+                gameSpeed = levelConfig[1].speed * speedMultiplier;
+                spawnInterval = Math.max(Math.floor(levelConfig[1].spawnInterval / speedMultiplier), 25);
+                gameRunning = true;
+                gameStarted = true;
+                gameOver = false;
+                frameCount = 0;
+                spawnTimer = 0;
+                comboCount = 0;
+                comboTimer = 0;
+                nearMissTimer = 0;
+                levelTransitionTimer = 0;
+                scoreDisplay.textContent = '00000';
+                scoreDisplay.classList.remove('pop');
+                gameOverOverlay.classList.remove('visible');
+                deathButtons.classList.remove('visible');
                 tapHint.style.display = 'none';
                 comboDisplay.classList.remove('active');
                 gameContainer.classList.remove('level-warning', 'level-danger');
@@ -1534,10 +1668,7 @@
             }
 
             function jump() {
-                if (gameOver) {
-                    resetGame();
-                    return;
-                }
+                if (gameOver) return;
                 if (!gameStarted) {
                     resetGame();
                     return;
@@ -1551,7 +1682,6 @@
                     dino.roarTimer = 10;
                     createParticles(dino.x + dino.width / 2, GROUND_Y, 10, '#00ff88', 'burst');
                     createParticles(dino.x + dino.width / 2, GROUND_Y, 5, '#ffffff', 'spark');
-
                     if (nearMissTimer > 0) {
                         comboCount++;
                         comboTimer = 60;
@@ -1563,6 +1693,11 @@
             }
 
             function update() {
+                while (inputQueue.length > 0) {
+                    const input = inputQueue.shift();
+                    if (input === 'jump') jump();
+                }
+
                 if (!gameRunning) return;
 
                 frameCount++;
@@ -1571,36 +1706,21 @@
                 if (newLevel > currentLevel) {
                     currentLevel = newLevel;
                     const config = getLevelConfig(currentLevel);
-                    gameSpeed = config.speed;
-                    spawnInterval = config.spawnInterval;
+                    gameSpeed = config.speed * speedMultiplier;
+                    spawnInterval = Math.max(Math.floor(config.spawnInterval / speedMultiplier), 25);
                     showLevelNotification(currentLevel);
                 }
 
                 if (levelTransitionTimer > 0) levelTransitionTimer--;
-                if (scorePopTimer > 0) {
-                    scorePopTimer--;
-                    if (scorePopTimer === 0) scoreDisplay.classList.remove('pop');
-                }
-                if (comboTimer > 0) {
-                    comboTimer--;
-                    if (comboTimer === 0) {
-                        comboCount = 0;
-                        comboDisplay.classList.remove('active');
-                    }
-                }
+                if (scorePopTimer > 0) { scorePopTimer--; if (scorePopTimer === 0) scoreDisplay.classList.remove('pop'); }
+                if (comboTimer > 0) { comboTimer--; if (comboTimer === 0) { comboCount = 0; comboDisplay.classList.remove('active'); } }
                 if (nearMissTimer > 0) nearMissTimer--;
 
                 if (frameCount % 5 === 0) {
-                    const bonusPoints = comboCount > 0 ? Math.floor(comboCount * 0.5) : 0;
-                    score += 1 + bonusPoints;
+                    score += 1 + (comboCount > 0 ? Math.floor(comboCount * 0.5) : 0);
                     scoreDisplay.textContent = String(score).padStart(5, '0');
                     updateLevelIndicator();
-
-                    if (score % 100 === 0) {
-                        scorePopTimer = 10;
-                        scoreDisplay.classList.add('pop');
-                        dino.roarTimer = 20;
-                    }
+                    if (score % 100 === 0) { scorePopTimer = 10; scoreDisplay.classList.add('pop'); dino.roarTimer = 20; }
                 }
 
                 if (dino.isJumping) {
@@ -1627,33 +1747,19 @@
                 spawnTimer++;
                 if (spawnTimer >= spawnInterval) {
                     spawnTimer = 0;
-                    if (obstacles.length < 4) {
-                        processSpecialSpawn();
-                    }
+                    if (obstacles.length < 4) processSpecialSpawn();
                 }
 
                 for (let i = obstacles.length - 1; i >= 0; i--) {
                     obstacles[i].x -= gameSpeed;
-                    if (obstacles[i].type === 'bird') {
-                        obstacles[i].wingPhase += 0.25;
-                    }
-
-                    if (!obstacles[i].passed &&
-                        obstacles[i].x + obstacles[i].width < dino.x &&
-                        obstacles[i].x + obstacles[i].width > dino.x - 50) {
+                    if (obstacles[i].type === 'bird') obstacles[i].wingPhase += 0.25;
+                    if (!obstacles[i].passed && obstacles[i].x + obstacles[i].width < dino.x && obstacles[i].x + obstacles[i].width > dino.x - 50) {
                         obstacles[i].passed = true;
                         nearMissTimer = 25;
-                        createParticles(obstacles[i].x + obstacles[i].width / 2,
-                            obstacles[i].y + obstacles[i].height / 2, 4, '#ffffff', 'spark');
+                        createParticles(obstacles[i].x + obstacles[i].width / 2, obstacles[i].y + obstacles[i].height / 2, 4, '#ffffff', 'spark');
                     }
-
-                    if (obstacles[i].x < -60) {
-                        obstacles.splice(i, 1);
-                        continue;
-                    }
-                    if (dino.invincible <= 0 && checkCollision(dino, obstacles[i])) {
-                        endGame();
-                    }
+                    if (obstacles[i].x < -60) { obstacles.splice(i, 1); continue; }
+                    if (dino.invincible <= 0 && checkCollision(dino, obstacles[i])) endGame();
                 }
 
                 updateParticles();
@@ -1665,43 +1771,31 @@
                 ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
                 ctx.save();
                 if (screenShake > 0) {
-                    const shakeX = (Math.random() - 0.5) * screenShake * 1.5;
-                    const shakeY = (Math.random() - 0.5) * screenShake * 1.5;
-                    ctx.translate(shakeX, shakeY);
+                    ctx.translate((Math.random() - 0.5) * screenShake * 1.5, (Math.random() - 0.5) * screenShake * 1.5);
                 }
-
                 drawBackground(ctx);
-
                 if (gameSpeed > 7 && gameRunning) {
                     ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
                     ctx.lineWidth = 1;
                     for (let i = 0; i < 12; i++) {
                         const lx = Math.random() * GAME_WIDTH;
-                        const ly = Math.random() * GROUND_Y;
                         ctx.beginPath();
-                        ctx.moveTo(lx, ly);
-                        ctx.lineTo(lx - 40, ly);
+                        ctx.moveTo(lx, Math.random() * GROUND_Y);
+                        ctx.lineTo(lx - 40, Math.random() * GROUND_Y);
                         ctx.stroke();
                     }
                 }
-
                 if (currentLevel >= 8 && gameRunning) {
                     ctx.fillStyle = 'rgba(255, 0, 0, 0.03)';
                     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
                 }
-
                 for (const obs of obstacles) {
-                    if (obs.type === 'cactus') {
-                        drawCactus(ctx, obs.x, obs.y, obs.width, obs.height, obs.variant);
-                    } else if (obs.type === 'bird') {
-                        drawBird(ctx, obs.x, obs.y, obs.wingPhase);
-                    }
+                    if (obs.type === 'cactus') drawCactus(ctx, obs.x, obs.y, obs.width, obs.height, obs.variant);
+                    else if (obs.type === 'bird') drawBird(ctx, obs.x, obs.y, obs.wingPhase);
                 }
-
                 drawDino(ctx);
                 drawParticles(ctx);
                 ctx.restore();
-
                 if (gameOver) {
                     const vignette = ctx.createRadialGradient(400, GROUND_Y / 2, 350, 400, GROUND_Y / 2, 650);
                     vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
@@ -1714,12 +1808,15 @@
             function gameLoop() {
                 update();
                 draw();
-                requestAnimationFrame(gameLoop);
+                animationId = requestAnimationFrame(gameLoop);
             }
 
             function handleInteraction(e) {
                 e.preventDefault();
-                jump();
+                const now = Date.now();
+                if (now - lastTapTime < 50) return;
+                lastTapTime = now;
+                inputQueue.push('jump');
             }
 
             gameContainer.addEventListener('touchstart', handleInteraction, { passive: false });
@@ -1727,45 +1824,74 @@
             gameContainer.addEventListener('click', handleInteraction);
             document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
 
-            restartBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                resetGame();
-            });
-            restartBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                resetGame();
-            });
+            restartBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showDifficultyScreen(); });
+            restartBtn.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); showDifficultyScreen(); });
 
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
                     e.preventDefault();
-                    jump();
+                    inputQueue.push('jump');
                 }
             });
 
-            resetGame();
-            gameRunning = false;
-            gameStarted = false;
-            gameOver = false;
-            gameOverOverlay.classList.remove('visible');
-            tapHint.style.display = 'block';
-            updateLevelIndicator();
+            // Кнопка "ЗАНОВО" — перезапускает с начала с той же сложностью
+            document.getElementById('btnRestart').addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); restartFromDeath(); });
+            document.getElementById('btnRestart').addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); restartFromDeath(); });
+            
+            // Кнопка "МЕНЮ" — возвращает на экран выбора сложности
+            document.getElementById('btnMenu').addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showDifficultyScreen(); });
+            document.getElementById('btnMenu').addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); showDifficultyScreen(); });
 
-            function initialDraw() {
+            function showDifficultyScreen() {
+                if (animationId) cancelAnimationFrame(animationId);
+                gameRunning = false;
+                gameStarted = false;
+                gameOver = false;
+                gameOverOverlay.classList.remove('visible');
+                deathButtons.classList.remove('visible');
+                tapHint.style.display = 'none';
+                difficultyScreen.classList.remove('hidden');
+                obstacles = [];
+                particles = [];
+                score = 0;
+                scoreDisplay.textContent = '00000';
+                currentLevel = 1;
+                updateLevelIndicator();
+                dino.y = GROUND_Y - DINO_HEIGHT;
+                dino.vy = 0;
+                dino.isJumping = false;
+                dino.roarTimer = 0;
+                dino.invincible = 0;
+                inputQueue = [];
                 ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
                 drawBackground(ctx);
                 drawDino(ctx);
-                if (!gameRunning && !gameOver) {
-                    requestAnimationFrame(initialDraw);
-                } else {
-                    tapHint.style.display = 'none';
-                    gameLoop();
-                }
             }
-            initialDraw();
+
+            function startGame(multiplier) {
+                speedMultiplier = multiplier;
+                difficultyScreen.classList.add('hidden');
+                resetGame();
+                gameRunning = true;
+                gameStarted = true;
+                gameOver = false;
+                gameOverOverlay.classList.remove('visible');
+                deathButtons.classList.remove('visible');
+                tapHint.style.display = 'none';
+                updateLevelIndicator();
+                if (animationId) cancelAnimationFrame(animationId);
+                gameLoop();
+            }
+
+            document.getElementById('btnEasy').addEventListener('click', () => startGame(1));
+            document.getElementById('btnEasy').addEventListener('touchstart', (e) => { e.preventDefault(); startGame(1); });
+            document.getElementById('btnMedium').addEventListener('click', () => startGame(2));
+            document.getElementById('btnMedium').addEventListener('touchstart', (e) => { e.preventDefault(); startGame(2); });
+            document.getElementById('btnHard').addEventListener('click', () => startGame(3));
+            document.getElementById('btnHard').addEventListener('touchstart', (e) => { e.preventDefault(); startGame(3); });
+
+            showDifficultyScreen();
         })();
     </script>
 </body>
-  </html>
+</html>
