@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MrFeast Clicker - New Content</title>
+    <title>MrFeast Clicker - AWARDS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
@@ -247,7 +247,29 @@
             opacity: 0.8;
         }
 
-        .telegram-login-btn {
+        .register-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+
+        .register-btn i {
+            margin-right: 10px;
+        }
+
+        .register-btn:active {
+            opacity: 0.8;
+        }
+
+        .saved-accounts-btn {
             background: #0a0a0a;
             color: #ffd700;
             border: 2px solid #ffd700;
@@ -260,12 +282,19 @@
             transition: 0.2s;
         }
 
-        .telegram-login-btn i {
+        .saved-accounts-btn i {
             margin-right: 10px;
         }
 
-        .telegram-login-btn:active {
+        .saved-accounts-btn:active {
             opacity: 0.8;
+        }
+
+        .auth-error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 10px;
+            min-height: 20px;
         }
 
         .game-screen {
@@ -604,7 +633,6 @@
             border-radius: 10px;
         }
 
-        /* Убираем скролл для главного меню */
         #clickerTab {
             overflow-y: visible;
             padding-bottom: 10px;
@@ -709,7 +737,6 @@
             padding: 10px 0 30px 0;
         }
 
-        /* Вкладки магазина */
         .shop-tabs {
             display: flex;
             gap: 6px;
@@ -1204,6 +1231,282 @@
             width: 1.25em;
             text-align: center;
         }
+
+        .accounts-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50000;
+        }
+
+        .accounts-modal.active {
+            display: flex;
+        }
+
+        .accounts-panel {
+            background: #1a1a2a;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .accounts-title {
+            color: #ffd700;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .accounts-title i {
+            margin-right: 10px;
+        }
+
+        .accounts-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            margin-bottom: 15px;
+        }
+
+        .accounts-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .accounts-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .accounts-list::-webkit-scrollbar-track {
+            background: #0f0f19;
+            border-radius: 10px;
+        }
+
+        .accounts-list::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 10px;
+        }
+
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #0f0f19;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .account-item:active {
+            transform: scale(0.98);
+            border-color: #ffd700;
+        }
+
+        .account-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .account-coins {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .account-coins i {
+            color: #ffd700;
+            margin-right: 4px;
+        }
+
+        .no-accounts {
+            color: #666;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .no-accounts i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .accounts-close-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .accounts-close-btn:active {
+            opacity: 0.8;
+        }
+
+        .autosave-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 60000;
+        }
+
+        .autosave-modal.active {
+            display: flex;
+        }
+
+        .autosave-panel {
+            background: #1a1a2a;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            padding: 25px;
+            animation: fadeIn 0.4s ease;
+            text-align: center;
+        }
+
+        .autosave-title {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .autosave-title i {
+            margin-right: 10px;
+        }
+
+        .autosave-text {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .autosave-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .autosave-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid #ffd700;
+            background: #0a0a0a;
+            color: #ffd700;
+            min-width: 100px;
+        }
+
+        .autosave-btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .autosave-btn.yes {
+            background: #ffd700;
+            color: #0a0a0a;
+            border-color: #ffd700;
+        }
+
+        .autosave-btn.no {
+            background: transparent;
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .session-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 70000;
+        }
+
+        .session-modal.active {
+            display: flex;
+        }
+
+        .session-panel {
+            background: #1a1a2a;
+            border: 2px solid #ff6b6b;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            padding: 25px;
+            animation: fadeIn 0.4s ease;
+            text-align: center;
+        }
+
+        .session-title {
+            color: #ff6b6b;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .session-title i {
+            margin-right: 10px;
+        }
+
+        .session-text {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .session-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .session-btn:active {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -1220,8 +1523,49 @@
         <div class="login-screen" id="loginScreen">
             <h1><i class="fas fa-coins"></i> MrFeast Clicker</h1>
             <input type="text" id="username" placeholder="Никнейм" maxlength="20">
-            <button class="login-btn" onclick="startGame()"><i class="fas fa-sign-in-alt"></i> Войти</button>
-            <button class="telegram-login-btn" onclick="telegramLogin()"><i class="fab fa-telegram"></i> Вход по ID аккаунта (Telegram)</button>
+            <input type="password" id="password" placeholder="Пароль" maxlength="30">
+            <button class="login-btn" onclick="loginUser()"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            <button class="register-btn" onclick="registerUser()"><i class="fas fa-user-plus"></i> Регистрация</button>
+            <button class="saved-accounts-btn" onclick="openAccounts()"><i class="fas fa-users"></i> Сохранённые аккаунты</button>
+            <div id="authMessage" class="auth-error"></div>
+        </div>
+
+        <div class="accounts-modal" id="accountsModal">
+            <div class="accounts-panel">
+                <div class="accounts-title"><i class="fas fa-users"></i> Сохранённые аккаунты</div>
+                <div class="accounts-divider"></div>
+                <div class="accounts-list" id="accountsList">
+                    <div class="no-accounts">
+                        <i class="fas fa-user-slash"></i>
+                        Нет сохранённых аккаунтов
+                    </div>
+                </div>
+                <button class="accounts-close-btn" onclick="closeAccounts()"><i class="fas fa-times"></i> Закрыть</button>
+            </div>
+        </div>
+
+        <div class="autosave-modal" id="autosaveModal">
+            <div class="autosave-panel">
+                <div class="autosave-title"><i class="fas fa-save"></i> Автосохранение</div>
+                <div class="autosave-text" id="autosaveText">
+                    Мы обнаружили что ваш аккаунт не сохранен системой, хотите сохранить?<br>
+                    Вы сможете потом 1 кнопкой входить.
+                </div>
+                <div class="autosave-buttons">
+                    <button class="autosave-btn yes" onclick="autosaveAnswer(true)">Да</button>
+                    <button class="autosave-btn no" onclick="autosaveAnswer(false)">Нет</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="session-modal" id="sessionModal">
+            <div class="session-panel">
+                <div class="session-title"><i class="fas fa-exclamation-triangle"></i> Сеанс завершен</div>
+                <div class="session-text">
+                    Кто-то зашел с другого устройства на ваш аккаунт и превысил количество активных сеансов одновременно.
+                </div>
+                <button class="session-btn" onclick="kickToLogin()"><i class="fas fa-sign-out-alt"></i> ОК</button>
+            </div>
         </div>
 
         <div class="game-screen" id="gameScreen">
@@ -1380,11 +1724,189 @@
                 <i class="fas fa-bolt"></i> Апгрейд
             </button>
 
-            <div class="version">Version:1.1.5</div>
+            <div class="version">Version:1.2.0</div>
         </div>
     </div>
 
     <script>
+        // ==========================================
+        // SUPABASE КОНФИГУРАЦИЯ
+        // ==========================================
+        const SUPABASE_URL = 'https://lfmwdkpyhqmztvwcoenw.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_NJfsm5F3_NigieiTUwEuEQ_HDuwc3TI';
+
+        // Глобальные переменные
+        let currentPlayer = '';
+        let sessionId = '';
+        let isSessionKicked = false;
+        let sessionCheckInterval = null;
+        let currentPassword = '';
+
+        // ==========================================
+        // УПРАВЛЕНИЕ СОХРАНЁННЫМИ АККАУНТАМИ
+        // ==========================================
+        let pendingAccountName = '';
+        let pendingAccountCoins = 0;
+
+        function getSavedAccounts() {
+            try {
+                const data = localStorage.getItem('mrfeast_saved_accounts_v2');
+                return data ? JSON.parse(data) : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveAccountsList(accounts) {
+            localStorage.setItem('mrfeast_saved_accounts_v2', JSON.stringify(accounts));
+        }
+
+        function addAccount(name, password, coins) {
+            const accounts = getSavedAccounts();
+            const existing = accounts.find(a => a.name === name);
+            if (existing) {
+                existing.password = password;
+                existing.coins = coins;
+                existing.lastUpdate = Date.now();
+            } else {
+                accounts.push({ name, password, coins, lastUpdate: Date.now() });
+            }
+            saveAccountsList(accounts);
+        }
+
+        function isAccountSaved(name) {
+            const accounts = getSavedAccounts();
+            return accounts.some(a => a.name === name);
+        }
+
+        function getAccount(name) {
+            const accounts = getSavedAccounts();
+            return accounts.find(a => a.name === name);
+        }
+
+        function renderAccounts() {
+            const list = document.getElementById('accountsList');
+            const accounts = getSavedAccounts();
+            
+            if (accounts.length === 0) {
+                list.innerHTML = `
+                    <div class="no-accounts">
+                        <i class="fas fa-user-slash"></i>
+                        Нет сохранённых аккаунтов
+                    </div>
+                `;
+                return;
+            }
+            
+            accounts.sort((a, b) => b.coins - a.coins);
+            
+            list.innerHTML = accounts.map(acc => `
+                <div class="account-item" onclick="loadLocalAccount('${acc.name}', '${acc.password}')">
+                    <span class="account-name"><i class="fas fa-user"></i> ${acc.name}</span>
+                    <span class="account-coins"><i class="fas fa-coins"></i> ${acc.coins.toLocaleString()}</span>
+                </div>
+            `).join('');
+        }
+
+        function openAccounts() {
+            document.getElementById('accountsModal').classList.add('active');
+            renderAccounts();
+        }
+
+        function closeAccounts() {
+            document.getElementById('accountsModal').classList.remove('active');
+        }
+
+        function loadLocalAccount(name, password) {
+            closeAccounts();
+            document.getElementById('username').value = name;
+            document.getElementById('password').value = password || '';
+            setTimeout(() => loginUser(), 300);
+        }
+
+        function showAutosave(name, password, coins) {
+            pendingAccountName = name;
+            pendingAccountCoins = coins;
+            window._pendingPassword = password;
+            document.getElementById('autosaveModal').classList.add('active');
+        }
+
+        function autosaveAnswer(answer) {
+            document.getElementById('autosaveModal').classList.remove('active');
+            if (answer) {
+                addAccount(pendingAccountName, window._pendingPassword || '', pendingAccountCoins);
+                showNotif('✅ Аккаунт сохранён в список!');
+            }
+            pendingAccountName = '';
+            pendingAccountCoins = 0;
+            window._pendingPassword = '';
+        }
+
+        // ==========================================
+        // УПРАВЛЕНИЕ СЕССИЯМИ (РЕАЛЬНОЕ ВРЕМЯ)
+        // ==========================================
+        function generateSessionId() {
+            return 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 10);
+        }
+
+        async function updateSessionId(username, newSessionId) {
+            try {
+                await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ session_id: newSessionId })
+                });
+                return true;
+            } catch (e) {
+                console.error('Ошибка обновления сессии:', e);
+                return false;
+            }
+        }
+
+        async function checkSessionValid(username, currentSessionId) {
+            try {
+                const data = await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}&select=session_id`);
+                if (data && data.length > 0) {
+                    const storedSessionId = data[0].session_id || '';
+                    return storedSessionId === currentSessionId;
+                }
+                return false;
+            } catch (e) {
+                console.error('Ошибка проверки сессии:', e);
+                return true;
+            }
+        }
+
+        function startSessionCheck(username, sessionId) {
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            sessionCheckInterval = setInterval(async () => {
+                if (isSessionKicked) return;
+                const valid = await checkSessionValid(username, sessionId);
+                if (!valid) {
+                    isSessionKicked = true;
+                    clearInterval(sessionCheckInterval);
+                    sessionCheckInterval = null;
+                    document.getElementById('sessionModal').classList.add('active');
+                    if (autoClickerInterval) clearInterval(autoClickerInterval);
+                    if (browserInterval) clearInterval(browserInterval);
+                    if (casinoInterval) clearInterval(casinoInterval);
+                    if (serverTaxInterval) clearInterval(serverTaxInterval);
+                }
+            }, 2000); // Проверка каждые 2 секунды
+        }
+
+        function kickToLogin() {
+            document.getElementById('sessionModal').classList.remove('active');
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            isSessionKicked = false;
+            currentPlayer = '';
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
+            showNotif('👋 Вы вышли из аккаунта');
+        }
+
         // ==========================================
         // TELEGRAM INTEGRATION
         // ==========================================
@@ -1398,8 +1920,6 @@
             if (tg.initDataUnsafe?.user) {
                 userId = tg.initDataUnsafe.user.id;
                 userFirstName = tg.initDataUnsafe.user.first_name || 'Игрок';
-                console.log('Telegram User ID:', userId);
-                console.log('Telegram User Name:', userFirstName);
             }
         }
 
@@ -1432,9 +1952,185 @@
         });
 
         // ==========================================
+        // ФУНКЦИИ ДЛЯ РАБОТЫ С SUPABASE
+        // ==========================================
+        async function supabaseRequest(endpoint, options = {}) {
+            const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
+            const headers = {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+            };
+
+            const response = await fetch(url, {
+                ...options,
+                headers: { ...headers, ...options.headers }
+            });
+
+            if (!response.ok) {
+                const error = await response.text();
+                throw new Error(error || 'Ошибка запроса к базе данных');
+            }
+
+            return response.json();
+        }
+
+        async function checkUserExists(username) {
+            try {
+                const data = await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}&select=id`);
+                return data && data.length > 0;
+            } catch (e) {
+                console.error('Ошибка проверки пользователя:', e);
+                return false;
+            }
+        }
+
+        async function getUserData(username, password) {
+            try {
+                const data = await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}&password=eq.${encodeURIComponent(password)}&select=*`);
+                return data && data.length > 0 ? data[0] : null;
+            } catch (e) {
+                console.error('Ошибка получения данных пользователя:', e);
+                return null;
+            }
+        }
+
+        async function createUser(username, password) {
+            try {
+                const data = await supabaseRequest('users', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        coins: 0,
+                        click_count: 0,
+                        coins_per_click: 1,
+                        upgrade_level: 1,
+                        upgrade_cost: 5,
+                        rebirth_level: 0,
+                        rebirth_bonus: 0,
+                        lucky_level: 0,
+                        awards: {},
+                        session_id: ''
+                    })
+                });
+                return data && data.length > 0 ? data[0] : null;
+            } catch (e) {
+                console.error('Ошибка создания пользователя:', e);
+                return null;
+            }
+        }
+
+        async function updateUserData(username, data) {
+            try {
+                await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(data)
+                });
+                return true;
+            } catch (e) {
+                console.error('Ошибка обновления данных:', e);
+                return false;
+            }
+        }
+
+        // ==========================================
+        // АВТОРИЗАЦИЯ
+        // ==========================================
+        const loginScreen = document.getElementById('loginScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const authMessage = document.getElementById('authMessage');
+
+        async function loginUser() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username) { authMessage.textContent = 'Введите никнейм!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (!password) { authMessage.textContent = 'Введите пароль!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (username.length > 20) { authMessage.textContent = 'Никнейм не может быть длиннее 20 символов!'; authMessage.style.color = '#ff6b6b'; return; }
+
+            authMessage.textContent = '⏳ Загрузка...';
+            authMessage.style.color = '#ffd700';
+
+            try {
+                const user = await getUserData(username, password);
+                if (user) {
+                    sessionId = generateSessionId();
+                    await updateSessionId(username, sessionId);
+                    
+                    currentPlayer = username;
+                    currentPassword = password;
+                    playerNameDisplay.textContent = username;
+                    loginScreen.style.display = 'none';
+                    gameScreen.style.display = 'flex';
+                    
+                    startSessionCheck(username, sessionId);
+                    loadGameFromCloud(user);
+                    authMessage.textContent = '';
+                    
+                    if (!isAccountSaved(username)) {
+                        setTimeout(() => {
+                            showAutosave(username, password, coins);
+                        }, 500);
+                    } else {
+                        addAccount(username, password, coins);
+                    }
+                } else {
+                    authMessage.textContent = '❌ Неверный логин или пароль!';
+                    authMessage.style.color = '#ff6b6b';
+                }
+            } catch (e) {
+                authMessage.textContent = '❌ Ошибка подключения к серверу!';
+                authMessage.style.color = '#ff6b6b';
+                console.error(e);
+            }
+        }
+
+        async function registerUser() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username) { authMessage.textContent = 'Введите никнейм!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (!password) { authMessage.textContent = 'Введите пароль!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (username.length > 20) { authMessage.textContent = 'Никнейм не может быть длиннее 20 символов!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (password.length < 4) { authMessage.textContent = 'Пароль должен быть минимум 4 символа!'; authMessage.style.color = '#ff6b6b'; return; }
+
+            authMessage.textContent = '⏳ Проверка...';
+            authMessage.style.color = '#ffd700';
+
+            try {
+                const exists = await checkUserExists(username);
+                if (exists) {
+                    authMessage.textContent = '❌ Такой никнейм уже занят!';
+                    authMessage.style.color = '#ff6b6b';
+                    return;
+                }
+
+                authMessage.textContent = '⏳ Создание аккаунта...';
+                const user = await createUser(username, password);
+                if (user) {
+                    authMessage.textContent = '✅ Аккаунт создан! Вход...';
+                    authMessage.style.color = '#4caf50';
+                    setTimeout(() => {
+                        loginUser();
+                    }, 500);
+                } else {
+                    authMessage.textContent = '❌ Ошибка создания аккаунта!';
+                    authMessage.style.color = '#ff6b6b';
+                }
+            } catch (e) {
+                authMessage.textContent = '❌ Ошибка подключения к серверу!';
+                authMessage.style.color = '#ff6b6b';
+                console.error(e);
+            }
+        }
+
+        // ==========================================
         // ПОЛНАЯ ЛОГИКА ИГРЫ
         // ==========================================
-        let currentPlayer = '';
         let coins = 0;
         let clickCount = 0;
         let coinsPerClick = 1;
@@ -1487,9 +2183,6 @@
         let promoUsed = false;
         let browserInterval = null;
 
-        const loginScreen = document.getElementById('loginScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        const usernameInput = document.getElementById('username');
         const playerNameDisplay = document.getElementById('playerNameDisplay');
         const coinDisplay = document.getElementById('coinDisplay');
         const clickValueSpan = document.getElementById('clickValue');
@@ -1521,7 +2214,7 @@
         const shopItemsContainer = document.getElementById('shopItemsContainer');
 
         // ==========================================
-        // ДАННЫЕ ТОВАРОВ
+        // ДАННЫЕ ТОВАРОВ (сокращенно для экономии места)
         // ==========================================
         const shopItemsData = [
             { id: 'autoClicker', title: 'AutoClicker V1', desc: 'Автоматически кликает каждые 2 секунды', price: 1000, category: 'autoclicker', icon: 'fa-robot', requirement: null },
@@ -1554,41 +2247,16 @@
             { id: 'girlfriend', title: "MrFeast's GirlFriend Vika", desc: 'Любимая девушка MrFeast. Вы счастливы и ваш доход увеличился на +1500', price: 15000000, category: 'love', icon: 'fa-heart', requirement: 'MrFeast Big Home' }
         ];
 
-        function getShopItemPrice(itemId) {
-            const found = shopItemsData.find(i => i.id === itemId);
-            return found ? found.price : 0;
-        }
-
-        function getShopItemCategory(itemId) {
-            const found = shopItemsData.find(i => i.id === itemId);
-            return found ? found.category : 'other';
-        }
-
         function renderShopItems(filter) {
             let items = [...shopItemsData];
-            
-            if (filter === 'all') {
-                // все товары
-            } else if (filter === 'autoclicker') {
-                items = items.filter(i => i.category === 'autoclicker');
-            } else if (filter === 'pc') {
-                items = items.filter(i => i.category === 'pc');
-            } else if (filter === 'lucky') {
-                items = items.filter(i => i.category === 'lucky');
-            } else if (filter === 'love') {
-                items = items.filter(i => i.category === 'love');
-            } else if (filter === 'other') {
-                items = items.filter(i => i.category === 'other');
-            } else if (filter === 'min') {
-                items.sort((a, b) => a.price - b.price);
-            } else if (filter === 'max') {
-                items.sort((a, b) => b.price - a.price);
-            }
-            
-            // Сортировка по умолчанию для категорий - от дешевого к дорогому
-            if (filter !== 'min' && filter !== 'max') {
-                items.sort((a, b) => a.price - b.price);
-            }
+            if (filter === 'autoclicker') items = items.filter(i => i.category === 'autoclicker');
+            else if (filter === 'pc') items = items.filter(i => i.category === 'pc');
+            else if (filter === 'lucky') items = items.filter(i => i.category === 'lucky');
+            else if (filter === 'love') items = items.filter(i => i.category === 'love');
+            else if (filter === 'other') items = items.filter(i => i.category === 'other');
+            else if (filter === 'min') items.sort((a, b) => a.price - b.price);
+            else if (filter === 'max') items.sort((a, b) => b.price - a.price);
+            else items.sort((a, b) => a.price - b.price);
             
             let html = '';
             items.forEach(item => {
@@ -1598,7 +2266,6 @@
                 const btnHtml = isOwned ? 
                     '<span class="owned-badge"><i class="fas fa-check"></i></span>' : 
                     `<button class="shop-item-btn" onclick="buyShopItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>Купить</button>`;
-                
                 html += `
                     <div class="shop-item" data-item-id="${item.id}">
                         <div class="shop-item-header">
@@ -1614,97 +2281,62 @@
                     </div>
                 `;
             });
-            
             if (items.length === 0) {
                 html = '<div style="text-align:center;color:#666;padding:30px 0;"><i class="fas fa-box-open"></i> Нет товаров в этой категории</div>';
             }
-            
             shopItemsContainer.innerHTML = html;
         }
 
         function checkOwned(itemId) {
-            const ownershipMap = {
-                'autoClicker': hasAutoClicker,
-                'autoSpeedV1': hasAutoSpeedV1,
-                'autoSpeedV2': hasAutoSpeedV2,
-                'autoSpeedV3': hasAutoSpeedV3,
-                'autoProX1': hasAutoProX1,
-                'autoProX2': hasAutoProX2,
-                'ring': hasRing,
-                'crown': hasCrown,
-                'lucky1': luckyLevel >= 1,
-                'lucky2': luckyLevel >= 2,
-                'lucky3': luckyLevel >= 3,
-                'lucky4': luckyLevel >= 4,
+            const map = {
+                'autoClicker': hasAutoClicker, 'autoSpeedV1': hasAutoSpeedV1,
+                'autoSpeedV2': hasAutoSpeedV2, 'autoSpeedV3': hasAutoSpeedV3,
+                'autoProX1': hasAutoProX1, 'autoProX2': hasAutoProX2,
+                'ring': hasRing, 'crown': hasCrown,
+                'lucky1': luckyLevel >= 1, 'lucky2': luckyLevel >= 2,
+                'lucky3': luckyLevel >= 3, 'lucky4': luckyLevel >= 4,
                 'lucky5': luckyLevel >= 5,
-                'pc': hasPC,
-                'pcV2': hasPCV2,
-                'pcV3': hasPCV3,
-                'pcUltra': hasPCUltra,
-                'pcQuantum': hasPCQuantum,
-                'smartphone': hasSmartphone,
-                'browser': hasBrowser,
-                'casino': hasCasino,
-                'serverV1': hasServerV1,
-                'mtprotoV1': hasMTProtoV1,
-                'land': hasLand,
-                'factory': hasFactory,
-                'magicBall': hasMagicBall,
-                'bigHome': hasBigHome,
-                'girlfriend': hasGirlfriend
+                'pc': hasPC, 'pcV2': hasPCV2, 'pcV3': hasPCV3,
+                'pcUltra': hasPCUltra, 'pcQuantum': hasPCQuantum,
+                'smartphone': hasSmartphone, 'browser': hasBrowser,
+                'casino': hasCasino, 'serverV1': hasServerV1,
+                'mtprotoV1': hasMTProtoV1, 'land': hasLand,
+                'factory': hasFactory, 'magicBall': hasMagicBall,
+                'bigHome': hasBigHome, 'girlfriend': hasGirlfriend
             };
-            return ownershipMap[itemId] || false;
+            return map[itemId] || false;
         }
 
         function checkCanBuy(itemId) {
             const item = shopItemsData.find(i => i.id === itemId);
             if (!item) return false;
             if (checkOwned(itemId)) return false;
-            
-            const price = item.price;
-            if (coins < price) return false;
-            
-            // Проверка требований
+            if (coins < item.price) return false;
             if (item.requirement) {
                 const reqMap = {
-                    'AutoClicker V1': hasAutoClicker,
-                    'Update V1': hasAutoSpeedV1,
-                    'Update V2': hasAutoSpeedV2,
-                    'последняя прокачка автокликера': hasAutoSpeedV3,
-                    'AutoClicker Pro X1': hasAutoProX1,
-                    'Diamond Ring': hasRing,
-                    'Lucky X1': luckyLevel >= 1,
-                    'Lucky X2': luckyLevel >= 2,
-                    'Lucky X3': luckyLevel >= 3,
-                    'Lucky X4': luckyLevel >= 4,
-                    'MrFeast PC V1': hasPC,
-                    'MrFeast PC V2': hasPCV2,
-                    'MrFeast PC V3': hasPCV3,
-                    'MrFeast PC Ultra': hasPCUltra,
-                    'MrFeast Factory': hasFactory,
-                    'MrFeastServer(V1)': hasServerV1,
-                    'MrFeast Big Home': hasBigHome,
-                    'MrFeastLand': hasLand
+                    'AutoClicker V1': hasAutoClicker, 'Update V1': hasAutoSpeedV1,
+                    'Update V2': hasAutoSpeedV2, 'последняя прокачка автокликера': hasAutoSpeedV3,
+                    'AutoClicker Pro X1': hasAutoProX1, 'Diamond Ring': hasRing,
+                    'Lucky X1': luckyLevel >= 1, 'Lucky X2': luckyLevel >= 2,
+                    'Lucky X3': luckyLevel >= 3, 'Lucky X4': luckyLevel >= 4,
+                    'MrFeast PC V1': hasPC, 'MrFeast PC V2': hasPCV2,
+                    'MrFeast PC V3': hasPCV3, 'MrFeast PC Ultra': hasPCUltra,
+                    'MrFeast Factory': hasFactory, 'MrFeastServer(V1)': hasServerV1,
+                    'MrFeast Big Home': hasBigHome, 'MrFeastLand': hasLand
                 };
-                
                 const requirements = item.requirement.split(', ');
                 for (let req of requirements) {
                     if (!reqMap[req]) return false;
                 }
             }
-            
             return true;
         }
 
         function buyShopItem(itemId) {
             const item = shopItemsData.find(i => i.id === itemId);
-            if (!item) return;
-            if (!checkCanBuy(itemId)) return;
-            
+            if (!item || !checkCanBuy(itemId)) return;
             coins -= item.price;
-            
-            // Применяем покупку
-            const actionMap = {
+            const actions = {
                 'autoClicker': () => { hasAutoClicker = true; restartAuto(); showNotif('✅ AutoClicker V1'); },
                 'autoSpeedV1': () => { hasAutoSpeedV1 = true; restartAuto(); showNotif('⚡️Автокликер стал быстрее! (1с)'); },
                 'autoSpeedV2': () => { hasAutoSpeedV2 = true; restartAuto(); showNotif('⚡️⚡️Автокликер стал быстрее! (0.5с)'); },
@@ -1734,13 +2366,9 @@
                 'bigHome': () => { hasBigHome = true; showNotif('🏡 MrFeast Big Home куплен! +570 за клик'); },
                 'girlfriend': () => { hasGirlfriend = true; showNotif('💚 MrFeast\'s GirlFriend Vika куплена! +1500 за клик'); }
             };
-            
-            if (actionMap[itemId]) {
-                actionMap[itemId]();
-            }
-            
+            if (actions[itemId]) actions[itemId]();
             updateDisplay();
-            saveGame();
+            saveGameToCloud();
             renderShopItems(getCurrentFilter());
         }
 
@@ -1757,14 +2385,14 @@
                         coins -= 1000000;
                         showNotif(`🗄 Сервер MrFeastServer(V1) списал 1.000.000 монет за обслуживание!`);
                         updateDisplay();
-                        saveGame();
+                        saveGameToCloud();
                     } else {
                         showNotif(`⚠️ Недостаточно средств для оплаты сервера (1.000.000)! Сервер остановлен.`);
                         clearInterval(serverTaxInterval);
                         serverTaxInterval = null;
                         hasServerV1 = false;
                         updateDisplay();
-                        saveGame();
+                        saveGameToCloud();
                     }
                 }, 300000);
             }
@@ -1781,8 +2409,7 @@
         }
 
         function getAutoMultiplier() {
-            if (hasAutoProX1 || hasAutoProX2) return 5;
-            return 1;
+            return (hasAutoProX1 || hasAutoProX2) ? 5 : 1;
         }
 
         function getTotalPerClick() {
@@ -1828,7 +2455,6 @@
         function canUpgrade() { return coins >= upgradeCost; }
         
         function canBuyAnything() {
-            // Простая проверка для индикатора
             for (let item of shopItemsData) {
                 if (checkCanBuy(item.id)) return true;
             }
@@ -1878,7 +2504,7 @@
             settingsModal.classList.remove('active');
             applyHighQuality();
             updateAllDots();
-            saveGame();
+            saveGameToCloud();
         }
 
         function applyHighQuality() {
@@ -1985,7 +2611,7 @@
             else return;
             updateAwards();
             updateDisplay();
-            saveGame();
+            saveGameToCloud();
         }
 
         function activatePromo() {
@@ -1997,7 +2623,7 @@
                 promoMessage.textContent = 'Промокод активирован! +570 за клик';
                 promoMessage.className = 'promo-message success';
                 updateDisplay();
-                saveGame();
+                saveGameToCloud();
                 showNotif('🎁 Промокод активирован! +570 за клик');
             } else {
                 promoMessage.textContent = 'Неверный промокод';
@@ -2028,11 +2654,8 @@
             autoSpeedSpan.textContent = speedText;
             upgradeBtn.innerHTML = `<i class="fas fa-bolt"></i> Апгрейд (${upgradeCost.toLocaleString()})`;
             progressFill.style.width = Math.min((coins / upgradeCost) * 100, 100) + '%';
-            
             upgradeBtn.disabled = coins < upgradeCost;
             updateRebirthButton();
-            
-            // Обновляем магазин
             renderShopItems(getCurrentFilter());
         }
 
@@ -2089,7 +2712,7 @@
                 if (browserInterval) clearInterval(browserInterval);
                 if (casinoInterval) clearInterval(casinoInterval);
                 updateDisplay();
-                saveGame();
+                saveGameToCloud();
                 showNotif(`🎉 Rebirth ${rebirthLevel}! +5 за клик`);
             }
         }
@@ -2108,7 +2731,7 @@
                     coins += gain;
                     clickCount++;
                     updateDisplay();
-                    saveGame();
+                    saveGameToCloud();
                 }, speed);
             }
         }
@@ -2119,7 +2742,7 @@
                 const bonus = getTotalPerClick() * 2;
                 coins += bonus;
                 updateDisplay();
-                saveGame();
+                saveGameToCloud();
             }, 5000);
         }
 
@@ -2128,7 +2751,7 @@
             if (hasCasino) casinoInterval = setInterval(() => {
                 coins += 15000;
                 updateDisplay();
-                saveGame();
+                saveGameToCloud();
                 showNotif('🎰 Casino: +15 000 монет');
             }, 60000);
         }
@@ -2142,7 +2765,7 @@
             coins += gain;
             clickCount++;
             updateDisplay();
-            saveGame();
+            saveGameToCloud();
         }
 
         function buyUpgrade() {
@@ -2153,7 +2776,7 @@
                 upgradeCost = Math.floor(upgradeCost * 5);
                 updateDisplay();
                 restartAuto();
-                saveGame();
+                saveGameToCloud();
                 showNotif(`✨ Уровень ${upgradeLevel}`);
             }
         }
@@ -2176,72 +2799,110 @@
             setTimeout(() => n.remove(), 2000);
         }
 
-        function telegramLogin() {
-            if (tg && tg.showPopup) {
-                tg.showPopup({
-                    title: 'Telegram ID вход',
-                    message: '🔜 Вход по Telegram ID будет доступен в следующем обновлении!',
-                    buttons: [{type: 'ok'}]
-                });
-            } else {
-                showNotif('🔜 Вход по Telegram ID будет доступен в следующем обновлении!');
-            }
-        }
-
-        function saveGame() {
+        // ==========================================
+        // СОХРАНЕНИЕ В ОБЛАКО
+        // ==========================================
+        async function saveGameToCloud() {
+            if (!currentPlayer || isSessionKicked) return;
+            
             const data = {
-                coins, clickCount, coinsPerClick, upgradeLevel, upgradeCost,
-                hasAutoClicker, hasAutoSpeedV1, hasAutoSpeedV2, hasAutoSpeedV3, hasAutoProX1, hasAutoProX2,
-                hasRing, hasCrown, hasPC, hasBrowser, hasLand,
-                hasCasino, hasMagicBall, hasBigHome, hasGirlfriend, hasFactory, hasSmartphone,
-                rebirthLevel, rebirthBonus, luckyLevel,
-                awards, promoUsed, highQuality, hideIndicators,
-                hasPCV2, hasPCV3, hasPCUltra, hasPCQuantum, hasServerV1, hasMTProtoV1
+                coins, click_count: clickCount, coins_per_click: coinsPerClick,
+                upgrade_level: upgradeLevel, upgrade_cost: upgradeCost,
+                rebirth_level: rebirthLevel, rebirth_bonus: rebirthBonus,
+                lucky_level: luckyLevel,
+                has_auto_clicker: hasAutoClicker, has_auto_speed_v1: hasAutoSpeedV1,
+                has_auto_speed_v2: hasAutoSpeedV2, has_auto_speed_v3: hasAutoSpeedV3,
+                has_auto_pro_x1: hasAutoProX1, has_auto_pro_x2: hasAutoProX2,
+                has_ring: hasRing, has_crown: hasCrown,
+                has_pc: hasPC, has_pc_v2: hasPCV2, has_pc_v3: hasPCV3,
+                has_pc_ultra: hasPCUltra, has_pc_quantum: hasPCQuantum,
+                has_browser: hasBrowser, has_land: hasLand,
+                has_casino: hasCasino, has_magic_ball: hasMagicBall,
+                has_big_home: hasBigHome, has_girlfriend: hasGirlfriend,
+                has_factory: hasFactory, has_smartphone: hasSmartphone,
+                has_server_v1: hasServerV1, has_mtproto_v1: hasMTProtoV1,
+                awards: awards, promo_used: promoUsed,
+                high_quality: highQuality, hide_indicators: hideIndicators
             };
-            try { localStorage.setItem('game_' + currentPlayer, JSON.stringify(data)); } catch(e) {}
+
+            try {
+                await updateUserData(currentPlayer, data);
+                const password = document.getElementById('password').value || currentPassword;
+                if (isAccountSaved(currentPlayer)) {
+                    addAccount(currentPlayer, password, coins);
+                }
+            } catch (e) {
+                console.error('Ошибка сохранения в облако:', e);
+            }
         }
 
-        function loadGame() {
-            let saved = localStorage.getItem('game_' + currentPlayer);
-            if (saved) {
-                const d = JSON.parse(saved);
-                coins = d.coins; clickCount = d.clickCount; coinsPerClick = d.coinsPerClick;
-                upgradeLevel = d.upgradeLevel; upgradeCost = d.upgradeCost;
-                hasAutoClicker = d.hasAutoClicker; hasAutoSpeedV1 = d.hasAutoSpeedV1;
-                hasAutoSpeedV2 = d.hasAutoSpeedV2; hasAutoSpeedV3 = d.hasAutoSpeedV3 || false;
-                hasAutoProX1 = d.hasAutoProX1 || false;
-                hasAutoProX2 = d.hasAutoProX2 || false;
-                hasRing = d.hasRing; hasCrown = d.hasCrown || false; hasPC = d.hasPC || false;
-                hasBrowser = d.hasBrowser || false; hasLand = d.hasLand || false;
-                hasCasino = d.hasCasino || false; hasMagicBall = d.hasMagicBall || false;
-                hasBigHome = d.hasBigHome || false; hasGirlfriend = d.hasGirlfriend || false;
-                hasFactory = d.hasFactory || false; hasSmartphone = d.hasSmartphone || false;
-                rebirthLevel = d.rebirthLevel || 0; rebirthBonus = d.rebirthBonus || 0;
-                luckyLevel = d.luckyLevel || 0;
-                awards = d.awards || { award1: false, award2: false, award3: false, award4: false, award5: false, award6: false, award7: false, award8: false, award9: false, award10: false, award11: false, award12: false, award13: false, award14: false, award15: false };
-                promoUsed = d.promoUsed || false;
-                highQuality = d.highQuality || false;
-                hideIndicators = d.hideIndicators || false;
-                hasPCV2 = d.hasPCV2 || false;
-                hasPCV3 = d.hasPCV3 || false;
-                hasPCUltra = d.hasPCUltra || false;
-                hasPCQuantum = d.hasPCQuantum || false;
-                hasServerV1 = d.hasServerV1 || false;
-                hasMTProtoV1 = d.hasMTProtoV1 || false;
-                highQualityToggle.checked = highQuality;
-                hideIndicatorsToggle.checked = hideIndicators;
-                applyHighQuality();
-                if (hasServerV1) startServerTax();
-                showNotif('✅ Загружено');
-            } else {
-                coins = 0;
-                showNotif('🆕 Новый игрок');
+        function loadGameFromCloud(user) {
+            coins = user.coins || 0;
+            clickCount = user.click_count || 0;
+            coinsPerClick = user.coins_per_click || 1;
+            upgradeLevel = user.upgrade_level || 1;
+            upgradeCost = user.upgrade_cost || 5;
+            rebirthLevel = user.rebirth_level || 0;
+            rebirthBonus = user.rebirth_bonus || 0;
+            luckyLevel = user.lucky_level || 0;
+            
+            hasAutoClicker = user.has_auto_clicker || false;
+            hasAutoSpeedV1 = user.has_auto_speed_v1 || false;
+            hasAutoSpeedV2 = user.has_auto_speed_v2 || false;
+            hasAutoSpeedV3 = user.has_auto_speed_v3 || false;
+            hasAutoProX1 = user.has_auto_pro_x1 || false;
+            hasAutoProX2 = user.has_auto_pro_x2 || false;
+            hasRing = user.has_ring || false;
+            hasCrown = user.has_crown || false;
+            hasPC = user.has_pc || false;
+            hasPCV2 = user.has_pc_v2 || false;
+            hasPCV3 = user.has_pc_v3 || false;
+            hasPCUltra = user.has_pc_ultra || false;
+            hasPCQuantum = user.has_pc_quantum || false;
+            hasBrowser = user.has_browser || false;
+            hasLand = user.has_land || false;
+            hasCasino = user.has_casino || false;
+            hasMagicBall = user.has_magic_ball || false;
+            hasBigHome = user.has_big_home || false;
+            hasGirlfriend = user.has_girlfriend || false;
+            hasFactory = user.has_factory || false;
+            hasSmartphone = user.has_smartphone || false;
+            hasServerV1 = user.has_server_v1 || false;
+            hasMTProtoV1 = user.has_mtproto_v1 || false;
+            
+            if (user.awards) {
+                try {
+                    awards = typeof user.awards === 'string' ? JSON.parse(user.awards) : user.awards;
+                } catch { awards = user.awards || {}; }
             }
+            
+            promoUsed = user.promo_used || false;
+            highQuality = user.high_quality || false;
+            hideIndicators = user.hide_indicators || false;
+            
+            highQualityToggle.checked = highQuality;
+            hideIndicatorsToggle.checked = hideIndicators;
+            applyHighQuality();
+            
+            if (hasServerV1) startServerTax();
+            
             restartAuto(); restartBrowser(); restartCasino();
             updateDisplay();
+            showNotif('✅ Данные загружены из облака');
+            
+            const password = document.getElementById('password').value || currentPassword;
+            if (!isAccountSaved(currentPlayer)) {
+                setTimeout(() => {
+                    showAutosave(currentPlayer, password, coins);
+                }, 500);
+            } else {
+                addAccount(currentPlayer, password, coins);
+            }
         }
 
-        // Обработчики вкладок магазина
+        // ==========================================
+        // ОБРАБОТЧИКИ ВКЛАДОК МАГАЗИНА
+        // ==========================================
         document.addEventListener('click', function(e) {
             const shopTab = e.target.closest('.shop-tab');
             if (shopTab) {
@@ -2251,6 +2912,9 @@
             }
         });
 
+        // ==========================================
+        // СОЗДАНИЕ ПЛАВАЮЩИХ КРУГОВ
+        // ==========================================
         function createFloatingCircles() {
             if (circlesInterval) clearInterval(circlesInterval);
             floatingCircles.innerHTML = '';
@@ -2301,17 +2965,9 @@
             handleClick();
         }
 
-        function startGame() {
-            const name = usernameInput.value.trim();
-            if (!name) { showNotif('Введите никнейм'); return; }
-            if (name.length > 10) { showNotif('Никнейм не может быть длиннее 10 символов!'); return; }
-            currentPlayer = name;
-            playerNameDisplay.textContent = name;
-            loginScreen.style.display = 'none';
-            gameScreen.style.display = 'flex';
-            loadGame();
-        }
-
+        // ==========================================
+        // ГЕНЕРАЦИЯ НАГРАД
+        // ==========================================
         function generateAwardsHTML() {
             return `
                 <div class="award-item" id="award1"><div class="award-header"><span class="award-icon"><i class="fas fa-heart"></i></span><span class="award-title">Начинающий</span></div><div class="award-desc">Первое перерождение</div><div class="award-reward"><i class="fas fa-coins"></i> Награда: 10 000 монет</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 1 Rebirth</div><div id="award1Btn"></div></div></div>
@@ -2332,19 +2988,31 @@
             `;
         }
 
+        // ==========================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ==========================================
         document.getElementById('awardsContent').innerHTML = generateAwardsHTML();
-
-        // Инициализация магазина
         renderShopItems('all');
 
+        // Сохранение при закрытии
         window.addEventListener('beforeunload', () => {
             if (autoClickerInterval) clearInterval(autoClickerInterval);
             if (browserInterval) clearInterval(browserInterval);
             if (casinoInterval) clearInterval(casinoInterval);
             if (circlesInterval) clearInterval(circlesInterval);
             if (serverTaxInterval) clearInterval(serverTaxInterval);
-            saveGame();
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            saveGameToCloud();
         });
+
+        // ==========================================
+        // АВТОСОХРАНЕНИЕ КАЖДЫЕ 2 СЕКУНДЫ
+        // ==========================================
+        setInterval(() => {
+            if (currentPlayer && !isSessionKicked) {
+                saveGameToCloud();
+            }
+        }, 2000);
     </script>
 </body>
 </html>
