@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MrFeast Clicker - AWARDS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -25,7 +28,6 @@
             overflow: hidden;
         }
 
-        /* ЭКРАН ЗАГРУЗКИ - ТОЛЬКО ОДИН КРУГ, ТЕКСТ СМЕЩЁН ПРАВЕЕ */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -51,7 +53,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-left: 15px;
+            position: relative;
+            left: -8px;
         }
 
         .neon-loader {
@@ -206,6 +209,10 @@
             text-shadow: 0 0 10px rgba(255,215,0,0.3);
         }
 
+        .login-screen h1 i {
+            margin-right: 10px;
+        }
+
         .login-screen input {
             width: 100%;
             padding: 15px 20px;
@@ -253,6 +260,10 @@
             transition: 0.2s;
         }
 
+        .telegram-login-btn i {
+            margin-right: 10px;
+        }
+
         .telegram-login-btn:active {
             opacity: 0.8;
         }
@@ -283,6 +294,10 @@
             font-weight: bold;
         }
 
+        .player-name i {
+            margin-right: 8px;
+        }
+
         .coins-header {
             font-size: 18px;
             color: #ffd700;
@@ -294,10 +309,14 @@
             margin-right: 5px;
         }
 
+        .coins-header i {
+            margin-right: 6px;
+        }
+
         .settings-btn {
             background: #0a0a0a;
             border: 2px solid #ffd700;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             padding: 5px 10px;
             color: #ffd700;
@@ -350,6 +369,10 @@
             margin-bottom: 10px;
         }
 
+        .settings-title i {
+            margin-right: 10px;
+        }
+
         .settings-divider {
             height: 2px;
             background: linear-gradient(90deg, transparent, #ffd700, transparent);
@@ -381,6 +404,12 @@
             color: #ffd700;
             font-size: 16px;
             font-weight: bold;
+        }
+
+        .option-name i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
         }
 
         .toggle-switch {
@@ -434,7 +463,7 @@
             line-height: 1.3;
         }
 
-        .vpn-button {
+        .contact-button {
             background: #0a0a0a;
             color: #ffd700;
             border: 2px solid #ffd700;
@@ -449,7 +478,11 @@
             margin-top: 5px;
         }
 
-        .vpn-button:active {
+        .contact-button i {
+            margin-right: 10px;
+        }
+
+        .contact-button:active {
             opacity: 0.8;
             transform: scale(0.98);
         }
@@ -467,6 +500,10 @@
             margin-top: 10px;
         }
 
+        .settings-close i {
+            margin-right: 8px;
+        }
+
         .settings-close:active {
             opacity: 0.8;
         }
@@ -482,7 +519,7 @@
 
         .tabs {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 15px;
             flex-shrink: 0;
             position: relative;
@@ -496,17 +533,26 @@
 
         .tab {
             flex: 0 0 auto;
-            min-width: 80px;
-            padding: 12px;
+            min-width: 70px;
+            padding: 10px 8px;
             background: #0a0a0a;
             border: 2px solid #ffd700;
             border-radius: 10px;
             color: #ffd700;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             text-align: center;
             transition: 0.2s;
             position: relative;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .tab i {
+            font-size: 14px;
         }
 
         .tab.active {
@@ -518,8 +564,8 @@
             position: absolute;
             top: 2px;
             right: 2px;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #4caf50;
             box-shadow: 0 0 10px #4caf50;
@@ -584,17 +630,16 @@
             transform: scale(0.97);
         }
 
-        .click-btn span {
+        .click-btn i {
+            font-size: 55px;
             color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .click-btn span:first-child {
-            font-size: 55px;
             margin-bottom: 5px;
         }
 
-        .click-btn span:nth-child(2) {
+        .click-btn span {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             font-size: 26px;
             font-weight: bold;
         }
@@ -621,6 +666,11 @@
             color: #888;
             text-transform: uppercase;
             margin-bottom: 3px;
+        }
+
+        .stat-label i {
+            font-size: 10px;
+            margin-right: 3px;
         }
 
         .stat-value {
@@ -665,7 +715,10 @@
         }
 
         .shop-item-icon {
-            font-size: 30px;
+            font-size: 24px;
+            width: 36px;
+            text-align: center;
+            color: #ffd700;
         }
 
         .shop-item-title {
@@ -681,6 +734,10 @@
             line-height: 1.4;
         }
 
+        .shop-item-desc i {
+            margin-right: 4px;
+        }
+
         .shop-item-footer {
             display: flex;
             justify-content: space-between;
@@ -692,6 +749,10 @@
             font-size: 18px;
             font-weight: bold;
             color: #ffd700;
+        }
+
+        .shop-item-price i {
+            margin-right: 6px;
         }
 
         .shop-item-price small {
@@ -729,6 +790,10 @@
             display: inline-block;
         }
 
+        .owned-badge i {
+            margin-right: 4px;
+        }
+
         .requirement-badge {
             background: rgba(255, 100, 100, 0.15);
             color: #ff6b6b;
@@ -737,6 +802,10 @@
             font-size: 12px;
             margin-bottom: 10px;
             display: inline-block;
+        }
+
+        .requirement-badge i {
+            margin-right: 4px;
         }
 
         .upgrade-btn {
@@ -753,6 +822,10 @@
             flex-shrink: 0;
             position: relative;
             z-index: 2;
+        }
+
+        .upgrade-btn i {
+            margin-right: 10px;
         }
 
         .upgrade-btn:disabled {
@@ -772,6 +845,10 @@
             width: 100%;
             margin: 15px 0;
             flex-shrink: 0;
+        }
+
+        .rebirth-btn i {
+            margin-right: 10px;
         }
 
         .rebirth-btn:disabled {
@@ -795,10 +872,18 @@
             margin-bottom: 10px;
         }
 
+        .rebirth-level i {
+            margin-right: 10px;
+        }
+
         .rebirth-bonus {
             color: #4caf50;
             font-size: 16px;
             margin-bottom: 5px;
+        }
+
+        .rebirth-bonus i {
+            margin-right: 6px;
         }
 
         .rebirth-requirements {
@@ -862,7 +947,10 @@
         }
 
         .award-icon {
-            font-size: 30px;
+            font-size: 24px;
+            width: 36px;
+            text-align: center;
+            color: #ffd700;
         }
 
         .award-title {
@@ -885,6 +973,10 @@
             font-weight: bold;
         }
 
+        .award-reward i {
+            margin-right: 6px;
+        }
+
         .award-footer {
             display: flex;
             justify-content: space-between;
@@ -897,6 +989,10 @@
             background: rgba(255, 100, 100, 0.1);
             padding: 5px 10px;
             border-radius: 10px;
+        }
+
+        .award-requirement i {
+            margin-right: 4px;
         }
 
         .award-btn {
@@ -928,6 +1024,10 @@
             font-weight: bold;
         }
 
+        .completed-badge i {
+            margin-right: 4px;
+        }
+
         .promo-content {
             padding: 20px 10px;
             text-align: center;
@@ -937,6 +1037,10 @@
             color: #ffd700;
             font-size: 22px;
             margin-bottom: 20px;
+        }
+
+        .promo-title i {
+            margin-right: 10px;
         }
 
         .promo-input {
@@ -966,6 +1070,10 @@
             border-radius: 10px;
             cursor: pointer;
             width: 100%;
+        }
+
+        .promo-btn i {
+            margin-right: 8px;
         }
 
         .promo-btn:active {
@@ -1028,16 +1136,24 @@
             line-height: 1.4;
         }
 
+        .notification i {
+            margin-right: 8px;
+        }
+
         @keyframes notification {
             0% { transform: translate(-50%, -100%); opacity: 0; }
             10% { transform: translate(-50%, 0); opacity: 1; }
             90% { transform: translate(-50%, 0); opacity: 1; }
             100% { transform: translate(-50%, -100%); opacity: 0; }
         }
+
+        .fa-fw {
+            width: 1.25em;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <!-- ЭКРАН ЗАГРУЗКИ - ТЕКСТ СМЕЩЁН ПРАВЕЕ -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loader-wrapper">
             <div class="neon-loader"></div>
@@ -1049,32 +1165,32 @@
         <div class="floating-circles" id="floatingCircles"></div>
 
         <div class="login-screen" id="loginScreen">
-            <h1>💰 MrFeast Clicker 💰</h1>
+            <h1><i class="fas fa-coins"></i> MrFeast Clicker</h1>
             <input type="text" id="username" placeholder="Никнейм" maxlength="20">
-            <button class="login-btn" onclick="startGame()">Войти</button>
-            <button class="telegram-login-btn" onclick="telegramLogin()">Вход по ID аккаунта (Telegram)</button>
+            <button class="login-btn" onclick="startGame()"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            <button class="telegram-login-btn" onclick="telegramLogin()"><i class="fab fa-telegram"></i> Вход по ID аккаунта (Telegram)</button>
         </div>
 
         <div class="game-screen" id="gameScreen">
             <div class="header">
-                <div class="player-name" id="playerNameDisplay">Игрок</div>
+                <div class="player-name"><i class="fas fa-user"></i><span id="playerNameDisplay">Игрок</span></div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div class="coins-header" id="coinDisplay">
-                        <span>Coins:</span>0
+                        <i class="fas fa-coins"></i><span>Coins:</span>0
                     </div>
-                    <button class="settings-btn" onclick="openSettings()">⚙️</button>
+                    <button class="settings-btn" onclick="openSettings()"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
 
             <div class="settings-modal" id="settingsModal">
                 <div class="settings-panel">
-                    <div class="settings-title">Настройки игры</div>
+                    <div class="settings-title"><i class="fas fa-sliders-h"></i> Настройки игры</div>
                     <div class="settings-divider"></div>
                     <div class="settings-subtitle">Параметры</div>
                     
                     <div class="settings-option">
                         <div class="option-header">
-                            <span class="option-name">Высокое качество</span>
+                            <span class="option-name"><i class="fas fa-star"></i> Высокое качество</span>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="highQualityToggle">
                                 <span class="toggle-slider"></span>
@@ -1085,7 +1201,7 @@
                     
                     <div class="settings-option">
                         <div class="option-header">
-                            <span class="option-name">Отключить индикаторы</span>
+                            <span class="option-name"><i class="fas fa-eye-slash"></i> Отключить индикаторы</span>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="hideIndicatorsToggle">
                                 <span class="toggle-slider"></span>
@@ -1096,63 +1212,63 @@
 
                     <div class="settings-option">
                         <div class="option-header">
-                            <span class="option-name">Наш VPN для Telegram</span>
+                            <span class="option-name"><i class="fas fa-phone"></i> Связь с владельцем</span>
                         </div>
-                        <button class="vpn-button" id="vpnButton">Перейти к VPN</button>
+                        <button class="contact-button" id="contactButton"><i class="fab fa-telegram"></i> Написать</button>
                     </div>
                     
-                    <button class="settings-close" onclick="closeSettingsAndApply()">Закрыть и применить</button>
+                    <button class="settings-close" onclick="closeSettingsAndApply()"><i class="fas fa-check"></i> Закрыть и применить</button>
                 </div>
             </div>
 
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('clicker')" id="clickerTabBtn">
-                    👆 Clicker
+                    <i class="fas fa-hand-pointer"></i> Clicker
                     <span class="tab-dot" id="clickerDot"></span>
                 </div>
                 <div class="tab" onclick="switchTab('shop')" id="shopTabBtn">
-                    🛒 Shop
+                    <i class="fas fa-shopping-cart"></i> Shop
                     <span class="tab-dot" id="shopDot"></span>
                 </div>
                 <div class="tab" onclick="switchTab('rebirth')" id="rebirthTabBtn">
-                    🔄 Rebirth
+                    <i class="fas fa-sync-alt"></i> Rebirth
                     <span class="tab-dot" id="rebirthDot"></span>
                 </div>
                 <div class="tab" onclick="switchTab('awards')" id="awardsTabBtn">
-                    🎗 Awards
+                    <i class="fas fa-trophy"></i> Awards
                     <span class="tab-dot" id="awardDot"></span>
                 </div>
                 <div class="tab" onclick="switchTab('promo')" id="promoTabBtn">
-                    🎁 Promo
+                    <i class="fas fa-gift"></i> Promo
                 </div>
             </div>
 
             <div class="tab-content active" id="clickerTab">
                 <div class="clicker-content">
                     <div class="click-btn" onclick="handleClickWithRipple(event)">
-                        <span>💰</span>
+                        <i class="fas fa-hand-pointer"></i>
                         <span id="clickValue">+1</span>
                     </div>
 
                     <div class="stats">
                         <div class="stat-item">
-                            <div class="stat-label">Клики</div>
+                            <div class="stat-label"><i class="fas fa-mouse-pointer"></i> Клики</div>
                             <div class="stat-value" id="clickCount">0</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">Уровень</div>
+                            <div class="stat-label"><i class="fas fa-arrow-up"></i> Уровень</div>
                             <div class="stat-value" id="upgradeLevel">1</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">За клик</div>
+                            <div class="stat-label"><i class="fas fa-hand-peace"></i> За клик</div>
                             <div class="stat-value" id="coinsPerClick">1</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">Авто</div>
+                            <div class="stat-label"><i class="fas fa-robot"></i> Авто</div>
                             <div class="stat-value" id="autoSpeed">-</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">Rebirth</div>
+                            <div class="stat-label"><i class="fas fa-redo-alt"></i> Rebirth</div>
                             <div class="stat-value" id="rebirthLevel">0</div>
                         </div>
                     </div>
@@ -1169,16 +1285,16 @@
 
             <div class="tab-content" id="rebirthTab">
                 <div class="rebirth-info">
-                    <div class="rebirth-level" id="rebirthLevelDisplay">Rebirth 0</div>
-                    <div class="rebirth-bonus" id="rebirthBonusDisplay">+0 за клик</div>
+                    <div class="rebirth-level"><i class="fas fa-redo-alt"></i> <span id="rebirthLevelDisplay">Rebirth 0</span></div>
+                    <div class="rebirth-bonus"><i class="fas fa-plus-circle"></i> <span id="rebirthBonusDisplay">+0 за клик</span></div>
                     <div id="rebirthRequirements"></div>
                     <div id="rebirthNextDisplay" class="rebirth-next"></div>
                     <div id="lastRebirthMsg" class="rebirth-last" style="display: none;">
-                        ⚠️ Это последнее перерождение! ⚠️
+                        <i class="fas fa-exclamation-triangle"></i> Это последнее перерождение!
                     </div>
                 </div>
                 <button class="rebirth-btn" id="rebirthBtn" onclick="doRebirth()">
-                    🔄 СДЕЛАТЬ REBIRTH
+                    <i class="fas fa-sync-alt"></i> СДЕЛАТЬ REBIRTH
                 </button>
             </div>
 
@@ -1188,23 +1304,62 @@
 
             <div class="tab-content" id="promoTab">
                 <div class="promo-content">
-                    <div class="promo-title">🎁 Активация промокода</div>
+                    <div class="promo-title"><i class="fas fa-gift"></i> Активация промокода</div>
                     <input type="text" id="promoInput" class="promo-input" placeholder="Введите промокод">
-                    <button class="promo-btn" onclick="activatePromo()">Активировать</button>
+                    <button class="promo-btn" onclick="activatePromo()"><i class="fas fa-check"></i> Активировать</button>
                     <div id="promoMessage" class="promo-message"></div>
                 </div>
             </div>
 
             <button class="upgrade-btn" id="upgradeBtn" onclick="buyUpgrade()">
-                ⚡ Апгрейд
+                <i class="fas fa-bolt"></i> Апгрейд
             </button>
 
-            <div class="version">Version:1.1.2</div>
+            <div class="version">Version:1.1.3</div>
         </div>
     </div>
 
     <script>
+        // ==========================================
+        // TELEGRAM INTEGRATION (ПОЛНАЯ ПОДДЕРЖКА MINI APP)
+        // ==========================================
+        let tg = window.Telegram?.WebApp;
+        let userId = 'local';
+        let userFirstName = 'Игрок';
+        
+        if (tg) {
+            tg.expand();
+            tg.enableClosingConfirmation();
+            if (tg.initDataUnsafe?.user) {
+                userId = tg.initDataUnsafe.user.id;
+                userFirstName = tg.initDataUnsafe.user.first_name || 'Игрок';
+                console.log('Telegram User ID:', userId);
+                console.log('Telegram User Name:', userFirstName);
+            }
+        }
+
+        // ==========================================
+        // ОБРАБОТЧИКИ TELEGRAM ССЫЛОК
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Кнопка "Написать" в настройках
+            const contactBtn = document.getElementById('contactButton');
+            if (contactBtn) {
+                contactBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Используем tg.openTelegramLink если доступен, иначе window.open
+                    if (tg && tg.openTelegramLink) {
+                        tg.openTelegramLink('tg://resolve?domain=MrFeast_Official');
+                    } else {
+                        window.open('tg://resolve?domain=MrFeast_Official', '_blank');
+                    }
+                });
+            }
+        });
+
+        // ==========================================
         // ЭКРАН ЗАГРУЗКИ
+        // ==========================================
         window.addEventListener('load', function() {
             const loadingScreen = document.getElementById('loadingScreen');
             const gameContainer = document.getElementById('gameContainer');
@@ -1222,19 +1377,6 @@
         // ==========================================
         // ПОЛНАЯ ЛОГИКА ИГРЫ
         // ==========================================
-        let tg = window.Telegram?.WebApp;
-        let userId = 'local';
-        let userFirstName = 'Игрок';
-        
-        if (tg) {
-            tg.expand();
-            tg.enableClosingConfirmation();
-            if (tg.initDataUnsafe?.user) {
-                userId = tg.initDataUnsafe.user.id;
-                userFirstName = tg.initDataUnsafe.user.first_name || 'Игрок';
-            }
-        }
-
         let currentPlayer = '';
         let coins = 0;
         let clickCount = 0;
@@ -1249,6 +1391,8 @@
         let hasAutoSpeedV1 = false;
         let hasAutoSpeedV2 = false;
         let hasAutoSpeedV3 = false;
+        let hasAutoProX1 = false;
+        let hasAutoProX2 = false;
         let autoClickerInterval = null;
         let hasRing = false;
         let hasCrown = false;
@@ -1276,7 +1420,8 @@
         let awards = {
             award1: false, award2: false, award3: false, award4: false,
             award5: false, award6: false, award7: false, award8: false,
-            award9: false
+            award9: false, award10: false, award11: false, award12: false,
+            award13: false, award14: false, award15: false
         };
         
         let promoUsed = false;
@@ -1313,13 +1458,6 @@
         const settingsModal = document.getElementById('settingsModal');
         const floatingCircles = document.getElementById('floatingCircles');
         const gameContainerEl = document.getElementById('gameContainer');
-        
-        const vpnButton = document.getElementById('vpnButton');
-        if(vpnButton) {
-            vpnButton.addEventListener('click', () => {
-                window.open('https://mrfeastroblox-cmd.github.io/MrFeastInfo/VPNSite.html', '_blank');
-            });
-        }
 
         function startServerTax() {
             if (serverTaxInterval) clearInterval(serverTaxInterval);
@@ -1342,45 +1480,99 @@
             }
         }
 
+        function getAutoSpeed() {
+            if (!hasAutoClicker) return null;
+            if (hasAutoProX2) return 100;
+            if (hasAutoProX1) return 700;
+            if (hasAutoSpeedV3) return 200;
+            if (hasAutoSpeedV2) return 500;
+            if (hasAutoSpeedV1) return 1000;
+            return 2000;
+        }
+
+        function getAutoMultiplier() {
+            if (hasAutoProX1 || hasAutoProX2) return 5;
+            return 1;
+        }
+
+        function getShopIcon(name) {
+            const icons = {
+                'AutoClicker V1': 'fa-robot',
+                'Update AutoClicker V1': 'fa-bolt',
+                'Update AutoClicker V2': 'fa-bolt',
+                'Update AutoClicker V3': 'fa-bolt',
+                'AutoClicker Pro X1': 'fa-rocket',
+                'AutoClicker Pro X2': 'fa-rocket',
+                'Diamond Ring': 'fa-gem',
+                'MrFeast Crown': 'fa-crown',
+                'Lucky X1': 'fa-leaf',
+                'Lucky X2': 'fa-leaf',
+                'Lucky X3': 'fa-leaf',
+                'Lucky X4': 'fa-leaf',
+                'Lucky X5': 'fa-leaf',
+                'MrFeast PC V1': 'fa-desktop',
+                'MrFeast SmartPhone (Worbeli GameShtorm)': 'fa-mobile-alt',
+                'MrFeast Browser': 'fa-globe',
+                'MrFeast Casino': 'fa-dice',
+                'MrFeast PC V2': 'fa-desktop',
+                'MrFeastServer(V1)': 'fa-server',
+                'MrFeastMTProto V1': 'fa-lock',
+                'MrFeastLand': 'fa-city',
+                'MrFeast Factory': 'fa-industry',
+                'MrFeast Magic Ball': 'fa-magic',
+                'MrFeast Big Home': 'fa-home',
+                "MrFeast's GirlFriend Vika": 'fa-heart'
+            };
+            return icons[name] || 'fa-box';
+        }
+
         function generateShopHTML() {
             return `
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🤖</span><span class="shop-item-title">AutoClicker V1</span></div><div class="shop-item-desc">Автоматически кликает каждые 2 секунды</div><div class="shop-item-footer"><div class="shop-item-price">1 000</div><div id="autoClickerShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">⚡</span><span class="shop-item-title">Update AutoClicker V1</span></div><div class="shop-item-desc">Автокликер будет быстрее кликать на 1 секунду меньше (станет 1 секунда)</div><div class="requirement-badge">Требуется: AutoClicker V1</div><div class="shop-item-footer"><div class="shop-item-price">2 500</div><div id="autoSpeedShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">⚡⚡</span><span class="shop-item-title">Update AutoClicker V2</span></div><div class="shop-item-desc">Автокликер будет еще быстрее кликать на 0.5 секунды меньше (станет 0.5 секунд)</div><div class="requirement-badge">Требуется: Update V1</div><div class="shop-item-footer"><div class="shop-item-price">7 777</div><div id="autoSpeedV2ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">⚡⚡⚡</span><span class="shop-item-title">Update AutoClicker V3</span></div><div class="shop-item-desc">Автокликер будет с бешенной скоростью кликать на 0.3 секунды меньше (станет 0.2 секунды)</div><div class="requirement-badge">Требуется: Update V2</div><div class="shop-item-footer"><div class="shop-item-price">25 000</div><div id="autoSpeedV3ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">💍</span><span class="shop-item-title">Diamond Ring</span></div><div class="shop-item-desc">Увеличивает доход за клик на 5</div><div class="shop-item-footer"><div class="shop-item-price">200</div><div id="ringShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">👑</span><span class="shop-item-title">MrFeast Crown</span></div><div class="shop-item-desc">Увеличивает прилично доход за клик на 150</div><div class="requirement-badge">Требуется: Diamond Ring</div><div class="shop-item-footer"><div class="shop-item-price">25 777</div><div id="crownShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🍀</span><span class="shop-item-title">Lucky X1</span></div><div class="shop-item-desc">С шансом 10% за нажатие вам дадут удвоенную прибыль</div><div class="shop-item-footer"><div class="shop-item-price">35 777</div><div id="lucky1ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🍀🍀</span><span class="shop-item-title">Lucky X2</span></div><div class="shop-item-desc">С шансом 20% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge">Требуется: Lucky X1</div><div class="shop-item-footer"><div class="shop-item-price">65 000</div><div id="lucky2ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🍀🍀🍀</span><span class="shop-item-title">Lucky X3</span></div><div class="shop-item-desc">С шансом 45% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge">Требуется: Lucky X2</div><div class="shop-item-footer"><div class="shop-item-price">125 000</div><div id="lucky3ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🍀🍀🍀🍀</span><span class="shop-item-title">Lucky X4</span></div><div class="shop-item-desc">С шансом 50% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge">Требуется: Lucky X3</div><div class="shop-item-footer"><div class="shop-item-price">256 000</div><div id="lucky4ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🍀🍀🍀🍀🍀</span><span class="shop-item-title">Lucky X5</span></div><div class="shop-item-desc">С шансом 100% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge">Требуется: Lucky X4</div><div class="shop-item-footer"><div class="shop-item-price">1 000 000</div><div id="lucky5ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🖥️</span><span class="shop-item-title">MrFeast PC V1</span></div><div class="shop-item-desc">Дает возможность создать браузер</div><div class="shop-item-footer"><div class="shop-item-price">57 500</div><div id="pcShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">📱</span><span class="shop-item-title">MrFeast SmartPhone (Worbeli GameShtorm)</span></div><div class="shop-item-desc">Вы создали свой игровой телефон и увеличиваете доход за клик на 750</div><div class="requirement-badge">Требуется: MrFeast Factory</div><div class="shop-item-footer"><div class="shop-item-price">1 256 000</div><div id="smartphoneShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🌐</span><span class="shop-item-title">MrFeast Browser</span></div><div class="shop-item-desc">Браузер приносит каждые 5 секунд доход в размере X2 от дохода за 1 клик</div><div class="requirement-badge">Требуется: MrFeast PC V1</div><div class="shop-item-footer"><div class="shop-item-price">275 000</div><div id="browserShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🎰</span><span class="shop-item-title">MrFeast Casino</span></div><div class="shop-item-desc">Каждые 60 секунд дает 15 000 монет</div><div class="requirement-badge">Требуется: MrFeast PC V1</div><div class="shop-item-footer"><div class="shop-item-price">1 250 000</div><div id="casinoShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🖥</span><span class="shop-item-title">MrFeast PC V2</span></div><div class="shop-item-desc">Более мощный компьютер для требовательных задач.</div><div class="requirement-badge">Требуется: MrFeast PC V1</div><div class="shop-item-footer"><div class="shop-item-price">2 750 000</div><div id="pcV2ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🗄</span><span class="shop-item-title">MrFeastServer(V1)</span></div><div class="shop-item-desc">Создай свой сервер для MTProto. Каждые 5 минут списывает 1.000.000 монет.</div><div class="requirement-badge">Требуется: MrFeast PC V2</div><div class="shop-item-footer"><div class="shop-item-price">5 670 000</div><div id="serverV1ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🔐</span><span class="shop-item-title">MrFeastMTProto V1</span></div><div class="shop-item-desc">Создай прокси сервер для Telegram и повысь свой доход на 700 за клик.</div><div class="requirement-badge">Требуется: MrFeastServerV1</div><div class="shop-item-footer"><div class="shop-item-price">1 200 000</div><div id="mtprotoV1ShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🌃</span><span class="shop-item-title">MrFeastLand</span></div><div class="shop-item-desc">Значительно повышает репутацию и доход за клик на 1000</div><div class="shop-item-footer"><div class="shop-item-price">760 000</div><div id="landShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🏭</span><span class="shop-item-title">MrFeast Factory</span></div><div class="shop-item-desc">Дает возможность создавать телефоны. Увеличивает доход за клик на 1250</div><div class="requirement-badge">Требуется: MrFeast PC V1, MrFeastLand</div><div class="shop-item-footer"><div class="shop-item-price">2 750 000</div><div id="factoryShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🔮</span><span class="shop-item-title">MrFeast Magic Ball</span></div><div class="shop-item-desc">Повышает доход за нажатие на 250!</div><div class="shop-item-footer"><div class="shop-item-price">1 570 000</div><div id="magicBallShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">🏡</span><span class="shop-item-title">MrFeast Big Home</span></div><div class="shop-item-desc">Дает завести девушку и бонус за клик: +570</div><div class="shop-item-footer"><div class="shop-item-price">9 777 000</div><div id="bigHomeShopBtn"></div></div></div>
-                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon">💚</span><span class="shop-item-title">MrFeast's GirlFriend Vika</span></div><div class="shop-item-desc">Любимая девушка MrFeast. Вы счастливы и ваш доход увеличился на +1500</div><div class="requirement-badge">Требуется: MrFeast Big Home</div><div class="shop-item-footer"><div class="shop-item-price">15 000 000</div><div id="girlfriendShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('AutoClicker V1')}"></i></span><span class="shop-item-title">AutoClicker V1</span></div><div class="shop-item-desc">Автоматически кликает каждые 2 секунды</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>1 000</div><div id="autoClickerShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Update AutoClicker V1')}"></i></span><span class="shop-item-title">Update AutoClicker V1</span></div><div class="shop-item-desc">Автокликер будет быстрее кликать на 1 секунду меньше (станет 1 секунда)</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: AutoClicker V1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>2 500</div><div id="autoSpeedShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Update AutoClicker V2')}"></i></span><span class="shop-item-title">Update AutoClicker V2</span></div><div class="shop-item-desc">Автокликер будет еще быстрее кликать на 0.5 секунды меньше (станет 0.5 секунд)</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Update V1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>7 777</div><div id="autoSpeedV2ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Update AutoClicker V3')}"></i></span><span class="shop-item-title">Update AutoClicker V3</span></div><div class="shop-item-desc">Автокликер будет с бешенной скоростью кликать на 0.3 секунды меньше (станет 0.2 секунды)</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Update V2</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>25 000</div><div id="autoSpeedV3ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('AutoClicker Pro X1')}"></i></span><span class="shop-item-title">AutoClicker Pro X1</span></div><div class="shop-item-desc"><i class="fas fa-arrow-up" style="color:#4caf50;"></i> Получайте за каждый клик X5 монет, <i class="fas fa-arrow-down" style="color:#ff6b6b;"></i> но скорость ниже на 0,5</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: последняя прокачка автокликера</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>200 000</div><div id="autoProX1ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('AutoClicker Pro X2')}"></i></span><span class="shop-item-title">AutoClicker Pro X2</span></div><div class="shop-item-desc"><i class="fas fa-arrow-up" style="color:#4caf50;"></i> Повысьте скорость клика (-0,6)</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: AutoClicker Pro X1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>545 000</div><div id="autoProX2ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Diamond Ring')}"></i></span><span class="shop-item-title">Diamond Ring</span></div><div class="shop-item-desc">Увеличивает доход за клик на 5</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>200</div><div id="ringShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast Crown')}"></i></span><span class="shop-item-title">MrFeast Crown</span></div><div class="shop-item-desc">Увеличивает прилично доход за клик на 150</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Diamond Ring</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>25 777</div><div id="crownShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Lucky X1')}"></i></span><span class="shop-item-title">Lucky X1</span></div><div class="shop-item-desc">С шансом 10% за нажатие вам дадут удвоенную прибыль</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>35 777</div><div id="lucky1ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Lucky X2')}"></i></span><span class="shop-item-title">Lucky X2</span></div><div class="shop-item-desc">С шансом 20% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Lucky X1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>65 000</div><div id="lucky2ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Lucky X3')}"></i></span><span class="shop-item-title">Lucky X3</span></div><div class="shop-item-desc">С шансом 45% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Lucky X2</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>125 000</div><div id="lucky3ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Lucky X4')}"></i></span><span class="shop-item-title">Lucky X4</span></div><div class="shop-item-desc">С шансом 50% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Lucky X3</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>256 000</div><div id="lucky4ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('Lucky X5')}"></i></span><span class="shop-item-title">Lucky X5</span></div><div class="shop-item-desc">С шансом 100% за нажатие вам дадут удвоенную прибыль</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: Lucky X4</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>1 000 000</div><div id="lucky5ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast PC V1')}"></i></span><span class="shop-item-title">MrFeast PC V1</span></div><div class="shop-item-desc">Дает возможность создать браузер</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>57 500</div><div id="pcShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast SmartPhone (Worbeli GameShtorm)')}"></i></span><span class="shop-item-title">MrFeast SmartPhone (Worbeli GameShtorm)</span></div><div class="shop-item-desc">Вы создали свой игровой телефон и увеличиваете доход за клик на 750</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast Factory</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>1 256 000</div><div id="smartphoneShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast Browser')}"></i></span><span class="shop-item-title">MrFeast Browser</span></div><div class="shop-item-desc">Браузер приносит каждые 5 секунд доход в размере X2 от дохода за 1 клик</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast PC V1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>275 000</div><div id="browserShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast Casino')}"></i></span><span class="shop-item-title">MrFeast Casino</span></div><div class="shop-item-desc">Каждые 60 секунд дает 15 000 монет</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast PC V1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>1 250 000</div><div id="casinoShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast PC V2')}"></i></span><span class="shop-item-title">MrFeast PC V2</span></div><div class="shop-item-desc">Более мощный компьютер для требовательных задач.</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast PC V1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>2 750 000</div><div id="pcV2ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeastServer(V1)')}"></i></span><span class="shop-item-title">MrFeastServer(V1)</span></div><div class="shop-item-desc">Создай свой сервер для MTProto. Каждые 5 минут списывает 1.000.000 монет.</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast PC V2</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>5 670 000</div><div id="serverV1ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeastMTProto V1')}"></i></span><span class="shop-item-title">MrFeastMTProto V1</span></div><div class="shop-item-desc">Создай прокси сервер для Telegram и повысь свой доход на 700 за клик.</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeastServerV1</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>1 200 000</div><div id="mtprotoV1ShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeastLand')}"></i></span><span class="shop-item-title">MrFeastLand</span></div><div class="shop-item-desc">Значительно повышает репутацию и доход за клик на 1000</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>760 000</div><div id="landShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast Factory')}"></i></span><span class="shop-item-title">MrFeast Factory</span></div><div class="shop-item-desc">Дает возможность создавать телефоны. Увеличивает доход за клик на 1250</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast PC V1, MrFeastLand</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>2 750 000</div><div id="factoryShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast Magic Ball')}"></i></span><span class="shop-item-title">MrFeast Magic Ball</span></div><div class="shop-item-desc">Повышает доход за нажатие на 250!</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>1 570 000</div><div id="magicBallShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon('MrFeast Big Home')}"></i></span><span class="shop-item-title">MrFeast Big Home</span></div><div class="shop-item-desc">Дает завести девушку и бонус за клик: +570</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>9 777 000</div><div id="bigHomeShopBtn"></div></div></div>
+                <div class="shop-item"><div class="shop-item-header"><span class="shop-item-icon"><i class="fas ${getShopIcon("MrFeast's GirlFriend Vika")}"></i></span><span class="shop-item-title">MrFeast's GirlFriend Vika</span></div><div class="shop-item-desc">Любимая девушка MrFeast. Вы счастливы и ваш доход увеличился на +1500</div><div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: MrFeast Big Home</div><div class="shop-item-footer"><div class="shop-item-price"><i class="fas fa-coins"></i>15 000 000</div><div id="girlfriendShopBtn"></div></div></div>
             `;
         }
 
         function generateAwardsHTML() {
             return `
-                <div class="award-item" id="award1"><div class="award-header"><span class="award-icon">♥️</span><span class="award-title">Начинающий</span></div><div class="award-desc">Первое перерождение</div><div class="award-reward">Награда: 10 000 монет</div><div class="award-footer"><div class="award-requirement">Требуется: 1 Rebirth</div><div id="award1Btn"></div></div></div>
-                <div class="award-item" id="award2"><div class="award-header"><span class="award-icon">⭐️</span><span class="award-title">Опытный</span></div><div class="award-desc">Второе перерождение</div><div class="award-reward">Награда: +15 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: 2 Rebirth</div><div id="award2Btn"></div></div></div>
-                <div class="award-item" id="award3"><div class="award-header"><span class="award-icon">🎮</span><span class="award-title">Профи</span></div><div class="award-desc">Третье перерождение</div><div class="award-reward">Награда: +30 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: 3 Rebirth</div><div id="award3Btn"></div></div></div>
-                <div class="award-item" id="award4"><div class="award-header"><span class="award-icon">🥉</span><span class="award-title">Киберспортсмен</span></div><div class="award-desc">Четвертое перерождение</div><div class="award-reward">Награда: 55 000 монет</div><div class="award-footer"><div class="award-requirement">Требуется: 4 Rebirth</div><div id="award4Btn"></div></div></div>
-                <div class="award-item" id="award5"><div class="award-header"><span class="award-icon">🥈</span><span class="award-title">Топер среди других</span></div><div class="award-desc">Пятое перерождение</div><div class="award-reward">Награда: +35 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: 5 Rebirth</div><div id="award5Btn"></div></div></div>
-                <div class="award-item" id="award6"><div class="award-header"><span class="award-icon">🥇</span><span class="award-title">Молнеиностный</span></div><div class="award-desc">Миллионер</div><div class="award-reward">Награда: +100 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: 1 000 000 монет</div><div id="award6Btn"></div></div></div>
-                <div class="award-item" id="award7"><div class="award-header"><span class="award-icon">🏅</span><span class="award-title">Эксперт</span></div><div class="award-desc">10 миллионов монет</div><div class="award-reward">Награда: +5 000 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: 10 000 000 монет</div><div id="award7Btn"></div></div></div>
-                <div class="award-item" id="award8"><div class="award-header"><span class="award-icon">💚</span><span class="award-title">Любовник</span></div><div class="award-desc">Нашел свою любовь</div><div class="award-reward">Награда: +350 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: MrFeast's GirlFriend Vika</div><div id="award8Btn"></div></div></div>
-                <div class="award-item" id="award9"><div class="award-header"><span class="award-icon">📰</span><span class="award-title">Спаситель Telegram</span></div><div class="award-desc">Создай MTProto и спаси других</div><div class="award-reward">Награда: +500 за клик</div><div class="award-footer"><div class="award-requirement">Требуется: MTProto V1</div><div id="award9Btn"></div></div></div>
+                <div class="award-item" id="award1"><div class="award-header"><span class="award-icon"><i class="fas fa-heart"></i></span><span class="award-title">Начинающий</span></div><div class="award-desc">Первое перерождение</div><div class="award-reward"><i class="fas fa-coins"></i> Награда: 10 000 монет</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 1 Rebirth</div><div id="award1Btn"></div></div></div>
+                <div class="award-item" id="award2"><div class="award-header"><span class="award-icon"><i class="fas fa-star"></i></span><span class="award-title">Опытный</span></div><div class="award-desc">Второе перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +15 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 2 Rebirth</div><div id="award2Btn"></div></div></div>
+                <div class="award-item" id="award3"><div class="award-header"><span class="award-icon"><i class="fas fa-gamepad"></i></span><span class="award-title">Профи</span></div><div class="award-desc">Третье перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +30 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 3 Rebirth</div><div id="award3Btn"></div></div></div>
+                <div class="award-item" id="award4"><div class="award-header"><span class="award-icon"><i class="fas fa-medal"></i></span><span class="award-title">Киберспортсмен</span></div><div class="award-desc">Четвертое перерождение</div><div class="award-reward"><i class="fas fa-coins"></i> Награда: 55 000 монет</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 4 Rebirth</div><div id="award4Btn"></div></div></div>
+                <div class="award-item" id="award5"><div class="award-header"><span class="award-icon"><i class="fas fa-trophy"></i></span><span class="award-title">Топер среди других</span></div><div class="award-desc">Пятое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +35 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 5 Rebirth</div><div id="award5Btn"></div></div></div>
+                <div class="award-item" id="award6"><div class="award-header"><span class="award-icon"><i class="fas fa-bolt"></i></span><span class="award-title">Молнеиностный</span></div><div class="award-desc">Миллионер</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +100 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 1 000 000 монет</div><div id="award6Btn"></div></div></div>
+                <div class="award-item" id="award7"><div class="award-header"><span class="award-icon"><i class="fas fa-crown"></i></span><span class="award-title">Эксперт</span></div><div class="award-desc">10 миллионов монет</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +5 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 10 000 000 монет</div><div id="award7Btn"></div></div></div>
+                <div class="award-item" id="award8"><div class="award-header"><span class="award-icon"><i class="fas fa-heart"></i></span><span class="award-title">Любовник</span></div><div class="award-desc">Нашел свою любовь</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +350 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: MrFeast's GirlFriend Vika</div><div id="award8Btn"></div></div></div>
+                <div class="award-item" id="award9"><div class="award-header"><span class="award-icon"><i class="fas fa-newspaper"></i></span><span class="award-title">Спаситель Telegram</span></div><div class="award-desc">Создай MTProto и спаси других</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +500 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: MTProto V1</div><div id="award9Btn"></div></div></div>
+                <div class="award-item" id="award10"><div class="award-header"><span class="award-icon"><i class="fas fa-dragon"></i></span><span class="award-title">Легенда</span></div><div class="award-desc">Десятое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +1 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 10 Rebirth</div><div id="award10Btn"></div></div></div>
+                <div class="award-item" id="award11"><div class="award-header"><span class="award-icon"><i class="fas fa-meteor"></i></span><span class="award-title">Бессмертный</span></div><div class="award-desc">Одиннадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +2 500 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 11 Rebirth</div><div id="award11Btn"></div></div></div>
+                <div class="award-item" id="award12"><div class="award-header"><span class="award-icon"><i class="fas fa-ghost"></i></span><span class="award-title">Призрак</span></div><div class="award-desc">Двенадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +5 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 12 Rebirth</div><div id="award12Btn"></div></div></div>
+                <div class="award-item" id="award13"><div class="award-header"><span class="award-icon"><i class="fas fa-skull"></i></span><span class="award-title">Повелитель</span></div><div class="award-desc">Тринадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +10 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 13 Rebirth</div><div id="award13Btn"></div></div></div>
+                <div class="award-item" id="award14"><div class="award-header"><span class="award-icon"><i class="fas fa-crown"></i></span><span class="award-title">Король</span></div><div class="award-desc">Четырнадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +25 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 14 Rebirth</div><div id="award14Btn"></div></div></div>
+                <div class="award-item" id="award15"><div class="award-header"><span class="award-icon"><i class="fas fa-gem"></i></span><span class="award-title">Бог</span></div><div class="award-desc">Пятнадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +50 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 15 Rebirth</div><div id="award15Btn"></div></div></div>
             `;
         }
 
@@ -1391,6 +1583,8 @@
         const autoSpeedShopBtn = document.getElementById('autoSpeedShopBtn');
         const autoSpeedV2ShopBtn = document.getElementById('autoSpeedV2ShopBtn');
         const autoSpeedV3ShopBtn = document.getElementById('autoSpeedV3ShopBtn');
+        const autoProX1ShopBtn = document.getElementById('autoProX1ShopBtn');
+        const autoProX2ShopBtn = document.getElementById('autoProX2ShopBtn');
         const ringShopBtn = document.getElementById('ringShopBtn');
         const crownShopBtn = document.getElementById('crownShopBtn');
         const pcShopBtn = document.getElementById('pcShopBtn');
@@ -1472,14 +1666,6 @@
             loadGame();
         }
 
-        function getAutoSpeed() {
-            if (!hasAutoClicker) return null;
-            if (hasAutoSpeedV3) return 200;
-            if (hasAutoSpeedV2) return 500;
-            if (hasAutoSpeedV1) return 1000;
-            return 2000;
-        }
-
         function getTotalPerClick() {
             let total = coinsPerClick + rebirthBonus;
             if (hasRing) total += 5;
@@ -1498,6 +1684,12 @@
             if (awards.award7) total += 5000;
             if (awards.award8) total += 350;
             if (awards.award9) total += 500;
+            if (awards.award10) total += 1000;
+            if (awards.award11) total += 2500;
+            if (awards.award12) total += 5000;
+            if (awards.award13) total += 10000;
+            if (awards.award14) total += 25000;
+            if (awards.award15) total += 50000;
             return total;
         }
 
@@ -1515,9 +1707,11 @@
         
         function canBuyAnything() {
             if (!hasAutoClicker && coins >= 1000) return true;
-            if (hasAutoClicker && !hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3 && coins >= 2500) return true;
-            if (hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3 && coins >= 7777) return true;
-            if (hasAutoSpeedV2 && !hasAutoSpeedV3 && coins >= 25000) return true;
+            if (hasAutoClicker && !hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2 && coins >= 2500) return true;
+            if (hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2 && coins >= 7777) return true;
+            if (hasAutoSpeedV2 && !hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2 && coins >= 25000) return true;
+            if (hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2 && coins >= 200000) return true;
+            if (hasAutoProX1 && !hasAutoProX2 && coins >= 545000) return true;
             if (!hasRing && coins >= 200) return true;
             if (hasRing && !hasCrown && coins >= 25777) return true;
             if (luckyLevel === 0 && coins >= 35777) return true;
@@ -1551,6 +1745,11 @@
             if (rebirthLevel === 7) return coins >= 2570000 && hasLand && hasCasino;
             if (rebirthLevel === 8) return coins >= 5760000 && hasMagicBall;
             if (rebirthLevel === 9) return coins >= 12756000 && hasFactory;
+            if (rebirthLevel === 10) return coins >= 25000000 && hasPCV2;
+            if (rebirthLevel === 11) return coins >= 50000000 && hasServerV1;
+            if (rebirthLevel === 12) return coins >= 100000000 && hasMTProtoV1;
+            if (rebirthLevel === 13) return coins >= 250000000 && hasGirlfriend;
+            if (rebirthLevel === 14) return coins >= 500000000 && hasSmartphone;
             return false;
         }
 
@@ -1602,8 +1801,8 @@
             rebirthLevelDisplay.textContent = `Rebirth ${rebirthLevel}`;
             rebirthBonusDisplay.textContent = `+${rebirthBonus} за клик`;
             lastRebirthMsg.style.display = 'none';
-            if (rebirthLevel >= 10) {
-                rebirthRequirements.innerHTML = `<div class="rebirth-requirements"><strong>✅ Все перерождения завершены!</strong><br>Максимальный бонус: +70 за клик</div>`;
+            if (rebirthLevel >= 15) {
+                rebirthRequirements.innerHTML = `<div class="rebirth-requirements"><i class="fas fa-check-circle"></i> <strong>Все перерождения завершены!</strong><br>Максимальный бонус: +75 за клик</div>`;
                 rebirthNextDisplay.innerHTML = '';
                 lastRebirthMsg.style.display = 'block';
                 rebirthBtn.disabled = true;
@@ -1620,7 +1819,12 @@
                 else if (nextLevel === 7) requirements = `<div class="rebirth-requirements"><strong>7 Rebirth:</strong><br>Требуется: 1 750 000 монет, MrFeastCasino<br>Бонус: +${nextBonus} за клик</div>`;
                 else if (nextLevel === 8) requirements = `<div class="rebirth-requirements"><strong>8 Rebirth:</strong><br>Требуется: 2 570 000 монет, MrFeastLand, MrFeastCasino<br>Бонус: +${nextBonus} за клик</div>`;
                 else if (nextLevel === 9) requirements = `<div class="rebirth-requirements"><strong>9 Rebirth:</strong><br>Требуется: 5 760 000 монет, MrFeast Magic Ball<br>Бонус: +${nextBonus} за клик</div>`;
-                else if (nextLevel === 10) requirements = `<div class="rebirth-requirements"><strong>10 Rebirth (ПОСЛЕДНИЙ):</strong><br>Требуется: 12 756 000 монет, MrFeast Factory<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 10) requirements = `<div class="rebirth-requirements"><strong>10 Rebirth:</strong><br>Требуется: 12 756 000 монет, MrFeast Factory<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 11) requirements = `<div class="rebirth-requirements"><strong>11 Rebirth:</strong><br>Требуется: 25 000 000 монет, MrFeast PC V2<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 12) requirements = `<div class="rebirth-requirements"><strong>12 Rebirth:</strong><br>Требуется: 50 000 000 монет, MrFeastServer(V1)<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 13) requirements = `<div class="rebirth-requirements"><strong>13 Rebirth:</strong><br>Требуется: 100 000 000 монет, MrFeastMTProto V1<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 14) requirements = `<div class="rebirth-requirements"><strong>14 Rebirth:</strong><br>Требуется: 250 000 000 монет, MrFeast's GirlFriend Vika<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 15) requirements = `<div class="rebirth-requirements"><strong>15 Rebirth (ПОСЛЕДНИЙ):</strong><br>Требуется: 500 000 000 монет, MrFeast SmartPhone<br>Бонус: +${nextBonus} за клик</div>`;
                 rebirthRequirements.innerHTML = requirements;
                 rebirthNextDisplay.innerHTML = `Следующий rebirth даст +5 к бонусу`;
             }
@@ -1633,14 +1837,14 @@
                 const btn = document.getElementById(`award${id}Btn`);
                 if (!awards[`award${id}`] && condition) {
                     item.classList.add('available');
-                    btn.innerHTML = `<button class="award-btn" onclick="claimAward(${id})">Получить</button>`;
+                    btn.innerHTML = `<button class="award-btn" onclick="claimAward(${id})"><i class="fas fa-gift"></i> Получить</button>`;
                     availableCount++;
                 } else if (awards[`award${id}`]) {
                     item.classList.add('completed');
-                    btn.innerHTML = '<span class="completed-badge">✅ Получено</span>';
+                    btn.innerHTML = '<span class="completed-badge"><i class="fas fa-check"></i> Получено</span>';
                 } else {
                     item.classList.remove('available', 'completed');
-                    btn.innerHTML = '<span class="completed-badge" style="opacity:0.3;">❌ Недоступно</span>';
+                    btn.innerHTML = '<span class="completed-badge" style="opacity:0.3;"><i class="fas fa-times"></i> Недоступно</span>';
                 }
             };
             updateAward(1, rebirthLevel >= 1);
@@ -1652,6 +1856,12 @@
             updateAward(7, coins >= 10000000);
             updateAward(8, hasGirlfriend);
             updateAward(9, hasMTProtoV1);
+            updateAward(10, rebirthLevel >= 10);
+            updateAward(11, rebirthLevel >= 11);
+            updateAward(12, rebirthLevel >= 12);
+            updateAward(13, rebirthLevel >= 13);
+            updateAward(14, rebirthLevel >= 14);
+            updateAward(15, rebirthLevel >= 15);
             awardDot.style.display = (!hideIndicators && availableCount > 0) ? 'block' : 'none';
         }
 
@@ -1665,6 +1875,12 @@
             else if (awardId === 7 && !awards.award7 && coins >= 10000000) { awards.award7 = true; showNotif('🏅 Эксперт: +5 000 за клик'); }
             else if (awardId === 8 && !awards.award8 && hasGirlfriend) { awards.award8 = true; showNotif('💚 Любовник: +350 за клик'); }
             else if (awardId === 9 && !awards.award9 && hasMTProtoV1) { awards.award9 = true; showNotif('📰 Спаситель Telegram: +500 за клик'); }
+            else if (awardId === 10 && !awards.award10 && rebirthLevel >= 10) { awards.award10 = true; showNotif('🐉 Легенда: +1 000 за клик'); }
+            else if (awardId === 11 && !awards.award11 && rebirthLevel >= 11) { awards.award11 = true; showNotif('☄️ Бессмертный: +2 500 за клик'); }
+            else if (awardId === 12 && !awards.award12 && rebirthLevel >= 12) { awards.award12 = true; showNotif('👻 Призрак: +5 000 за клик'); }
+            else if (awardId === 13 && !awards.award13 && rebirthLevel >= 13) { awards.award13 = true; showNotif('💀 Повелитель: +10 000 за клик'); }
+            else if (awardId === 14 && !awards.award14 && rebirthLevel >= 14) { awards.award14 = true; showNotif('👑 Король: +25 000 за клик'); }
+            else if (awardId === 15 && !awards.award15 && rebirthLevel >= 15) { awards.award15 = true; showNotif('💎 Бог: +50 000 за клик'); }
             else return;
             updateAwards();
             updateDisplay();
@@ -1690,7 +1906,7 @@
 
         function updateDisplay() {
             const total = getTotalPerClick();
-            coinDisplay.innerHTML = `<span>Coins:</span> ${Math.floor(coins).toLocaleString()}`;
+            coinDisplay.innerHTML = `<i class="fas fa-coins"></i><span>Coins:</span> ${Math.floor(coins).toLocaleString()}`;
             clickValueSpan.textContent = `+${total}`;
             clickCountSpan.textContent = clickCount.toLocaleString();
             coinsPerClickSpan.textContent = total;
@@ -1701,77 +1917,85 @@
             updateAllDots();
             let speedText = '-';
             if (hasAutoClicker) {
-                if (hasAutoSpeedV3) speedText = '0.2с';
+                if (hasAutoProX2) speedText = '0.1с (x5)';
+                else if (hasAutoProX1) speedText = '0.7с (x5)';
+                else if (hasAutoSpeedV3) speedText = '0.2с';
                 else if (hasAutoSpeedV2) speedText = '0.5с';
                 else if (hasAutoSpeedV1) speedText = '1с';
                 else speedText = '2с';
             }
             autoSpeedSpan.textContent = speedText;
-            upgradeBtn.textContent = `⚡ Апгрейд (${upgradeCost.toLocaleString()})`;
+            upgradeBtn.innerHTML = `<i class="fas fa-bolt"></i> Апгрейд (${upgradeCost.toLocaleString()})`;
             progressFill.style.width = Math.min((coins / upgradeCost) * 100, 100) + '%';
             
-            autoClickerShopBtn.innerHTML = hasAutoClicker ? '<span class="owned-badge">✅</span>' : `<button class="shop-item-btn" onclick="buyAutoClicker()" ${coins < 1000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasAutoClicker) autoSpeedShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasAutoSpeedV1 || hasAutoSpeedV2 || hasAutoSpeedV3) autoSpeedShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            autoClickerShopBtn.innerHTML = hasAutoClicker ? '<span class="owned-badge"><i class="fas fa-check"></i></span>' : `<button class="shop-item-btn" onclick="buyAutoClicker()" ${coins < 1000 ? 'disabled' : ''}>Купить</button>`;
+            if (!hasAutoClicker) autoSpeedShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasAutoSpeedV1 || hasAutoSpeedV2 || hasAutoSpeedV3 || hasAutoProX1 || hasAutoProX2) autoSpeedShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else autoSpeedShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyAutoSpeedV1()" ${coins < 2500 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasAutoSpeedV1) autoSpeedV2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasAutoSpeedV2 || hasAutoSpeedV3) autoSpeedV2ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasAutoSpeedV1) autoSpeedV2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasAutoSpeedV2 || hasAutoSpeedV3 || hasAutoProX1 || hasAutoProX2) autoSpeedV2ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else autoSpeedV2ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyAutoSpeedV2()" ${coins < 7777 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasAutoSpeedV2) autoSpeedV3ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasAutoSpeedV3) autoSpeedV3ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasAutoSpeedV2) autoSpeedV3ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasAutoSpeedV3 || hasAutoProX1 || hasAutoProX2) autoSpeedV3ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else autoSpeedV3ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyAutoSpeedV3()" ${coins < 25000 ? 'disabled' : ''}>Купить</button>`;
-            ringShopBtn.innerHTML = hasRing ? '<span class="owned-badge">✅</span>' : `<button class="shop-item-btn" onclick="buyRing()" ${coins < 200 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasRing) crownShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasCrown) crownShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasAutoSpeedV3) autoProX1ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasAutoProX1 || hasAutoProX2) autoProX1ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
+            else autoProX1ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyAutoProX1()" ${coins < 200000 ? 'disabled' : ''}>Купить</button>`;
+            if (!hasAutoProX1) autoProX2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasAutoProX2) autoProX2ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
+            else autoProX2ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyAutoProX2()" ${coins < 545000 ? 'disabled' : ''}>Купить</button>`;
+            ringShopBtn.innerHTML = hasRing ? '<span class="owned-badge"><i class="fas fa-check"></i></span>' : `<button class="shop-item-btn" onclick="buyRing()" ${coins < 200 ? 'disabled' : ''}>Купить</button>`;
+            if (!hasRing) crownShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasCrown) crownShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else crownShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyCrown()" ${coins < 25777 ? 'disabled' : ''}>Купить</button>`;
-            if (luckyLevel >= 1) lucky1ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (luckyLevel >= 1) lucky1ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else lucky1ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyLucky1()" ${coins < 35777 ? 'disabled' : ''}>Купить</button>`;
-            if (luckyLevel < 1) lucky2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (luckyLevel >= 2) lucky2ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (luckyLevel < 1) lucky2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (luckyLevel >= 2) lucky2ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else lucky2ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyLucky2()" ${coins < 65000 ? 'disabled' : ''}>Купить</button>`;
-            if (luckyLevel < 2) lucky3ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (luckyLevel >= 3) lucky3ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (luckyLevel < 2) lucky3ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (luckyLevel >= 3) lucky3ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else lucky3ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyLucky3()" ${coins < 125000 ? 'disabled' : ''}>Купить</button>`;
-            if (luckyLevel < 3) lucky4ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (luckyLevel >= 4) lucky4ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (luckyLevel < 3) lucky4ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (luckyLevel >= 4) lucky4ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else lucky4ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyLucky4()" ${coins < 256000 ? 'disabled' : ''}>Купить</button>`;
-            if (luckyLevel < 4) lucky5ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (luckyLevel >= 5) lucky5ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (luckyLevel < 4) lucky5ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (luckyLevel >= 5) lucky5ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else lucky5ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyLucky5()" ${coins < 1000000 ? 'disabled' : ''}>Купить</button>`;
-            pcShopBtn.innerHTML = hasPC ? '<span class="owned-badge">✅</span>' : `<button class="shop-item-btn" onclick="buyPC()" ${coins < 57500 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasFactory) smartphoneShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasSmartphone) smartphoneShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            pcShopBtn.innerHTML = hasPC ? '<span class="owned-badge"><i class="fas fa-check"></i></span>' : `<button class="shop-item-btn" onclick="buyPC()" ${coins < 57500 ? 'disabled' : ''}>Купить</button>`;
+            if (!hasFactory) smartphoneShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasSmartphone) smartphoneShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else smartphoneShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buySmartphone()" ${coins < 1256000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasPC) browserShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasBrowser) browserShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasPC) browserShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasBrowser) browserShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else browserShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyBrowser()" ${coins < 275000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasPC) casinoShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasCasino) casinoShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasPC) casinoShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasCasino) casinoShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else casinoShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyCasino()" ${coins < 1250000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasPC) pcV2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasPCV2) pcV2ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasPC) pcV2ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasPCV2) pcV2ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else pcV2ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyPCV2()" ${coins < 2750000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasPCV2) serverV1ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasServerV1) serverV1ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasPCV2) serverV1ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasServerV1) serverV1ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else serverV1ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyServerV1()" ${coins < 5670000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasServerV1) mtprotoV1ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasMTProtoV1) mtprotoV1ShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            if (!hasServerV1) mtprotoV1ShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasMTProtoV1) mtprotoV1ShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else mtprotoV1ShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyMTProtoV1()" ${coins < 1200000 ? 'disabled' : ''}>Купить</button>`;
-            landShopBtn.innerHTML = hasLand ? '<span class="owned-badge">✅</span>' : `<button class="shop-item-btn" onclick="buyLand()" ${coins < 760000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasPC || !hasLand) factoryShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasFactory) factoryShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            landShopBtn.innerHTML = hasLand ? '<span class="owned-badge"><i class="fas fa-check"></i></span>' : `<button class="shop-item-btn" onclick="buyLand()" ${coins < 760000 ? 'disabled' : ''}>Купить</button>`;
+            if (!hasPC || !hasLand) factoryShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasFactory) factoryShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else factoryShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyFactory()" ${coins < 2750000 ? 'disabled' : ''}>Купить</button>`;
-            magicBallShopBtn.innerHTML = hasMagicBall ? '<span class="owned-badge">✅</span>' : `<button class="shop-item-btn" onclick="buyMagicBall()" ${coins < 1570000 ? 'disabled' : ''}>Купить</button>`;
-            bigHomeShopBtn.innerHTML = hasBigHome ? '<span class="owned-badge">✅</span>' : `<button class="shop-item-btn" onclick="buyBigHome()" ${coins < 9777000 ? 'disabled' : ''}>Купить</button>`;
-            if (!hasBigHome) girlfriendShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;">❌</span>';
-            else if (hasGirlfriend) girlfriendShopBtn.innerHTML = '<span class="owned-badge">✅</span>';
+            magicBallShopBtn.innerHTML = hasMagicBall ? '<span class="owned-badge"><i class="fas fa-check"></i></span>' : `<button class="shop-item-btn" onclick="buyMagicBall()" ${coins < 1570000 ? 'disabled' : ''}>Купить</button>`;
+            bigHomeShopBtn.innerHTML = hasBigHome ? '<span class="owned-badge"><i class="fas fa-check"></i></span>' : `<button class="shop-item-btn" onclick="buyBigHome()" ${coins < 9777000 ? 'disabled' : ''}>Купить</button>`;
+            if (!hasBigHome) girlfriendShopBtn.innerHTML = '<span class="owned-badge" style="opacity:0.3;"><i class="fas fa-times"></i></span>';
+            else if (hasGirlfriend) girlfriendShopBtn.innerHTML = '<span class="owned-badge"><i class="fas fa-check"></i></span>';
             else girlfriendShopBtn.innerHTML = `<button class="shop-item-btn" onclick="buyGirlfriend()" ${coins < 15000000 ? 'disabled' : ''}>Купить</button>`;
             upgradeBtn.disabled = coins < upgradeCost;
             updateRebirthButton();
         }
 
         function updateRebirthButton() {
-            if (rebirthLevel >= 10) { rebirthBtn.disabled = true; return; }
+            if (rebirthLevel >= 15) { rebirthBtn.disabled = true; return; }
             if (rebirthLevel === 0) rebirthBtn.disabled = !(coins >= 1000 && hasRing);
             else if (rebirthLevel === 1) rebirthBtn.disabled = !(coins >= 5000 && hasRing && hasAutoClicker);
             else if (rebirthLevel === 2) rebirthBtn.disabled = !(coins >= 35000 && hasRing && hasAutoClicker && hasCrown);
@@ -1782,10 +2006,15 @@
             else if (rebirthLevel === 7) rebirthBtn.disabled = !(coins >= 2570000 && hasLand && hasCasino);
             else if (rebirthLevel === 8) rebirthBtn.disabled = !(coins >= 5760000 && hasMagicBall);
             else if (rebirthLevel === 9) rebirthBtn.disabled = !(coins >= 12756000 && hasFactory);
+            else if (rebirthLevel === 10) rebirthBtn.disabled = !(coins >= 25000000 && hasPCV2);
+            else if (rebirthLevel === 11) rebirthBtn.disabled = !(coins >= 50000000 && hasServerV1);
+            else if (rebirthLevel === 12) rebirthBtn.disabled = !(coins >= 100000000 && hasMTProtoV1);
+            else if (rebirthLevel === 13) rebirthBtn.disabled = !(coins >= 250000000 && hasGirlfriend);
+            else if (rebirthLevel === 14) rebirthBtn.disabled = !(coins >= 500000000 && hasSmartphone);
         }
 
         function doRebirth() {
-            if (rebirthLevel >= 10) { showNotif('❌ Это последнее перерождение!'); return; }
+            if (rebirthLevel >= 15) { showNotif('❌ Это последнее перерождение!'); return; }
             let canRebirth = false;
             if (rebirthLevel === 0 && coins >= 1000 && hasRing) canRebirth = true;
             else if (rebirthLevel === 1 && coins >= 5000 && hasRing && hasAutoClicker) canRebirth = true;
@@ -1797,11 +2026,16 @@
             else if (rebirthLevel === 7 && coins >= 2570000 && hasLand && hasCasino) canRebirth = true;
             else if (rebirthLevel === 8 && coins >= 5760000 && hasMagicBall) canRebirth = true;
             else if (rebirthLevel === 9 && coins >= 12756000 && hasFactory) canRebirth = true;
+            else if (rebirthLevel === 10 && coins >= 25000000 && hasPCV2) canRebirth = true;
+            else if (rebirthLevel === 11 && coins >= 50000000 && hasServerV1) canRebirth = true;
+            else if (rebirthLevel === 12 && coins >= 100000000 && hasMTProtoV1) canRebirth = true;
+            else if (rebirthLevel === 13 && coins >= 250000000 && hasGirlfriend) canRebirth = true;
+            else if (rebirthLevel === 14 && coins >= 500000000 && hasSmartphone) canRebirth = true;
             if (canRebirth) {
                 rebirthLevel++;
                 rebirthBonus += 5;
                 coins = 0;
-                hasAutoClicker = false; hasAutoSpeedV1 = false; hasAutoSpeedV2 = false; hasAutoSpeedV3 = false;
+                hasAutoClicker = false; hasAutoSpeedV1 = false; hasAutoSpeedV2 = false; hasAutoSpeedV3 = false; hasAutoProX1 = false; hasAutoProX2 = false;
                 hasRing = false; hasCrown = false; hasPC = false; hasBrowser = false;
                 hasLand = false; hasCasino = false; hasMagicBall = false;
                 hasBigHome = false; hasGirlfriend = false; hasFactory = false; hasSmartphone = false;
@@ -1824,9 +2058,10 @@
                 autoClickerInterval = setInterval(() => {
                     const total = getTotalPerClick();
                     const luckyChance = getLuckyChance();
-                    let gain = total;
-                    if (luckyChance >= 100) gain = total * 2;
-                    else if (luckyChance > 0 && Math.random() * 100 < luckyChance) gain = total * 2;
+                    const multiplier = getAutoMultiplier();
+                    let gain = total * multiplier;
+                    if (luckyChance >= 100) gain = gain * 2;
+                    else if (luckyChance > 0 && Math.random() * 100 < luckyChance) gain = gain * 2;
                     coins += gain;
                     clickCount++;
                     updateDisplay();
@@ -1868,9 +2103,11 @@
         }
 
         function buyAutoClicker() { if (coins >= 1000 && !hasAutoClicker) { coins -= 1000; hasAutoClicker = true; restartAuto(); updateDisplay(); saveGame(); showNotif('✅ AutoClicker V1'); } }
-        function buyAutoSpeedV1() { if (coins >= 2500 && hasAutoClicker && !hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3) { coins -= 2500; hasAutoSpeedV1 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('⚡️Автокликер стал быстрее! (1с)'); } }
-        function buyAutoSpeedV2() { if (coins >= 7777 && hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3) { coins -= 7777; hasAutoSpeedV2 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('⚡️⚡️Автокликер стал быстрее! (0.5с)'); } }
-        function buyAutoSpeedV3() { if (coins >= 25000 && hasAutoSpeedV2 && !hasAutoSpeedV3) { coins -= 25000; hasAutoSpeedV3 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('⚡️⚡️⚡️Автокликер стал быстрее! (0.2с)'); } }
+        function buyAutoSpeedV1() { if (coins >= 2500 && hasAutoClicker && !hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2) { coins -= 2500; hasAutoSpeedV1 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('⚡️Автокликер стал быстрее! (1с)'); } }
+        function buyAutoSpeedV2() { if (coins >= 7777 && hasAutoSpeedV1 && !hasAutoSpeedV2 && !hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2) { coins -= 7777; hasAutoSpeedV2 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('⚡️⚡️Автокликер стал быстрее! (0.5с)'); } }
+        function buyAutoSpeedV3() { if (coins >= 25000 && hasAutoSpeedV2 && !hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2) { coins -= 25000; hasAutoSpeedV3 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('⚡️⚡️⚡️Автокликер стал быстрее! (0.2с)'); } }
+        function buyAutoProX1() { if (coins >= 200000 && hasAutoSpeedV3 && !hasAutoProX1 && !hasAutoProX2) { coins -= 200000; hasAutoProX1 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('🚀 AutoClicker Pro X1! х5 доход, скорость 0.7с'); } }
+        function buyAutoProX2() { if (coins >= 545000 && hasAutoProX1 && !hasAutoProX2) { coins -= 545000; hasAutoProX2 = true; restartAuto(); updateDisplay(); saveGame(); showNotif('🚀🚀 AutoClicker Pro X2! Скорость 0.1с, х5 доход'); } }
         function buyRing() { if (coins >= 200 && !hasRing) { coins -= 200; hasRing = true; updateDisplay(); saveGame(); showNotif('💍 Diamond Ring куплено!'); } }
         function buyCrown() { if (coins >= 25777 && hasRing && !hasCrown) { coins -= 25777; hasCrown = true; updateDisplay(); saveGame(); showNotif('👑 MrFeast Crown куплена!'); } }
         function buyLucky1() { if (coins >= 35777 && luckyLevel === 0) { coins -= 35777; luckyLevel = 1; updateDisplay(); saveGame(); showNotif('🍀 Lucky X1 (10%)'); } }
@@ -1917,19 +2154,28 @@
         function showNotif(text) {
             const n = document.createElement('div');
             n.className = 'notification';
-            n.textContent = text;
+            n.innerHTML = `<i class="fas fa-info-circle"></i> ${text}`;
             document.body.appendChild(n);
             setTimeout(() => n.remove(), 2000);
         }
 
         function telegramLogin() {
-            showNotif('🔜 Вход по Telegram ID будет доступен в следующем обновлении!');
+            // Используем tg.showPopup для лучшей интеграции с Telegram
+            if (tg && tg.showPopup) {
+                tg.showPopup({
+                    title: 'Telegram ID вход',
+                    message: '🔜 Вход по Telegram ID будет доступен в следующем обновлении!',
+                    buttons: [{type: 'ok'}]
+                });
+            } else {
+                showNotif('🔜 Вход по Telegram ID будет доступен в следующем обновлении!');
+            }
         }
 
         function saveGame() {
             const data = {
                 coins, clickCount, coinsPerClick, upgradeLevel, upgradeCost,
-                hasAutoClicker, hasAutoSpeedV1, hasAutoSpeedV2, hasAutoSpeedV3,
+                hasAutoClicker, hasAutoSpeedV1, hasAutoSpeedV2, hasAutoSpeedV3, hasAutoProX1, hasAutoProX2,
                 hasRing, hasCrown, hasPC, hasBrowser, hasLand,
                 hasCasino, hasMagicBall, hasBigHome, hasGirlfriend, hasFactory, hasSmartphone,
                 rebirthLevel, rebirthBonus, luckyLevel,
@@ -1947,6 +2193,8 @@
                 upgradeLevel = d.upgradeLevel; upgradeCost = d.upgradeCost;
                 hasAutoClicker = d.hasAutoClicker; hasAutoSpeedV1 = d.hasAutoSpeedV1;
                 hasAutoSpeedV2 = d.hasAutoSpeedV2; hasAutoSpeedV3 = d.hasAutoSpeedV3 || false;
+                hasAutoProX1 = d.hasAutoProX1 || false;
+                hasAutoProX2 = d.hasAutoProX2 || false;
                 hasRing = d.hasRing; hasCrown = d.hasCrown || false; hasPC = d.hasPC || false;
                 hasBrowser = d.hasBrowser || false; hasLand = d.hasLand || false;
                 hasCasino = d.hasCasino || false; hasMagicBall = d.hasMagicBall || false;
@@ -1954,7 +2202,7 @@
                 hasFactory = d.hasFactory || false; hasSmartphone = d.hasSmartphone || false;
                 rebirthLevel = d.rebirthLevel || 0; rebirthBonus = d.rebirthBonus || 0;
                 luckyLevel = d.luckyLevel || 0;
-                awards = d.awards || { award1: false, award2: false, award3: false, award4: false, award5: false, award6: false, award7: false, award8: false, award9: false };
+                awards = d.awards || { award1: false, award2: false, award3: false, award4: false, award5: false, award6: false, award7: false, award8: false, award9: false, award10: false, award11: false, award12: false, award13: false, award14: false, award15: false };
                 promoUsed = d.promoUsed || false;
                 highQuality = d.highQuality || false;
                 hideIndicators = d.hideIndicators || false;
