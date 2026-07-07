@@ -1,0 +1,3018 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MrFeast Clicker - AWARDS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0a0a0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            left: -6px;
+        }
+
+        .neon-loader {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: transparent;
+            animation: neonPulse 1.5s ease-in-out infinite;
+        }
+
+        .neon-loader::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top: 4px solid #ffd700;
+            border-right: 4px solid #ffd700;
+            animation: spinRing 0.8s linear infinite;
+            box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes spinRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes neonPulse {
+            0% { opacity: 0.7; filter: drop-shadow(0 0 5px #ffd700); }
+            50% { opacity: 1; filter: drop-shadow(0 0 20px #ffd700); }
+            100% { opacity: 0.7; filter: drop-shadow(0 0 5px #ffd700); }
+        }
+
+        .loading-text {
+            margin-top: 30px;
+            color: #ffd700;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
+            animation: textPulse 1.5s ease-in-out infinite;
+            position: relative;
+            right: -10px;
+        }
+
+        @keyframes textPulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .game-container {
+            background: #0f0f19;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            width: 100%;
+            max-width: 550px;
+            min-width: 320px;
+            max-height: 98vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .game-container.visible {
+            opacity: 1;
+        }
+
+        .floating-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            border-radius: 30px;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.35), rgba(255, 215, 0, 0));
+            animation: floatCircle 22s linear infinite;
+            pointer-events: none;
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+
+        @keyframes floatCircle {
+            0% {
+                transform: translateY(100%) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            8% {
+                opacity: 0.6;
+            }
+            92% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-20%) translateX(45px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .ripple {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0));
+            pointer-events: none;
+            animation: rippleAnimation 0.4s ease-out forwards;
+            z-index: 999;
+            will-change: transform, opacity;
+        }
+
+        @keyframes rippleAnimation {
+            0% {
+                transform: scale(0);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        .login-screen {
+            display: block;
+            text-align: center;
+            padding: 20px 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-screen h1 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+        }
+
+        .login-screen h1 i {
+            margin-right: 10px;
+        }
+
+        .login-screen input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            background: #1a1a2a;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            outline: none;
+            color: #fff;
+        }
+
+        .login-screen input:focus {
+            border-color: #ffd700;
+        }
+
+        .login-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+
+        .login-btn:active {
+            opacity: 0.8;
+        }
+
+        .register-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+
+        .register-btn i {
+            margin-right: 10px;
+        }
+
+        .register-btn:active {
+            opacity: 0.8;
+        }
+
+        .saved-accounts-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .saved-accounts-btn i {
+            margin-right: 10px;
+        }
+
+        .saved-accounts-btn:active {
+            opacity: 0.8;
+        }
+
+        .auth-error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+
+        .game-screen {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #1a1a2a;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        .player-name {
+            font-size: 18px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .player-name i {
+            margin-right: 8px;
+        }
+
+        .coins-header {
+            font-size: 18px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .coins-header span {
+            color: #fff;
+            margin-right: 5px;
+        }
+
+        .coins-header i {
+            margin-right: 6px;
+        }
+
+        .settings-btn {
+            background: #0a0a0a;
+            border: 2px solid #ffd700;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px 10px;
+            color: #ffd700;
+            transition: 0.2s;
+            border-radius: 10px;
+        }
+
+        .settings-btn:active {
+            opacity: 0.8;
+            transform: rotate(30deg);
+        }
+
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .settings-modal.active {
+            display: flex;
+        }
+
+        .settings-panel {
+            background: #1a1a2a;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .settings-title {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .settings-title i {
+            margin-right: 10px;
+        }
+
+        .settings-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            margin-bottom: 20px;
+        }
+
+        .settings-subtitle {
+            color: #aaa;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .settings-option {
+            background: #0f0f19;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .option-name {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .option-name i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #4caf50;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .option-desc {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.3;
+        }
+
+        .contact-button {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        .contact-button i {
+            margin-right: 10px;
+        }
+
+        .contact-button:active {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+
+        .settings-close {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .settings-close i {
+            margin-right: 8px;
+        }
+
+        .settings-close:active {
+            opacity: 0.8;
+        }
+
+        .version {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            color: rgba(255, 215, 0, 0.3);
+            font-size: 10px;
+            z-index: 10;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            position: relative;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            padding-bottom: 5px;
+            z-index: 2;
+        }
+
+        .tab {
+            flex: 0 0 auto;
+            min-width: 70px;
+            padding: 10px 8px;
+            background: #0a0a0a;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            color: #ffd700;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            position: relative;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .tab i {
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd700;
+        }
+
+        .tab-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+            box-shadow: 0 0 10px #4caf50;
+            display: none;
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            padding-bottom: 70px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #ffd700 #1a1a2a;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content::-webkit-scrollbar {
+            width: 6px;
+            display: block;
+        }
+
+        .tab-content::-webkit-scrollbar-track {
+            background: #1a1a2a;
+            border-radius: 10px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 10px;
+        }
+
+        #clickerTab {
+            overflow-y: visible;
+            padding-bottom: 10px;
+        }
+
+        #clickerTab::-webkit-scrollbar {
+            display: none;
+        }
+
+        .clicker-content {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .click-btn {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            margin: 10px auto;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.1s;
+            position: relative;
+            z-index: 3;
+        }
+
+        .click-btn:active {
+            transform: scale(0.97);
+        }
+
+        .click-btn i {
+            font-size: 55px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+
+        .click-btn span {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 5px;
+            margin: 15px 0;
+            padding: 10px;
+            background: #1a1a2a;
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            background: #0f0f19;
+            padding: 8px 3px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .stat-label i {
+            font-size: 10px;
+            margin-right: 3px;
+        }
+
+        .stat-value {
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #1a1a2a;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            width: 0%;
+            transition: width 0.2s;
+        }
+
+        .shop-content {
+            padding: 10px 0 30px 0;
+        }
+
+        .shop-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .shop-tab {
+            flex: 0 0 auto;
+            padding: 6px 12px;
+            background: #0a0a0a;
+            border: 1.5px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            color: #aaa;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .shop-tab.active {
+            border-color: #ffd700;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .shop-tab:active {
+            opacity: 0.7;
+        }
+
+        .shop-tab i {
+            margin-right: 4px;
+        }
+
+        .shop-items-container {
+            display: block;
+        }
+
+        .shop-item {
+            background: #1a1a2a;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .shop-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .shop-item-icon {
+            font-size: 24px;
+            width: 36px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .shop-item-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .shop-item-desc {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .shop-item-desc i {
+            margin-right: 4px;
+        }
+
+        .shop-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .shop-item-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .shop-item-price i {
+            margin-right: 6px;
+        }
+
+        .shop-item-price small {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .shop-item-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .shop-item-btn:active {
+            opacity: 0.8;
+        }
+
+        .shop-item-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .owned-badge {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .owned-badge i {
+            margin-right: 4px;
+        }
+
+        .requirement-badge {
+            background: rgba(255, 100, 100, 0.15);
+            color: #ff6b6b;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .requirement-badge i {
+            margin-right: 4px;
+        }
+
+        .upgrade-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin: 25px 0;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .upgrade-btn i {
+            margin-right: 10px;
+        }
+
+        .upgrade-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .rebirth-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin: 15px 0;
+            flex-shrink: 0;
+        }
+
+        .rebirth-btn i {
+            margin-right: 10px;
+        }
+
+        .rebirth-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .rebirth-info {
+            background: #1a1a2a;
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .rebirth-level {
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .rebirth-level i {
+            margin-right: 10px;
+        }
+
+        .rebirth-bonus {
+            color: #4caf50;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .rebirth-bonus i {
+            margin-right: 6px;
+        }
+
+        .rebirth-requirements {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 100, 100, 0.1);
+            border-radius: 10px;
+        }
+
+        .rebirth-next {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .rebirth-last {
+            color: #ff0000;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .awards-content {
+            padding: 10px 0 30px 0;
+        }
+
+        .award-item {
+            background: #1a1a2a;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: 0.2s;
+        }
+
+        .award-item.available {
+            border-color: #4caf50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .award-item.completed {
+            border-color: #ffd700;
+            opacity: 0.8;
+        }
+
+        .award-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .award-icon {
+            font-size: 24px;
+            width: 36px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .award-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .award-desc {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .award-reward {
+            font-size: 14px;
+            color: #4caf50;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .award-reward i {
+            margin-right: 6px;
+        }
+
+        .award-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .award-requirement {
+            font-size: 12px;
+            color: #ff6b6b;
+            background: rgba(255, 100, 100, 0.1);
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        .award-requirement i {
+            margin-right: 4px;
+        }
+
+        .award-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .award-btn:active {
+            opacity: 0.8;
+        }
+
+        .award-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .completed-badge {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .completed-badge i {
+            margin-right: 4px;
+        }
+
+        .promo-content {
+            padding: 20px 10px;
+            text-align: center;
+        }
+
+        .promo-title {
+            color: #ffd700;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .promo-title i {
+            margin-right: 10px;
+        }
+
+        .promo-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            background: #1a1a2a;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .promo-input:focus {
+            border-color: #ffd700;
+        }
+
+        .promo-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .promo-btn i {
+            margin-right: 8px;
+        }
+
+        .promo-btn:active {
+            opacity: 0.8;
+        }
+
+        .promo-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .promo-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .promo-message.error {
+            background: rgba(255, 100, 100, 0.2);
+            color: #ff6b6b;
+        }
+
+        .coin-animation {
+            position: fixed;
+            pointer-events: none;
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: coinFloat 0.6s ease-out forwards;
+        }
+
+        @keyframes coinFloat {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a0a0a;
+            color: #ffd700;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            z-index: 2000;
+            animation: notification 2s ease forwards;
+            white-space: normal;
+            word-break: break-word;
+            max-width: 85%;
+            min-width: 200px;
+            text-align: center;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .notification i {
+            margin-right: 8px;
+        }
+
+        @keyframes notification {
+            0% { transform: translate(-50%, -100%); opacity: 0; }
+            10% { transform: translate(-50%, 0); opacity: 1; }
+            90% { transform: translate(-50%, 0); opacity: 1; }
+            100% { transform: translate(-50%, -100%); opacity: 0; }
+        }
+
+        .fa-fw {
+            width: 1.25em;
+            text-align: center;
+        }
+
+        .accounts-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50000;
+        }
+
+        .accounts-modal.active {
+            display: flex;
+        }
+
+        .accounts-panel {
+            background: #1a1a2a;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .accounts-title {
+            color: #ffd700;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .accounts-title i {
+            margin-right: 10px;
+        }
+
+        .accounts-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            margin-bottom: 15px;
+        }
+
+        .accounts-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .accounts-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .accounts-list::-webkit-scrollbar-track {
+            background: #0f0f19;
+            border-radius: 10px;
+        }
+
+        .accounts-list::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 10px;
+        }
+
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #0f0f19;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .account-item:active {
+            transform: scale(0.98);
+            border-color: #ffd700;
+        }
+
+        .account-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .account-coins {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .account-coins i {
+            color: #ffd700;
+            margin-right: 4px;
+        }
+
+        .no-accounts {
+            color: #666;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .no-accounts i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .accounts-close-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .accounts-close-btn:active {
+            opacity: 0.8;
+        }
+
+        .autosave-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 60000;
+        }
+
+        .autosave-modal.active {
+            display: flex;
+        }
+
+        .autosave-panel {
+            background: #1a1a2a;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            padding: 25px;
+            animation: fadeIn 0.4s ease;
+            text-align: center;
+        }
+
+        .autosave-title {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .autosave-title i {
+            margin-right: 10px;
+        }
+
+        .autosave-text {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .autosave-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .autosave-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid #ffd700;
+            background: #0a0a0a;
+            color: #ffd700;
+            min-width: 100px;
+        }
+
+        .autosave-btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .autosave-btn.yes {
+            background: #ffd700;
+            color: #0a0a0a;
+            border-color: #ffd700;
+        }
+
+        .autosave-btn.no {
+            background: transparent;
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .session-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 70000;
+        }
+
+        .session-modal.active {
+            display: flex;
+        }
+
+        .session-panel {
+            background: #1a1a2a;
+            border: 2px solid #ff6b6b;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            padding: 25px;
+            animation: fadeIn 0.4s ease;
+            text-align: center;
+        }
+
+        .session-title {
+            color: #ff6b6b;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .session-title i {
+            margin-right: 10px;
+        }
+
+        .session-text {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .session-btn {
+            background: #0a0a0a;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .session-btn:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader-wrapper">
+            <div class="neon-loader"></div>
+            <div class="loading-text">Загрузка...</div>
+        </div>
+    </div>
+
+    <div class="game-container" id="gameContainer">
+        <div class="floating-circles" id="floatingCircles"></div>
+
+        <div class="login-screen" id="loginScreen">
+            <h1><i class="fas fa-coins"></i> MrFeast Clicker</h1>
+            <input type="text" id="username" placeholder="Никнейм" maxlength="20">
+            <input type="password" id="password" placeholder="Пароль" maxlength="30">
+            <button class="login-btn" onclick="loginUser()"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            <button class="register-btn" onclick="registerUser()"><i class="fas fa-user-plus"></i> Регистрация</button>
+            <button class="saved-accounts-btn" onclick="openAccounts()"><i class="fas fa-users"></i> Сохранённые аккаунты</button>
+            <div id="authMessage" class="auth-error"></div>
+        </div>
+
+        <div class="accounts-modal" id="accountsModal">
+            <div class="accounts-panel">
+                <div class="accounts-title"><i class="fas fa-users"></i> Сохранённые аккаунты</div>
+                <div class="accounts-divider"></div>
+                <div class="accounts-list" id="accountsList">
+                    <div class="no-accounts">
+                        <i class="fas fa-user-slash"></i>
+                        Нет сохранённых аккаунтов
+                    </div>
+                </div>
+                <button class="accounts-close-btn" onclick="closeAccounts()"><i class="fas fa-times"></i> Закрыть</button>
+            </div>
+        </div>
+
+        <div class="autosave-modal" id="autosaveModal">
+            <div class="autosave-panel">
+                <div class="autosave-title"><i class="fas fa-save"></i> Автосохранение</div>
+                <div class="autosave-text" id="autosaveText">
+                    Мы обнаружили что ваш аккаунт не сохранен системой, хотите сохранить?<br>
+                    Вы сможете потом 1 кнопкой входить.
+                </div>
+                <div class="autosave-buttons">
+                    <button class="autosave-btn yes" onclick="autosaveAnswer(true)">Да</button>
+                    <button class="autosave-btn no" onclick="autosaveAnswer(false)">Нет</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="session-modal" id="sessionModal">
+            <div class="session-panel">
+                <div class="session-title"><i class="fas fa-exclamation-triangle"></i> Сеанс завершен</div>
+                <div class="session-text">
+                    Кто-то зашел с другого устройства на ваш аккаунт и превысил количество активных сеансов одновременно.
+                </div>
+                <button class="session-btn" onclick="kickToLogin()"><i class="fas fa-sign-out-alt"></i> ОК</button>
+            </div>
+        </div>
+
+        <div class="game-screen" id="gameScreen">
+            <div class="header">
+                <div class="player-name"><i class="fas fa-user"></i><span id="playerNameDisplay">Игрок</span></div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="coins-header" id="coinDisplay">
+                        <i class="fas fa-coins"></i><span>Coins:</span>0
+                    </div>
+                    <button class="settings-btn" onclick="openSettings()"><i class="fas fa-cog"></i></button>
+                </div>
+            </div>
+
+            <div class="settings-modal" id="settingsModal">
+                <div class="settings-panel">
+                    <div class="settings-title"><i class="fas fa-sliders-h"></i> Настройки игры</div>
+                    <div class="settings-divider"></div>
+                    <div class="settings-subtitle">Параметры</div>
+                    
+                    <div class="settings-option">
+                        <div class="option-header">
+                            <span class="option-name"><i class="fas fa-star"></i> Высокое качество</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="highQualityToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="option-desc">Меню и некоторые детали станут более детализированными что может снизить производительность.</div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="option-header">
+                            <span class="option-name"><i class="fas fa-eye-slash"></i> Отключить индикаторы</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="hideIndicatorsToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="option-desc">Отключите индикаторы если вам мешают.</div>
+                    </div>
+
+                    <div class="settings-option">
+                        <div class="option-header">
+                            <span class="option-name"><i class="fas fa-phone"></i> Связь с владельцем</span>
+                        </div>
+                        <button class="contact-button" id="contactButton"><i class="fab fa-telegram"></i> Написать</button>
+                    </div>
+                    
+                    <button class="settings-close" onclick="closeSettingsAndApply()"><i class="fas fa-check"></i> Закрыть и применить</button>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('clicker')" id="clickerTabBtn">
+                    <i class="fas fa-hand-pointer"></i> Clicker
+                    <span class="tab-dot" id="clickerDot"></span>
+                </div>
+                <div class="tab" onclick="switchTab('shop')" id="shopTabBtn">
+                    <i class="fas fa-shopping-cart"></i> Shop
+                    <span class="tab-dot" id="shopDot"></span>
+                </div>
+                <div class="tab" onclick="switchTab('rebirth')" id="rebirthTabBtn">
+                    <i class="fas fa-sync-alt"></i> Rebirth
+                    <span class="tab-dot" id="rebirthDot"></span>
+                </div>
+                <div class="tab" onclick="switchTab('awards')" id="awardsTabBtn">
+                    <i class="fas fa-trophy"></i> Awards
+                    <span class="tab-dot" id="awardDot"></span>
+                </div>
+                <div class="tab" onclick="switchTab('promo')" id="promoTabBtn">
+                    <i class="fas fa-gift"></i> Promo
+                </div>
+            </div>
+
+            <div class="tab-content active" id="clickerTab">
+                <div class="clicker-content">
+                    <div class="click-btn" onclick="handleClickWithRipple(event)">
+                        <i class="fas fa-hand-pointer"></i>
+                        <span id="clickValue">+1</span>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-label"><i class="fas fa-mouse-pointer"></i> Клики</div>
+                            <div class="stat-value" id="clickCount">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><i class="fas fa-arrow-up"></i> Уровень</div>
+                            <div class="stat-value" id="upgradeLevel">1</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><i class="fas fa-hand-peace"></i> За клик</div>
+                            <div class="stat-value" id="coinsPerClick">1</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><i class="fas fa-robot"></i> Авто</div>
+                            <div class="stat-value" id="autoSpeed">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><i class="fas fa-redo-alt"></i> Rebirth</div>
+                            <div class="stat-value" id="rebirthLevel">0</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="shopTab">
+                <div class="shop-content" id="shopContent">
+                    <div class="shop-tabs" id="shopTabs">
+                        <div class="shop-tab active" data-filter="all"><i class="fas fa-list"></i> Все</div>
+                        <div class="shop-tab" data-filter="autoclicker"><i class="fas fa-robot"></i> AutoClicker</div>
+                        <div class="shop-tab" data-filter="pc"><i class="fas fa-desktop"></i> PC</div>
+                        <div class="shop-tab" data-filter="lucky"><i class="fas fa-leaf"></i> Lucky</div>
+                        <div class="shop-tab" data-filter="love"><i class="fas fa-heart"></i> Love</div>
+                        <div class="shop-tab" data-filter="other"><i class="fas fa-box"></i> Прочее</div>
+                        <div class="shop-tab" data-filter="min"><i class="fas fa-arrow-up"></i> Мин</div>
+                        <div class="shop-tab" data-filter="max"><i class="fas fa-arrow-down"></i> Макс</div>
+                    </div>
+                    <div class="shop-items-container" id="shopItemsContainer"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="rebirthTab">
+                <div class="rebirth-info">
+                    <div class="rebirth-level"><i class="fas fa-redo-alt"></i> <span id="rebirthLevelDisplay">Rebirth 0</span></div>
+                    <div class="rebirth-bonus"><i class="fas fa-plus-circle"></i> <span id="rebirthBonusDisplay">+0 за клик</span></div>
+                    <div id="rebirthRequirements"></div>
+                    <div id="rebirthNextDisplay" class="rebirth-next"></div>
+                    <div id="lastRebirthMsg" class="rebirth-last" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i> Это последнее перерождение!
+                    </div>
+                </div>
+                <button class="rebirth-btn" id="rebirthBtn" onclick="doRebirth()">
+                    <i class="fas fa-sync-alt"></i> СДЕЛАТЬ REBIRTH
+                </button>
+            </div>
+
+            <div class="tab-content" id="awardsTab">
+                <div class="awards-content" id="awardsContent"></div>
+            </div>
+
+            <div class="tab-content" id="promoTab">
+                <div class="promo-content">
+                    <div class="promo-title"><i class="fas fa-gift"></i> Активация промокода</div>
+                    <input type="text" id="promoInput" class="promo-input" placeholder="Введите промокод">
+                    <button class="promo-btn" onclick="activatePromo()"><i class="fas fa-check"></i> Активировать</button>
+                    <div id="promoMessage" class="promo-message"></div>
+                </div>
+            </div>
+
+            <button class="upgrade-btn" id="upgradeBtn" onclick="buyUpgrade()">
+                <i class="fas fa-bolt"></i> Апгрейд
+            </button>
+
+            <div class="version">Version:1.2.0</div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // SUPABASE КОНФИГУРАЦИЯ
+        // ==========================================
+        const SUPABASE_URL = 'https://lfmwdkpyhqmztvwcoenw.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_NJfsm5F3_NigieiTUwEuEQ_HDuwc3TI';
+
+        // Глобальные переменные
+        let currentPlayer = '';
+        let sessionId = '';
+        let isSessionKicked = false;
+        let sessionCheckInterval = null;
+        let currentPassword = '';
+
+        // ==========================================
+        // УПРАВЛЕНИЕ СОХРАНЁННЫМИ АККАУНТАМИ
+        // ==========================================
+        let pendingAccountName = '';
+        let pendingAccountCoins = 0;
+
+        function getSavedAccounts() {
+            try {
+                const data = localStorage.getItem('mrfeast_saved_accounts_v2');
+                return data ? JSON.parse(data) : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveAccountsList(accounts) {
+            localStorage.setItem('mrfeast_saved_accounts_v2', JSON.stringify(accounts));
+        }
+
+        function addAccount(name, password, coins) {
+            const accounts = getSavedAccounts();
+            const existing = accounts.find(a => a.name === name);
+            if (existing) {
+                existing.password = password;
+                existing.coins = coins;
+                existing.lastUpdate = Date.now();
+            } else {
+                accounts.push({ name, password, coins, lastUpdate: Date.now() });
+            }
+            saveAccountsList(accounts);
+        }
+
+        function isAccountSaved(name) {
+            const accounts = getSavedAccounts();
+            return accounts.some(a => a.name === name);
+        }
+
+        function getAccount(name) {
+            const accounts = getSavedAccounts();
+            return accounts.find(a => a.name === name);
+        }
+
+        function renderAccounts() {
+            const list = document.getElementById('accountsList');
+            const accounts = getSavedAccounts();
+            
+            if (accounts.length === 0) {
+                list.innerHTML = `
+                    <div class="no-accounts">
+                        <i class="fas fa-user-slash"></i>
+                        Нет сохранённых аккаунтов
+                    </div>
+                `;
+                return;
+            }
+            
+            accounts.sort((a, b) => b.coins - a.coins);
+            
+            list.innerHTML = accounts.map(acc => `
+                <div class="account-item" onclick="loadLocalAccount('${acc.name}', '${acc.password}')">
+                    <span class="account-name"><i class="fas fa-user"></i> ${acc.name}</span>
+                    <span class="account-coins"><i class="fas fa-coins"></i> ${acc.coins.toLocaleString()}</span>
+                </div>
+            `).join('');
+        }
+
+        function openAccounts() {
+            document.getElementById('accountsModal').classList.add('active');
+            renderAccounts();
+        }
+
+        function closeAccounts() {
+            document.getElementById('accountsModal').classList.remove('active');
+        }
+
+        function loadLocalAccount(name, password) {
+            closeAccounts();
+            document.getElementById('username').value = name;
+            document.getElementById('password').value = password || '';
+            setTimeout(() => loginUser(), 300);
+        }
+
+        function showAutosave(name, password, coins) {
+            pendingAccountName = name;
+            pendingAccountCoins = coins;
+            window._pendingPassword = password;
+            document.getElementById('autosaveModal').classList.add('active');
+        }
+
+        function autosaveAnswer(answer) {
+            document.getElementById('autosaveModal').classList.remove('active');
+            if (answer) {
+                addAccount(pendingAccountName, window._pendingPassword || '', pendingAccountCoins);
+                showNotif('✅ Аккаунт сохранён в список!');
+            }
+            pendingAccountName = '';
+            pendingAccountCoins = 0;
+            window._pendingPassword = '';
+        }
+
+        // ==========================================
+        // УПРАВЛЕНИЕ СЕССИЯМИ (РЕАЛЬНОЕ ВРЕМЯ)
+        // ==========================================
+        function generateSessionId() {
+            return 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 10);
+        }
+
+        async function updateSessionId(username, newSessionId) {
+            try {
+                await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ session_id: newSessionId })
+                });
+                return true;
+            } catch (e) {
+                console.error('Ошибка обновления сессии:', e);
+                return false;
+            }
+        }
+
+        async function checkSessionValid(username, currentSessionId) {
+            try {
+                const data = await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}&select=session_id`);
+                if (data && data.length > 0) {
+                    const storedSessionId = data[0].session_id || '';
+                    return storedSessionId === currentSessionId;
+                }
+                return false;
+            } catch (e) {
+                console.error('Ошибка проверки сессии:', e);
+                return true;
+            }
+        }
+
+        function startSessionCheck(username, sessionId) {
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            sessionCheckInterval = setInterval(async () => {
+                if (isSessionKicked) return;
+                const valid = await checkSessionValid(username, sessionId);
+                if (!valid) {
+                    isSessionKicked = true;
+                    clearInterval(sessionCheckInterval);
+                    sessionCheckInterval = null;
+                    document.getElementById('sessionModal').classList.add('active');
+                    if (autoClickerInterval) clearInterval(autoClickerInterval);
+                    if (browserInterval) clearInterval(browserInterval);
+                    if (casinoInterval) clearInterval(casinoInterval);
+                    if (serverTaxInterval) clearInterval(serverTaxInterval);
+                }
+            }, 2000); // Проверка каждые 2 секунды
+        }
+
+        function kickToLogin() {
+            document.getElementById('sessionModal').classList.remove('active');
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            isSessionKicked = false;
+            currentPlayer = '';
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
+            showNotif('👋 Вы вышли из аккаунта');
+        }
+
+        // ==========================================
+        // TELEGRAM INTEGRATION
+        // ==========================================
+        let tg = window.Telegram?.WebApp;
+        let userId = 'local';
+        let userFirstName = 'Игрок';
+        
+        if (tg) {
+            tg.expand();
+            tg.enableClosingConfirmation();
+            if (tg.initDataUnsafe?.user) {
+                userId = tg.initDataUnsafe.user.id;
+                userFirstName = tg.initDataUnsafe.user.first_name || 'Игрок';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactBtn = document.getElementById('contactButton');
+            if (contactBtn) {
+                contactBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (tg && tg.openTelegramLink) {
+                        tg.openTelegramLink('tg://resolve?domain=MrFeast_Official');
+                    } else {
+                        window.open('tg://resolve?domain=MrFeast_Official', '_blank');
+                    }
+                });
+            }
+        });
+
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const gameContainer = document.getElementById('gameContainer');
+            
+            setTimeout(function() {
+                loadingScreen.classList.add('hide');
+                gameContainer.classList.add('visible');
+                
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+
+        // ==========================================
+        // ФУНКЦИИ ДЛЯ РАБОТЫ С SUPABASE
+        // ==========================================
+        async function supabaseRequest(endpoint, options = {}) {
+            const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
+            const headers = {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+            };
+
+            const response = await fetch(url, {
+                ...options,
+                headers: { ...headers, ...options.headers }
+            });
+
+            if (!response.ok) {
+                const error = await response.text();
+                throw new Error(error || 'Ошибка запроса к базе данных');
+            }
+
+            return response.json();
+        }
+
+        async function checkUserExists(username) {
+            try {
+                const data = await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}&select=id`);
+                return data && data.length > 0;
+            } catch (e) {
+                console.error('Ошибка проверки пользователя:', e);
+                return false;
+            }
+        }
+
+        async function getUserData(username, password) {
+            try {
+                const data = await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}&password=eq.${encodeURIComponent(password)}&select=*`);
+                return data && data.length > 0 ? data[0] : null;
+            } catch (e) {
+                console.error('Ошибка получения данных пользователя:', e);
+                return null;
+            }
+        }
+
+        async function createUser(username, password) {
+            try {
+                const data = await supabaseRequest('users', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        coins: 0,
+                        click_count: 0,
+                        coins_per_click: 1,
+                        upgrade_level: 1,
+                        upgrade_cost: 5,
+                        rebirth_level: 0,
+                        rebirth_bonus: 0,
+                        lucky_level: 0,
+                        awards: {},
+                        session_id: ''
+                    })
+                });
+                return data && data.length > 0 ? data[0] : null;
+            } catch (e) {
+                console.error('Ошибка создания пользователя:', e);
+                return null;
+            }
+        }
+
+        async function updateUserData(username, data) {
+            try {
+                await supabaseRequest(`users?username=eq.${encodeURIComponent(username)}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(data)
+                });
+                return true;
+            } catch (e) {
+                console.error('Ошибка обновления данных:', e);
+                return false;
+            }
+        }
+
+        // ==========================================
+        // АВТОРИЗАЦИЯ
+        // ==========================================
+        const loginScreen = document.getElementById('loginScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const authMessage = document.getElementById('authMessage');
+
+        async function loginUser() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username) { authMessage.textContent = 'Введите никнейм!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (!password) { authMessage.textContent = 'Введите пароль!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (username.length > 20) { authMessage.textContent = 'Никнейм не может быть длиннее 20 символов!'; authMessage.style.color = '#ff6b6b'; return; }
+
+            authMessage.textContent = '⏳ Загрузка...';
+            authMessage.style.color = '#ffd700';
+
+            try {
+                const user = await getUserData(username, password);
+                if (user) {
+                    sessionId = generateSessionId();
+                    await updateSessionId(username, sessionId);
+                    
+                    currentPlayer = username;
+                    currentPassword = password;
+                    playerNameDisplay.textContent = username;
+                    loginScreen.style.display = 'none';
+                    gameScreen.style.display = 'flex';
+                    
+                    startSessionCheck(username, sessionId);
+                    loadGameFromCloud(user);
+                    authMessage.textContent = '';
+                    
+                    if (!isAccountSaved(username)) {
+                        setTimeout(() => {
+                            showAutosave(username, password, coins);
+                        }, 500);
+                    } else {
+                        addAccount(username, password, coins);
+                    }
+                } else {
+                    authMessage.textContent = '❌ Неверный логин или пароль!';
+                    authMessage.style.color = '#ff6b6b';
+                }
+            } catch (e) {
+                authMessage.textContent = '❌ Ошибка подключения к серверу!';
+                authMessage.style.color = '#ff6b6b';
+                console.error(e);
+            }
+        }
+
+        async function registerUser() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username) { authMessage.textContent = 'Введите никнейм!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (!password) { authMessage.textContent = 'Введите пароль!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (username.length > 20) { authMessage.textContent = 'Никнейм не может быть длиннее 20 символов!'; authMessage.style.color = '#ff6b6b'; return; }
+            if (password.length < 4) { authMessage.textContent = 'Пароль должен быть минимум 4 символа!'; authMessage.style.color = '#ff6b6b'; return; }
+
+            authMessage.textContent = '⏳ Проверка...';
+            authMessage.style.color = '#ffd700';
+
+            try {
+                const exists = await checkUserExists(username);
+                if (exists) {
+                    authMessage.textContent = '❌ Такой никнейм уже занят!';
+                    authMessage.style.color = '#ff6b6b';
+                    return;
+                }
+
+                authMessage.textContent = '⏳ Создание аккаунта...';
+                const user = await createUser(username, password);
+                if (user) {
+                    authMessage.textContent = '✅ Аккаунт создан! Вход...';
+                    authMessage.style.color = '#4caf50';
+                    setTimeout(() => {
+                        loginUser();
+                    }, 500);
+                } else {
+                    authMessage.textContent = '❌ Ошибка создания аккаунта!';
+                    authMessage.style.color = '#ff6b6b';
+                }
+            } catch (e) {
+                authMessage.textContent = '❌ Ошибка подключения к серверу!';
+                authMessage.style.color = '#ff6b6b';
+                console.error(e);
+            }
+        }
+
+        // ==========================================
+        // ПОЛНАЯ ЛОГИКА ИГРЫ
+        // ==========================================
+        let coins = 0;
+        let clickCount = 0;
+        let coinsPerClick = 1;
+        let upgradeLevel = 1;
+        let upgradeCost = 5;
+        
+        let rebirthLevel = 0;
+        let rebirthBonus = 0;
+        
+        let hasAutoClicker = false;
+        let hasAutoSpeedV1 = false;
+        let hasAutoSpeedV2 = false;
+        let hasAutoSpeedV3 = false;
+        let hasAutoProX1 = false;
+        let hasAutoProX2 = false;
+        let autoClickerInterval = null;
+        let hasRing = false;
+        let hasCrown = false;
+        let hasPC = false;
+        let hasBrowser = false;
+        let hasLand = false;
+        let hasCasino = false;
+        let casinoInterval = null;
+        let hasMagicBall = false;
+        let hasBigHome = false;
+        let hasGirlfriend = false;
+        let hasFactory = false;
+        let hasSmartphone = false;
+        let luckyLevel = 0;
+        
+        let hasPCV2 = false;
+        let hasPCV3 = false;
+        let hasPCUltra = false;
+        let hasPCQuantum = false;
+        let hasServerV1 = false;
+        let hasMTProtoV1 = false;
+        let serverTaxInterval = null;
+        
+        let highQuality = false;
+        let hideIndicators = false;
+        let circlesInterval = null;
+        
+        let awards = {
+            award1: false, award2: false, award3: false, award4: false,
+            award5: false, award6: false, award7: false, award8: false,
+            award9: false, award10: false, award11: false, award12: false,
+            award13: false, award14: false, award15: false
+        };
+        
+        let promoUsed = false;
+        let browserInterval = null;
+
+        const playerNameDisplay = document.getElementById('playerNameDisplay');
+        const coinDisplay = document.getElementById('coinDisplay');
+        const clickValueSpan = document.getElementById('clickValue');
+        const clickCountSpan = document.getElementById('clickCount');
+        const coinsPerClickSpan = document.getElementById('coinsPerClick');
+        const upgradeLevelSpan = document.getElementById('upgradeLevel');
+        const autoSpeedSpan = document.getElementById('autoSpeed');
+        const upgradeBtn = document.getElementById('upgradeBtn');
+        const progressFill = document.getElementById('progressFill');
+        const rebirthLevelSpan = document.getElementById('rebirthLevel');
+        const rebirthLevelDisplay = document.getElementById('rebirthLevelDisplay');
+        const rebirthBonusDisplay = document.getElementById('rebirthBonusDisplay');
+        const rebirthBtn = document.getElementById('rebirthBtn');
+        const rebirthRequirements = document.getElementById('rebirthRequirements');
+        const rebirthNextDisplay = document.getElementById('rebirthNextDisplay');
+        const lastRebirthMsg = document.getElementById('lastRebirthMsg');
+        const awardDot = document.getElementById('awardDot');
+        const clickerDot = document.getElementById('clickerDot');
+        const shopDot = document.getElementById('shopDot');
+        const rebirthDot = document.getElementById('rebirthDot');
+        const promoInput = document.getElementById('promoInput');
+        const promoMessage = document.getElementById('promoMessage');
+        
+        const highQualityToggle = document.getElementById('highQualityToggle');
+        const hideIndicatorsToggle = document.getElementById('hideIndicatorsToggle');
+        const settingsModal = document.getElementById('settingsModal');
+        const floatingCircles = document.getElementById('floatingCircles');
+        const gameContainerEl = document.getElementById('gameContainer');
+        const shopItemsContainer = document.getElementById('shopItemsContainer');
+
+        // ==========================================
+        // ДАННЫЕ ТОВАРОВ (сокращенно для экономии места)
+        // ==========================================
+        const shopItemsData = [
+            { id: 'autoClicker', title: 'AutoClicker V1', desc: 'Автоматически кликает каждые 2 секунды', price: 1000, category: 'autoclicker', icon: 'fa-robot', requirement: null },
+            { id: 'autoSpeedV1', title: 'Update AutoClicker V1', desc: 'Автокликер будет быстрее кликать на 1 секунду меньше (станет 1 секунда)', price: 2500, category: 'autoclicker', icon: 'fa-bolt', requirement: 'AutoClicker V1' },
+            { id: 'autoSpeedV2', title: 'Update AutoClicker V2', desc: 'Автокликер будет еще быстрее кликать на 0.5 секунды меньше (станет 0.5 секунд)', price: 7777, category: 'autoclicker', icon: 'fa-bolt', requirement: 'Update V1' },
+            { id: 'autoSpeedV3', title: 'Update AutoClicker V3', desc: 'Автокликер будет с бешенной скоростью кликать на 0.3 секунды меньше (станет 0.2 секунды)', price: 25000, category: 'autoclicker', icon: 'fa-bolt', requirement: 'Update V2' },
+            { id: 'autoProX1', title: 'AutoClicker Pro X1', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Получайте за каждый клик X5 монет, <i class="fas fa-arrow-down" style="color:#ff6b6b;"></i> но скорость ниже на 0,5', price: 200000, category: 'autoclicker', icon: 'fa-rocket', requirement: 'последняя прокачка автокликера' },
+            { id: 'autoProX2', title: 'AutoClicker Pro X2', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Повысьте скорость клика (-0,6)', price: 545000, category: 'autoclicker', icon: 'fa-rocket', requirement: 'AutoClicker Pro X1' },
+            { id: 'ring', title: 'Diamond Ring', desc: 'Увеличивает доход за клик на 5', price: 200, category: 'lucky', icon: 'fa-gem', requirement: null },
+            { id: 'crown', title: 'MrFeast Crown', desc: 'Увеличивает прилично доход за клик на 150', price: 25777, category: 'lucky', icon: 'fa-crown', requirement: 'Diamond Ring' },
+            { id: 'lucky1', title: 'Lucky X1', desc: 'С шансом 10% за нажатие вам дадут удвоенную прибыль', price: 35777, category: 'lucky', icon: 'fa-leaf', requirement: null },
+            { id: 'lucky2', title: 'Lucky X2', desc: 'С шансом 20% за нажатие вам дадут удвоенную прибыль', price: 65000, category: 'lucky', icon: 'fa-leaf', requirement: 'Lucky X1' },
+            { id: 'lucky3', title: 'Lucky X3', desc: 'С шансом 45% за нажатие вам дадут удвоенную прибыль', price: 125000, category: 'lucky', icon: 'fa-leaf', requirement: 'Lucky X2' },
+            { id: 'lucky4', title: 'Lucky X4', desc: 'С шансом 50% за нажатие вам дадут удвоенную прибыль', price: 256000, category: 'lucky', icon: 'fa-leaf', requirement: 'Lucky X3' },
+            { id: 'lucky5', title: 'Lucky X5', desc: 'С шансом 100% за нажатие вам дадут удвоенную прибыль', price: 1000000, category: 'lucky', icon: 'fa-leaf', requirement: 'Lucky X4' },
+            { id: 'pc', title: 'MrFeast PC V1', desc: 'Дает возможность создать браузер', price: 57500, category: 'pc', icon: 'fa-desktop', requirement: null },
+            { id: 'pcV2', title: 'MrFeast PC V2', desc: 'Более мощный компьютер для требовательных задач.', price: 2750000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V1' },
+            { id: 'pcV3', title: 'MrFeast PC V3', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Мощнейший компьютер для самых сложных задач. +5 000 к доходу за клик.', price: 15000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V2' },
+            { id: 'pcUltra', title: 'MrFeast PC Ultra', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Ультра-мощный ПК, способный запускать всё. +15 000 к доходу за клик.', price: 50000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V3' },
+            { id: 'pcQuantum', title: 'MrFeast PC Quantum', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Квантовый компьютер будущего. +50 000 к доходу за клик.', price: 150000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC Ultra' },
+            { id: 'smartphone', title: 'MrFeast SmartPhone (Worbeli GameShtorm)', desc: 'Вы создали свой игровой телефон и увеличиваете доход за клик на 750', price: 1256000, category: 'other', icon: 'fa-mobile-alt', requirement: 'MrFeast Factory' },
+            { id: 'browser', title: 'MrFeast Browser', desc: 'Браузер приносит каждые 5 секунд доход в размере X2 от дохода за 1 клик', price: 275000, category: 'other', icon: 'fa-globe', requirement: 'MrFeast PC V1' },
+            { id: 'casino', title: 'MrFeast Casino', desc: 'Каждые 60 секунд дает 15 000 монет', price: 1250000, category: 'other', icon: 'fa-dice', requirement: 'MrFeast PC V1' },
+            { id: 'serverV1', title: 'MrFeastServer(V1)', desc: 'Создай свой сервер для MTProto. Каждые 5 минут списывает 1.000.000 монет.', price: 5670000, category: 'other', icon: 'fa-server', requirement: 'MrFeast PC V2' },
+            { id: 'mtprotoV1', title: 'MrFeastMTProto V1', desc: 'Создай прокси сервер для Telegram и повысь свой доход на 700 за клик.', price: 1200000, category: 'other', icon: 'fa-lock', requirement: 'MrFeastServer(V1)' },
+            { id: 'land', title: 'MrFeastLand', desc: 'Значительно повышает репутацию и доход за клик на 1000', price: 760000, category: 'other', icon: 'fa-city', requirement: null },
+            { id: 'factory', title: 'MrFeast Factory', desc: 'Дает возможность создавать телефоны. Увеличивает доход за клик на 1250', price: 2750000, category: 'other', icon: 'fa-industry', requirement: 'MrFeast PC V1, MrFeastLand' },
+            { id: 'magicBall', title: 'MrFeast Magic Ball', desc: 'Повышает доход за нажатие на 250!', price: 1570000, category: 'lucky', icon: 'fa-magic', requirement: null },
+            { id: 'bigHome', title: 'MrFeast Big Home', desc: 'Дает завести девушку и бонус за клик: +570', price: 9777000, category: 'love', icon: 'fa-home', requirement: null },
+            { id: 'girlfriend', title: "MrFeast's GirlFriend Vika", desc: 'Любимая девушка MrFeast. Вы счастливы и ваш доход увеличился на +1500', price: 15000000, category: 'love', icon: 'fa-heart', requirement: 'MrFeast Big Home' }
+        ];
+
+        function renderShopItems(filter) {
+            let items = [...shopItemsData];
+            if (filter === 'autoclicker') items = items.filter(i => i.category === 'autoclicker');
+            else if (filter === 'pc') items = items.filter(i => i.category === 'pc');
+            else if (filter === 'lucky') items = items.filter(i => i.category === 'lucky');
+            else if (filter === 'love') items = items.filter(i => i.category === 'love');
+            else if (filter === 'other') items = items.filter(i => i.category === 'other');
+            else if (filter === 'min') items.sort((a, b) => a.price - b.price);
+            else if (filter === 'max') items.sort((a, b) => b.price - a.price);
+            else items.sort((a, b) => a.price - b.price);
+            
+            let html = '';
+            items.forEach(item => {
+                const isOwned = checkOwned(item.id);
+                const canBuy = checkCanBuy(item.id);
+                const reqText = item.requirement ? `<div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: ${item.requirement}</div>` : '';
+                const btnHtml = isOwned ? 
+                    '<span class="owned-badge"><i class="fas fa-check"></i></span>' : 
+                    `<button class="shop-item-btn" onclick="buyShopItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>Купить</button>`;
+                html += `
+                    <div class="shop-item" data-item-id="${item.id}">
+                        <div class="shop-item-header">
+                            <span class="shop-item-icon"><i class="fas ${item.icon}"></i></span>
+                            <span class="shop-item-title">${item.title}</span>
+                        </div>
+                        <div class="shop-item-desc">${item.desc}</div>
+                        ${reqText}
+                        <div class="shop-item-footer">
+                            <div class="shop-item-price"><i class="fas fa-coins"></i>${item.price.toLocaleString()}</div>
+                            ${btnHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            if (items.length === 0) {
+                html = '<div style="text-align:center;color:#666;padding:30px 0;"><i class="fas fa-box-open"></i> Нет товаров в этой категории</div>';
+            }
+            shopItemsContainer.innerHTML = html;
+        }
+
+        function checkOwned(itemId) {
+            const map = {
+                'autoClicker': hasAutoClicker, 'autoSpeedV1': hasAutoSpeedV1,
+                'autoSpeedV2': hasAutoSpeedV2, 'autoSpeedV3': hasAutoSpeedV3,
+                'autoProX1': hasAutoProX1, 'autoProX2': hasAutoProX2,
+                'ring': hasRing, 'crown': hasCrown,
+                'lucky1': luckyLevel >= 1, 'lucky2': luckyLevel >= 2,
+                'lucky3': luckyLevel >= 3, 'lucky4': luckyLevel >= 4,
+                'lucky5': luckyLevel >= 5,
+                'pc': hasPC, 'pcV2': hasPCV2, 'pcV3': hasPCV3,
+                'pcUltra': hasPCUltra, 'pcQuantum': hasPCQuantum,
+                'smartphone': hasSmartphone, 'browser': hasBrowser,
+                'casino': hasCasino, 'serverV1': hasServerV1,
+                'mtprotoV1': hasMTProtoV1, 'land': hasLand,
+                'factory': hasFactory, 'magicBall': hasMagicBall,
+                'bigHome': hasBigHome, 'girlfriend': hasGirlfriend
+            };
+            return map[itemId] || false;
+        }
+
+        function checkCanBuy(itemId) {
+            const item = shopItemsData.find(i => i.id === itemId);
+            if (!item) return false;
+            if (checkOwned(itemId)) return false;
+            if (coins < item.price) return false;
+            if (item.requirement) {
+                const reqMap = {
+                    'AutoClicker V1': hasAutoClicker, 'Update V1': hasAutoSpeedV1,
+                    'Update V2': hasAutoSpeedV2, 'последняя прокачка автокликера': hasAutoSpeedV3,
+                    'AutoClicker Pro X1': hasAutoProX1, 'Diamond Ring': hasRing,
+                    'Lucky X1': luckyLevel >= 1, 'Lucky X2': luckyLevel >= 2,
+                    'Lucky X3': luckyLevel >= 3, 'Lucky X4': luckyLevel >= 4,
+                    'MrFeast PC V1': hasPC, 'MrFeast PC V2': hasPCV2,
+                    'MrFeast PC V3': hasPCV3, 'MrFeast PC Ultra': hasPCUltra,
+                    'MrFeast Factory': hasFactory, 'MrFeastServer(V1)': hasServerV1,
+                    'MrFeast Big Home': hasBigHome, 'MrFeastLand': hasLand
+                };
+                const requirements = item.requirement.split(', ');
+                for (let req of requirements) {
+                    if (!reqMap[req]) return false;
+                }
+            }
+            return true;
+        }
+
+        function buyShopItem(itemId) {
+            const item = shopItemsData.find(i => i.id === itemId);
+            if (!item || !checkCanBuy(itemId)) return;
+            coins -= item.price;
+            const actions = {
+                'autoClicker': () => { hasAutoClicker = true; restartAuto(); showNotif('✅ AutoClicker V1'); },
+                'autoSpeedV1': () => { hasAutoSpeedV1 = true; restartAuto(); showNotif('⚡️Автокликер стал быстрее! (1с)'); },
+                'autoSpeedV2': () => { hasAutoSpeedV2 = true; restartAuto(); showNotif('⚡️⚡️Автокликер стал быстрее! (0.5с)'); },
+                'autoSpeedV3': () => { hasAutoSpeedV3 = true; restartAuto(); showNotif('⚡️⚡️⚡️Автокликер стал быстрее! (0.2с)'); },
+                'autoProX1': () => { hasAutoProX1 = true; restartAuto(); showNotif('🚀 AutoClicker Pro X1! х5 доход, скорость 0.7с'); },
+                'autoProX2': () => { hasAutoProX2 = true; restartAuto(); showNotif('🚀🚀 AutoClicker Pro X2! Скорость 0.1с, х5 доход'); },
+                'ring': () => { hasRing = true; showNotif('💍 Diamond Ring куплено!'); },
+                'crown': () => { hasCrown = true; showNotif('👑 MrFeast Crown куплена!'); },
+                'lucky1': () => { luckyLevel = 1; showNotif('🍀 Lucky X1 (10%)'); },
+                'lucky2': () => { luckyLevel = 2; showNotif('🍀🍀 Lucky X2 (20%)'); },
+                'lucky3': () => { luckyLevel = 3; showNotif('🍀🍀🍀 Lucky X3 (45%)'); },
+                'lucky4': () => { luckyLevel = 4; showNotif('🍀🍀🍀🍀 Lucky X4 (50%)'); },
+                'lucky5': () => { luckyLevel = 5; showNotif('🍀🍀🍀🍀🍀 Lucky X5 (100%)'); },
+                'pc': () => { hasPC = true; showNotif('🖥️ MrFeast PC V1 куплен!'); },
+                'pcV2': () => { hasPCV2 = true; showNotif('🖥 MrFeast PC V2 куплен!'); },
+                'pcV3': () => { hasPCV3 = true; showNotif('🖥 MrFeast PC V3 куплен! +5 000 к доходу'); },
+                'pcUltra': () => { hasPCUltra = true; showNotif('🖥 MrFeast PC Ultra куплен! +15 000 к доходу'); },
+                'pcQuantum': () => { hasPCQuantum = true; showNotif('🖥 MrFeast PC Quantum куплен! +50 000 к доходу'); },
+                'smartphone': () => { hasSmartphone = true; showNotif('📱 MrFeast SmartPhone куплен! +750 за клик'); },
+                'browser': () => { hasBrowser = true; restartBrowser(); showNotif('🌐 MrFeast Browser куплен!'); },
+                'casino': () => { hasCasino = true; restartCasino(); showNotif('🎰 MrFeast Casino куплен! +15 000/мин'); },
+                'serverV1': () => { hasServerV1 = true; startServerTax(); showNotif('🗄 MrFeastServer(V1) куплен! Каждые 5 минут будет списываться 1.000.000 монет.'); },
+                'mtprotoV1': () => { hasMTProtoV1 = true; showNotif('🔐 MrFeastMTProto V1 куплен! +700 к доходу за клик.'); },
+                'land': () => { hasLand = true; showNotif('🌃 MrFeastLand куплен!'); },
+                'factory': () => { hasFactory = true; showNotif('🏭 MrFeast Factory куплен! +1250 за клик'); },
+                'magicBall': () => { hasMagicBall = true; showNotif('🔮 MrFeast Magic Ball куплен! +250 за клик'); },
+                'bigHome': () => { hasBigHome = true; showNotif('🏡 MrFeast Big Home куплен! +570 за клик'); },
+                'girlfriend': () => { hasGirlfriend = true; showNotif('💚 MrFeast\'s GirlFriend Vika куплена! +1500 за клик'); }
+            };
+            if (actions[itemId]) actions[itemId]();
+            updateDisplay();
+            saveGameToCloud();
+            renderShopItems(getCurrentFilter());
+        }
+
+        function getCurrentFilter() {
+            const activeTab = document.querySelector('.shop-tab.active');
+            return activeTab ? activeTab.dataset.filter : 'all';
+        }
+
+        function startServerTax() {
+            if (serverTaxInterval) clearInterval(serverTaxInterval);
+            if (hasServerV1) {
+                serverTaxInterval = setInterval(() => {
+                    if (coins >= 1000000) {
+                        coins -= 1000000;
+                        showNotif(`🗄 Сервер MrFeastServer(V1) списал 1.000.000 монет за обслуживание!`);
+                        updateDisplay();
+                        saveGameToCloud();
+                    } else {
+                        showNotif(`⚠️ Недостаточно средств для оплаты сервера (1.000.000)! Сервер остановлен.`);
+                        clearInterval(serverTaxInterval);
+                        serverTaxInterval = null;
+                        hasServerV1 = false;
+                        updateDisplay();
+                        saveGameToCloud();
+                    }
+                }, 300000);
+            }
+        }
+
+        function getAutoSpeed() {
+            if (!hasAutoClicker) return null;
+            if (hasAutoProX2) return 100;
+            if (hasAutoProX1) return 700;
+            if (hasAutoSpeedV3) return 200;
+            if (hasAutoSpeedV2) return 500;
+            if (hasAutoSpeedV1) return 1000;
+            return 2000;
+        }
+
+        function getAutoMultiplier() {
+            return (hasAutoProX1 || hasAutoProX2) ? 5 : 1;
+        }
+
+        function getTotalPerClick() {
+            let total = coinsPerClick + rebirthBonus;
+            if (hasRing) total += 5;
+            if (hasCrown) total += 150;
+            if (hasLand) total += 1000;
+            if (hasMagicBall) total += 250;
+            if (hasBigHome) total += 570;
+            if (hasGirlfriend) total += 1500;
+            if (hasFactory) total += 1250;
+            if (hasSmartphone) total += 750;
+            if (hasMTProtoV1) total += 700;
+            if (hasPCV3) total += 5000;
+            if (hasPCUltra) total += 15000;
+            if (hasPCQuantum) total += 50000;
+            if (awards.award2) total += 15;
+            if (awards.award3) total += 30;
+            if (awards.award5) total += 35;
+            if (awards.award6) total += 100;
+            if (awards.award7) total += 5000;
+            if (awards.award8) total += 350;
+            if (awards.award9) total += 500;
+            if (awards.award10) total += 1000;
+            if (awards.award11) total += 2500;
+            if (awards.award12) total += 5000;
+            if (awards.award13) total += 10000;
+            if (awards.award14) total += 25000;
+            if (awards.award15) total += 50000;
+            return total;
+        }
+
+        function getLuckyChance() {
+            if (luckyLevel === 0) return 0;
+            if (luckyLevel === 1) return 10;
+            if (luckyLevel === 2) return 20;
+            if (luckyLevel === 3) return 45;
+            if (luckyLevel === 4) return 50;
+            if (luckyLevel === 5) return 100;
+            return 0;
+        }
+
+        function canUpgrade() { return coins >= upgradeCost; }
+        
+        function canBuyAnything() {
+            for (let item of shopItemsData) {
+                if (checkCanBuy(item.id)) return true;
+            }
+            return false;
+        }
+
+        function canRebirthCheck() {
+            if (rebirthLevel === 0) return coins >= 1000 && hasRing;
+            if (rebirthLevel === 1) return coins >= 5000 && hasRing && hasAutoClicker;
+            if (rebirthLevel === 2) return coins >= 35000 && hasRing && hasAutoClicker && hasCrown;
+            if (rebirthLevel === 3) return coins >= 125000 && hasRing && hasCrown && hasPC;
+            if (rebirthLevel === 4) return coins >= 575000 && hasCrown && hasPC && hasBrowser;
+            if (rebirthLevel === 5) return coins >= 1250000 && hasLand;
+            if (rebirthLevel === 6) return coins >= 1750000 && hasCasino;
+            if (rebirthLevel === 7) return coins >= 2570000 && hasLand && hasCasino;
+            if (rebirthLevel === 8) return coins >= 5760000 && hasMagicBall;
+            if (rebirthLevel === 9) return coins >= 12756000 && hasFactory;
+            if (rebirthLevel === 10) return coins >= 25000000 && hasPCV2;
+            if (rebirthLevel === 11) return coins >= 50000000 && hasServerV1;
+            if (rebirthLevel === 12) return coins >= 100000000 && hasMTProtoV1;
+            if (rebirthLevel === 13) return coins >= 250000000 && hasGirlfriend;
+            if (rebirthLevel === 14) return coins >= 500000000 && hasSmartphone;
+            return false;
+        }
+
+        function updateAllDots() {
+            if (!hideIndicators) {
+                clickerDot.style.display = canUpgrade() ? 'block' : 'none';
+                shopDot.style.display = canBuyAnything() ? 'block' : 'none';
+                rebirthDot.style.display = canRebirthCheck() ? 'block' : 'none';
+            } else {
+                clickerDot.style.display = 'none';
+                shopDot.style.display = 'none';
+                rebirthDot.style.display = 'none';
+            }
+        }
+
+        function openSettings() {
+            highQualityToggle.checked = highQuality;
+            hideIndicatorsToggle.checked = hideIndicators;
+            settingsModal.classList.add('active');
+        }
+
+        function closeSettingsAndApply() {
+            highQuality = highQualityToggle.checked;
+            hideIndicators = hideIndicatorsToggle.checked;
+            settingsModal.classList.remove('active');
+            applyHighQuality();
+            updateAllDots();
+            saveGameToCloud();
+        }
+
+        function applyHighQuality() {
+            if (highQuality) {
+                gameContainerEl.style.boxShadow = '0 20px 60px rgba(0,0,0,0.9), 0 0 50px rgba(255,215,0,0.5)';
+                gameContainerEl.style.border = '2px solid rgba(255, 215, 0, 0.5)';
+                const clickBtn = document.querySelector('.click-btn');
+                if (clickBtn) clickBtn.style.boxShadow = '0 20px 40px rgba(0,0,0,0.6), 0 0 50px rgba(255,215,0,0.5)';
+                createFloatingCircles();
+            } else {
+                gameContainerEl.style.boxShadow = '0 20px 40px rgba(0,0,0,0.8)';
+                gameContainerEl.style.border = '2px solid rgba(255, 215, 0, 0.2)';
+                const clickBtn = document.querySelector('.click-btn');
+                if (clickBtn) clickBtn.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3)';
+                floatingCircles.innerHTML = '';
+                if (circlesInterval) clearInterval(circlesInterval);
+            }
+        }
+
+        function updateRebirthDisplay() {
+            rebirthLevelDisplay.textContent = `Rebirth ${rebirthLevel}`;
+            rebirthBonusDisplay.textContent = `+${rebirthBonus} за клик`;
+            lastRebirthMsg.style.display = 'none';
+            if (rebirthLevel >= 15) {
+                rebirthRequirements.innerHTML = `<div class="rebirth-requirements"><i class="fas fa-check-circle"></i> <strong>Все перерождения завершены!</strong><br>Максимальный бонус: +75 за клик</div>`;
+                rebirthNextDisplay.innerHTML = '';
+                lastRebirthMsg.style.display = 'block';
+                rebirthBtn.disabled = true;
+            } else {
+                let nextLevel = rebirthLevel + 1;
+                let nextBonus = rebirthBonus + 5;
+                let requirements = '';
+                if (nextLevel === 1) requirements = `<div class="rebirth-requirements"><strong>1 Rebirth:</strong><br>Требуется: 1000 монет, Diamond Ring<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 2) requirements = `<div class="rebirth-requirements"><strong>2 Rebirth:</strong><br>Требуется: 5000 монет, Diamond Ring, AutoClicker V1<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 3) requirements = `<div class="rebirth-requirements"><strong>3 Rebirth:</strong><br>Требуется: 35000 монет, Diamond Ring, AutoClicker V1, Crown<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 4) requirements = `<div class="rebirth-requirements"><strong>4 Rebirth:</strong><br>Требуется: 125000 монет, Diamond Ring, Crown, PC V1<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 5) requirements = `<div class="rebirth-requirements"><strong>5 Rebirth:</strong><br>Требуется: 575000 монет, Crown, PC V1, Browser<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 6) requirements = `<div class="rebirth-requirements"><strong>6 Rebirth:</strong><br>Требуется: 1 250 000 монет, MrFeastLand<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 7) requirements = `<div class="rebirth-requirements"><strong>7 Rebirth:</strong><br>Требуется: 1 750 000 монет, MrFeastCasino<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 8) requirements = `<div class="rebirth-requirements"><strong>8 Rebirth:</strong><br>Требуется: 2 570 000 монет, MrFeastLand, MrFeastCasino<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 9) requirements = `<div class="rebirth-requirements"><strong>9 Rebirth:</strong><br>Требуется: 5 760 000 монет, MrFeast Magic Ball<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 10) requirements = `<div class="rebirth-requirements"><strong>10 Rebirth:</strong><br>Требуется: 12 756 000 монет, MrFeast Factory<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 11) requirements = `<div class="rebirth-requirements"><strong>11 Rebirth:</strong><br>Требуется: 25 000 000 монет, MrFeast PC V2<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 12) requirements = `<div class="rebirth-requirements"><strong>12 Rebirth:</strong><br>Требуется: 50 000 000 монет, MrFeastServer(V1)<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 13) requirements = `<div class="rebirth-requirements"><strong>13 Rebirth:</strong><br>Требуется: 100 000 000 монет, MrFeastMTProto V1<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 14) requirements = `<div class="rebirth-requirements"><strong>14 Rebirth:</strong><br>Требуется: 250 000 000 монет, MrFeast's GirlFriend Vika<br>Бонус: +${nextBonus} за клик</div>`;
+                else if (nextLevel === 15) requirements = `<div class="rebirth-requirements"><strong>15 Rebirth (ПОСЛЕДНИЙ):</strong><br>Требуется: 500 000 000 монет, MrFeast SmartPhone<br>Бонус: +${nextBonus} за клик</div>`;
+                rebirthRequirements.innerHTML = requirements;
+                rebirthNextDisplay.innerHTML = `Следующий rebirth даст +5 к бонусу`;
+            }
+        }
+
+        function updateAwards() {
+            let availableCount = 0;
+            const updateAward = (id, condition) => {
+                const item = document.getElementById(`award${id}`);
+                const btn = document.getElementById(`award${id}Btn`);
+                if (!awards[`award${id}`] && condition) {
+                    item.classList.add('available');
+                    btn.innerHTML = `<button class="award-btn" onclick="claimAward(${id})"><i class="fas fa-gift"></i> Получить</button>`;
+                    availableCount++;
+                } else if (awards[`award${id}`]) {
+                    item.classList.add('completed');
+                    btn.innerHTML = '<span class="completed-badge"><i class="fas fa-check"></i> Получено</span>';
+                } else {
+                    item.classList.remove('available', 'completed');
+                    btn.innerHTML = '<span class="completed-badge" style="opacity:0.3;"><i class="fas fa-times"></i> Недоступно</span>';
+                }
+            };
+            updateAward(1, rebirthLevel >= 1);
+            updateAward(2, rebirthLevel >= 2);
+            updateAward(3, rebirthLevel >= 3);
+            updateAward(4, rebirthLevel >= 4);
+            updateAward(5, rebirthLevel >= 5);
+            updateAward(6, coins >= 1000000);
+            updateAward(7, coins >= 10000000);
+            updateAward(8, hasGirlfriend);
+            updateAward(9, hasMTProtoV1);
+            updateAward(10, rebirthLevel >= 10);
+            updateAward(11, rebirthLevel >= 11);
+            updateAward(12, rebirthLevel >= 12);
+            updateAward(13, rebirthLevel >= 13);
+            updateAward(14, rebirthLevel >= 14);
+            updateAward(15, rebirthLevel >= 15);
+            awardDot.style.display = (!hideIndicators && availableCount > 0) ? 'block' : 'none';
+        }
+
+        function claimAward(awardId) {
+            if (awardId === 1 && !awards.award1 && rebirthLevel >= 1) { awards.award1 = true; coins += 10000; showNotif('♥️ Начинающий: +10 000 монет'); }
+            else if (awardId === 2 && !awards.award2 && rebirthLevel >= 2) { awards.award2 = true; showNotif('⭐️ Опытный: +15 за клик'); }
+            else if (awardId === 3 && !awards.award3 && rebirthLevel >= 3) { awards.award3 = true; showNotif('🎮 Профи: +30 за клик'); }
+            else if (awardId === 4 && !awards.award4 && rebirthLevel >= 4) { awards.award4 = true; coins += 55000; showNotif('🥉 Киберспортсмен: +55 000 монет'); }
+            else if (awardId === 5 && !awards.award5 && rebirthLevel >= 5) { awards.award5 = true; showNotif('🥈 Топер: +35 за клик'); }
+            else if (awardId === 6 && !awards.award6 && coins >= 1000000) { awards.award6 = true; showNotif('🥇 Молнеиностный: +100 за клик'); }
+            else if (awardId === 7 && !awards.award7 && coins >= 10000000) { awards.award7 = true; showNotif('🏅 Эксперт: +5 000 за клик'); }
+            else if (awardId === 8 && !awards.award8 && hasGirlfriend) { awards.award8 = true; showNotif('💚 Любовник: +350 за клик'); }
+            else if (awardId === 9 && !awards.award9 && hasMTProtoV1) { awards.award9 = true; showNotif('📰 Спаситель Telegram: +500 за клик'); }
+            else if (awardId === 10 && !awards.award10 && rebirthLevel >= 10) { awards.award10 = true; showNotif('🐉 Легенда: +1 000 за клик'); }
+            else if (awardId === 11 && !awards.award11 && rebirthLevel >= 11) { awards.award11 = true; showNotif('☄️ Бессмертный: +2 500 за клик'); }
+            else if (awardId === 12 && !awards.award12 && rebirthLevel >= 12) { awards.award12 = true; showNotif('👻 Призрак: +5 000 за клик'); }
+            else if (awardId === 13 && !awards.award13 && rebirthLevel >= 13) { awards.award13 = true; showNotif('💀 Повелитель: +10 000 за клик'); }
+            else if (awardId === 14 && !awards.award14 && rebirthLevel >= 14) { awards.award14 = true; showNotif('👑 Король: +25 000 за клик'); }
+            else if (awardId === 15 && !awards.award15 && rebirthLevel >= 15) { awards.award15 = true; showNotif('💎 Бог: +50 000 за клик'); }
+            else return;
+            updateAwards();
+            updateDisplay();
+            saveGameToCloud();
+        }
+
+        function activatePromo() {
+            const code = promoInput.value.trim();
+            if (promoUsed) { promoMessage.textContent = 'Промокод уже активирован!'; promoMessage.className = 'promo-message error'; return; }
+            if (code === 'MrFeastFixUPD') {
+                promoUsed = true;
+                coinsPerClick += 1570;
+                promoMessage.textContent = 'Промокод активирован! +570 за клик';
+                promoMessage.className = 'promo-message success';
+                updateDisplay();
+                saveGameToCloud();
+                showNotif('🎁 Промокод активирован! +570 за клик');
+            } else {
+                promoMessage.textContent = 'Неверный промокод';
+                promoMessage.className = 'promo-message error';
+            }
+        }
+
+        function updateDisplay() {
+            const total = getTotalPerClick();
+            coinDisplay.innerHTML = `<i class="fas fa-coins"></i><span>Coins:</span> ${Math.floor(coins).toLocaleString()}`;
+            clickValueSpan.textContent = `+${total}`;
+            clickCountSpan.textContent = clickCount.toLocaleString();
+            coinsPerClickSpan.textContent = total;
+            upgradeLevelSpan.textContent = upgradeLevel;
+            rebirthLevelSpan.textContent = rebirthLevel;
+            updateRebirthDisplay();
+            updateAwards();
+            updateAllDots();
+            let speedText = '-';
+            if (hasAutoClicker) {
+                if (hasAutoProX2) speedText = '0.1с (x5)';
+                else if (hasAutoProX1) speedText = '0.7с (x5)';
+                else if (hasAutoSpeedV3) speedText = '0.2с';
+                else if (hasAutoSpeedV2) speedText = '0.5с';
+                else if (hasAutoSpeedV1) speedText = '1с';
+                else speedText = '2с';
+            }
+            autoSpeedSpan.textContent = speedText;
+            upgradeBtn.innerHTML = `<i class="fas fa-bolt"></i> Апгрейд (${upgradeCost.toLocaleString()})`;
+            progressFill.style.width = Math.min((coins / upgradeCost) * 100, 100) + '%';
+            upgradeBtn.disabled = coins < upgradeCost;
+            updateRebirthButton();
+            renderShopItems(getCurrentFilter());
+        }
+
+        function updateRebirthButton() {
+            if (rebirthLevel >= 15) { rebirthBtn.disabled = true; return; }
+            if (rebirthLevel === 0) rebirthBtn.disabled = !(coins >= 1000 && hasRing);
+            else if (rebirthLevel === 1) rebirthBtn.disabled = !(coins >= 5000 && hasRing && hasAutoClicker);
+            else if (rebirthLevel === 2) rebirthBtn.disabled = !(coins >= 35000 && hasRing && hasAutoClicker && hasCrown);
+            else if (rebirthLevel === 3) rebirthBtn.disabled = !(coins >= 125000 && hasRing && hasCrown && hasPC);
+            else if (rebirthLevel === 4) rebirthBtn.disabled = !(coins >= 575000 && hasCrown && hasPC && hasBrowser);
+            else if (rebirthLevel === 5) rebirthBtn.disabled = !(coins >= 1250000 && hasLand);
+            else if (rebirthLevel === 6) rebirthBtn.disabled = !(coins >= 1750000 && hasCasino);
+            else if (rebirthLevel === 7) rebirthBtn.disabled = !(coins >= 2570000 && hasLand && hasCasino);
+            else if (rebirthLevel === 8) rebirthBtn.disabled = !(coins >= 5760000 && hasMagicBall);
+            else if (rebirthLevel === 9) rebirthBtn.disabled = !(coins >= 12756000 && hasFactory);
+            else if (rebirthLevel === 10) rebirthBtn.disabled = !(coins >= 25000000 && hasPCV2);
+            else if (rebirthLevel === 11) rebirthBtn.disabled = !(coins >= 50000000 && hasServerV1);
+            else if (rebirthLevel === 12) rebirthBtn.disabled = !(coins >= 100000000 && hasMTProtoV1);
+            else if (rebirthLevel === 13) rebirthBtn.disabled = !(coins >= 250000000 && hasGirlfriend);
+            else if (rebirthLevel === 14) rebirthBtn.disabled = !(coins >= 500000000 && hasSmartphone);
+        }
+
+        function doRebirth() {
+            if (rebirthLevel >= 15) { showNotif('❌ Это последнее перерождение!'); return; }
+            let canRebirth = false;
+            if (rebirthLevel === 0 && coins >= 1000 && hasRing) canRebirth = true;
+            else if (rebirthLevel === 1 && coins >= 5000 && hasRing && hasAutoClicker) canRebirth = true;
+            else if (rebirthLevel === 2 && coins >= 35000 && hasRing && hasAutoClicker && hasCrown) canRebirth = true;
+            else if (rebirthLevel === 3 && coins >= 125000 && hasRing && hasCrown && hasPC) canRebirth = true;
+            else if (rebirthLevel === 4 && coins >= 575000 && hasCrown && hasPC && hasBrowser) canRebirth = true;
+            else if (rebirthLevel === 5 && coins >= 1250000 && hasLand) canRebirth = true;
+            else if (rebirthLevel === 6 && coins >= 1750000 && hasCasino) canRebirth = true;
+            else if (rebirthLevel === 7 && coins >= 2570000 && hasLand && hasCasino) canRebirth = true;
+            else if (rebirthLevel === 8 && coins >= 5760000 && hasMagicBall) canRebirth = true;
+            else if (rebirthLevel === 9 && coins >= 12756000 && hasFactory) canRebirth = true;
+            else if (rebirthLevel === 10 && coins >= 25000000 && hasPCV2) canRebirth = true;
+            else if (rebirthLevel === 11 && coins >= 50000000 && hasServerV1) canRebirth = true;
+            else if (rebirthLevel === 12 && coins >= 100000000 && hasMTProtoV1) canRebirth = true;
+            else if (rebirthLevel === 13 && coins >= 250000000 && hasGirlfriend) canRebirth = true;
+            else if (rebirthLevel === 14 && coins >= 500000000 && hasSmartphone) canRebirth = true;
+            if (canRebirth) {
+                rebirthLevel++;
+                rebirthBonus += 5;
+                coins = 0;
+                hasAutoClicker = false; hasAutoSpeedV1 = false; hasAutoSpeedV2 = false; hasAutoSpeedV3 = false; hasAutoProX1 = false; hasAutoProX2 = false;
+                hasRing = false; hasCrown = false; hasPC = false; hasBrowser = false;
+                hasLand = false; hasCasino = false; hasMagicBall = false;
+                hasBigHome = false; hasGirlfriend = false; hasFactory = false; hasSmartphone = false;
+                luckyLevel = 0;
+                hasPCV2 = false; hasPCV3 = false; hasPCUltra = false; hasPCQuantum = false;
+                hasServerV1 = false; hasMTProtoV1 = false;
+                if (serverTaxInterval) { clearInterval(serverTaxInterval); serverTaxInterval = null; }
+                if (autoClickerInterval) clearInterval(autoClickerInterval);
+                if (browserInterval) clearInterval(browserInterval);
+                if (casinoInterval) clearInterval(casinoInterval);
+                updateDisplay();
+                saveGameToCloud();
+                showNotif(`🎉 Rebirth ${rebirthLevel}! +5 за клик`);
+            }
+        }
+
+        function restartAuto() {
+            if (autoClickerInterval) clearInterval(autoClickerInterval);
+            const speed = getAutoSpeed();
+            if (speed) {
+                autoClickerInterval = setInterval(() => {
+                    const total = getTotalPerClick();
+                    const luckyChance = getLuckyChance();
+                    const multiplier = getAutoMultiplier();
+                    let gain = total * multiplier;
+                    if (luckyChance >= 100) gain = gain * 2;
+                    else if (luckyChance > 0 && Math.random() * 100 < luckyChance) gain = gain * 2;
+                    coins += gain;
+                    clickCount++;
+                    updateDisplay();
+                    saveGameToCloud();
+                }, speed);
+            }
+        }
+
+        function restartBrowser() {
+            if (browserInterval) clearInterval(browserInterval);
+            if (hasBrowser) browserInterval = setInterval(() => {
+                const bonus = getTotalPerClick() * 2;
+                coins += bonus;
+                updateDisplay();
+                saveGameToCloud();
+            }, 5000);
+        }
+
+        function restartCasino() {
+            if (casinoInterval) clearInterval(casinoInterval);
+            if (hasCasino) casinoInterval = setInterval(() => {
+                coins += 15000;
+                updateDisplay();
+                saveGameToCloud();
+                showNotif('🎰 Casino: +15 000 монет');
+            }, 60000);
+        }
+
+        function handleClick() {
+            const total = getTotalPerClick();
+            const luckyChance = getLuckyChance();
+            let gain = total;
+            if (luckyChance >= 100) gain = total * 2;
+            else if (luckyChance > 0 && Math.random() * 100 < luckyChance) gain = total * 2;
+            coins += gain;
+            clickCount++;
+            updateDisplay();
+            saveGameToCloud();
+        }
+
+        function buyUpgrade() {
+            if (coins >= upgradeCost) {
+                coins -= upgradeCost;
+                coinsPerClick++;
+                upgradeLevel++;
+                upgradeCost = Math.floor(upgradeCost * 5);
+                updateDisplay();
+                restartAuto();
+                saveGameToCloud();
+                showNotif(`✨ Уровень ${upgradeLevel}`);
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            if (tab === 'clicker') { document.querySelector('.tab').classList.add('active'); document.getElementById('clickerTab').classList.add('active'); }
+            else if (tab === 'shop') { document.querySelectorAll('.tab')[1].classList.add('active'); document.getElementById('shopTab').classList.add('active'); renderShopItems(getCurrentFilter()); }
+            else if (tab === 'rebirth') { document.querySelectorAll('.tab')[2].classList.add('active'); document.getElementById('rebirthTab').classList.add('active'); updateRebirthDisplay(); }
+            else if (tab === 'awards') { document.querySelectorAll('.tab')[3].classList.add('active'); document.getElementById('awardsTab').classList.add('active'); updateAwards(); }
+            else if (tab === 'promo') { document.querySelectorAll('.tab')[4].classList.add('active'); document.getElementById('promoTab').classList.add('active'); }
+        }
+
+        function showNotif(text) {
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.innerHTML = `<i class="fas fa-info-circle"></i> ${text}`;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
+        }
+
+        // ==========================================
+        // СОХРАНЕНИЕ В ОБЛАКО
+        // ==========================================
+        async function saveGameToCloud() {
+            if (!currentPlayer || isSessionKicked) return;
+            
+            const data = {
+                coins, click_count: clickCount, coins_per_click: coinsPerClick,
+                upgrade_level: upgradeLevel, upgrade_cost: upgradeCost,
+                rebirth_level: rebirthLevel, rebirth_bonus: rebirthBonus,
+                lucky_level: luckyLevel,
+                has_auto_clicker: hasAutoClicker, has_auto_speed_v1: hasAutoSpeedV1,
+                has_auto_speed_v2: hasAutoSpeedV2, has_auto_speed_v3: hasAutoSpeedV3,
+                has_auto_pro_x1: hasAutoProX1, has_auto_pro_x2: hasAutoProX2,
+                has_ring: hasRing, has_crown: hasCrown,
+                has_pc: hasPC, has_pc_v2: hasPCV2, has_pc_v3: hasPCV3,
+                has_pc_ultra: hasPCUltra, has_pc_quantum: hasPCQuantum,
+                has_browser: hasBrowser, has_land: hasLand,
+                has_casino: hasCasino, has_magic_ball: hasMagicBall,
+                has_big_home: hasBigHome, has_girlfriend: hasGirlfriend,
+                has_factory: hasFactory, has_smartphone: hasSmartphone,
+                has_server_v1: hasServerV1, has_mtproto_v1: hasMTProtoV1,
+                awards: awards, promo_used: promoUsed,
+                high_quality: highQuality, hide_indicators: hideIndicators
+            };
+
+            try {
+                await updateUserData(currentPlayer, data);
+                const password = document.getElementById('password').value || currentPassword;
+                if (isAccountSaved(currentPlayer)) {
+                    addAccount(currentPlayer, password, coins);
+                }
+            } catch (e) {
+                console.error('Ошибка сохранения в облако:', e);
+            }
+        }
+
+        function loadGameFromCloud(user) {
+            coins = user.coins || 0;
+            clickCount = user.click_count || 0;
+            coinsPerClick = user.coins_per_click || 1;
+            upgradeLevel = user.upgrade_level || 1;
+            upgradeCost = user.upgrade_cost || 5;
+            rebirthLevel = user.rebirth_level || 0;
+            rebirthBonus = user.rebirth_bonus || 0;
+            luckyLevel = user.lucky_level || 0;
+            
+            hasAutoClicker = user.has_auto_clicker || false;
+            hasAutoSpeedV1 = user.has_auto_speed_v1 || false;
+            hasAutoSpeedV2 = user.has_auto_speed_v2 || false;
+            hasAutoSpeedV3 = user.has_auto_speed_v3 || false;
+            hasAutoProX1 = user.has_auto_pro_x1 || false;
+            hasAutoProX2 = user.has_auto_pro_x2 || false;
+            hasRing = user.has_ring || false;
+            hasCrown = user.has_crown || false;
+            hasPC = user.has_pc || false;
+            hasPCV2 = user.has_pc_v2 || false;
+            hasPCV3 = user.has_pc_v3 || false;
+            hasPCUltra = user.has_pc_ultra || false;
+            hasPCQuantum = user.has_pc_quantum || false;
+            hasBrowser = user.has_browser || false;
+            hasLand = user.has_land || false;
+            hasCasino = user.has_casino || false;
+            hasMagicBall = user.has_magic_ball || false;
+            hasBigHome = user.has_big_home || false;
+            hasGirlfriend = user.has_girlfriend || false;
+            hasFactory = user.has_factory || false;
+            hasSmartphone = user.has_smartphone || false;
+            hasServerV1 = user.has_server_v1 || false;
+            hasMTProtoV1 = user.has_mtproto_v1 || false;
+            
+            if (user.awards) {
+                try {
+                    awards = typeof user.awards === 'string' ? JSON.parse(user.awards) : user.awards;
+                } catch { awards = user.awards || {}; }
+            }
+            
+            promoUsed = user.promo_used || false;
+            highQuality = user.high_quality || false;
+            hideIndicators = user.hide_indicators || false;
+            
+            highQualityToggle.checked = highQuality;
+            hideIndicatorsToggle.checked = hideIndicators;
+            applyHighQuality();
+            
+            if (hasServerV1) startServerTax();
+            
+            restartAuto(); restartBrowser(); restartCasino();
+            updateDisplay();
+            showNotif('✅ Данные загружены из облака');
+            
+            const password = document.getElementById('password').value || currentPassword;
+            if (!isAccountSaved(currentPlayer)) {
+                setTimeout(() => {
+                    showAutosave(currentPlayer, password, coins);
+                }, 500);
+            } else {
+                addAccount(currentPlayer, password, coins);
+            }
+        }
+
+        // ==========================================
+        // ОБРАБОТЧИКИ ВКЛАДОК МАГАЗИНА
+        // ==========================================
+        document.addEventListener('click', function(e) {
+            const shopTab = e.target.closest('.shop-tab');
+            if (shopTab) {
+                document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+                shopTab.classList.add('active');
+                renderShopItems(shopTab.dataset.filter);
+            }
+        });
+
+        // ==========================================
+        // СОЗДАНИЕ ПЛАВАЮЩИХ КРУГОВ
+        // ==========================================
+        function createFloatingCircles() {
+            if (circlesInterval) clearInterval(circlesInterval);
+            floatingCircles.innerHTML = '';
+            if (highQuality) {
+                for (let i = 0; i < 20; i++) {
+                    const circle = document.createElement('div');
+                    circle.className = 'circle';
+                    const size = Math.random() * 90 + 40;
+                    circle.style.width = size + 'px';
+                    circle.style.height = size + 'px';
+                    circle.style.left = Math.random() * 100 + '%';
+                    circle.style.top = Math.random() * 100 + '%';
+                    circle.style.animationDuration = Math.random() * 18 + 18 + 's';
+                    circle.style.animationDelay = Math.random() * 6 + 's';
+                    circle.style.opacity = Math.random() * 0.45 + 0.25;
+                    floatingCircles.appendChild(circle);
+                }
+                circlesInterval = setInterval(() => {
+                    if (highQuality) {
+                        const circlesList = document.querySelectorAll('.circle');
+                        circlesList.forEach(circle => {
+                            circle.style.left = Math.random() * 100 + '%';
+                            circle.style.top = Math.random() * 100 + '%';
+                        });
+                    }
+                }, 12000);
+            } else {
+                floatingCircles.innerHTML = '';
+            }
+        }
+
+        function createRippleOptimized(event) {
+            if (!highQuality) return;
+            const btn = event.currentTarget;
+            const rect = btn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height) * 1.2;
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = rect.left + rect.width / 2 - size / 2 + 'px';
+            ripple.style.top = rect.top + rect.height / 2 - size / 2 + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => { if (ripple && ripple.remove) ripple.remove(); }, 400);
+        }
+
+        function handleClickWithRipple(event) {
+            createRippleOptimized(event);
+            handleClick();
+        }
+
+        // ==========================================
+        // ГЕНЕРАЦИЯ НАГРАД
+        // ==========================================
+        function generateAwardsHTML() {
+            return `
+                <div class="award-item" id="award1"><div class="award-header"><span class="award-icon"><i class="fas fa-heart"></i></span><span class="award-title">Начинающий</span></div><div class="award-desc">Первое перерождение</div><div class="award-reward"><i class="fas fa-coins"></i> Награда: 10 000 монет</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 1 Rebirth</div><div id="award1Btn"></div></div></div>
+                <div class="award-item" id="award2"><div class="award-header"><span class="award-icon"><i class="fas fa-star"></i></span><span class="award-title">Опытный</span></div><div class="award-desc">Второе перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +15 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 2 Rebirth</div><div id="award2Btn"></div></div></div>
+                <div class="award-item" id="award3"><div class="award-header"><span class="award-icon"><i class="fas fa-gamepad"></i></span><span class="award-title">Профи</span></div><div class="award-desc">Третье перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +30 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 3 Rebirth</div><div id="award3Btn"></div></div></div>
+                <div class="award-item" id="award4"><div class="award-header"><span class="award-icon"><i class="fas fa-medal"></i></span><span class="award-title">Киберспортсмен</span></div><div class="award-desc">Четвертое перерождение</div><div class="award-reward"><i class="fas fa-coins"></i> Награда: 55 000 монет</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 4 Rebirth</div><div id="award4Btn"></div></div></div>
+                <div class="award-item" id="award5"><div class="award-header"><span class="award-icon"><i class="fas fa-trophy"></i></span><span class="award-title">Топер среди других</span></div><div class="award-desc">Пятое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +35 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 5 Rebirth</div><div id="award5Btn"></div></div></div>
+                <div class="award-item" id="award6"><div class="award-header"><span class="award-icon"><i class="fas fa-bolt"></i></span><span class="award-title">Молнеиностный</span></div><div class="award-desc">Миллионер</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +100 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 1 000 000 монет</div><div id="award6Btn"></div></div></div>
+                <div class="award-item" id="award7"><div class="award-header"><span class="award-icon"><i class="fas fa-crown"></i></span><span class="award-title">Эксперт</span></div><div class="award-desc">10 миллионов монет</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +5 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 10 000 000 монет</div><div id="award7Btn"></div></div></div>
+                <div class="award-item" id="award8"><div class="award-header"><span class="award-icon"><i class="fas fa-heart"></i></span><span class="award-title">Любовник</span></div><div class="award-desc">Нашел свою любовь</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +350 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: MrFeast's GirlFriend Vika</div><div id="award8Btn"></div></div></div>
+                <div class="award-item" id="award9"><div class="award-header"><span class="award-icon"><i class="fas fa-newspaper"></i></span><span class="award-title">Спаситель Telegram</span></div><div class="award-desc">Создай MTProto и спаси других</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +500 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: MTProto V1</div><div id="award9Btn"></div></div></div>
+                <div class="award-item" id="award10"><div class="award-header"><span class="award-icon"><i class="fas fa-dragon"></i></span><span class="award-title">Легенда</span></div><div class="award-desc">Десятое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +1 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 10 Rebirth</div><div id="award10Btn"></div></div></div>
+                <div class="award-item" id="award11"><div class="award-header"><span class="award-icon"><i class="fas fa-meteor"></i></span><span class="award-title">Бессмертный</span></div><div class="award-desc">Одиннадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +2 500 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 11 Rebirth</div><div id="award11Btn"></div></div></div>
+                <div class="award-item" id="award12"><div class="award-header"><span class="award-icon"><i class="fas fa-ghost"></i></span><span class="award-title">Призрак</span></div><div class="award-desc">Двенадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +5 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 12 Rebirth</div><div id="award12Btn"></div></div></div>
+                <div class="award-item" id="award13"><div class="award-header"><span class="award-icon"><i class="fas fa-skull"></i></span><span class="award-title">Повелитель</span></div><div class="award-desc">Тринадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +10 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 13 Rebirth</div><div id="award13Btn"></div></div></div>
+                <div class="award-item" id="award14"><div class="award-header"><span class="award-icon"><i class="fas fa-crown"></i></span><span class="award-title">Король</span></div><div class="award-desc">Четырнадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +25 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 14 Rebirth</div><div id="award14Btn"></div></div></div>
+                <div class="award-item" id="award15"><div class="award-header"><span class="award-icon"><i class="fas fa-gem"></i></span><span class="award-title">Бог</span></div><div class="award-desc">Пятнадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +50 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 15 Rebirth</div><div id="award15Btn"></div></div></div>
+            `;
+        }
+
+        // ==========================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ==========================================
+        document.getElementById('awardsContent').innerHTML = generateAwardsHTML();
+        renderShopItems('all');
+
+        // Сохранение при закрытии
+        window.addEventListener('beforeunload', () => {
+            if (autoClickerInterval) clearInterval(autoClickerInterval);
+            if (browserInterval) clearInterval(browserInterval);
+            if (casinoInterval) clearInterval(casinoInterval);
+            if (circlesInterval) clearInterval(circlesInterval);
+            if (serverTaxInterval) clearInterval(serverTaxInterval);
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            saveGameToCloud();
+        });
+
+        // ==========================================
+        // АВТОСОХРАНЕНИЕ КАЖДЫЕ 2 СЕКУНДЫ
+        // ==========================================
+        setInterval(() => {
+            if (currentPlayer && !isSessionKicked) {
+                saveGameToCloud();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
