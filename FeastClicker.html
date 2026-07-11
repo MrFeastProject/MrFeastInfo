@@ -8,6 +8,35 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
+        :root {
+            --accent-color: #ffd700;
+            --accent-rgb: 255, 215, 0;
+            --accent-dark: #b8860b;
+            --bg-color: #0a0a0f;
+            --bg-secondary: #0f0f19;
+            --bg-card: #1a1a2a;
+            --bg-input: #1a1a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #aaa;
+            --border-color: rgba(255, 215, 0, 0.2);
+            --shadow-color: rgba(255, 215, 0, 0.3);
+        }
+
+        [data-theme="white"] {
+            --bg-color: #f0f0f0;
+            --bg-secondary: #ffffff;
+            --bg-card: #e8e8e8;
+            --bg-input: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #555;
+            --border-color: rgba(0, 0, 0, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+
+        [data-graphics="maximum"] { --glow-intensity: 1; }
+        [data-graphics="balance"] { --glow-intensity: 0.5; }
+        [data-graphics="performance"] { --glow-intensity: 0; }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,13 +48,14 @@
 
         body {
             min-height: 100vh;
-            background: #0a0a0f;
+            background: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 10px;
             position: relative;
             overflow: hidden;
+            transition: background 0.3s ease;
         }
 
         .loading-screen {
@@ -34,7 +64,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000;
+            background: var(--bg-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -75,10 +105,10 @@
             height: 100%;
             border-radius: 50%;
             border: 4px solid transparent;
-            border-top: 4px solid #ffd700;
-            border-right: 4px solid #ffd700;
+            border-top: 4px solid var(--accent-color);
+            border-right: 4px solid var(--accent-color);
             animation: spinRing 0.8s linear infinite;
-            box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--shadow-color);
         }
 
         @keyframes spinRing {
@@ -87,18 +117,18 @@
         }
 
         @keyframes neonPulse {
-            0% { opacity: 0.7; filter: drop-shadow(0 0 5px #ffd700); }
-            50% { opacity: 1; filter: drop-shadow(0 0 20px #ffd700); }
-            100% { opacity: 0.7; filter: drop-shadow(0 0 5px #ffd700); }
+            0% { opacity: 0.7; filter: drop-shadow(0 0 5px var(--accent-color)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 20px var(--accent-color)); }
+            100% { opacity: 0.7; filter: drop-shadow(0 0 5px var(--accent-color)); }
         }
 
         .loading-text {
             margin-top: 30px;
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 22px;
             font-weight: bold;
             letter-spacing: 4px;
-            text-shadow: 0 0 10px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--shadow-color);
             animation: textPulse 1.5s ease-in-out infinite;
             position: relative;
             right: -10px;
@@ -111,8 +141,8 @@
         }
 
         .game-container {
-            background: #0f0f19;
-            border: 2px solid rgba(255, 215, 0, 0.2);
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
             border-radius: 30px;
             padding: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.8);
@@ -130,9 +160,7 @@
             transition: opacity 0.5s ease;
         }
 
-        .game-container.visible {
-            opacity: 1;
-        }
+        .game-container.visible { opacity: 1; }
 
         .floating-circles {
             position: absolute;
@@ -149,7 +177,7 @@
         .circle {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.35), rgba(255, 215, 0, 0));
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.35), rgba(var(--accent-rgb), 0));
             animation: floatCircle 22s linear infinite;
             pointer-events: none;
             will-change: transform;
@@ -157,26 +185,16 @@
         }
 
         @keyframes floatCircle {
-            0% {
-                transform: translateY(100%) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            8% {
-                opacity: 0.6;
-            }
-            92% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-20%) translateX(45px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100%) translateX(0) rotate(0deg); opacity: 0; }
+            8% { opacity: 0.6; }
+            92% { opacity: 0.6; }
+            100% { transform: translateY(-20%) translateX(45px) rotate(360deg); opacity: 0; }
         }
 
         .ripple {
             position: fixed;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0));
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.6), rgba(var(--accent-rgb), 0));
             pointer-events: none;
             animation: rippleAnimation 0.4s ease-out forwards;
             z-index: 999;
@@ -184,14 +202,8 @@
         }
 
         @keyframes rippleAnimation {
-            0% {
-                transform: scale(0);
-                opacity: 0.6;
-            }
-            100% {
-                transform: scale(2.5);
-                opacity: 0;
-            }
+            0% { transform: scale(0); opacity: 0.6; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
 
         .login-screen {
@@ -205,34 +217,30 @@
         .login-screen h1 {
             font-size: 28px;
             margin-bottom: 25px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--shadow-color);
         }
 
-        .login-screen h1 i {
-            margin-right: 10px;
-        }
+        .login-screen h1 i { margin-right: 10px; }
 
         .login-screen input {
             width: 100%;
             padding: 15px 20px;
             font-size: 16px;
-            background: #1a1a2a;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
             border-radius: 15px;
             margin-bottom: 15px;
             outline: none;
-            color: #fff;
+            color: var(--text-primary);
         }
 
-        .login-screen input:focus {
-            border-color: #ffd700;
-        }
+        .login-screen input:focus { border-color: var(--accent-color); }
 
-        .login-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+        .login-btn, .register-btn, .saved-accounts-btn {
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 15px 40px;
             font-size: 18px;
             font-weight: bold;
@@ -243,52 +251,10 @@
             transition: 0.2s;
         }
 
-        .login-btn:active {
-            opacity: 0.8;
-        }
+        .register-btn i, .saved-accounts-btn i { margin-right: 10px; }
+        .login-btn:active, .register-btn:active, .saved-accounts-btn:active { opacity: 0.8; }
 
-        .register-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
-            padding: 15px 40px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 15px;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 10px;
-            transition: 0.2s;
-        }
-
-        .register-btn i {
-            margin-right: 10px;
-        }
-
-        .register-btn:active {
-            opacity: 0.8;
-        }
-
-        .saved-accounts-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
-            padding: 12px 40px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 15px;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-        }
-
-        .saved-accounts-btn i {
-            margin-right: 10px;
-        }
-
-        .saved-accounts-btn:active {
-            opacity: 0.8;
-        }
+        .saved-accounts-btn { padding: 12px 40px; font-size: 16px; }
 
         .auth-error {
             color: #ff6b6b;
@@ -311,7 +277,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 15px;
-            background: #1a1a2a;
+            background: var(--bg-card);
             border-radius: 15px;
             margin-bottom: 15px;
             flex-shrink: 0;
@@ -319,44 +285,33 @@
 
         .player-name {
             font-size: 18px;
-            color: #ffd700;
+            color: var(--accent-color);
             font-weight: bold;
         }
 
-        .player-name i {
-            margin-right: 8px;
-        }
+        .player-name i { margin-right: 8px; }
 
         .coins-header {
             font-size: 18px;
-            color: #ffd700;
+            color: var(--accent-color);
             font-weight: bold;
         }
 
-        .coins-header span {
-            color: #fff;
-            margin-right: 5px;
-        }
-
-        .coins-header i {
-            margin-right: 6px;
-        }
+        .coins-header span { color: var(--text-primary); margin-right: 5px; }
+        .coins-header i { margin-right: 6px; }
 
         .settings-btn {
-            background: #0a0a0a;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-color);
             font-size: 18px;
             cursor: pointer;
             padding: 5px 10px;
-            color: #ffd700;
+            color: var(--accent-color);
             transition: 0.2s;
             border-radius: 10px;
         }
 
-        .settings-btn:active {
-            opacity: 0.8;
-            transform: rotate(30deg);
-        }
+        .settings-btn:active { opacity: 0.8; transform: rotate(30deg); }
 
         .settings-modal {
             position: fixed;
@@ -371,18 +326,32 @@
             z-index: 10000;
         }
 
-        .settings-modal.active {
-            display: flex;
-        }
+        .settings-modal.active { display: flex; }
 
         .settings-panel {
-            background: #1a1a2a;
-            border: 2px solid #ffd700;
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-color);
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
             padding: 20px;
             animation: fadeIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .settings-panel::-webkit-scrollbar-track {
+            background: var(--bg-color);
+            border-radius: 10px;
+        }
+
+        .settings-panel::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 10px;
         }
 
         @keyframes fadeIn {
@@ -391,32 +360,30 @@
         }
 
         .settings-title {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 24px;
             font-weight: bold;
             text-align: center;
             margin-bottom: 10px;
         }
 
-        .settings-title i {
-            margin-right: 10px;
-        }
+        .settings-title i { margin-right: 10px; }
 
         .settings-divider {
             height: 2px;
-            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
             margin-bottom: 20px;
         }
 
         .settings-subtitle {
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 16px;
             margin-bottom: 15px;
             text-align: center;
         }
 
         .settings-option {
-            background: #0f0f19;
+            background: var(--bg-card);
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 15px;
@@ -430,7 +397,7 @@
         }
 
         .option-name {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 16px;
             font-weight: bold;
         }
@@ -479,7 +446,7 @@
         }
 
         input:checked + .toggle-slider {
-            background-color: #4caf50;
+            background-color: var(--accent-color);
         }
 
         input:checked + .toggle-slider:before {
@@ -488,14 +455,170 @@
 
         .option-desc {
             font-size: 12px;
-            color: #888;
+            color: var(--text-secondary);
             line-height: 1.3;
         }
 
+        .graphics-selector {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .graphics-option {
+            flex: 1;
+            padding: 8px 4px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .graphics-option:active { transform: scale(0.95); }
+
+        .graphics-option.active {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(var(--accent-rgb), 0.1);
+        }
+
+        .graphics-option i {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .theme-select-btn {
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .theme-select-btn:active { opacity: 0.8; transform: scale(0.95); }
+
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            vertical-align: middle;
+        }
+
+        .theme-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .theme-modal.active { display: flex; }
+
+        .theme-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+        }
+
+        .theme-modal-content {
+            position: relative;
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 380px;
+            animation: fadeIn 0.3s ease;
+            z-index: 1;
+        }
+
+        .theme-modal-title {
+            color: var(--accent-color);
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .theme-modal-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .theme-modal-color {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .theme-modal-color:active { transform: scale(0.9); }
+
+        .theme-modal-color.active {
+            border-color: #ffffff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        .theme-modal-color .check {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            display: none;
+        }
+
+        .theme-modal-color.active .check { display: block; }
+        .theme-modal-color .check-dark { color: #000; }
+
+        .theme-modal-close {
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .theme-modal-close:active { opacity: 0.8; }
+
         .contact-button {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 12px 20px;
             font-size: 16px;
             font-weight: bold;
@@ -507,19 +630,13 @@
             margin-top: 5px;
         }
 
-        .contact-button i {
-            margin-right: 10px;
-        }
-
-        .contact-button:active {
-            opacity: 0.8;
-            transform: scale(0.98);
-        }
+        .contact-button i { margin-right: 10px; }
+        .contact-button:active { opacity: 0.8; transform: scale(0.98); }
 
         .settings-close {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 12px;
             font-size: 16px;
             font-weight: bold;
@@ -529,19 +646,31 @@
             margin-top: 10px;
         }
 
-        .settings-close i {
-            margin-right: 8px;
+        .settings-close i { margin-right: 8px; }
+        .settings-close:active { opacity: 0.8; }
+
+        .settings-apply {
+            background: var(--accent-color);
+            color: #000;
+            border: 2px solid var(--accent-color);
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: 0.2s;
         }
 
-        .settings-close:active {
-            opacity: 0.8;
-        }
+        .settings-apply:active { opacity: 0.8; transform: scale(0.98); }
+        .settings-apply i { margin-right: 8px; }
 
         .version {
             position: absolute;
             bottom: 10px;
             right: 20px;
-            color: rgba(255, 215, 0, 0.3);
+            color: rgba(var(--accent-rgb), 0.3);
             font-size: 10px;
             z-index: 10;
         }
@@ -564,10 +693,10 @@
             flex: 0 0 auto;
             min-width: 70px;
             padding: 10px 8px;
-            background: #0a0a0a;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-color);
             border-radius: 10px;
-            color: #ffd700;
+            color: var(--accent-color);
             font-weight: 600;
             cursor: pointer;
             text-align: center;
@@ -580,13 +709,11 @@
             gap: 5px;
         }
 
-        .tab i {
-            font-size: 14px;
-        }
+        .tab i { font-size: 14px; }
 
         .tab.active {
-            background: rgba(255, 215, 0, 0.15);
-            border-color: #ffd700;
+            background: rgba(var(--accent-rgb), 0.15);
+            border-color: var(--accent-color);
         }
 
         .tab-dot {
@@ -609,14 +736,12 @@
             padding-bottom: 70px;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
-            scrollbar-color: #ffd700 #1a1a2a;
+            scrollbar-color: var(--accent-color) var(--bg-card);
             position: relative;
             z-index: 2;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
 
         .tab-content::-webkit-scrollbar {
             width: 6px;
@@ -624,12 +749,12 @@
         }
 
         .tab-content::-webkit-scrollbar-track {
-            background: #1a1a2a;
+            background: var(--bg-card);
             border-radius: 10px;
         }
 
         .tab-content::-webkit-scrollbar-thumb {
-            background: #ffd700;
+            background: var(--accent-color);
             border-radius: 10px;
         }
 
@@ -638,9 +763,7 @@
             padding-bottom: 10px;
         }
 
-        #clickerTab::-webkit-scrollbar {
-            display: none;
-        }
+        #clickerTab::-webkit-scrollbar { display: none; }
 
         .clicker-content {
             text-align: center;
@@ -652,8 +775,8 @@
             height: 220px;
             border-radius: 50%;
             margin: 10px auto;
-            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3);
+            background: radial-gradient(circle at 30% 30%, var(--accent-color), var(--accent-dark));
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 30px var(--shadow-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -664,9 +787,7 @@
             z-index: 3;
         }
 
-        .click-btn:active {
-            transform: scale(0.97);
-        }
+        .click-btn:active { transform: scale(0.97); }
 
         .click-btn i {
             font-size: 55px;
@@ -688,12 +809,12 @@
             gap: 5px;
             margin: 15px 0;
             padding: 10px;
-            background: #1a1a2a;
+            background: var(--bg-card);
             border-radius: 15px;
         }
 
         .stat-item {
-            background: #0f0f19;
+            background: var(--bg-color);
             padding: 8px 3px;
             border-radius: 10px;
             text-align: center;
@@ -701,7 +822,7 @@
 
         .stat-label {
             font-size: 9px;
-            color: #888;
+            color: var(--text-secondary);
             text-transform: uppercase;
             margin-bottom: 3px;
         }
@@ -714,13 +835,13 @@
         .stat-value {
             font-size: 13px;
             font-weight: bold;
-            color: #ffd700;
+            color: var(--accent-color);
         }
 
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: #1a1a2a;
+            background: var(--bg-card);
             border-radius: 10px;
             margin: 15px 0;
             overflow: hidden;
@@ -728,7 +849,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-dark));
             width: 0%;
             transition: width 0.2s;
         }
@@ -750,10 +871,10 @@
         .shop-tab {
             flex: 0 0 auto;
             padding: 6px 12px;
-            background: #0a0a0a;
-            border: 1.5px solid rgba(255, 215, 0, 0.3);
+            background: var(--bg-color);
+            border: 1.5px solid var(--border-color);
             border-radius: 8px;
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
@@ -762,26 +883,19 @@
         }
 
         .shop-tab.active {
-            border-color: #ffd700;
-            color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(var(--accent-rgb), 0.1);
         }
 
-        .shop-tab:active {
-            opacity: 0.7;
-        }
+        .shop-tab:active { opacity: 0.7; }
+        .shop-tab i { margin-right: 4px; }
 
-        .shop-tab i {
-            margin-right: 4px;
-        }
-
-        .shop-items-container {
-            display: block;
-        }
+        .shop-items-container { display: block; }
 
         .shop-item {
-            background: #1a1a2a;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 15px;
@@ -798,25 +912,23 @@
             font-size: 24px;
             width: 36px;
             text-align: center;
-            color: #ffd700;
+            color: var(--accent-color);
         }
 
         .shop-item-title {
             font-size: 18px;
             font-weight: bold;
-            color: #ffd700;
+            color: var(--accent-color);
         }
 
         .shop-item-desc {
             font-size: 13px;
-            color: #aaa;
+            color: var(--text-secondary);
             margin-bottom: 10px;
             line-height: 1.4;
         }
 
-        .shop-item-desc i {
-            margin-right: 4px;
-        }
+        .shop-item-desc i { margin-right: 4px; }
 
         .shop-item-footer {
             display: flex;
@@ -828,22 +940,16 @@
         .shop-item-price {
             font-size: 18px;
             font-weight: bold;
-            color: #ffd700;
+            color: var(--accent-color);
         }
 
-        .shop-item-price i {
-            margin-right: 6px;
-        }
-
-        .shop-item-price small {
-            font-size: 12px;
-            color: #666;
-        }
+        .shop-item-price i { margin-right: 6px; }
+        .shop-item-price small { font-size: 12px; color: #666; }
 
         .shop-item-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 10px 20px;
             font-size: 14px;
             font-weight: bold;
@@ -851,18 +957,12 @@
             cursor: pointer;
         }
 
-        .shop-item-btn:active {
-            opacity: 0.8;
-        }
-
-        .shop-item-btn:disabled {
-            opacity: 0.3;
-            cursor: default;
-        }
+        .shop-item-btn:active { opacity: 0.8; }
+        .shop-item-btn:disabled { opacity: 0.3; cursor: default; }
 
         .owned-badge {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent-color);
             padding: 5px 10px;
             border-radius: 10px;
             font-size: 12px;
@@ -870,9 +970,7 @@
             display: inline-block;
         }
 
-        .owned-badge i {
-            margin-right: 4px;
-        }
+        .owned-badge i { margin-right: 4px; }
 
         .requirement-badge {
             background: rgba(255, 100, 100, 0.15);
@@ -884,14 +982,12 @@
             display: inline-block;
         }
 
-        .requirement-badge i {
-            margin-right: 4px;
-        }
+        .requirement-badge i { margin-right: 4px; }
 
         .upgrade-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 15px;
             font-size: 18px;
             font-weight: bold;
@@ -904,19 +1000,13 @@
             z-index: 2;
         }
 
-        .upgrade-btn i {
-            margin-right: 10px;
-        }
-
-        .upgrade-btn:disabled {
-            opacity: 0.3;
-            cursor: default;
-        }
+        .upgrade-btn i { margin-right: 10px; }
+        .upgrade-btn:disabled { opacity: 0.3; cursor: default; }
 
         .rebirth-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 15px;
             font-size: 18px;
             font-weight: bold;
@@ -927,18 +1017,12 @@
             flex-shrink: 0;
         }
 
-        .rebirth-btn i {
-            margin-right: 10px;
-        }
-
-        .rebirth-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+        .rebirth-btn i { margin-right: 10px; }
+        .rebirth-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .rebirth-info {
-            background: #1a1a2a;
-            border: 2px solid #ffd700;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-color);
             border-radius: 15px;
             padding: 15px;
             margin: 15px 0;
@@ -946,15 +1030,13 @@
         }
 
         .rebirth-level {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .rebirth-level i {
-            margin-right: 10px;
-        }
+        .rebirth-level i { margin-right: 10px; }
 
         .rebirth-bonus {
             color: #4caf50;
@@ -962,9 +1044,7 @@
             margin-bottom: 5px;
         }
 
-        .rebirth-bonus i {
-            margin-right: 6px;
-        }
+        .rebirth-bonus i { margin-right: 6px; }
 
         .rebirth-requirements {
             color: #ff6b6b;
@@ -976,7 +1056,7 @@
         }
 
         .rebirth-next {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 16px;
             font-weight: bold;
             margin: 10px 0;
@@ -1001,8 +1081,8 @@
         }
 
         .award-item {
-            background: #1a1a2a;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 15px;
@@ -1015,7 +1095,7 @@
         }
 
         .award-item.completed {
-            border-color: #ffd700;
+            border-color: var(--accent-color);
             opacity: 0.8;
         }
 
@@ -1030,18 +1110,18 @@
             font-size: 24px;
             width: 36px;
             text-align: center;
-            color: #ffd700;
+            color: var(--accent-color);
         }
 
         .award-title {
             font-size: 18px;
             font-weight: bold;
-            color: #ffd700;
+            color: var(--accent-color);
         }
 
         .award-desc {
             font-size: 13px;
-            color: #aaa;
+            color: var(--text-secondary);
             margin-bottom: 10px;
             line-height: 1.4;
         }
@@ -1053,9 +1133,7 @@
             font-weight: bold;
         }
 
-        .award-reward i {
-            margin-right: 6px;
-        }
+        .award-reward i { margin-right: 6px; }
 
         .award-footer {
             display: flex;
@@ -1071,14 +1149,12 @@
             border-radius: 10px;
         }
 
-        .award-requirement i {
-            margin-right: 4px;
-        }
+        .award-requirement i { margin-right: 4px; }
 
         .award-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 10px 20px;
             font-size: 14px;
             font-weight: bold;
@@ -1086,27 +1162,19 @@
             cursor: pointer;
         }
 
-        .award-btn:active {
-            opacity: 0.8;
-        }
-
-        .award-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+        .award-btn:active { opacity: 0.8; }
+        .award-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .completed-badge {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent-color);
             padding: 5px 10px;
             border-radius: 10px;
             font-size: 12px;
             font-weight: bold;
         }
 
-        .completed-badge i {
-            margin-right: 4px;
-        }
+        .completed-badge i { margin-right: 4px; }
 
         .promo-content {
             padding: 20px 10px;
@@ -1114,36 +1182,32 @@
         }
 
         .promo-title {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 22px;
             margin-bottom: 20px;
         }
 
-        .promo-title i {
-            margin-right: 10px;
-        }
+        .promo-title i { margin-right: 10px; }
 
         .promo-input {
             width: 100%;
             padding: 12px 15px;
             font-size: 16px;
-            background: #1a1a2a;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
             border-radius: 15px;
-            color: #fff;
+            color: var(--text-primary);
             text-align: center;
             margin-bottom: 15px;
             outline: none;
         }
 
-        .promo-input:focus {
-            border-color: #ffd700;
-        }
+        .promo-input:focus { border-color: var(--accent-color); }
 
         .promo-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 12px 30px;
             font-size: 16px;
             font-weight: bold;
@@ -1152,13 +1216,8 @@
             width: 100%;
         }
 
-        .promo-btn i {
-            margin-right: 8px;
-        }
-
-        .promo-btn:active {
-            opacity: 0.8;
-        }
+        .promo-btn i { margin-right: 8px; }
+        .promo-btn:active { opacity: 0.8; }
 
         .promo-message {
             margin-top: 15px;
@@ -1181,7 +1240,7 @@
         .coin-animation {
             position: fixed;
             pointer-events: none;
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 20px;
             font-weight: bold;
             z-index: 1000;
@@ -1198,8 +1257,8 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #0a0a0a;
-            color: #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
             padding: 14px 28px;
             border-radius: 50px;
             font-weight: bold;
@@ -1210,15 +1269,13 @@
             max-width: 85%;
             min-width: 200px;
             text-align: center;
-            border: 2px solid #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 20px var(--shadow-color);
             font-size: 15px;
             line-height: 1.4;
         }
 
-        .notification i {
-            margin-right: 8px;
-        }
+        .notification i { margin-right: 8px; }
 
         @keyframes notification {
             0% { transform: translate(-50%, -100%); opacity: 0; }
@@ -1227,10 +1284,7 @@
             100% { transform: translate(-50%, -100%); opacity: 0; }
         }
 
-        .fa-fw {
-            width: 1.25em;
-            text-align: center;
-        }
+        .fa-fw { width: 1.25em; text-align: center; }
 
         .accounts-modal {
             position: fixed;
@@ -1245,13 +1299,11 @@
             z-index: 50000;
         }
 
-        .accounts-modal.active {
-            display: flex;
-        }
+        .accounts-modal.active { display: flex; }
 
         .accounts-panel {
-            background: #1a1a2a;
-            border: 2px solid #ffd700;
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-color);
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
@@ -1263,20 +1315,18 @@
         }
 
         .accounts-title {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 22px;
             font-weight: bold;
             text-align: center;
             margin-bottom: 10px;
         }
 
-        .accounts-title i {
-            margin-right: 10px;
-        }
+        .accounts-title i { margin-right: 10px; }
 
         .accounts-divider {
             height: 2px;
-            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
             margin-bottom: 15px;
         }
 
@@ -1291,12 +1341,12 @@
         }
 
         .accounts-list::-webkit-scrollbar-track {
-            background: #0f0f19;
+            background: var(--bg-color);
             border-radius: 10px;
         }
 
         .accounts-list::-webkit-scrollbar-thumb {
-            background: #ffd700;
+            background: var(--accent-color);
             border-radius: 10px;
         }
 
@@ -1305,7 +1355,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 15px;
-            background: #0f0f19;
+            background: var(--bg-color);
             border-radius: 12px;
             margin-bottom: 8px;
             cursor: pointer;
@@ -1315,22 +1365,22 @@
 
         .account-item:active {
             transform: scale(0.98);
-            border-color: #ffd700;
+            border-color: var(--accent-color);
         }
 
         .account-name {
-            color: #ffd700;
+            color: var(--accent-color);
             font-weight: bold;
             font-size: 16px;
         }
 
         .account-coins {
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 14px;
         }
 
         .account-coins i {
-            color: #ffd700;
+            color: var(--accent-color);
             margin-right: 4px;
         }
 
@@ -1347,9 +1397,9 @@
         }
 
         .accounts-close-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 12px;
             font-size: 16px;
             font-weight: bold;
@@ -1359,9 +1409,7 @@
             margin-top: 15px;
         }
 
-        .accounts-close-btn:active {
-            opacity: 0.8;
-        }
+        .accounts-close-btn:active { opacity: 0.8; }
 
         .autosave-modal {
             position: fixed;
@@ -1376,13 +1424,11 @@
             z-index: 60000;
         }
 
-        .autosave-modal.active {
-            display: flex;
-        }
+        .autosave-modal.active { display: flex; }
 
         .autosave-panel {
-            background: #1a1a2a;
-            border: 2px solid #ffd700;
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-color);
             border-radius: 20px;
             width: 90%;
             max-width: 380px;
@@ -1392,18 +1438,16 @@
         }
 
         .autosave-title {
-            color: #ffd700;
+            color: var(--accent-color);
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 12px;
         }
 
-        .autosave-title i {
-            margin-right: 10px;
-        }
+        .autosave-title i { margin-right: 10px; }
 
         .autosave-text {
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 15px;
             line-height: 1.5;
             margin-bottom: 20px;
@@ -1422,21 +1466,18 @@
             border-radius: 15px;
             cursor: pointer;
             transition: 0.2s;
-            border: 2px solid #ffd700;
-            background: #0a0a0a;
-            color: #ffd700;
+            border: 2px solid var(--accent-color);
+            background: var(--bg-color);
+            color: var(--accent-color);
             min-width: 100px;
         }
 
-        .autosave-btn:active {
-            transform: scale(0.95);
-            opacity: 0.8;
-        }
+        .autosave-btn:active { transform: scale(0.95); opacity: 0.8; }
 
         .autosave-btn.yes {
-            background: #ffd700;
-            color: #0a0a0a;
-            border-color: #ffd700;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-color: var(--accent-color);
         }
 
         .autosave-btn.no {
@@ -1458,12 +1499,10 @@
             z-index: 70000;
         }
 
-        .session-modal.active {
-            display: flex;
-        }
+        .session-modal.active { display: flex; }
 
         .session-panel {
-            background: #1a1a2a;
+            background: var(--bg-secondary);
             border: 2px solid #ff6b6b;
             border-radius: 20px;
             width: 90%;
@@ -1480,21 +1519,19 @@
             margin-bottom: 12px;
         }
 
-        .session-title i {
-            margin-right: 10px;
-        }
+        .session-title i { margin-right: 10px; }
 
         .session-text {
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 15px;
             line-height: 1.5;
             margin-bottom: 20px;
         }
 
         .session-btn {
-            background: #0a0a0a;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            background: var(--bg-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
             padding: 12px 40px;
             font-size: 16px;
             font-weight: bold;
@@ -1504,9 +1541,7 @@
             transition: 0.2s;
         }
 
-        .session-btn:active {
-            opacity: 0.8;
-        }
+        .session-btn:active { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -1583,38 +1618,88 @@
                 <div class="settings-panel">
                     <div class="settings-title"><i class="fas fa-sliders-h"></i> Настройки игры</div>
                     <div class="settings-divider"></div>
+                    
                     <div class="settings-subtitle">Параметры</div>
                     
                     <div class="settings-option">
                         <div class="option-header">
-                            <span class="option-name"><i class="fas fa-star"></i> Высокое качество</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="highQualityToggle">
-                                <span class="toggle-slider"></span>
-                            </label>
+                            <span class="option-name"><i class="fas fa-tv"></i> Настройка графики</span>
                         </div>
-                        <div class="option-desc">Меню и некоторые детали станут более детализированными что может снизить производительность.</div>
+                        <div class="option-desc" style="margin-bottom: 8px;">Выберите режим графики</div>
+                        <div class="graphics-selector" id="graphicsSelector">
+                            <div class="graphics-option" data-graphics="maximum" onclick="selectGraphics('maximum')">
+                                <i class="fas fa-crown"></i>
+                                Максимальное
+                            </div>
+                            <div class="graphics-option" data-graphics="balance" onclick="selectGraphics('balance')">
+                                <i class="fas fa-balance-scale"></i>
+                                Баланс
+                            </div>
+                            <div class="graphics-option active" data-graphics="performance" onclick="selectGraphics('performance')">
+                                <i class="fas fa-bolt"></i>
+                                Производительность
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="settings-option">
                         <div class="option-header">
                             <span class="option-name"><i class="fas fa-eye-slash"></i> Отключить индикаторы</span>
                             <label class="toggle-switch">
-                                <input type="checkbox" id="hideIndicatorsToggle">
+                                <input type="checkbox" id="hideIndicatorsToggle" onchange="toggleIndicators()">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
                         <div class="option-desc">Отключите индикаторы если вам мешают.</div>
                     </div>
 
+                    <div class="settings-subtitle" style="margin-top: 5px;">Тема игры</div>
+
                     <div class="settings-option">
+                        <div class="option-header">
+                            <span class="option-name"><i class="fas fa-palette"></i> Акцент игры</span>
+                            <button class="theme-select-btn" onclick="openColorPicker()">
+                                <span class="color-preview" id="currentColorDisplay" style="background:#ffd700;"></span>
+                                <i class="fas fa-chevron-down" style="font-size:12px;"></i>
+                            </button>
+                        </div>
+                        <div class="option-desc">Выберите основной цвет интерфейса</div>
+                    </div>
+
+                    <div class="settings-option">
+                        <div class="option-header">
+                            <span class="option-name"><i class="fas fa-fill-drip"></i> Цвет игры</span>
+                            <button class="theme-select-btn" onclick="openBgPicker()">
+                                <span class="color-preview" id="currentBgDisplay" style="background:#0a0a0f;"></span>
+                                <i class="fas fa-chevron-down" style="font-size:12px;"></i>
+                            </button>
+                        </div>
+                        <div class="option-desc">Выберите цвет фона интерфейса</div>
+                    </div>
+
+                    <button class="settings-apply" onclick="applyThemeAndClose()">
+                        <i class="fas fa-check"></i> Применить
+                    </button>
+
+                    <div class="settings-option" style="margin-top:15px;">
                         <div class="option-header">
                             <span class="option-name"><i class="fas fa-phone"></i> Связь с владельцем</span>
                         </div>
                         <button class="contact-button" id="contactButton"><i class="fab fa-telegram"></i> Написать</button>
                     </div>
                     
-                    <button class="settings-close" onclick="closeSettingsAndApply()"><i class="fas fa-check"></i> Закрыть и применить</button>
+                    <button class="settings-close" onclick="closeSettingsOnly()"><i class="fas fa-times"></i> Закрыть</button>
+                </div>
+            </div>
+
+            <div class="theme-modal" id="themeModal">
+                <div class="theme-modal-overlay" onclick="closeThemeModal()"></div>
+                <div class="theme-modal-content">
+                    <div class="theme-modal-title" id="themeModalTitle">Выберите цвет</div>
+                    <div class="theme-modal-colors" id="themeModalColors"></div>
+                    <button class="theme-modal-close" onclick="closeThemeModal()">
+                        <i class="fas fa-times"></i> Закрыть
+                    </button>
                 </div>
             </div>
 
@@ -1724,7 +1809,7 @@
                 <i class="fas fa-bolt"></i> Апгрейд
             </button>
 
-            <div class="version">Version:1.2.0</div>
+            <div class="version">Version:1.4.0</div>
         </div>
     </div>
 
@@ -1735,12 +1820,33 @@
         const SUPABASE_URL = 'https://lfmwdkpyhqmztvwcoenw.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_NJfsm5F3_NigieiTUwEuEQ_HDuwc3TI';
 
-        // Глобальные переменные
+        // ==========================================
+        // ЦВЕТА ТЕМЫ
+        // ==========================================
+        const THEME_COLORS = {
+            yellow: { hex: '#ffd700', rgb: '255, 215, 0', dark: '#b8860b' },
+            red: { hex: '#ff4444', rgb: '255, 68, 68', dark: '#cc0000' },
+            green: { hex: '#44ff44', rgb: '68, 255, 68', dark: '#00cc00' },
+            purple: { hex: '#bb44ff', rgb: '187, 68, 255', dark: '#8800cc' },
+            blue: { hex: '#4488ff', rgb: '68, 136, 255', dark: '#0055cc' },
+            orange: { hex: '#ff8800', rgb: '255, 136, 0', dark: '#cc6600' },
+            pink: { hex: '#ff44aa', rgb: '255, 68, 170', dark: '#cc0088' },
+            white: { hex: '#ffffff', rgb: '255, 255, 255', dark: '#cccccc' }
+        };
+
+        // ==========================================
+        // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+        // ==========================================
         let currentPlayer = '';
         let sessionId = '';
         let isSessionKicked = false;
         let sessionCheckInterval = null;
         let currentPassword = '';
+
+        let themeColor = 'yellow';
+        let bgColor = 'black';
+        let graphicsMode = 'performance';
+        let themePickerTarget = 'color';
 
         // ==========================================
         // УПРАВЛЕНИЕ СОХРАНЁННЫМИ АККАУНТАМИ
@@ -1777,11 +1883,6 @@
         function isAccountSaved(name) {
             const accounts = getSavedAccounts();
             return accounts.some(a => a.name === name);
-        }
-
-        function getAccount(name) {
-            const accounts = getSavedAccounts();
-            return accounts.find(a => a.name === name);
         }
 
         function renderAccounts() {
@@ -1843,7 +1944,7 @@
         }
 
         // ==========================================
-        // УПРАВЛЕНИЕ СЕССИЯМИ (РЕАЛЬНОЕ ВРЕМЯ)
+        // УПРАВЛЕНИЕ СЕССИЯМИ
         // ==========================================
         function generateSessionId() {
             return 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 10);
@@ -1891,7 +1992,7 @@
                     if (casinoInterval) clearInterval(casinoInterval);
                     if (serverTaxInterval) clearInterval(serverTaxInterval);
                 }
-            }, 2000); // Проверка каждые 2 секунды
+            }, 2000);
         }
 
         function kickToLogin() {
@@ -1911,18 +2012,7 @@
         // TELEGRAM INTEGRATION
         // ==========================================
         let tg = window.Telegram?.WebApp;
-        let userId = 'local';
-        let userFirstName = 'Игрок';
         
-        if (tg) {
-            tg.expand();
-            tg.enableClosingConfirmation();
-            if (tg.initDataUnsafe?.user) {
-                userId = tg.initDataUnsafe.user.id;
-                userFirstName = tg.initDataUnsafe.user.first_name || 'Игрок';
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             const contactBtn = document.getElementById('contactButton');
             if (contactBtn) {
@@ -2012,7 +2102,10 @@
                         rebirth_bonus: 0,
                         lucky_level: 0,
                         awards: {},
-                        session_id: ''
+                        session_id: '',
+                        theme_color: 'yellow',
+                        bg_color: 'black',
+                        graphics_mode: 'performance'
                     })
                 });
                 return data && data.length > 0 ? data[0] : null;
@@ -2043,6 +2136,7 @@
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
         const authMessage = document.getElementById('authMessage');
+        const playerNameDisplay = document.getElementById('playerNameDisplay');
 
         async function loginUser() {
             const username = usernameInput.value.trim();
@@ -2129,6 +2223,251 @@
         }
 
         // ==========================================
+        // ФУНКЦИИ ГРАФИКИ
+        // ==========================================
+        function selectGraphics(mode) {
+            graphicsMode = mode;
+            document.querySelectorAll('.graphics-option').forEach(el => {
+                el.classList.toggle('active', el.dataset.graphics === mode);
+            });
+            document.documentElement.setAttribute('data-graphics', mode);
+            applyGraphics();
+        }
+
+        function applyGraphics() {
+            const color = THEME_COLORS[themeColor] || THEME_COLORS.yellow;
+            
+            let glowIntensity = 0;
+            let circleCount = 0;
+            
+            if (graphicsMode === 'maximum') {
+                glowIntensity = 1;
+                circleCount = 20;
+                document.querySelectorAll('.tab, .settings-btn, .upgrade-btn, .rebirth-btn, .login-btn, .register-btn, .saved-accounts-btn, .promo-btn, .shop-item-btn, .award-btn, .settings-close, .settings-apply, .contact-button, .theme-select-btn, .theme-modal-close, .accounts-close-btn, .autosave-btn, .session-btn').forEach(el => {
+                    el.style.transition = 'box-shadow 0.3s ease';
+                    el.style.boxShadow = '0 0 25px rgba(' + color.rgb + ', 0.5)';
+                });
+                gameContainer.style.boxShadow = '0 20px 60px rgba(0,0,0,0.9), 0 0 50px rgba(' + color.rgb + ',0.5)';
+                gameContainer.style.border = '2px solid rgba(' + color.rgb + ', 0.5)';
+                const clickBtn = document.querySelector('.click-btn');
+                if (clickBtn) {
+                    clickBtn.style.boxShadow = '0 20px 40px rgba(0,0,0,0.6), 0 0 50px rgba(' + color.rgb + ',0.5)';
+                }
+            } else if (graphicsMode === 'balance') {
+                glowIntensity = 0.5;
+                circleCount = 10;
+                document.querySelectorAll('.tab, .settings-btn, .upgrade-btn, .rebirth-btn, .login-btn, .register-btn, .saved-accounts-btn, .promo-btn, .shop-item-btn, .award-btn, .settings-close, .settings-apply, .contact-button, .theme-select-btn, .theme-modal-close, .accounts-close-btn, .autosave-btn, .session-btn').forEach(el => {
+                    el.style.transition = 'box-shadow 0.3s ease';
+                    el.style.boxShadow = '0 0 10px rgba(' + color.rgb + ', 0.2)';
+                });
+                gameContainer.style.boxShadow = '0 20px 40px rgba(0,0,0,0.8), 0 0 30px rgba(' + color.rgb + ',0.3)';
+                gameContainer.style.border = '2px solid rgba(' + color.rgb + ', 0.3)';
+                const clickBtn = document.querySelector('.click-btn');
+                if (clickBtn) {
+                    clickBtn.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(' + color.rgb + ',0.3)';
+                }
+            } else {
+                glowIntensity = 0;
+                circleCount = 0;
+                document.querySelectorAll('.tab, .settings-btn, .upgrade-btn, .rebirth-btn, .login-btn, .register-btn, .saved-accounts-btn, .promo-btn, .shop-item-btn, .award-btn, .settings-close, .settings-apply, .contact-button, .theme-select-btn, .theme-modal-close, .accounts-close-btn, .autosave-btn, .session-btn').forEach(el => {
+                    el.style.boxShadow = 'none';
+                });
+                gameContainer.style.boxShadow = '0 20px 40px rgba(0,0,0,0.8)';
+                gameContainer.style.border = '2px solid rgba(' + color.rgb + ', 0.2)';
+                const clickBtn = document.querySelector('.click-btn');
+                if (clickBtn) {
+                    clickBtn.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(' + color.rgb + ',0.3)';
+                }
+            }
+
+            createFloatingCircles(circleCount);
+        }
+
+        // ==========================================
+        // ФУНКЦИИ ТЕМЫ
+        // ==========================================
+        function applyTheme() {
+            const color = THEME_COLORS[themeColor] || THEME_COLORS.yellow;
+            
+            document.documentElement.style.setProperty('--accent-color', color.hex);
+            document.documentElement.style.setProperty('--accent-rgb', color.rgb);
+            document.documentElement.style.setProperty('--accent-dark', color.dark);
+            document.documentElement.style.setProperty('--shadow-color', `rgba(${color.rgb}, 0.3)`);
+            document.documentElement.style.setProperty('--border-color', `rgba(${color.rgb}, 0.2)`);
+
+            if (bgColor === 'white') {
+                document.documentElement.setAttribute('data-theme', 'white');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+
+            document.getElementById('currentColorDisplay').style.background = color.hex;
+            document.getElementById('currentBgDisplay').style.background = bgColor === 'white' ? '#f0f0f0' : '#0a0a0f';
+
+            const clickBtn = document.querySelector('.click-btn');
+            if (clickBtn) {
+                clickBtn.style.background = `radial-gradient(circle at 30% 30%, ${color.hex}, ${color.dark})`;
+            }
+
+            const fill = document.getElementById('progressFill');
+            if (fill) {
+                fill.style.background = `linear-gradient(90deg, ${color.hex}, ${color.dark})`;
+            }
+
+            applyGraphics();
+
+            localStorage.setItem('mrfeast_theme_color', themeColor);
+            localStorage.setItem('mrfeast_bg_color', bgColor);
+            localStorage.setItem('mrfeast_graphics_mode', graphicsMode);
+        }
+
+        function openColorPicker() {
+            themePickerTarget = 'color';
+            document.getElementById('themeModalTitle').textContent = 'Выберите цвет акцента';
+            renderColorPicker(themeColor);
+            document.getElementById('themeModal').classList.add('active');
+        }
+
+        function openBgPicker() {
+            themePickerTarget = 'bg';
+            document.getElementById('themeModalTitle').textContent = 'Выберите цвет фона';
+            const selected = bgColor === 'white' ? 'white' : 'black';
+            renderBgPicker(selected);
+            document.getElementById('themeModal').classList.add('active');
+        }
+
+        function renderBgPicker(selected) {
+            const container = document.getElementById('themeModalColors');
+            container.innerHTML = `
+                <div class="theme-modal-color ${selected === 'black' ? 'active' : ''}" 
+                     style="background:#0a0a0f;border-color:${selected === 'black' ? '#fff' : '#888'};"
+                     onclick="selectThemeModalColor('black')">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+                <div class="theme-modal-color ${selected === 'white' ? 'active' : ''}" 
+                     style="background:#f0f0f0;border-color:${selected === 'white' ? '#000' : '#888'};"
+                     onclick="selectThemeModalColor('white')">
+                    <span class="check check-dark"><i class="fas fa-check" style="color:#000;"></i></span>
+                </div>
+            `;
+        }
+
+        function renderColorPicker(selected) {
+            const colors = [
+                { id: 'yellow', color: '#ffd700' },
+                { id: 'red', color: '#ff4444' },
+                { id: 'green', color: '#44ff44' },
+                { id: 'purple', color: '#bb44ff' },
+                { id: 'blue', color: '#4488ff' },
+                { id: 'orange', color: '#ff8800' },
+                { id: 'pink', color: '#ff44aa' },
+                { id: 'white', color: '#ffffff' }
+            ];
+            
+            const container = document.getElementById('themeModalColors');
+            container.innerHTML = colors.map(c => `
+                <div class="theme-modal-color ${c.id === selected ? 'active' : ''}" 
+                     style="background:${c.color}; ${c.id === 'white' ? 'border-color:#888;' : ''}"
+                     onclick="selectThemeModalColor('${c.id}')">
+                    <span class="check ${c.id === 'white' ? 'check-dark' : ''}"><i class="fas fa-check" ${c.id === 'white' ? 'style="color:#000;"' : ''}></i></span>
+                </div>
+            `).join('');
+        }
+
+        function selectThemeModalColor(colorId) {
+            if (themePickerTarget === 'color') {
+                themeColor = colorId;
+                document.querySelectorAll('.theme-modal-color').forEach(el => {
+                    const isActive = el.style.background.includes(colorId) || 
+                        (colorId === 'white' && el.style.background === 'rgb(255, 255, 255)');
+                    el.classList.toggle('active', isActive);
+                });
+                document.getElementById('currentColorDisplay').style.background = THEME_COLORS[colorId].hex;
+            } else {
+                bgColor = colorId === 'white' ? 'white' : 'black';
+                document.querySelectorAll('.theme-modal-color').forEach(el => {
+                    const isActive = (colorId === 'black' && el.style.background === 'rgb(10, 10, 15)') ||
+                        (colorId === 'white' && el.style.background === 'rgb(240, 240, 240)');
+                    el.classList.toggle('active', isActive);
+                });
+                document.getElementById('currentBgDisplay').style.background = bgColor === 'white' ? '#f0f0f0' : '#0a0a0f';
+            }
+        }
+
+        function closeThemeModal() {
+            document.getElementById('themeModal').classList.remove('active');
+        }
+
+        function applyThemeAndClose() {
+            applyTheme();
+            if (currentPlayer) {
+                saveThemeToCloud();
+                saveGraphicsToCloud();
+            }
+            document.getElementById('settingsModal').classList.remove('active');
+            showNotif('✅ Настройки применены!');
+        }
+
+        function closeSettingsOnly() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        async function saveThemeToCloud() {
+            if (!currentPlayer || isSessionKicked) return;
+            try {
+                await updateUserData(currentPlayer, {
+                    theme_color: themeColor,
+                    bg_color: bgColor
+                });
+            } catch (e) {
+                console.error('Ошибка сохранения темы:', e);
+            }
+        }
+
+        async function saveGraphicsToCloud() {
+            if (!currentPlayer || isSessionKicked) return;
+            try {
+                await updateUserData(currentPlayer, {
+                    graphics_mode: graphicsMode
+                });
+            } catch (e) {
+                console.error('Ошибка сохранения графики:', e);
+            }
+        }
+
+        function loadThemeFromCloud(user) {
+            if (user.theme_color) themeColor = user.theme_color;
+            if (user.bg_color) bgColor = user.bg_color;
+            if (user.graphics_mode) {
+                graphicsMode = user.graphics_mode;
+                document.querySelectorAll('.graphics-option').forEach(el => {
+                    el.classList.toggle('active', el.dataset.graphics === graphicsMode);
+                });
+                document.documentElement.setAttribute('data-graphics', graphicsMode);
+            }
+            applyTheme();
+        }
+
+        // ==========================================
+        // УПРАВЛЕНИЕ ИНДИКАТОРАМИ
+        // ==========================================
+        function toggleIndicators() {
+            hideIndicators = document.getElementById('hideIndicatorsToggle').checked;
+            updateAllDots();
+            if (currentPlayer) {
+                saveGameToCloud();
+            }
+            showNotif(hideIndicators ? '🔇 Индикаторы отключены' : '🔔 Индикаторы включены');
+        }
+
+        function updateIndicatorsToggle() {
+            const toggle = document.getElementById('hideIndicatorsToggle');
+            if (toggle) {
+                toggle.checked = hideIndicators;
+            }
+        }
+
+        // ==========================================
         // ПОЛНАЯ ЛОГИКА ИГРЫ
         // ==========================================
         let coins = 0;
@@ -2169,7 +2508,6 @@
         let hasMTProtoV1 = false;
         let serverTaxInterval = null;
         
-        let highQuality = false;
         let hideIndicators = false;
         let circlesInterval = null;
         
@@ -2183,7 +2521,6 @@
         let promoUsed = false;
         let browserInterval = null;
 
-        const playerNameDisplay = document.getElementById('playerNameDisplay');
         const coinDisplay = document.getElementById('coinDisplay');
         const clickValueSpan = document.getElementById('clickValue');
         const clickCountSpan = document.getElementById('clickCount');
@@ -2206,23 +2543,22 @@
         const promoInput = document.getElementById('promoInput');
         const promoMessage = document.getElementById('promoMessage');
         
-        const highQualityToggle = document.getElementById('highQualityToggle');
         const hideIndicatorsToggle = document.getElementById('hideIndicatorsToggle');
         const settingsModal = document.getElementById('settingsModal');
         const floatingCircles = document.getElementById('floatingCircles');
-        const gameContainerEl = document.getElementById('gameContainer');
+        const gameContainer = document.getElementById('gameContainer');
         const shopItemsContainer = document.getElementById('shopItemsContainer');
 
         // ==========================================
-        // ДАННЫЕ ТОВАРОВ (сокращенно для экономии места)
+        // ДАННЫЕ ТОВАРОВ
         // ==========================================
         const shopItemsData = [
             { id: 'autoClicker', title: 'AutoClicker V1', desc: 'Автоматически кликает каждые 2 секунды', price: 1000, category: 'autoclicker', icon: 'fa-robot', requirement: null },
             { id: 'autoSpeedV1', title: 'Update AutoClicker V1', desc: 'Автокликер будет быстрее кликать на 1 секунду меньше (станет 1 секунда)', price: 2500, category: 'autoclicker', icon: 'fa-bolt', requirement: 'AutoClicker V1' },
             { id: 'autoSpeedV2', title: 'Update AutoClicker V2', desc: 'Автокликер будет еще быстрее кликать на 0.5 секунды меньше (станет 0.5 секунд)', price: 7777, category: 'autoclicker', icon: 'fa-bolt', requirement: 'Update V1' },
             { id: 'autoSpeedV3', title: 'Update AutoClicker V3', desc: 'Автокликер будет с бешенной скоростью кликать на 0.3 секунды меньше (станет 0.2 секунды)', price: 25000, category: 'autoclicker', icon: 'fa-bolt', requirement: 'Update V2' },
-            { id: 'autoProX1', title: 'AutoClicker Pro X1', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Получайте за каждый клик X5 монет, <i class="fas fa-arrow-down" style="color:#ff6b6b;"></i> но скорость ниже на 0,5', price: 200000, category: 'autoclicker', icon: 'fa-rocket', requirement: 'последняя прокачка автокликера' },
-            { id: 'autoProX2', title: 'AutoClicker Pro X2', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Повысьте скорость клика (-0,6)', price: 545000, category: 'autoclicker', icon: 'fa-rocket', requirement: 'AutoClicker Pro X1' },
+            { id: 'autoProX1', title: 'AutoClicker Pro X1', desc: 'Получайте за каждый клик X5 монет, но скорость ниже на 0,5', price: 200000, category: 'autoclicker', icon: 'fa-rocket', requirement: 'последняя прокачка автокликера' },
+            { id: 'autoProX2', title: 'AutoClicker Pro X2', desc: 'Повысьте скорость клика (-0,6)', price: 545000, category: 'autoclicker', icon: 'fa-rocket', requirement: 'AutoClicker Pro X1' },
             { id: 'ring', title: 'Diamond Ring', desc: 'Увеличивает доход за клик на 5', price: 200, category: 'lucky', icon: 'fa-gem', requirement: null },
             { id: 'crown', title: 'MrFeast Crown', desc: 'Увеличивает прилично доход за клик на 150', price: 25777, category: 'lucky', icon: 'fa-crown', requirement: 'Diamond Ring' },
             { id: 'lucky1', title: 'Lucky X1', desc: 'С шансом 10% за нажатие вам дадут удвоенную прибыль', price: 35777, category: 'lucky', icon: 'fa-leaf', requirement: null },
@@ -2232,9 +2568,9 @@
             { id: 'lucky5', title: 'Lucky X5', desc: 'С шансом 100% за нажатие вам дадут удвоенную прибыль', price: 1000000, category: 'lucky', icon: 'fa-leaf', requirement: 'Lucky X4' },
             { id: 'pc', title: 'MrFeast PC V1', desc: 'Дает возможность создать браузер', price: 57500, category: 'pc', icon: 'fa-desktop', requirement: null },
             { id: 'pcV2', title: 'MrFeast PC V2', desc: 'Более мощный компьютер для требовательных задач.', price: 2750000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V1' },
-            { id: 'pcV3', title: 'MrFeast PC V3', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Мощнейший компьютер для самых сложных задач. +5 000 к доходу за клик.', price: 15000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V2' },
-            { id: 'pcUltra', title: 'MrFeast PC Ultra', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Ультра-мощный ПК, способный запускать всё. +15 000 к доходу за клик.', price: 50000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V3' },
-            { id: 'pcQuantum', title: 'MrFeast PC Quantum', desc: '<i class="fas fa-arrow-up" style="color:#4caf50;"></i> Квантовый компьютер будущего. +50 000 к доходу за клик.', price: 150000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC Ultra' },
+            { id: 'pcV3', title: 'MrFeast PC V3', desc: 'Мощнейший компьютер для самых сложных задач. +5 000 к доходу за клик.', price: 15000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V2' },
+            { id: 'pcUltra', title: 'MrFeast PC Ultra', desc: 'Ультра-мощный ПК, способный запускать всё. +15 000 к доходу за клик.', price: 50000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC V3' },
+            { id: 'pcQuantum', title: 'MrFeast PC Quantum', desc: 'Квантовый компьютер будущего. +50 000 к доходу за клик.', price: 150000000, category: 'pc', icon: 'fa-desktop', requirement: 'MrFeast PC Ultra' },
             { id: 'smartphone', title: 'MrFeast SmartPhone (Worbeli GameShtorm)', desc: 'Вы создали свой игровой телефон и увеличиваете доход за клик на 750', price: 1256000, category: 'other', icon: 'fa-mobile-alt', requirement: 'MrFeast Factory' },
             { id: 'browser', title: 'MrFeast Browser', desc: 'Браузер приносит каждые 5 секунд доход в размере X2 от дохода за 1 клик', price: 275000, category: 'other', icon: 'fa-globe', requirement: 'MrFeast PC V1' },
             { id: 'casino', title: 'MrFeast Casino', desc: 'Каждые 60 секунд дает 15 000 монет', price: 1250000, category: 'other', icon: 'fa-dice', requirement: 'MrFeast PC V1' },
@@ -2247,16 +2583,49 @@
             { id: 'girlfriend', title: "MrFeast's GirlFriend Vika", desc: 'Любимая девушка MrFeast. Вы счастливы и ваш доход увеличился на +1500', price: 15000000, category: 'love', icon: 'fa-heart', requirement: 'MrFeast Big Home' }
         ];
 
+        // ==========================================
+        // НОВАЯ СОРТИРОВКА ДЛЯ МАГАЗИНА
+        // ==========================================
         function renderShopItems(filter) {
             let items = [...shopItemsData];
+            
+            // Фильтрация по категории
             if (filter === 'autoclicker') items = items.filter(i => i.category === 'autoclicker');
             else if (filter === 'pc') items = items.filter(i => i.category === 'pc');
             else if (filter === 'lucky') items = items.filter(i => i.category === 'lucky');
             else if (filter === 'love') items = items.filter(i => i.category === 'love');
             else if (filter === 'other') items = items.filter(i => i.category === 'other');
-            else if (filter === 'min') items.sort((a, b) => a.price - b.price);
-            else if (filter === 'max') items.sort((a, b) => b.price - a.price);
-            else items.sort((a, b) => a.price - b.price);
+            
+            // Сортировка для "Все"
+            if (filter === 'all') {
+                // Разделяем на доступные и недоступные
+                const available = [];
+                const unavailable = [];
+                
+                items.forEach(item => {
+                    const canBuy = checkCanBuy(item.id);
+                    if (canBuy) {
+                        available.push(item);
+                    } else {
+                        unavailable.push(item);
+                    }
+                });
+                
+                // Сортируем доступные по цене (от дешёвых к дорогим)
+                available.sort((a, b) => a.price - b.price);
+                // Сортируем недоступные по цене (от дешёвых к дорогим)
+                unavailable.sort((a, b) => a.price - b.price);
+                
+                // Объединяем: сначала доступные, потом недоступные
+                items = [...available, ...unavailable];
+            } else if (filter === 'min') {
+                items.sort((a, b) => a.price - b.price);
+            } else if (filter === 'max') {
+                items.sort((a, b) => b.price - a.price);
+            } else {
+                // Для категорий сортируем по цене (от дешёвых к дорогим)
+                items.sort((a, b) => a.price - b.price);
+            }
             
             let html = '';
             items.forEach(item => {
@@ -2264,7 +2633,7 @@
                 const canBuy = checkCanBuy(item.id);
                 const reqText = item.requirement ? `<div class="requirement-badge"><i class="fas fa-exclamation-circle"></i> Требуется: ${item.requirement}</div>` : '';
                 const btnHtml = isOwned ? 
-                    '<span class="owned-badge"><i class="fas fa-check"></i></span>' : 
+                    '<span class="owned-badge"><i class="fas fa-check"></i> Куплено</span>' : 
                     `<button class="shop-item-btn" onclick="buyShopItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>Купить</button>`;
                 html += `
                     <div class="shop-item" data-item-id="${item.id}">
@@ -2281,6 +2650,7 @@
                     </div>
                 `;
             });
+            
             if (items.length === 0) {
                 html = '<div style="text-align:center;color:#666;padding:30px 0;"><i class="fas fa-box-open"></i> Нет товаров в этой категории</div>';
             }
@@ -2493,35 +2863,19 @@
         }
 
         function openSettings() {
-            highQualityToggle.checked = highQuality;
-            hideIndicatorsToggle.checked = hideIndicators;
+            updateIndicatorsToggle();
             settingsModal.classList.add('active');
+            document.querySelectorAll('.graphics-option').forEach(el => {
+                el.classList.toggle('active', el.dataset.graphics === graphicsMode);
+            });
         }
 
         function closeSettingsAndApply() {
-            highQuality = highQualityToggle.checked;
-            hideIndicators = hideIndicatorsToggle.checked;
+            hideIndicators = document.getElementById('hideIndicatorsToggle').checked;
             settingsModal.classList.remove('active');
-            applyHighQuality();
             updateAllDots();
             saveGameToCloud();
-        }
-
-        function applyHighQuality() {
-            if (highQuality) {
-                gameContainerEl.style.boxShadow = '0 20px 60px rgba(0,0,0,0.9), 0 0 50px rgba(255,215,0,0.5)';
-                gameContainerEl.style.border = '2px solid rgba(255, 215, 0, 0.5)';
-                const clickBtn = document.querySelector('.click-btn');
-                if (clickBtn) clickBtn.style.boxShadow = '0 20px 40px rgba(0,0,0,0.6), 0 0 50px rgba(255,215,0,0.5)';
-                createFloatingCircles();
-            } else {
-                gameContainerEl.style.boxShadow = '0 20px 40px rgba(0,0,0,0.8)';
-                gameContainerEl.style.border = '2px solid rgba(255, 215, 0, 0.2)';
-                const clickBtn = document.querySelector('.click-btn');
-                if (clickBtn) clickBtn.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3)';
-                floatingCircles.innerHTML = '';
-                if (circlesInterval) clearInterval(circlesInterval);
-            }
+            showNotif('✅ Настройки применены!');
         }
 
         function updateRebirthDisplay() {
@@ -2800,6 +3154,69 @@
         }
 
         // ==========================================
+        // СОЗДАНИЕ ПЛАВАЮЩИХ КРУГОВ
+        // ==========================================
+        function createFloatingCircles(count) {
+            if (circlesInterval) clearInterval(circlesInterval);
+            floatingCircles.innerHTML = '';
+            
+            let circleCount = count !== undefined ? count : 0;
+            if (graphicsMode === 'maximum') circleCount = 20;
+            else if (graphicsMode === 'balance') circleCount = 10;
+            else circleCount = 0;
+            
+            if (circleCount > 0) {
+                for (let i = 0; i < circleCount; i++) {
+                    const circle = document.createElement('div');
+                    circle.className = 'circle';
+                    const size = Math.random() * 90 + 40;
+                    circle.style.width = size + 'px';
+                    circle.style.height = size + 'px';
+                    circle.style.left = Math.random() * 100 + '%';
+                    circle.style.top = Math.random() * 100 + '%';
+                    circle.style.animationDuration = Math.random() * 18 + 18 + 's';
+                    circle.style.animationDelay = Math.random() * 6 + 's';
+                    circle.style.opacity = Math.random() * 0.45 + 0.25;
+                    floatingCircles.appendChild(circle);
+                }
+                circlesInterval = setInterval(() => {
+                    if (graphicsMode === 'maximum' || graphicsMode === 'balance') {
+                        const circlesList = document.querySelectorAll('.circle');
+                        circlesList.forEach(circle => {
+                            circle.style.left = Math.random() * 100 + '%';
+                            circle.style.top = Math.random() * 100 + '%';
+                        });
+                    }
+                }, 12000);
+            } else {
+                floatingCircles.innerHTML = '';
+                if (circlesInterval) {
+                    clearInterval(circlesInterval);
+                    circlesInterval = null;
+                }
+            }
+        }
+
+        function createRippleOptimized(event) {
+            if (graphicsMode === 'performance') return;
+            const btn = event.currentTarget;
+            const rect = btn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height) * 1.2;
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = rect.left + rect.width / 2 - size / 2 + 'px';
+            ripple.style.top = rect.top + rect.height / 2 - size / 2 + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => { if (ripple && ripple.remove) ripple.remove(); }, 400);
+        }
+
+        function handleClickWithRipple(event) {
+            createRippleOptimized(event);
+            handleClick();
+        }
+
+        // ==========================================
         // СОХРАНЕНИЕ В ОБЛАКО
         // ==========================================
         async function saveGameToCloud() {
@@ -2822,7 +3239,9 @@
                 has_factory: hasFactory, has_smartphone: hasSmartphone,
                 has_server_v1: hasServerV1, has_mtproto_v1: hasMTProtoV1,
                 awards: awards, promo_used: promoUsed,
-                high_quality: highQuality, hide_indicators: hideIndicators
+                hide_indicators: hideIndicators,
+                theme_color: themeColor, bg_color: bgColor,
+                graphics_mode: graphicsMode
             };
 
             try {
@@ -2877,12 +3296,20 @@
             }
             
             promoUsed = user.promo_used || false;
-            highQuality = user.high_quality || false;
             hideIndicators = user.hide_indicators || false;
             
-            highQualityToggle.checked = highQuality;
-            hideIndicatorsToggle.checked = hideIndicators;
-            applyHighQuality();
+            if (user.theme_color) themeColor = user.theme_color;
+            if (user.bg_color) bgColor = user.bg_color;
+            if (user.graphics_mode) {
+                graphicsMode = user.graphics_mode;
+                document.querySelectorAll('.graphics-option').forEach(el => {
+                    el.classList.toggle('active', el.dataset.graphics === graphicsMode);
+                });
+                document.documentElement.setAttribute('data-graphics', graphicsMode);
+            }
+            
+            updateIndicatorsToggle();
+            applyTheme();
             
             if (hasServerV1) startServerTax();
             
@@ -2913,59 +3340,6 @@
         });
 
         // ==========================================
-        // СОЗДАНИЕ ПЛАВАЮЩИХ КРУГОВ
-        // ==========================================
-        function createFloatingCircles() {
-            if (circlesInterval) clearInterval(circlesInterval);
-            floatingCircles.innerHTML = '';
-            if (highQuality) {
-                for (let i = 0; i < 20; i++) {
-                    const circle = document.createElement('div');
-                    circle.className = 'circle';
-                    const size = Math.random() * 90 + 40;
-                    circle.style.width = size + 'px';
-                    circle.style.height = size + 'px';
-                    circle.style.left = Math.random() * 100 + '%';
-                    circle.style.top = Math.random() * 100 + '%';
-                    circle.style.animationDuration = Math.random() * 18 + 18 + 's';
-                    circle.style.animationDelay = Math.random() * 6 + 's';
-                    circle.style.opacity = Math.random() * 0.45 + 0.25;
-                    floatingCircles.appendChild(circle);
-                }
-                circlesInterval = setInterval(() => {
-                    if (highQuality) {
-                        const circlesList = document.querySelectorAll('.circle');
-                        circlesList.forEach(circle => {
-                            circle.style.left = Math.random() * 100 + '%';
-                            circle.style.top = Math.random() * 100 + '%';
-                        });
-                    }
-                }, 12000);
-            } else {
-                floatingCircles.innerHTML = '';
-            }
-        }
-
-        function createRippleOptimized(event) {
-            if (!highQuality) return;
-            const btn = event.currentTarget;
-            const rect = btn.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height) * 1.2;
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = rect.left + rect.width / 2 - size / 2 + 'px';
-            ripple.style.top = rect.top + rect.height / 2 - size / 2 + 'px';
-            document.body.appendChild(ripple);
-            setTimeout(() => { if (ripple && ripple.remove) ripple.remove(); }, 400);
-        }
-
-        function handleClickWithRipple(event) {
-            createRippleOptimized(event);
-            handleClick();
-        }
-
-        // ==========================================
         // ГЕНЕРАЦИЯ НАГРАД
         // ==========================================
         function generateAwardsHTML() {
@@ -2994,6 +3368,22 @@
         document.getElementById('awardsContent').innerHTML = generateAwardsHTML();
         renderShopItems('all');
 
+        // Загружаем сохранённые настройки из localStorage
+        const savedTheme = localStorage.getItem('mrfeast_theme_color');
+        const savedBg = localStorage.getItem('mrfeast_bg_color');
+        const savedGraphics = localStorage.getItem('mrfeast_graphics_mode');
+        if (savedTheme) themeColor = savedTheme;
+        if (savedBg) bgColor = savedBg;
+        if (savedGraphics) {
+            graphicsMode = savedGraphics;
+            document.querySelectorAll('.graphics-option').forEach(el => {
+                el.classList.toggle('active', el.dataset.graphics === graphicsMode);
+            });
+            document.documentElement.setAttribute('data-graphics', graphicsMode);
+        }
+        updateIndicatorsToggle();
+        applyTheme();
+
         // Сохранение при закрытии
         window.addEventListener('beforeunload', () => {
             if (autoClickerInterval) clearInterval(autoClickerInterval);
@@ -3005,9 +3395,7 @@
             saveGameToCloud();
         });
 
-        // ==========================================
-        // АВТОСОХРАНЕНИЕ КАЖДЫЕ 2 СЕКУНДЫ
-        // ==========================================
+        // Автосохранение каждые 2 секунды
         setInterval(() => {
             if (currentPlayer && !isSessionKicked) {
                 saveGameToCloud();
