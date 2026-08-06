@@ -258,9 +258,6 @@ color: var(--accent-color);
 font-weight: bold;
 }
 .player-name i { margin-right: 8px; }
-/* ========================================== */
-/* FPS COUNTER (по центру между ником и настройками) */
-/* ========================================== */
 .fps-counter {
 position: absolute;
 left: 50%;
@@ -299,9 +296,6 @@ transition: 0.2s;
 border-radius: 10px;
 }
 .settings-btn:active { opacity: 0.8; transform: rotate(30deg); }
-/* ========================================== */
-/* БАЛАНС НАД АПГРЕЙДОМ (ПОДНЯТ) */
-/* ========================================== */
 .balance-container {
 display: flex;
 justify-content: center;
@@ -1381,9 +1375,6 @@ width: 100%;
 transition: 0.2s;
 }
 .session-btn:active { opacity: 0.8; }
-/* ========================================== */
-/* WARNING OVERLAY (FeastAntiSpy)             */
-/* ========================================== */
 #warningOverlay {
 position: fixed;
 inset: 0;
@@ -1594,7 +1585,6 @@ box-shadow: 0 10px 24px rgba(255,215,0,0.18);
 </style>
 </head>
 <body>
-<!-- ===== WARNING OVERLAY (FeastAntiSpy) ===== -->
 <div id="warningOverlay">
 <span class="warn-spark"></span>
 <span class="warn-spark"></span>
@@ -1675,14 +1665,8 @@ box-shadow: 0 10px 24px rgba(255,215,0,0.18);
 </div>
 </div>
 <div class="game-screen" id="gameScreen">
-<!-- ========================================== -->
-<!-- ХЕДЕР (с FPS Counter между ником и настройками) -->
-<!-- ========================================== -->
 <div class="header">
 <div class="player-name"><i class="fas fa-user"></i><span id="playerNameDisplay">Игрок</span></div>
-<!-- ========================================== -->
-<!-- FPS COUNTER (по центру) -->
-<!-- ========================================== -->
 <div class="fps-counter" id="fpsCounter">
 <i class="fas fa-tachometer-alt"></i>
 FPS: <span class="fps-value" id="fpsValue">60</span>
@@ -1696,9 +1680,6 @@ FPS: <span class="fps-value" id="fpsValue">60</span>
 <div class="settings-title"><i class="fas fa-sliders-h"></i> Настройки игры</div>
 <div class="settings-divider"></div>
 <div class="settings-subtitle">Параметры</div>
-<!-- ========================================== -->
-<!-- НАСТРОЙКА ГРАФИКИ -->
-<!-- ========================================== -->
 <div class="settings-option">
 <div class="option-header">
 <span class="option-name"><i class="fas fa-tv"></i> Настройка графики</span>
@@ -1719,9 +1700,6 @@ FPS: <span class="fps-value" id="fpsValue">60</span>
 </div>
 </div>
 </div>
-<!-- ========================================== -->
-<!-- FPS COUNTER (НОВЫЙ ТУМБЛЕР) -->
-<!-- ========================================== -->
 <div class="settings-option">
 <div class="option-header">
 <span class="option-name"><i class="fas fa-tachometer-alt"></i> FPS Counter</span>
@@ -1743,9 +1721,6 @@ FPS: <span class="fps-value" id="fpsValue">60</span>
 <div class="option-desc">Отключите индикаторы если вам мешают.</div>
 </div>
 <div class="settings-subtitle" style="margin-top: 5px;">Тема игры</div>
-<!-- ========================================== -->
-<!-- АКЦЕНТ ИГРЫ (16 цветов) -->
-<!-- ========================================== -->
 <div class="settings-option">
 <div class="option-header">
 <span class="option-name"><i class="fas fa-palette"></i> Акцент игры</span>
@@ -1882,9 +1857,6 @@ FPS: <span class="fps-value" id="fpsValue">60</span>
 <div id="promoMessage" class="promo-message"></div>
 </div>
 </div>
-<!-- ========================================== -->
-<!-- БАЛАНС НАД АПГРЕЙДОМ -->
-<!-- ========================================== -->
 <div class="balance-container" id="balanceContainer">
 <span class="balance-icon"><i class="fas fa-coins"></i></span>
 <span class="balance-label">Coins:</span>
@@ -1897,9 +1869,6 @@ FPS: <span class="fps-value" id="fpsValue">60</span>
 </div>
 </div>
 <script>
-// ==========================================
-// ПОЛУЧЕНИЕ TELEGRAM ID
-// ==========================================
 let tg = window.Telegram?.WebApp;
 let tgUserId = null;
 if (tg) {
@@ -1911,8 +1880,43 @@ console.log('Telegram ID:', tgUserId);
 }
 }
 // ==========================================
-// FPS COUNTER
+// FULLSCREEN FOR WINDOWS (Telegram Mini App)
 // ==========================================
+const isWindowsUser = /Windows/.test(navigator.userAgent);
+function tryTelegramFullscreen(){
+  try{
+    if (tg && typeof tg.requestFullscreen === 'function'){
+      tg.requestFullscreen();
+      return true;
+    }
+  }catch(e){ console.warn('TG fullscreen error:', e); }
+  return false;
+}
+function tryBrowserFullscreen(){
+  try{
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen().catch(()=>{});
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+function windowsFullscreenHandler(){
+  if (document.fullscreenElement){
+    window.removeEventListener('pointerdown', windowsFullscreenHandler);
+    return;
+  }
+  if (!tryTelegramFullscreen()) tryBrowserFullscreen();
+}
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement) window.removeEventListener('pointerdown', windowsFullscreenHandler);
+});
+if (isWindowsUser){
+  if (!tryTelegramFullscreen()){
+    window.addEventListener('pointerdown', windowsFullscreenHandler);
+  }
+  console.log('🖥 Windows detected: fullscreen mode enabled');
+}
 let fpsCounterEnabled = false;
 let fpsCounterElement = document.getElementById('fpsCounter');
 let fpsValueElement = document.getElementById('fpsValue');
@@ -1934,13 +1938,11 @@ let lastFrameTime = performance.now();
 function countFrame() {
 const now = performance.now();
 frameCount++;
-if (now - lastFpsUpdate >= 500) { // Обновляем каждые 0.5 секунды
+if (now - lastFpsUpdate >= 500) {
 currentFps = Math.round(frameCount / ((now - lastFpsUpdate) / 1000));
 frameCount = 0;
 lastFpsUpdate = now;
-// Обновляем отображение
 fpsValueElement.textContent = currentFps;
-// Меняем цвет в зависимости от FPS
 if (currentFps >= 55) {
 fpsValueElement.className = 'fps-value';
 } else if (currentFps >= 30) {
@@ -1983,16 +1985,9 @@ document.getElementById('fpsCounterToggle').checked = fpsCounterEnabled;
 updateFPS();
 }
 }
-// ==========================================
-// SUPABASE КОНФИГУРАЦИЯ
-// ==========================================
 const SUPABASE_URL = 'https://lfmwdkpyhqmztvwcoenw.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NJfsm5F3_NigieiTUwEuEQ_HDuwc3TI';
-// ==========================================
-// ЦВЕТА ТЕМЫ (16 цветов)
-// ==========================================
 const THEME_COLORS = {
-// Базовые
 yellow: { hex: '#ffd700', rgb: '255, 215, 0', dark: '#b8860b' },
 red: { hex: '#ff4444', rgb: '255, 68, 68', dark: '#cc0000' },
 green: { hex: '#44ff44', rgb: '68, 255, 68', dark: '#00cc00' },
@@ -2001,7 +1996,6 @@ purple: { hex: '#bb44ff', rgb: '187, 68, 255', dark: '#8800cc' },
 orange: { hex: '#ff8800', rgb: '255, 136, 0', dark: '#cc6600' },
 pink: { hex: '#ff44aa', rgb: '255, 68, 170', dark: '#cc0088' },
 white: { hex: '#ffffff', rgb: '255, 255, 255', dark: '#cccccc' },
-// Дополнительные
 cyan: { hex: '#00ffff', rgb: '0, 255, 255', dark: '#00cccc' },
 magenta: { hex: '#ff00ff', rgb: '255, 0, 255', dark: '#cc00cc' },
 lime: { hex: '#aaff44', rgb: '170, 255, 68', dark: '#88cc00' },
@@ -2011,9 +2005,6 @@ gold: { hex: '#ffd700', rgb: '255, 215, 0', dark: '#b8860b' },
 silver: { hex: '#c0c0c0', rgb: '192, 192, 192', dark: '#999999' },
 rose: { hex: '#ff66b2', rgb: '255, 102, 178', dark: '#cc4488' }
 };
-// ==========================================
-// ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-// ==========================================
 let currentPlayer = '';
 let sessionId = '';
 let isSessionKicked = false;
@@ -2023,9 +2014,6 @@ let themeColor = 'yellow';
 let bgColor = 'black';
 let graphicsMode = 'performance';
 let themePickerTarget = 'color';
-// ==========================================
-// УПРАВЛЕНИЕ СОХРАНЁННЫМИ АККАУНТАМИ
-// ==========================================
 let pendingAccountName = '';
 let pendingAccountCoins = 0;
 function getSavedAccounts() {
@@ -2104,9 +2092,6 @@ pendingAccountName = '';
 pendingAccountCoins = 0;
 window._pendingPassword = '';
 }
-// ==========================================
-// УПРАВЛЕНИЕ СЕССИЯМИ
-// ==========================================
 function generateSessionId() {
 return 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 10);
 }
@@ -2164,9 +2149,6 @@ sessionCheckInterval = null;
 }
 showNotif('👋 Вы вышли из аккаунта');
 }
-// ==========================================
-// TELEGRAM INTEGRATION
-// ==========================================
 document.addEventListener('DOMContentLoaded', function() {
 const contactBtn = document.getElementById('contactButton');
 if (contactBtn) {
@@ -2191,9 +2173,6 @@ loadingScreen.style.display = 'none';
 }, 500);
 }, 1500);
 });
-// ==========================================
-// ФУНКЦИИ ДЛЯ РАБОТЫ С SUPABASE
-// ==========================================
 async function supabaseRequest(endpoint, options = {}) {
 const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
 const headers = {
@@ -2273,9 +2252,6 @@ console.error('Ошибка обновления данных:', e);
 return false;
 }
 }
-// ==========================================
-// ПРОВЕРКА БАНА ПО TELEGRAM ID
-// ==========================================
 function showBanScreen() {
 const oldBan = document.getElementById('banScreen');
 if (oldBan) oldBan.remove();
@@ -2354,9 +2330,6 @@ document.body.appendChild(banModal);
 document.getElementById('loginScreen').style.display = 'none';
 document.getElementById('gameScreen').style.display = 'none';
 }
-// ==========================================
-// АВТОРИЗАЦИЯ
-// ==========================================
 const loginScreen = document.getElementById('loginScreen');
 const gameScreen = document.getElementById('gameScreen');
 const usernameInput = document.getElementById('username');
@@ -2459,9 +2432,6 @@ authMessage.style.color = '#ff6b6b';
 console.error(e);
 }
 }
-// ==========================================
-// ФУНКЦИИ ГРАФИКИ
-// ==========================================
 function selectGraphics(mode) {
 graphicsMode = mode;
 document.querySelectorAll('.graphics-option').forEach(el => {
@@ -2515,9 +2485,6 @@ clickBtn.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 30px rgba(' + color
 }
 createFloatingCircles(circleCount);
 }
-// ==========================================
-// ФУНКЦИИ ТЕМЫ (16 цветов)
-// ==========================================
 function applyTheme() {
 const color = THEME_COLORS[themeColor] || THEME_COLORS.yellow;
 document.documentElement.style.setProperty('--accent-color', color.hex);
@@ -2669,9 +2636,6 @@ document.documentElement.setAttribute('data-graphics', graphicsMode);
 }
 applyTheme();
 }
-// ==========================================
-// УПРАВЛЕНИЕ ИНДИКАТОРАМИ
-// ==========================================
 function toggleIndicators() {
 hideIndicators = document.getElementById('hideIndicatorsToggle').checked;
 updateAllDots();
@@ -2686,9 +2650,6 @@ if (toggle) {
 toggle.checked = hideIndicators;
 }
 }
-// ==========================================
-// ПОЛНАЯ ЛОГИКА ИГРЫ
-// ==========================================
 let coins = 0;
 let clickCount = 0;
 let coinsPerClick = 1;
@@ -2760,9 +2721,6 @@ const gameContainer = document.getElementById('gameContainer');
 const shopItemsContainer = document.getElementById('shopItemsContainer');
 const balanceAmount = document.getElementById('balanceAmount');
 const fpsCounterToggle = document.getElementById('fpsCounterToggle');
-// ==========================================
-// ДАННЫЕ ТОВАРОВ
-// ==========================================
 const shopItemsData = [
 { id: 'autoClicker', title: 'AutoClicker V1', desc: 'Автоматически кликает каждые 2 секунды', price: 1000, category: 'autoclicker', icon: 'fa-robot', requirement: null },
 { id: 'autoSpeedV1', title: 'Update AutoClicker V1', desc: 'Автокликер будет быстрее кликать на 1 секунду меньше (станет 1 секунда)', price: 2500, category: 'autoclicker', icon: 'fa-bolt', requirement: 'AutoClicker V1' },
@@ -2793,9 +2751,6 @@ const shopItemsData = [
 { id: 'bigHome', title: 'MrFeast Big Home', desc: 'Дает завести девушку и бонус за клик: +570', price: 9777000, category: 'love', icon: 'fa-home', requirement: null },
 { id: 'girlfriend', title: "MrFeast's GirlFriend Vika", desc: 'Любимая девушка MrFeast. Вы счастливы и ваш доход увеличился на +1500', price: 15000000, category: 'love', icon: 'fa-heart', requirement: 'MrFeast Big Home' }
 ];
-// ==========================================
-// НОВАЯ СОРТИРОВКА ДЛЯ МАГАЗИНА
-// ==========================================
 function renderShopItems(filter) {
 let items = [...shopItemsData];
 if (filter === 'autoclicker') items = items.filter(i => i.category === 'autoclicker');
@@ -3050,7 +3005,6 @@ settingsModal.classList.add('active');
 document.querySelectorAll('.graphics-option').forEach(el => {
 el.classList.toggle('active', el.dataset.graphics === graphicsMode);
 });
-// Синхронизируем состояние FPS тумблера
 document.getElementById('fpsCounterToggle').checked = fpsCounterEnabled;
 }
 function closeSettingsAndApply() {
@@ -3163,9 +3117,6 @@ promoMessage.textContent = 'Неверный промокод';
 promoMessage.className = 'promo-message error';
 }
 }
-// ==========================================
-// ОБНОВЛЕНИЕ ДИСПЛЕЯ (с балансом)
-// ==========================================
 function updateDisplay() {
 const total = getTotalPerClick();
 if (balanceAmount) {
@@ -3326,9 +3277,6 @@ n.innerHTML = `<i class="fas fa-info-circle"></i> ${text}`;
 document.body.appendChild(n);
 setTimeout(() => n.remove(), 2000);
 }
-// ==========================================
-// СОЗДАНИЕ ПЛАВАЮЩИХ КРУГОВ
-// ==========================================
 function createFloatingCircles(count) {
 if (circlesInterval) clearInterval(circlesInterval);
 floatingCircles.innerHTML = '';
@@ -3384,9 +3332,6 @@ function handleClickWithRipple(event) {
 createRippleOptimized(event);
 handleClick();
 }
-// ==========================================
-// СОХРАНЕНИЕ В ОБЛАКО
-// ==========================================
 async function saveGameToCloud() {
 if (!currentPlayer || isSessionKicked) return;
 const data = {
@@ -3469,7 +3414,6 @@ el.classList.toggle('active', el.dataset.graphics === graphicsMode);
 });
 document.documentElement.setAttribute('data-graphics', graphicsMode);
 }
-// Загружаем FPS Counter
 if (user.fps_counter !== undefined) {
 fpsCounterEnabled = user.fps_counter;
 document.getElementById('fpsCounterToggle').checked = fpsCounterEnabled;
@@ -3490,9 +3434,6 @@ showAutosave(currentPlayer, password, coins);
 addAccount(currentPlayer, password, coins);
 }
 }
-// ==========================================
-// ОБРАБОТЧИКИ ВКЛАДОК МАГАЗИНА
-// ==========================================
 document.addEventListener('click', function(e) {
 const shopTab = e.target.closest('.shop-tab');
 if (shopTab) {
@@ -3501,9 +3442,6 @@ shopTab.classList.add('active');
 renderShopItems(shopTab.dataset.filter);
 }
 });
-// ==========================================
-// ГЕНЕРАЦИЯ НАГРАД
-// ==========================================
 function generateAwardsHTML() {
 return `
 <div class="award-item" id="award1"><div class="award-header"><span class="award-icon"><i class="fas fa-heart"></i></span><span class="award-title">Начинающий</span></div><div class="award-desc">Первое перерождение</div><div class="award-reward"><i class="fas fa-coins"></i> Награда: 10 000 монет</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 1 Rebirth</div><div id="award1Btn"></div></div></div>
@@ -3523,9 +3461,6 @@ return `
 <div class="award-item" id="award15"><div class="award-header"><span class="award-icon"><i class="fas fa-gem"></i></span><span class="award-title">Бог</span></div><div class="award-desc">Пятнадцатое перерождение</div><div class="award-reward"><i class="fas fa-plus-circle"></i> Награда: +50 000 за клик</div><div class="award-footer"><div class="award-requirement"><i class="fas fa-arrow-right"></i> Требуется: 15 Rebirth</div><div id="award15Btn"></div></div></div>
 `;
 }
-// ==========================================
-// ИНИЦИАЛИЗАЦИЯ
-// ==========================================
 document.getElementById('awardsContent').innerHTML = generateAwardsHTML();
 renderShopItems('all');
 const savedTheme = localStorage.getItem('mrfeast_theme_color');
@@ -3542,16 +3477,12 @@ document.documentElement.setAttribute('data-graphics', graphicsMode);
 }
 updateIndicatorsToggle();
 applyTheme();
-// Загружаем FPS из localStorage
 const savedFps = localStorage.getItem('mrfeast_fps_counter');
 if (savedFps !== null) {
 fpsCounterEnabled = savedFps === 'true';
 document.getElementById('fpsCounterToggle').checked = fpsCounterEnabled;
 updateFPS();
 }
-// ==========================================
-// WARNING (FeastAntiSpy) — согласие перед входом
-// ==========================================
 function acceptWarning() {
 try { localStorage.setItem('mrfeast_clicker_warning_accepted', '1'); } catch (e) {}
 document.documentElement.classList.add('warning-accepted');
@@ -3593,4 +3524,4 @@ console.log('🎨 16 цветов акцента');
 console.log('📊 FPS Counter: ' + (fpsCounterEnabled ? 'ВКЛ' : 'ВЫКЛ'));
 </script>
 </body>
-</html>
+  </html>
