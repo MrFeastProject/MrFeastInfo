@@ -28,6 +28,9 @@
   @media (min-width:760px){
     #splash img{width:min(85%,1000px)}
   }
+  /* НА ANDROID — ВСЁ ВЛЕЗАЕТ В ЭКРАН (contain вместо cover) */
+  body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit:contain}
+  body.is-android #caseVideo{object-fit:contain}
 
   /* ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= */
   #loader{position:fixed;inset:0;z-index:200;background:#f2f2f3;overflow:hidden;transition:opacity .6s,visibility .6s}
@@ -85,6 +88,7 @@
     opacity:0;pointer-events:none;transition:opacity .3s}
   .loader-notification.show{opacity:1;pointer-events:auto}
   .ln-icon{font-size:48px;color:#fbbf24;filter:drop-shadow(0 0 20px rgba(251,191,36,.6));animation:pulse 1.5s ease-in-out infinite}
+  .ln-icon.ok{color:#4ade80;filter:drop-shadow(0 0 20px rgba(74,222,128,.65))}
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
   .ln-title{font-family:'Unbounded';font-weight:800;font-size:24px;color:#fff;text-shadow:0 0 14px rgba(251,191,36,.5)}
   .ln-text{font-size:14px;color:#ccc;text-align:center;max-width:320px;line-height:1.7}
@@ -324,6 +328,31 @@
   .pm-row .k{color:#8b7bb8;width:56px;flex:none}
   .pm-row .v{color:#e9d5ff;font-weight:600;word-break:break-all}
 
+  /* ================= НАСТРОЙКИ ================= */
+  .settings-card{padding:26px 20px 20px;text-align:left}
+  .settings-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
+    background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 12px rgba(168,85,247,.5))}
+  .set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:14px;
+    background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom:14px}
+  .set-name{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:800;color:#e9d5ff}
+  .set-name i{color:#c084fc;width:18px;text-align:center}
+  .ios-switch{position:relative;display:inline-block;flex:none;cursor:pointer}
+  .ios-switch input{display:none}
+  .ios-track{display:block;width:51px;height:31px;border-radius:31px;background:#39393d;transition:background .25s;position:relative}
+  .ios-track::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.35);transition:left .25s cubic-bezier(.3,1.2,.4,1)}
+  .ios-switch input:checked+.ios-track{background:#34c759}
+  .ios-switch input:checked+.ios-track::after{left:22px}
+  .set-section{padding:14px;border-radius:14px;background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2)}
+  .set-section-title{font-size:14px;font-weight:800;color:#e9d5ff;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .set-section-title i{color:#c084fc;width:18px;text-align:center}
+  .set-desc{font-size:11.5px;color:#8b7bb8;line-height:1.6;margin-bottom:14px}
+  .scanfix-btn{width:100%;padding:14px;border:none;border-radius:14px;cursor:pointer;font-family:'Unbounded';
+    font-weight:700;font-size:14px;letter-spacing:.06em;color:#fff;
+    background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 8px 24px rgba(124,58,237,.4);transition:transform .15s}
+  .scanfix-btn:active{transform:scale(.96)}
+
   .overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
     background:rgba(5,2,10,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s}
   .overlay.show{opacity:1;pointer-events:auto}
@@ -334,7 +363,7 @@
   .result-mult{font-family:'Unbounded';font-weight:800;font-size:62px;line-height:1;
     background:linear-gradient(135deg,#c084fc,#f0abfc,#d946ef);-webkit-background-clip:text;background-clip:text;color:transparent;
     filter:drop-shadow(0 0 26px rgba(217,70,239,.65))}
-  .result-mult.lose{background:linear-gradient(135deg,#6b7280,#374151);-webkit-background-clip:text;background-clip:text;filter:none}
+  .result-mult.lose{background:linear-gradient(135deg,#6b7280,#374151);-webkit-background-clip:text;background-clip:text;color:transparent;filter:none}
   .result-amount{font-family:'Unbounded';font-weight:800;font-size:28px;margin-top:10px;color:#e9d5ff;text-shadow:0 0 20px rgba(168,85,247,.7)}
   .result-amount.gold{color:#fde68a;text-shadow:0 0 26px rgba(251,191,36,.85)}
   .result-sub{margin-top:6px;font-size:12px;letter-spacing:.25em;color:#a78bfa;text-transform:uppercase}
@@ -421,7 +450,6 @@
     text-align:center;opacity:0;transition:opacity 3s ease;pointer-events:none;z-index:2;
     padding:26px 46px}
   .cv-reward.show{opacity:1}
-  /* Светлая АУРА под чёрным текстом — награда читаемая */
   .cv-reward::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:135%;height:160%;z-index:-1;border-radius:50%;
     background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,240,210,.8) 40%,rgba(255,210,140,.4) 65%,transparent 82%);
@@ -484,6 +512,14 @@
   <button class="ln-btn" id="lnBtn">УСТАНОВИТЬ</button>
 </div>
 
+<!-- ================= УВЕДОМЛЕНИЕ FIX HELPER ================= -->
+<div class="loader-notification" id="fixNotification">
+  <div class="ln-icon ok"><i class="fa-solid fa-check"></i></div>
+  <div class="ln-title" id="fixTitle">Все хорошо</div>
+  <div class="ln-text" id="fixText"></div>
+  <button class="ln-btn" id="fixOkBtn">ОК</button>
+</div>
+
 <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 
 <div class="app" id="app">
@@ -495,7 +531,7 @@
         <div class="puser" id="puser">…</div>
       </div>
     </div>
-    <button class="icon-btn" id="soundBtn"><i class="fa-solid fa-volume-high"></i></button>
+    <button class="icon-btn" id="settingsBtn"><i class="fa-solid fa-gear"></i></button>
   </div>
 
   <div class="logo"><i class="fa-solid fa-bolt"></i> KILLERCASINO <i class="fa-solid fa-bolt"></i></div>
@@ -666,6 +702,23 @@
   </div>
 </div>
 
+<!-- ================= НАСТРОЙКИ ================= -->
+<div class="modal" id="settingsModal">
+  <div class="pm-card settings-card">
+    <button class="pm-close" id="settingsClose"><i class="fa-solid fa-xmark"></i></button>
+    <div class="settings-title">НАСТРОЙКИ</div>
+    <div class="set-row">
+      <div class="set-name"><i class="fa-solid fa-volume-high"></i>Звук</div>
+      <label class="ios-switch"><input type="checkbox" id="soundToggle"><span class="ios-track"></span></label>
+    </div>
+    <div class="set-section">
+      <div class="set-section-title"><i class="fa-solid fa-screwdriver-wrench"></i>Проверка и починка ресурсов игры</div>
+      <div class="set-desc">Проверьте ресурсов игры и нахождение сломанных ресурсов и их автоматическая починка,а так-же скачивание нехватающих ресурсов</div>
+      <button class="scanfix-btn" id="scanFixBtn"><i class="fa-solid fa-stethoscope"></i> Scan and Fix</button>
+    </div>
+  </div>
+</div>
+
 <!-- ================= ОТКРЫТИЕ КЕЙСА ================= -->
 <div class="case-modal" id="caseModal">
   <div class="case-container">
@@ -715,6 +768,8 @@
 <script>
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){} }
+/* ANDROID: всё влезает в экран (contain), Windows остаётся как было */
+if(/Android/.test(navigator.userAgent)) document.body.classList.add('is-android');
 function haptic(t){ try{ if(!tg||!tg.HapticFeedback)return;
   if(t==='success'||t==='error') tg.HapticFeedback.notificationOccurred(t); else tg.HapticFeedback.impactOccurred(t); }catch(e){} }
 
@@ -725,8 +780,6 @@ if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventLis
 
 /* ==================================================================
    INDEXEDDB — ХРАНИЛИЩЕ РЕСУРСОВ
-   ВИДЕО входит в список → проверяется и качается ТОЛЬКО через
-   окно "РЕСУРСЫ ИГРЫ" (Внимание), в интро НЕ предзагружается
 ================================================================== */
 const RESOURCE_LIST=[
   {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
@@ -801,6 +854,17 @@ async function resSet(id,blob){
       tx.oncomplete=()=>res(true);
       tx.onerror=()=>res(false);
       tx.onabort=()=>res(false);
+    });
+  }catch(e){return false;}
+}
+async function resDelete(id){
+  try{
+    const db=await idb();
+    return await new Promise(res=>{
+      const tx=db.transaction('resources','readwrite');
+      tx.objectStore('resources').delete(id);
+      tx.oncomplete=()=>res(true);
+      tx.onerror=()=>res(false);
     });
   }catch(e){return false;}
 }
@@ -1093,10 +1157,15 @@ function tone(f,d,type,vol,when){if(muted)return;try{const c=ac(),o=c.createOsci
 const winSound=()=>[523,659,784,1046].forEach((f,i)=>tone(f,.18,'triangle',.18,i*.09));
 const loseSound=()=>{tone(220,.25,'sawtooth',.07);tone(160,.32,'sawtooth',.07,.13);};
 const jackpotSound=()=>[523,659,784,1046,1318,1568].forEach((f,i)=>{tone(f,.24,'triangle',.2,i*.11);tone(f/2,.24,'square',.05,i*.11);});
-const sb=$('soundBtn');
-function renderSound(){sb.innerHTML=muted?'<i class="fa-solid fa-volume-xmark"></i>':'<i class="fa-solid fa-volume-high"></i>';}
+
+/* ================= НАСТРОЙКИ (вместо кнопки звука) ================= */
+const settingsBtn=$('settingsBtn'),settingsModal=$('settingsModal'),soundToggle=$('soundToggle');
+function renderSound(){ soundToggle.checked=!muted; }
 renderSound();
-sb.onclick=()=>{muted=!muted;localStorage.setItem('kc_muted',muted?'1':'0');renderSound();haptic('light');};
+settingsBtn.onclick=()=>{ settingsModal.classList.add('show'); haptic('light'); };
+$('settingsClose').onclick=()=>settingsModal.classList.remove('show');
+settingsModal.onclick=e=>{ if(e.target===settingsModal) settingsModal.classList.remove('show'); };
+soundToggle.onchange=()=>{ muted=!soundToggle.checked; localStorage.setItem('kc_muted',muted?'1':'0'); haptic('light'); };
 
 const cv=$('confetti'),cctx=cv.getContext('2d');let parts=[],confAnim=null;
 function spawnConfetti(n,gold){
@@ -1831,9 +1900,6 @@ function showSplash(){
   
   getResourceURL('splash').then(u=>{ if(u)img.src=u; });
   
-  // СРОЧНЫЕ РЕСУРСЫ (интро): splash + музыка + картинки.
-  // ВИДЕО НЕ входит — оно качается ТОЛЬКО через окно
-  // "РЕСУРСЫ ИГРЫ" (Внимание) в загрузчике.
   (async()=>{
     const keys=await resKeys();
     const URGENT=['splash','music','img1','img2','img3','img4','img5'];
@@ -1950,6 +2016,137 @@ document.addEventListener('visibilitychange',()=>{
     hiddenAt=0;
   }
 });
+
+/* ==================================================================
+   FIX HELPER — ПРОВЕРКА И ПОЧИНКА РЕСУРСОВ (из настроек)
+================================================================== */
+let fixBusy=false;
+const fixNotif=$('fixNotification');
+function showFixNotification(title,text,onClose){
+  $('fixTitle').textContent=title;
+  $('fixText').textContent=text;
+  fixNotif.classList.add('show');
+  haptic('light');
+  $('fixOkBtn').onclick=()=>{
+    fixNotif.classList.remove('show');
+    haptic('light');
+    if(onClose)onClose();
+  };
+}
+
+/* проверка целостности ресурса (битый ли файл) */
+async function validateResource(r,blob){
+  if(!blob||blob.size===0)return false;
+  if(r.id==='splash'||r.id.indexOf('img')===0){
+    // картинки проверяем декодом
+    return await new Promise(res=>{
+      const u=URL.createObjectURL(blob);
+      const im=new Image();
+      const to=setTimeout(()=>{URL.revokeObjectURL(u);res(false);},8000);
+      im.onload=()=>{clearTimeout(to);URL.revokeObjectURL(u);res(true);};
+      im.onerror=()=>{clearTimeout(to);URL.revokeObjectURL(u);res(false);};
+      im.src=u;
+    });
+  }
+  // музыка/видео — по минимальному размеру
+  const min=r.id==='music'?50000:r.id==='video'?100000:1000;
+  return blob.size>=min;
+}
+
+$('scanFixBtn').onclick=()=>{
+  if(fixBusy||loaderBusy)return;
+  settingsModal.classList.remove('show');
+  runFixHelper();
+};
+
+async function runFixHelper(){
+  fixBusy=true; loaderBusy=true;
+  const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
+  loader.classList.remove('done');
+  loader.style.cssText='';
+  lbSize.style.display='none';
+  fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
+  startLoaderMusic(); // музыка как у загрузочного экрана
+  applyResourceImages();
+  const setProg=p=>{
+    const q=Math.min(100,Math.max(0,p));
+    fill.style.transform=`scaleX(${q/100})`;
+    pct.textContent=`(${q.toFixed(2).padStart(5,'0')}%)`;
+  };
+
+  /* ---- 0-10% : Инициализация Fix Helper ---- */
+  msg.textContent='// Инициализация Fix Helper';
+  for(let p=0;p<=10;p++){ setProg(p); await sleep(45); }
+
+  /* ---- 10-65% : Проверка на битые файлы ---- */
+  msg.textContent='// Проверка на битые файлы';
+  const keys=await resKeys();
+  const present=RESOURCE_LIST.filter(r=>keys.includes(r.id));
+  for(let i=0;i<present.length;i++){
+    const r=present[i];
+    const blob=await resGet(r.id);
+    const ok=await validateResource(r,blob);
+    if(!ok){
+      // автоматическая починка: удаляем битый — он скачается заново
+      await resDelete(r.id);
+      if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
+      if(r.id==='music')musicBlob=null;
+      console.warn('Fix Helper: повреждённый ресурс удалён:',r.id);
+    }
+    setProg(10+((i+1)/Math.max(1,present.length))*55);
+    await sleep(140);
+  }
+  if(!present.length){ for(let p=10;p<=65;p+=5){ setProg(p); await sleep(40); } }
+
+  /* ---- 65-100% : Проверка на наличие файлов игры ---- */
+  msg.textContent='// Проверка на наличие файлов игры';
+  for(let p=65;p<=100;p++){ setProg(p); await sleep(35); }
+  const keys2=await resKeys();
+  const missing=RESOURCE_LIST.filter(r=>!keys2.includes(r.id));
+  await sleep(400);
+
+  /* ---- ВСЁ ХОРОШО ---- */
+  if(!missing.length){
+    showFixNotification('Все хорошо','Мы не обнаружили битые/недостоющие ресурсы игры,можете продолжить играть',()=>{
+      loader.classList.add('done');
+      stopLoaderMusic();
+      loaderBusy=false; fixBusy=false;
+    });
+    return;
+  }
+
+  /* ---- НЕХВАТАЕТ РЕСУРСОВ: скачивание ---- */
+  let totalSize=0;
+  for(const r of missing) totalSize+=await getResourceSize(r.url);
+  $('lnSize').textContent=formatSize(totalSize);
+  $('loaderNotification').classList.add('show');
+  await new Promise(res=>{ $('lnBtn').onclick=res; });
+  $('loaderNotification').classList.remove('show');
+  haptic('medium');
+
+  msg.textContent='// Скачивание ресурсов игры';
+  fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
+  lbSize.style.display='block';lbSize.textContent='0 B / 0 B';
+  await downloadMissingResources((dl,tot)=>{
+    const p=tot?Math.min(100,dl/tot*100):100;
+    lbSize.textContent=`${formatSize(dl)} / ${formatSize(tot)}`;
+    setProg(p);
+  });
+  await sleep(600);
+  lbSize.style.display='none';
+
+  /* загрузка завершается → главное меню → окно "Все хорошо" */
+  loader.classList.add('done');
+  document.getElementById('app').classList.add('ready');
+  applyResourceImages();
+  renderShop();
+  appLoaded=true;
+  stopLoaderMusic();
+  loaderBusy=false;
+  showFixNotification('Все хорошо','Мы скачали недостающие ресурсы игры для корректной работы,в остальном проблем не нашли',()=>{
+    fixBusy=false;
+  });
+}
 
 showSplash();
 
