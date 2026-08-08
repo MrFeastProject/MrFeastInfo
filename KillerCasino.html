@@ -24,6 +24,10 @@
     filter:drop-shadow(0 0 40px rgba(139,92,246,.6))}
   #splash img.show{opacity:1}
   #splash img.hide{opacity:0}
+  /* НА WINDOWS/ДЕСКТОП — КРУПНЕЕ */
+  @media (min-width:760px){
+    #splash img{width:min(85%,1000px)}
+  }
 
   /* ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= */
   #loader{position:fixed;inset:0;z-index:200;background:#f2f2f3;overflow:hidden;transition:opacity .6s,visibility .6s}
@@ -361,6 +365,7 @@
     display:flex;align-items:center;justify-content:center;gap:6px}
   .shop-item-price i{font-size:12px}
 
+  /* ================= ОТКРЫТИЕ КЕЙСА (БЕЗ КРУТИЛКИ) ================= */
   .case-modal{position:fixed;inset:0;z-index:100;background:rgba(5,2,10,.92);backdrop-filter:blur(14px);
     display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;padding:20px 0}
   .case-modal.show{opacity:1;pointer-events:auto}
@@ -372,28 +377,8 @@
   .case-close:hover{background:rgba(139,92,246,.3)}
   .case-title{font-family:'Unbounded';font-weight:800;font-size:18px;margin-bottom:16px;
     background:linear-gradient(90deg,#ff6b6b,#ff8787);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .case-image{width:120px;height:120px;object-fit:contain;margin:0 auto 20px;
+  .case-image{width:160px;height:160px;object-fit:contain;margin:0 auto 20px;
     filter:drop-shadow(0 0 20px rgba(255,60,60,.6))}
-  .case-strip-container{position:relative;width:100%;height:120px;border-radius:14px;overflow:hidden;
-    border:2px solid rgba(255,60,60,.5);background:linear-gradient(180deg,#1a0808,#0d0404);
-    box-shadow:0 0 30px rgba(255,60,60,.3),inset 0 0 20px rgba(0,0,0,.6);margin-bottom:20px}
-  .case-strip{display:flex;align-items:center;height:100%;will-change:transform;gap:0}
-  .case-prize-cell{flex:none;width:120px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    border-right:1px solid rgba(255,60,60,.2);padding:8px}
-  .case-prize-cell:last-child{border-right:none}
-  .case-prize-coins{display:flex;align-items:center;justify-content:center;gap:2px;margin-bottom:4px;flex-wrap:wrap}
-  .case-coin-icon{width:24px;height:24px;border-radius:50%;border:2px solid #c084fc;
-    background:radial-gradient(circle at 30% 25%,#e9d5ff,#a855f7 45%,#6d28d9 80%);
-    box-shadow:0 0 10px rgba(168,85,247,.8),inset 0 -2px 4px rgba(0,0,0,.35);
-    display:flex;align-items:center;justify-content:center;font-size:10px;color:#2e1065;font-weight:900;font-family:'Unbounded'}
-  .case-prize-value{font-family:'Unbounded';font-weight:800;font-size:16px;color:#fff;
-    text-shadow:0 0 10px rgba(255,100,100,.8)}
-  .case-pointer{position:absolute;top:0;left:50%;transform:translateX(-50%);width:3px;height:100%;
-    background:linear-gradient(180deg,#ff6b6b,#ff8787,#ff6b6b);box-shadow:0 0 12px rgba(255,60,60,.9);z-index:2}
-  .case-pointer::before,.case-pointer::after{content:'';position:absolute;left:50%;transform:translateX(-50%);
-    width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent}
-  .case-pointer::before{top:-2px;border-top:10px solid #ff6b6b;filter:drop-shadow(0 0 6px #ff6b6b)}
-  .case-pointer::after{bottom:-2px;border-bottom:10px solid #ff6b6b;filter:drop-shadow(0 0 6px #ff6b6b)}
   .case-open-btn{width:100%;padding:16px;border:none;border-radius:16px;cursor:pointer;
     font-family:'Unbounded';font-size:15px;font-weight:800;letter-spacing:.1em;color:#fff;
     background:linear-gradient(135deg,#dc2626,#ef4444 45%,#f87171);
@@ -402,16 +387,8 @@
   .case-open-btn:active{transform:scale(.96)}
   .case-open-btn:disabled{filter:grayscale(.6) brightness(.65);animation:none;cursor:default}
   @keyframes btnPulseRed{0%,100%{box-shadow:0 8px 26px rgba(220,38,38,.45)}50%{box-shadow:0 8px 46px rgba(239,68,68,.8)}}
-  .case-result{display:none;margin-top:16px;padding:16px;border-radius:14px;
-    background:rgba(30,15,60,.6);border:1px solid rgba(255,60,60,.4)}
-  .case-result.show{display:block;animation:resultIn .4s ease}
-  @keyframes resultIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-  .case-result-title{font-size:11px;letter-spacing:.25em;color:#8b7bb8;text-transform:uppercase;margin-bottom:8px}
-  .case-result-value{font-family:'Unbounded';font-weight:800;font-size:28px;
-    background:linear-gradient(135deg,#fde68a,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 0 14px rgba(251,191,36,.6))}
-  .case-result-coins{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px;flex-wrap:wrap}
 
+  /* ================= ШАНСЫ КЕЙСА ================= */
   .case-chances{margin-top:20px;padding:14px;border-radius:14px;
     background:rgba(30,15,60,.6);border:1px solid rgba(255,60,60,.3);
     box-shadow:inset 0 0 20px rgba(0,0,0,.4)}
@@ -434,11 +411,38 @@
     text-shadow:0 0 8px rgba(255,255,255,.2)}
   .chance-percent{font-family:'Unbounded';font-weight:800;font-size:14px;color:#ff6b6b;
     text-shadow:0 0 10px rgba(255,60,60,.6);min-width:45px;text-align:right}
+
+  /* ================= ВИДЕО ОТКРЫТИЯ КЕЙСА ================= */
+  #caseVideoOverlay{position:fixed;inset:0;z-index:150;background:#000;
+    display:none;align-items:center;justify-content:center}
+  #caseVideoOverlay.show{display:flex}
+  #caseVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .cv-reward{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    text-align:center;opacity:0;transition:opacity 3s ease;pointer-events:none;z-index:2;
+    padding:26px 46px}
+  .cv-reward.show{opacity:1}
+  /* Светлая АУРА под чёрным текстом — награда читаемая */
+  .cv-reward::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:135%;height:160%;z-index:-1;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,240,210,.8) 40%,rgba(255,210,140,.4) 65%,transparent 82%);
+    filter:blur(8px)}
+  .cv-amount{font-family:'Unbounded';font-weight:800;font-size:clamp(42px,11vw,86px);color:#000;line-height:1.05}
+  .cv-chance{font-family:'Unbounded';font-weight:700;font-size:clamp(16px,4.5vw,28px);color:#000;margin-top:8px}
+  .cv-btns{position:absolute;left:0;right:0;bottom:5%;z-index:3;display:flex;flex-direction:column;
+    align-items:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .5s;padding:0 20px}
+  .cv-btns.show{opacity:1;pointer-events:auto}
+  .cv-btn{width:min(100%,340px);padding:15px;border:none;border-radius:16px;cursor:pointer;
+    font-family:'Unbounded';font-size:15px;font-weight:800;letter-spacing:.1em;color:#fff;transition:transform .15s}
+  .cv-btn:active{transform:scale(.96)}
+  .cv-btn.ok{background:linear-gradient(135deg,#6d28d9,#a855f7 45%,#d946ef);
+    box-shadow:0 8px 30px rgba(147,51,234,.5),inset 0 1px 0 rgba(255,255,255,.25)}
+  .cv-btn.more{background:linear-gradient(135deg,#dc2626,#ef4444 45%,#f87171);
+    box-shadow:0 8px 30px rgba(220,38,38,.5),inset 0 1px 0 rgba(255,255,255,.25)}
 </style>
 </head>
 <body>
 
-<!-- ================= SPLASH ЭКРАН ================= -->
+<!-- ================= SPLASH ================= -->
 <div id="splash">
   <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png" alt="" data-resource="splash">
 </div>
@@ -646,6 +650,7 @@
   <button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
 </div>
 
+<!-- ================= МОДАЛКА ПРОФИЛЯ ================= -->
 <div class="modal" id="profileModal">
   <div class="pm-card">
     <div class="pm-id">ID: <b id="pmId">—</b></div>
@@ -661,21 +666,13 @@
   </div>
 </div>
 
+<!-- ================= ОТКРЫТИЕ КЕЙСА ================= -->
 <div class="case-modal" id="caseModal">
   <div class="case-container">
     <button class="case-close" id="caseClose"><i class="fa-solid fa-xmark"></i></button>
     <div class="case-title">ОТКРЫТИЕ КЕЙСА</div>
     <img class="case-image" id="caseImage" src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png" alt="" data-resource="img5">
-    <div class="case-strip-container">
-      <div class="case-strip" id="caseStrip"></div>
-      <div class="case-pointer"></div>
-    </div>
-    <div class="case-result" id="caseResult">
-      <div class="case-result-title">ВАШ ПРИЗ</div>
-      <div class="case-result-value" id="caseResultValue">+1000</div>
-      <div class="case-result-coins" id="caseResultCoins"></div>
-    </div>
-    <button class="case-open-btn" id="caseOpenBtn"><i class="fa-solid fa-box-open"></i> ОТКРЫТЬ</button>
+    <button class="case-open-btn" id="caseOpenBtn"><i class="fa-solid fa-box-open"></i> ОТКРЫТЬ · 1000</button>
     <div class="case-chances">
       <div class="case-chances-title">ШАНСЫ ВЫПАДЕНИЯ</div>
       <div class="case-chances-table" id="caseChancesTable"></div>
@@ -683,6 +680,20 @@
   </div>
 </div>
 
+<!-- ================= ВИДЕО ОТКРЫТИЯ КЕЙСА ================= -->
+<div id="caseVideoOverlay">
+  <video id="caseVideo" playsinline></video>
+  <div class="cv-reward" id="cvReward">
+    <div class="cv-amount" id="cvAmount">+1000</div>
+    <div class="cv-chance" id="cvChance">Шанс: 65%</div>
+  </div>
+  <div class="cv-btns" id="cvBtns">
+    <button class="cv-btn ok" id="cvOk">ХОРОШО</button>
+    <button class="cv-btn more" id="cvMore">ОТКРЫТЬ ЕЩЁ</button>
+  </div>
+</div>
+
+<!-- Результат -->
 <div class="overlay" id="resultOverlay">
   <div class="result-card">
     <div class="result-icon"><i class="fa-solid fa-sack-dollar" id="resIcon"></i></div>
@@ -691,6 +702,7 @@
     <div class="result-sub" id="resSub">ВЫИГРЫШ</div>
   </div>
 </div>
+<!-- Джекпот -->
 <div class="overlay" id="jackpotOverlay">
   <div class="result-card">
     <div class="jackpot-title"><i class="fa-solid fa-fire"></i> ДЖЕКПОТ <i class="fa-solid fa-fire"></i></div>
@@ -713,6 +725,8 @@ if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventLis
 
 /* ==================================================================
    INDEXEDDB — ХРАНИЛИЩЕ РЕСУРСОВ
+   ВИДЕО входит в список → проверяется и качается ТОЛЬКО через
+   окно "РЕСУРСЫ ИГРЫ" (Внимание), в интро НЕ предзагружается
 ================================================================== */
 const RESOURCE_LIST=[
   {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
@@ -721,7 +735,8 @@ const RESOURCE_LIST=[
   {id:'img3', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg'},
   {id:'img4', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg'},
   {id:'img5', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png'},
-  {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'}
+  {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'},
+  {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
 
@@ -800,7 +815,7 @@ async function applyResourceImages(){
   const els=document.querySelectorAll('[data-resource]');
   for(const el of els){
     const id=el.getAttribute('data-resource');
-    if(id==='splash') continue; // splash обрабатывается отдельно
+    if(id==='splash') continue;
     const u=await getResourceURL(id);
     if(u)el.src=u;
   }
@@ -817,7 +832,7 @@ async function getResourceSize(url){
       if(len>0)return len;
     }catch(e){}
   }
-  return url.includes('.m4a')?3000000:300000;
+  return url.includes('.m4a')?3000000: url.includes('.mp4')?6000000:300000;
 }
 function formatSize(b){
   if(b<1024)return b.toFixed(0)+' B';
@@ -854,11 +869,18 @@ let loaderMusic=null, musicBlob=null;
 
 function tryPlay(a){ try{ const p=a.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){} }
 function unlockMusic(a){
-  const evs=['pointerdown','touchend','keydown'];
-  const h=()=>{ if(loaderMusic===a) tryPlay(a); };
+  const evs=['pointerdown','touchstart','touchend','mousedown','keydown'];
+  const h=()=>{
+    if(loaderMusic!==a) return;
+    if(a.muted) a.muted=false;
+    tryPlay(a);
+  };
   const off=()=>evs.forEach(e=>document.removeEventListener(e,h,true));
   evs.forEach(e=>document.addEventListener(e,h,true));
-  a.addEventListener('play',off,{once:true});
+  const chk=setInterval(()=>{
+    if(loaderMusic!==a){ clearInterval(chk); off(); return; }
+    if(!a.paused && !a.muted){ clearInterval(chk); off(); }
+  },250);
 }
 
 function startLoaderMusic(){
@@ -879,7 +901,13 @@ function startLoaderMusic(){
     }).catch(()=>{});
   }
   loaderMusic=a;
-  tryPlay(a);
+  const p=a.play();
+  if(p&&p.catch){
+    p.catch(()=>{
+      a.muted=true;
+      tryPlay(a);
+    });
+  }
   unlockMusic(a);
 }
 
@@ -1102,6 +1130,10 @@ function showScreen(id){
 if(tg){ 
   try{ 
     tg.onEvent('backButtonClicked',()=>{
+      if($('caseVideoOverlay').classList.contains('show')){
+        if(!caseVideoBusy) $('cvOk').onclick();
+        return;
+      }
       const caseModalEl = $('caseModal');
       if(caseModalEl && caseModalEl.classList.contains('show') && !caseOpening){
         closeCaseModal();
@@ -1112,9 +1144,9 @@ if(tg){
   }catch(e){} 
 }
 document.addEventListener('keydown',(e)=>{
-  if(e.key==='Escape' && $('caseModal').classList.contains('show') && !caseOpening){
-    closeCaseModal();
-  }
+  if(e.key!=='Escape')return;
+  if($('caseVideoOverlay').classList.contains('show')){ if(!caseVideoBusy) $('cvOk').onclick(); return; }
+  if($('caseModal').classList.contains('show') && !caseOpening) closeCaseModal();
 });
 $('goWheel').onclick=()=>showScreen('wheelScreen');
 $('goCards').onclick=()=>showScreen('cardsScreen');
@@ -1611,6 +1643,7 @@ function showResult(m,amount){
 
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
 
+/* ================= МАГАЗИН + КЕЙС С ВИДЕО ================= */
 const SHOP_ITEMS=[
   {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5'}
 ];
@@ -1650,73 +1683,10 @@ function pickCasePrize(){
   return CASE_PRIZES[0];
 }
 
-function createCoinStack(count){
-  const container=document.createElement('div');
-  container.className='case-prize-coins';
-  const coins=[];
-  for(let i=0;i<count;i++){
-    const coin=document.createElement('div');
-    coin.className='case-coin-icon';
-    coin.textContent='K';
-    coins.push(coin);
-  }
-  if(count===1){ container.appendChild(coins[0]); }
-  else if(count===3){
-    const wrap=document.createElement('div');
-    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
-    const top=document.createElement('div');
-    top.style.cssText='display:flex;gap:2px;margin-bottom:-4px';
-    top.appendChild(coins[1]);top.appendChild(coins[2]);
-    wrap.appendChild(top);wrap.appendChild(coins[0]);
-    container.appendChild(wrap);
-  } else if(count===5){
-    const wrap=document.createElement('div');
-    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
-    const row1=document.createElement('div');
-    row1.style.cssText='display:flex;gap:2px;margin-bottom:-6px';
-    row1.appendChild(coins[0]);row1.appendChild(coins[1]);row1.appendChild(coins[2]);
-    const row2=document.createElement('div');
-    row2.style.cssText='display:flex;gap:2px;margin-bottom:-4px';
-    row2.appendChild(coins[3]);row2.appendChild(coins[4]);
-    wrap.appendChild(row1);wrap.appendChild(row2);
-    container.appendChild(wrap);
-  } else if(count===8){
-    const wrap=document.createElement('div');
-    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
-    const row1=document.createElement('div');
-    row1.style.cssText='display:flex;gap:2px;margin-bottom:-6px';
-    row1.appendChild(coins[0]);row1.appendChild(coins[1]);row1.appendChild(coins[2]);row1.appendChild(coins[3]);
-    const row2=document.createElement('div');
-    row2.style.cssText='display:flex;gap:2px;margin-bottom:-6px';
-    row2.appendChild(coins[4]);row2.appendChild(coins[5]);row2.appendChild(coins[6]);
-    const row3=document.createElement('div');
-    row3.style.cssText='display:flex;gap:2px';
-    row3.appendChild(coins[7]);
-    wrap.appendChild(row1);wrap.appendChild(row2);wrap.appendChild(row3);
-    container.appendChild(wrap);
-  } else if(count===15){
-    const wrap=document.createElement('div');
-    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
-    const row1=document.createElement('div');
-    row1.style.cssText='display:flex;gap:1px;margin-bottom:-8px';
-    row1.appendChild(coins[0]);row1.appendChild(coins[1]);row1.appendChild(coins[2]);row1.appendChild(coins[3]);row1.appendChild(coins[4]);
-    const row2=document.createElement('div');
-    row2.style.cssText='display:flex;gap:1px;margin-bottom:-8px';
-    row2.appendChild(coins[5]);row2.appendChild(coins[6]);row2.appendChild(coins[7]);row2.appendChild(coins[8]);
-    const row3=document.createElement('div');
-    row3.style.cssText='display:flex;gap:1px;margin-bottom:-8px';
-    row3.appendChild(coins[9]);row3.appendChild(coins[10]);row3.appendChild(coins[11]);
-    const row4=document.createElement('div');
-    row4.style.cssText='display:flex;gap:1px';
-    row4.appendChild(coins[12]);row4.appendChild(coins[13]);row4.appendChild(coins[14]);
-    wrap.appendChild(row1);wrap.appendChild(row2);wrap.appendChild(row3);wrap.appendChild(row4);
-    container.appendChild(wrap);
-  }
-  return container;
-}
-
 let currentCaseItem=null;
 let caseOpening=false;
+let caseVideoBusy=false;
+let caseVideoToken=0;
 
 function renderCaseChances(){
   const table = $('caseChancesTable');
@@ -1764,87 +1734,79 @@ function openCase(item){
   if(balance<item.price){ errShake(); return; }
   currentCaseItem=item;
   getResourceURL(item.image).then(u=>{ $('caseImage').src=u; });
-  $('caseResult').classList.remove('show');
-  $('caseOpenBtn').disabled=false;
-  $('caseOpenBtn').innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ';
-  const strip=$('caseStrip');
-  strip.style.transition='none';
-  strip.style.transform='translateX(0)';
-  void strip.offsetWidth;
-  strip.innerHTML='';
-  for(let i=0;i<50;i++){
-    const prize=CASE_PRIZES[Math.floor(Math.random()*CASE_PRIZES.length)];
-    const cell=document.createElement('div');
-    cell.className='case-prize-cell';
-    cell.innerHTML=`
-      <div class="case-prize-coins"></div>
-      <div class="case-prize-value">+${prize.value.toLocaleString('ru-RU')}</div>
-    `;
-    cell.querySelector('.case-prize-coins').appendChild(createCoinStack(prize.coins));
-    strip.appendChild(cell);
-  }
+  $('caseOpenBtn').innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ · '+item.price.toLocaleString('ru-RU');
   $('caseModal').classList.add('show');
   renderCaseChances();
   try{ if(tg && tg.BackButton) tg.BackButton.show(); }catch(e){}
 }
 
 $('caseClose').onclick=closeCaseModal;
+$('caseOpenBtn').onclick=()=>{ openCaseVideo(currentCaseItem); };
 
-$('caseOpenBtn').onclick=()=>{
-  if(caseOpening||!currentCaseItem) return;
-  if(balance<currentCaseItem.price){ errShake(); return; }
-  caseOpening=true;
-  $('caseOpenBtn').disabled=true;
-  $('caseOpenBtn').innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> ОТКРЫВАЕТСЯ...';
-  balance-=currentCaseItem.price;
-  save();renderBalance();checkState();
+/* ---- ОТКРЫТИЕ КЕЙСА: ПОЛНОЭКРАННОЕ ВИДЕО + НАГРАДА С АУРОЙ ---- */
+function openCaseVideo(item){
+  if(caseVideoBusy||!item) return;
+  if(balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
+  caseVideoBusy=true; caseOpening=true;
+  balance-=item.price; save(); renderBalance(); checkState();
   const prize=pickCasePrize();
-  const strip=$('caseStrip');
-  const cellWidth=120;
-  const containerWidth=strip.parentElement.clientWidth;
-  const cells=Array.from(strip.children);
-  const winIndex=40+Math.floor(Math.random()*5);
-  cells[winIndex].innerHTML=`
-    <div class="case-prize-coins"></div>
-    <div class="case-prize-value">+${prize.value.toLocaleString('ru-RU')}</div>
-  `;
-  cells[winIndex].querySelector('.case-prize-coins').appendChild(createCoinStack(prize.coins));
-  const targetOffset=-(winIndex*cellWidth)+(containerWidth/2)-(cellWidth/2);
-  const jitter=(Math.random()*0.6-0.3)*cellWidth;
-  const finalOffset=targetOffset+jitter;
-  const duration=5000;
-  strip.style.transition='none';
-  strip.style.transform='translateX(0)';
-  void strip.offsetWidth;
-  strip.style.transition=`transform ${duration}ms cubic-bezier(0.4, 0.0, 0.2, 1.0)`;
-  let tickInterval;
-  const startTime=performance.now();
-  tickInterval=setInterval(()=>{
-    const elapsed=performance.now()-startTime;
-    const progress=Math.min(1,elapsed/duration);
-    const frequency=200+progress*800;
-    tone(frequency,.03,'square',.04);
-  },60);
-  requestAnimationFrame(()=>{
-    strip.style.transform=`translateX(${finalOffset}px)`;
+  const totalW=CASE_PRIZES.reduce((s,p)=>s+p.weight,0);
+  const my=++caseVideoToken;
+
+  $('caseModal').classList.remove('show');
+  const ov=$('caseVideoOverlay'),vid=$('caseVideo'),reward=$('cvReward'),btns=$('cvBtns');
+  reward.classList.remove('show');
+  btns.classList.remove('show');
+  ov.classList.add('show');
+  haptic('medium');
+
+  let endHandled=false;
+  const handleEnd=()=>{
+    if(endHandled||my!==caseVideoToken) return;
+    endHandled=true;
+    setTimeout(()=>{ // +1 сек после конца видео
+      if(my!==caseVideoToken) return;
+      $('cvAmount').textContent='+'+prize.value.toLocaleString('ru-RU');
+      $('cvChance').textContent='Шанс: '+Math.round(prize.weight/totalW*100)+'%';
+      reward.classList.add('show'); // 3 сек плавное появление (чёрным по светлой ауре)
+      balance+=prize.value; save(); renderBalance();
+      haptic(prize.value>=10000?'heavy':'success'); winSound();
+      if(prize.value>=50000){ spawnConfetti(190,true); jackpotSound(); }
+      else if(prize.value>=5000){ spawnConfetti(90); }
+      setTimeout(()=>{ // после появления — кнопки
+        if(my!==caseVideoToken) return;
+        btns.classList.add('show');
+        caseVideoBusy=false; caseOpening=false;
+        checkState();
+      },3000);
+    },1000);
+  };
+
+  getResourceURL('video').then(u=>{
+    if(my!==caseVideoToken) return;
+    vid.onended=handleEnd;
+    vid.onerror=()=>setTimeout(handleEnd,1000);
+    vid.src=u;
+    vid.currentTime=0;
+    const p=vid.play();
+    if(p&&p.catch)p.catch(()=>setTimeout(handleEnd,1000));
+    setTimeout(handleEnd,6000); // страховка: видео ~5 сек
   });
-  setTimeout(()=>{
-    clearInterval(tickInterval);
-    balance+=prize.value;
-    save();renderBalance();checkState();
-    $('caseResultValue').textContent='+'+prize.value.toLocaleString('ru-RU');
-    const coinsContainer=$('caseResultCoins');
-    coinsContainer.innerHTML='';
-    coinsContainer.appendChild(createCoinStack(prize.coins));
-    $('caseResult').classList.add('show');
-    haptic(prize.value>=10000?'heavy':'success');
-    winSound();
-    if(prize.value>=50000){ spawnConfetti(190,true); jackpotSound(); }
-    else if(prize.value>=5000){ spawnConfetti(90); }
-    caseOpening=false;
-    $('caseOpenBtn').innerHTML='<i class="fa-solid fa-rotate-right"></i> КРУТИТЬ ЕЩЁ';
-    $('caseOpenBtn').disabled=false;
-  },duration+200);
+}
+
+$('cvOk').onclick=()=>{
+  caseVideoToken++;
+  const ov=$('caseVideoOverlay'),vid=$('caseVideo');
+  ov.classList.remove('show');
+  try{ vid.pause(); vid.removeAttribute('src'); vid.load(); }catch(e){}
+  $('caseModal').classList.add('show');
+  haptic('light');
+};
+$('cvMore').onclick=()=>{
+  caseVideoToken++;
+  $('caseVideoOverlay').classList.remove('show');
+  haptic('light');
+  openCaseVideo(currentCaseItem);
 };
 
 $('caseModal').onclick=(e)=>{
@@ -1852,13 +1814,11 @@ $('caseModal').onclick=(e)=>{
 };
 
 /* ==================================================================
-   SPLASH + ЗАГРУЗОЧНЫЙ ЭКРАН + ПЕРЕЗАПУСК ДВИЖКА
+   SPLASH (СРОЧНЫЕ РЕСУРСЫ) + ЗАГРУЗОЧНИК (РЕСУРСЫ ИГРЫ) + РЕСТАРТ
 ================================================================== */
 let appLoaded=false, loaderBusy=false, hiddenAt=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-/* SPLASH: только при первом запуске (полное закрытие окна).
-   Музыка НЕ играет, но загружается параллельно в кэш (вместе со splash фоткой) */
 function showSplash(){
   const splash=$('splash');
   const img=splash.querySelector('img');
@@ -1869,33 +1829,38 @@ function showSplash(){
     return;
   }
   
-  // Подгружаем фотку splash из кэша (если уже сохранена)
   getResourceURL('splash').then(u=>{ if(u)img.src=u; });
   
-  // Параллельная загрузка фотки и музыки БЕЗ воспроизведения
-  Promise.all([
-    fetchBlob(RESOURCE_MAP.splash.url).then(blob=>{
-      if(blob) resSet('splash',blob);
-    }).catch(()=>null),
-    fetchBlob(RESOURCE_MAP.music.url).then(blob=>{
-      if(blob){ musicBlob=blob; resSet('music',blob); }
-    }).catch(()=>null)
-  ]);
+  // СРОЧНЫЕ РЕСУРСЫ (интро): splash + музыка + картинки.
+  // ВИДЕО НЕ входит — оно качается ТОЛЬКО через окно
+  // "РЕСУРСЫ ИГРЫ" (Внимание) в загрузчике.
+  (async()=>{
+    const keys=await resKeys();
+    const URGENT=['splash','music','img1','img2','img3','img4','img5'];
+    const missing=RESOURCE_LIST.filter(r=>!keys.includes(r.id)&&URGENT.includes(r.id));
+    const ordered=[...missing.filter(r=>r.id==='music'),...missing.filter(r=>r.id!=='music')];
+    ordered.forEach(r=>{
+      fetchBlob(r.url).then(b=>{
+        if(!b)return;
+        if(r.id==='music')musicBlob=b;
+        resSet(r.id,b);
+      }).catch(()=>{});
+    });
+    if(!musicBlob && keys.includes('music')){
+      resGet('music').then(b=>{ if(b)musicBlob=b; }).catch(()=>{});
+    }
+  })();
   
-  // 1 сек черный экран (музыка уже качается)
   setTimeout(()=>{
-    img.classList.add('show'); // 3 сек fade-in
-    
+    img.classList.add('show');
     setTimeout(()=>{
-      img.classList.add('hide'); // 3 сек fade-out
-      
+      img.classList.add('hide');
       setTimeout(()=>{
         splash.classList.add('hidden');
         sessionStorage.setItem('kc_splash_shown','1');
-        
         setTimeout(()=>{
           splash.remove();
-          runLoader('normal'); // запускаем обычный загрузчик (с музыкой)
+          runLoader('normal');
         },300);
       },3000);
     },3000);
@@ -1927,6 +1892,7 @@ async function runLoader(mode){
     },80);
   });
 
+  // РЕСУРСЫ ИГРЫ: проверка ВСЕГО (включая видео)
   const missing=await getMissingResources();
   if(missing.length){
     let totalSize=0;
@@ -1985,7 +1951,6 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
-// Запуск: splash (первый раз) или сразу загрузчик (повторный)
 showSplash();
 
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
