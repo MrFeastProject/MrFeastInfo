@@ -788,7 +788,10 @@ const RESOURCE_LIST=[
   {id:'img4', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg'},
   {id:'img5', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png'},
   {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'},
-  {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'}
+  {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'},
+  /* НОВЫЕ РЕСУРСЫ КЕЙСА «КиперЗаряд» — поздняя загрузка (загрузочный экран, НЕ splash) */
+  {id:'img6', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260809_011439496.jpg'},
+  {id:'video2',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/a9ad66d1-f321-441a-9e60-dc63c054628f.mp4'}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
 
@@ -1526,6 +1529,7 @@ function renderRocketHistory(){
   rocketHistory.forEach(v=>{
     const c=document.createElement('span');c.className='hchip';c.textContent=v.toFixed(2)+'x';
     c.style.cssText=v>=2?'background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(34,197,94,.5)':'background:rgba(255,100,100,.12);color:#ff6b6b;border-color:rgba(255,100,100,.4)';
+    c.appendChild(document.createTextNode(''));
     box.appendChild(c);
   });
 }
@@ -1711,17 +1715,24 @@ function showResult(m,amount){
 
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
 
-/* ================= МАГАЗИН + КЕЙС С ВИДЕО ================= */
+/* ================= МАГАЗИН + КЕЙСЫ С ВИДЕО ================= */
+/* У каждого кейса СВОИ призы и СВОЁ видео открытия */
 const SHOP_ITEMS=[
-  {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5'}
-];
-
-const CASE_PRIZES=[
-  {value:1000, weight:65, coins:1},
-  {value:1500, weight:15, coins:3},
-  {value:5000, weight:10, coins:5},
-  {value:10000, weight:4, coins:8},
-  {value:50000, weight:1, coins:15}
+  {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5', video:'video', prizes:[
+    {value:1000,  weight:65, coins:1},
+    {value:1500,  weight:15, coins:3},
+    {value:5000,  weight:10, coins:5},
+    {value:10000, weight:4,  coins:8},
+    {value:50000, weight:1,  coins:15}
+  ]},
+  /* НОВЫЙ КЕЙС */
+  {id:'keeperCharge', name:'КиперЗаряд', price:10000, image:'img6', video:'video2', prizes:[
+    {value:10000,  weight:65, coins:1},
+    {value:20000,  weight:15, coins:3},
+    {value:50000,  weight:10, coins:5},
+    {value:100000, weight:4,  coins:8},
+    {value:150000, weight:1,  coins:15}
+  ]}
 ];
 
 async function renderShop(){
@@ -1741,14 +1752,14 @@ async function renderShop(){
   }
 }
 
-function pickCasePrize(){
-  const totalWeight=CASE_PRIZES.reduce((s,p)=>s+p.weight,0);
+function pickCasePrize(prizes){
+  const totalWeight=prizes.reduce((s,p)=>s+p.weight,0);
   let r=Math.random()*totalWeight;
-  for(const prize of CASE_PRIZES){
+  for(const prize of prizes){
     r-=prize.weight;
     if(r<=0) return prize;
   }
-  return CASE_PRIZES[0];
+  return prizes[0];
 }
 
 let currentCaseItem=null;
@@ -1756,12 +1767,13 @@ let caseOpening=false;
 let caseVideoBusy=false;
 let caseVideoToken=0;
 
-function renderCaseChances(){
+function renderCaseChances(prizes){
   const table = $('caseChancesTable');
   if(!table) return;
+  prizes = prizes || SHOP_ITEMS[0].prizes;
   table.innerHTML = '';
-  const totalWeight = CASE_PRIZES.reduce((s,p) => s + p.weight, 0);
-  CASE_PRIZES.forEach(prize => {
+  const totalWeight = prizes.reduce((s,p) => s + p.weight, 0);
+  prizes.forEach(prize => {
     const row = document.createElement('div');
     row.className = 'chance-row';
     const percent = ((prize.weight / totalWeight) * 100).toFixed(0);
@@ -1804,7 +1816,7 @@ function openCase(item){
   getResourceURL(item.image).then(u=>{ $('caseImage').src=u; });
   $('caseOpenBtn').innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ · '+item.price.toLocaleString('ru-RU');
   $('caseModal').classList.add('show');
-  renderCaseChances();
+  renderCaseChances(item.prizes);
   try{ if(tg && tg.BackButton) tg.BackButton.show(); }catch(e){}
 }
 
@@ -1818,8 +1830,9 @@ function openCaseVideo(item){
   caseVideoBusy=true; caseOpening=true;
   document.body.classList.add('paused'); // ПРАВКА: отключаем фоновые анимации
   balance-=item.price; save(); renderBalance(); checkState();
-  const prize=pickCasePrize();
-  const totalW=CASE_PRIZES.reduce((s,p)=>s+p.weight,0);
+  const prizes=item.prizes||SHOP_ITEMS[0].prizes;
+  const prize=pickCasePrize(prizes);
+  const totalW=prizes.reduce((s,p)=>s+p.weight,0);
   const my=++caseVideoToken;
 
   $('caseModal').classList.remove('show');
@@ -1851,7 +1864,7 @@ function openCaseVideo(item){
     },1000);
   };
 
-  getResourceURL('video').then(u=>{
+  getResourceURL(item.video||'video').then(u=>{
     if(my!==caseVideoToken) return;
     vid.onended=handleEnd;
     vid.onerror=()=>setTimeout(handleEnd,1000);
@@ -1904,6 +1917,7 @@ function showSplash(){
   
   (async()=>{
     const keys=await resKeys();
+    /* СРОЧНЫЕ (splash) — img6 и video2 сюда НЕ входят, они качаются на загрузочном экране */
     const URGENT=['splash','music','img1','img2','img3','img4','img5'];
     const missing=RESOURCE_LIST.filter(r=>!keys.includes(r.id)&&URGENT.includes(r.id));
     const ordered=[...missing.filter(r=>r.id==='music'),...missing.filter(r=>r.id!=='music')];
@@ -1961,7 +1975,7 @@ async function runLoader(mode){
     },80);
   });
 
-  // РЕСУРСЫ ИГРЫ: проверка ВСЕГО (включая видео)
+  // РЕСУРСЫ ИГРЫ: проверка ВСЕГО (включая видео и новые ресурсы Кейса «КиперЗаряд»)
   const missing=await getMissingResources();
   if(missing.length){
     let totalSize=0;
@@ -2051,8 +2065,8 @@ async function validateResource(r,blob){
       im.src=u;
     });
   }
-  // музыка/видео — по минимальному размеру
-  const min=r.id==='music'?50000:r.id==='video'?100000:1000;
+  // музыка/видео — по минимальному размеру (video, video2 и т.д.)
+  const min=r.id==='music'?50000:r.id.indexOf('video')===0?100000:1000;
   return blob.size>=min;
 }
 
