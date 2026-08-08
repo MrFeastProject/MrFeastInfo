@@ -452,8 +452,7 @@
   .cv-reward.show{opacity:1}
   .cv-reward::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:135%;height:160%;z-index:-1;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,240,210,.8) 40%,rgba(255,210,140,.4) 65%,transparent 82%);
-    filter:blur(8px)}
+    background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,240,210,.8) 40%,rgba(255,210,140,.4) 65%,transparent 82%)}
   .cv-amount{font-family:'Unbounded';font-weight:800;font-size:clamp(42px,11vw,86px);color:#000;line-height:1.05}
   .cv-chance{font-family:'Unbounded';font-weight:700;font-size:clamp(16px,4.5vw,28px);color:#000;margin-top:8px}
   .cv-btns{position:absolute;left:0;right:0;bottom:5%;z-index:3;display:flex;flex-direction:column;
@@ -1817,6 +1816,7 @@ function openCaseVideo(item){
   if(caseVideoBusy||!item) return;
   if(balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
   caseVideoBusy=true; caseOpening=true;
+  document.body.classList.add('paused'); // ПРАВКА: отключаем фоновые анимации
   balance-=item.price; save(); renderBalance(); checkState();
   const prize=pickCasePrize();
   const totalW=CASE_PRIZES.reduce((s,p)=>s+p.weight,0);
@@ -1865,6 +1865,7 @@ function openCaseVideo(item){
 
 $('cvOk').onclick=()=>{
   caseVideoToken++;
+  document.body.classList.remove('paused'); // ПРАВКА: включаем фоновые анимации обратно
   const ov=$('caseVideoOverlay'),vid=$('caseVideo');
   ov.classList.remove('show');
   try{ vid.pause(); vid.removeAttribute('src'); vid.load(); }catch(e){}
@@ -1873,6 +1874,7 @@ $('cvOk').onclick=()=>{
 };
 $('cvMore').onclick=()=>{
   caseVideoToken++;
+  document.body.classList.remove('paused'); // ПРАВКА: включаем фоновые анимации обратно
   $('caseVideoOverlay').classList.remove('show');
   haptic('light');
   openCaseVideo(currentCaseItem);
@@ -1935,6 +1937,7 @@ function showSplash(){
 
 async function runLoader(mode){
   if(loaderBusy)return;
+  document.body.classList.remove('paused'); // ПРАВКА: страховка — снимаем паузу при любом рестарте
   loaderBusy=true;
   const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
   loader.classList.remove('done');
@@ -2153,4 +2156,4 @@ showSplash();
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
 </script>
 </body>
-</html>
+  </html>
