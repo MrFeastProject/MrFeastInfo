@@ -14,6 +14,9 @@
   html,body{overscroll-behavior:none}
   body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;user-select:none}
 
+  /* ПАУЗА АНИМАЦИЙ ПРИ СВОРАЧИВАНИИ */
+  body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
+
   /* ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= */
   #loader{position:fixed;inset:0;z-index:200;background:#f2f2f3;overflow:hidden;transition:opacity .6s,visibility .6s}
   #loader.done{opacity:0;visibility:hidden}
@@ -57,12 +60,31 @@
   #lbMsg::after{content:'...';animation:dots 1.2s steps(4) infinite}
   @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
   #lbPct{color:#9a9a9a;margin-left:6px;font-variant-numeric:tabular-nums}
+  /* СКОЛЬКО СКАЧАЛОСЬ (N / N) — под статусом и % */
+  .lb-size{text-align:center;color:#bbb;font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
   .csspin{width:18px;height:18px;border-radius:50%;border:3px solid #333;border-top-color:#fff;animation:rot .9s linear infinite}
   @keyframes rot{to{transform:rotate(360deg)}}
   .lb-row2{display:flex;align-items:center;gap:14px}
   .lb-ver{color:#666;font-size:10px;letter-spacing:.06em;white-space:nowrap}
   .lb-progress{flex:1;height:3px;position:relative;background:repeating-linear-gradient(90deg,#3a3a3a 0 6px,transparent 6px 10px)}
   .lb-progress i{position:absolute;inset:0;background:linear-gradient(90deg,#fff,#9a9a9a);transform-origin:left;transform:scaleX(0);transition:transform .15s}
+
+  /* УВЕДОМЛЕНИЕ О РЕСУРСАХ */
+  .loader-notification{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.96);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;
+    opacity:0;pointer-events:none;transition:opacity .3s}
+  .loader-notification.show{opacity:1;pointer-events:auto}
+  .ln-icon{font-size:48px;color:#fbbf24;filter:drop-shadow(0 0 20px rgba(251,191,36,.6));animation:pulse 1.5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  .ln-title{font-family:'Unbounded';font-weight:800;font-size:24px;color:#fff;text-shadow:0 0 14px rgba(251,191,36,.5)}
+  .ln-text{font-size:14px;color:#ccc;text-align:center;max-width:320px;line-height:1.7}
+  .ln-text b{color:#fbbf24}
+  .ln-btn{margin-top:20px;padding:14px 28px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;font-family:'Unbounded';
+    font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 8px 24px rgba(124,58,237,.4);
+    animation:btnPulseN 2s ease-in-out infinite}
+  @keyframes btnPulseN{0%,100%{box-shadow:0 8px 24px rgba(124,58,237,.4)}50%{box-shadow:0 8px 40px rgba(217,70,239,.8)}}
+
   @media (min-width:760px){
     .shot1{left:6%;top:4%;right:auto;width:24%;max-width:400px}
     .shot2{right:6%;top:4%;left:auto;width:17%;max-width:270px}
@@ -427,10 +449,10 @@
 
 <!-- ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= -->
 <div id="loader">
-  <div class="shot shot1"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png" alt=""></div>
-  <div class="shot shot2"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt=""></div>
-  <div class="shot shot3"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg" alt=""></div>
-  <div class="shot shot4"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg" alt=""></div>
+  <div class="shot shot1"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png" alt="" data-resource="img1"></div>
+  <div class="shot shot2"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt="" data-resource="img2"></div>
+  <div class="shot shot3"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg" alt="" data-resource="img3"></div>
+  <div class="shot shot4"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg" alt="" data-resource="img4"></div>
   <div class="load-news">Новости
     <span class="mega"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M3 10v4h4l6 5V5L7 10H3z"/><path d="M16.5 8.5a4.2 4.2 0 0 1 0 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
   </div>
@@ -442,14 +464,24 @@
   <div class="load-bar">
     <div class="lb-row">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.2 6.2a8.2 8.2 0 1 0 11.6 0"/></svg>
-      <div class="lb-text"><span id="lbMsg">// Загрузка ресурсов</span><span id="lbPct">(0.00%)</span></div>
+      <div class="lb-text"><span id="lbMsg">// Инициализация игры</span><span id="lbPct">(00.00%)</span></div>
       <div class="csspin"></div>
     </div>
+    <!-- СКОЛЬКО СКАЧАЛОСЬ (N / N) — под статусом и % -->
+    <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
       <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.0_K8097503_E8083962</span>
       <div class="lb-progress"><i id="lbFill"></i></div>
     </div>
   </div>
+</div>
+
+<!-- УВЕДОМЛЕНИЕ О РЕСУРСАХ -->
+<div class="loader-notification" id="loaderNotification">
+  <div class="ln-icon"><i class="fa-solid fa-exclamation-triangle"></i></div>
+  <div class="ln-title">Внимание</div>
+  <div class="ln-text">Мы обнаружили что у вас нехватает парочку ресурсов игры (<b id="lnSize">0 KB</b>) и вам надо их установить для корректной работы</div>
+  <button class="ln-btn" id="lnBtn">УСТАНОВИТЬ</button>
 </div>
 
 <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
@@ -480,35 +512,35 @@
   <section class="screen active" id="menuScreen">
     <div class="menu-sub">Выбери режим</div>
     <div class="mode-card" id="goWheel">
-      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt="">
+      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt="" data-resource="img2">
       <div class="mc-overlay"></div>
       <div class="mc-badge"><i class="fa-solid fa-dharmachakra"></i></div>
       <div class="mc-title">КОЛЕСО ФОРТУНЫ</div>
       <div class="mc-play">ИГРАТЬ <i class="fa-solid fa-chevron-right"></i></div>
     </div>
     <div class="mode-card" id="goCards">
-      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png" alt="">
+      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png" alt="" data-resource="img1">
       <div class="mc-overlay"></div>
       <div class="mc-badge"><i class="fa-solid fa-table-cells"></i></div>
       <div class="mc-title">КОЛОДЫ</div>
       <div class="mc-play">ИГРАТЬ <i class="fa-solid fa-chevron-right"></i></div>
     </div>
     <div class="mode-card" id="goSlots">
-      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg" alt="">
+      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg" alt="" data-resource="img3">
       <div class="mc-overlay"></div>
       <div class="mc-badge"><i class="fa-solid fa-lemon"></i></div>
       <div class="mc-title">СЛОТЫ</div>
       <div class="mc-play">ИГРАТЬ <i class="fa-solid fa-chevron-right"></i></div>
     </div>
     <div class="mode-card" id="goRocket">
-      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg" alt="">
+      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg" alt="" data-resource="img4">
       <div class="mc-overlay"></div>
       <div class="mc-badge"><i class="fa-solid fa-rocket"></i></div>
       <div class="mc-title">РАКЕТА</div>
       <div class="mc-play">ИГРАТЬ <i class="fa-solid fa-chevron-right"></i></div>
     </div>
     <div class="mode-card" id="goShop">
-      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png" alt="">
+      <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png" alt="" data-resource="img5">
       <div class="mc-overlay"></div>
       <div class="mc-badge"><i class="fa-solid fa-store"></i></div>
       <div class="mc-title">МАГАЗИН</div>
@@ -645,7 +677,7 @@
   <div class="case-container">
     <button class="case-close" id="caseClose"><i class="fa-solid fa-xmark"></i></button>
     <div class="case-title">ОТКРЫТИЕ КЕЙСА</div>
-    <img class="case-image" id="caseImage" src="" alt="">
+    <img class="case-image" id="caseImage" src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png" alt="" data-resource="img5">
     <div class="case-strip-container">
       <div class="case-strip" id="caseStrip"></div>
       <div class="case-pointer"></div>
@@ -656,8 +688,6 @@
       <div class="case-result-coins" id="caseResultCoins"></div>
     </div>
     <button class="case-open-btn" id="caseOpenBtn"><i class="fa-solid fa-box-open"></i> ОТКРЫТЬ</button>
-    
-    <!-- ТАБЛИЦА ШАНСОВ -->
     <div class="case-chances">
       <div class="case-chances-title">ШАНСЫ ВЫПАДЕНИЯ</div>
       <div class="case-chances-table" id="caseChancesTable"></div>
@@ -697,6 +727,160 @@ function tryBrowserFS(){ try{ if(!document.fullscreenElement && document.documen
 function fsHandler(){ if(document.fullscreenElement){window.removeEventListener('pointerdown',fsHandler);return;} if(!tryTelegramFS()) tryBrowserFS(); }
 if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventListener('pointerdown',fsHandler); }
 
+/* ==================================================================
+   INDEXEDDB — ХРАНИЛИЩЕ РЕСУРСОВ (музыка на raw.githubusercontent —
+   там есть CORS, байты читаются и сохраняются)
+================================================================== */
+const RESOURCE_LIST=[
+  {id:'img1', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png'},
+  {id:'img2', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg'},
+  {id:'img3', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg'},
+  {id:'img4', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg'},
+  {id:'img5', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png'},
+  {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'}
+];
+const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
+
+function altUrls(u){
+  const list=[u];
+  if(u.startsWith('https://github.com/')&&u.includes('/raw/')){
+    list.push(u.replace('https://github.com/','https://raw.githubusercontent.com/').replace('/raw/','/'));
+  }
+  if(u.startsWith('https://raw.githubusercontent.com/')){
+    list.push(u.replace('https://raw.githubusercontent.com/','https://github.com/').replace('/refs/heads/','/raw/refs/heads/'));
+  }
+  return list;
+}
+async function fetchBlob(url){
+  let lastErr=null;
+  for(const u of altUrls(url)){
+    try{
+      const r=await fetch(u,{cache:'no-store'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return await r.blob();
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr||new Error('fetch failed');
+}
+
+let _db=null;
+function idb(){
+  if(_db)return Promise.resolve(_db);
+  return new Promise((res,rej)=>{
+    const rq=indexedDB.open('KillerCasinoResources',1);
+    rq.onupgradeneeded=()=>{ if(!rq.result.objectStoreNames.contains('resources')) rq.result.createObjectStore('resources'); };
+    rq.onsuccess=()=>{_db=rq.result;res(_db);};
+    rq.onerror=()=>rej(rq.error);
+  });
+}
+async function resKeys(){
+  try{
+    const db=await idb();
+    return await new Promise(res=>{
+      const rq=db.transaction('resources','readonly').objectStore('resources').getAllKeys();
+      rq.onsuccess=()=>res(rq.result||[]);
+      rq.onerror=()=>res([]);
+    });
+  }catch(e){return [];}
+}
+async function resGet(id){
+  try{
+    const db=await idb();
+    return await new Promise(res=>{
+      const rq=db.transaction('resources','readonly').objectStore('resources').get(id);
+      rq.onsuccess=()=>res(rq.result||null);
+      rq.onerror=()=>res(null);
+    });
+  }catch(e){return null;}
+}
+async function resSet(id,blob){
+  try{
+    const db=await idb();
+    return await new Promise(res=>{
+      const tx=db.transaction('resources','readwrite');
+      tx.objectStore('resources').put(blob,id);
+      tx.oncomplete=()=>res(true);
+      tx.onerror=()=>res(false);
+      tx.onabort=()=>res(false);
+    });
+  }catch(e){return false;}
+}
+const urlCache={};
+async function getResourceURL(id){
+  if(urlCache[id])return urlCache[id];
+  const blob=await resGet(id);
+  if(blob){urlCache[id]=URL.createObjectURL(blob);return urlCache[id];}
+  return RESOURCE_MAP[id]?RESOURCE_MAP[id].url:'';
+}
+async function applyResourceImages(){
+  const els=document.querySelectorAll('[data-resource]');
+  for(const el of els){
+    const id=el.getAttribute('data-resource');
+    const u=await getResourceURL(id);
+    if(u)el.src=u;
+  }
+}
+async function getMissingResources(){
+  const keys=await resKeys();
+  return RESOURCE_LIST.filter(r=>!keys.includes(r.id));
+}
+async function getResourceSize(url){
+  for(const u of altUrls(url)){
+    try{
+      const r=await fetch(u,{method:'HEAD'});
+      const len=parseInt(r.headers.get('content-length')||'0',10);
+      if(len>0)return len;
+    }catch(e){}
+  }
+  return url.includes('.m4a')?3000000:300000;
+}
+function formatSize(b){
+  if(b<1024)return b.toFixed(0)+' B';
+  if(b<1048576)return (b/1024).toFixed(1)+' KB';
+  if(b<1073741824)return (b/1048576).toFixed(2)+' MB';
+  return (b/1073741824).toFixed(2)+' GB';
+}
+async function downloadMissingResources(onProgress){
+  const missing=await getMissingResources();
+  let total=0;const sizes={};
+  for(const r of missing){sizes[r.id]=await getResourceSize(r.url);total+=sizes[r.id];}
+  let downloaded=0;
+  for(const r of missing){
+    try{
+      const blob=await fetchBlob(r.url);
+      const ok=await resSet(r.id,blob);
+      if(ok){
+        if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
+        downloaded+=blob.size||sizes[r.id];
+      }else{
+        console.warn('IndexedDB не сохранил ресурс:',r.id);
+      }
+    }catch(e){
+      console.warn('Ресурс не скачался:',r.id,e);
+    }
+    onProgress(downloaded,total);
+  }
+  onProgress(downloaded,total);
+}
+
+/* ================= МУЗЫКА ЗАГРУЗЧИКА ================= */
+let loaderMusic=null,loaderMusicURL=null;
+async function startLoaderMusic(){
+  if(loaderMusic)return;
+  let src=null;
+  const blob=await resGet('music');
+  if(blob){loaderMusicURL=URL.createObjectURL(blob);src=loaderMusicURL;}
+  else src=RESOURCE_MAP.music.url;
+  const a=new Audio(src);
+  a.loop=true;a.volume=.4;
+  a.play().catch(()=>{});
+  loaderMusic=a;
+}
+function stopLoaderMusic(){
+  if(loaderMusic){try{loaderMusic.pause();}catch(e){}loaderMusic=null;}
+  if(loaderMusicURL){try{URL.revokeObjectURL(loaderMusicURL);}catch(e){}loaderMusicURL=null;}
+}
+
 /* ================= ПРОФИЛЬ + МОДАЛКА ================= */
 const TG_USER = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
 function detectOS(){
@@ -734,7 +918,7 @@ document.getElementById('profileBtn').onclick=()=>{profileModal.classList.add('s
 document.getElementById('pmClose').onclick=()=>profileModal.classList.remove('show');
 profileModal.onclick=e=>{if(e.target===profileModal)profileModal.classList.remove('show');};
 
-/* ================= ДАННЫЕ (БЕЗ x0.5) ================= */
+/* ================= ДАННЫЕ ================= */
 const SEGMENTS=[
   {m:0,  icon:'\uf54c', label:'x0',   color:'#161022'},
   {m:1,  icon:'\uf005', label:'x1',   color:'#33205c'},
@@ -897,11 +1081,11 @@ function spawnConfetti(n,gold){
 function confLoop(){confAnim=requestAnimationFrame(confLoop);cctx.clearRect(0,0,cv.width,cv.height);
   parts=parts.filter(p=>p.y<cv.height+30);
   parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
-    cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.r);cctx.fillStyle=p.c;
+    cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.r);cctx.fillStyle(p.c);
     cctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cctx.restore();});
   if(!parts.length){cancelAnimationFrame(confAnim);confAnim=null;}}
 
-/* ================= НАВИГАЦИЯ + Telegram BackButton ================= */
+/* ================= НАВИГАЦИЯ ================= */
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   $(id).classList.add('active');
@@ -915,8 +1099,6 @@ function showScreen(id){
     } 
   }catch(e){}
 }
-
-// Глобальный обработчик BackButton — учитывает открытую модалку кейса
 if(tg){ 
   try{ 
     tg.onEvent('backButtonClicked',()=>{
@@ -929,14 +1111,11 @@ if(tg){
     }); 
   }catch(e){} 
 }
-
-// Закрытие модалки кейса по Escape (ПК)
 document.addEventListener('keydown',(e)=>{
   if(e.key==='Escape' && $('caseModal').classList.contains('show') && !caseOpening){
     closeCaseModal();
   }
 });
-
 $('goWheel').onclick=()=>showScreen('wheelScreen');
 $('goCards').onclick=()=>showScreen('cardsScreen');
 $('goSlots').onclick=()=>showScreen('slotsScreen');
@@ -1225,7 +1404,7 @@ function showJackpotCustom(m,win){
   setTimeout(()=>jo.classList.remove('show'),4000);
 }
 
-/* ================= РАКЕТА (CRASH) + SVG-ракета ================= */
+/* ================= РАКЕТА (CRASH) ================= */
 let rocketBet=10, rMult=1, rCrash=1.5, rStart=0, rAnim=null, rCrashAnim=null;
 let rBetAmounts=[0,0], rCashed=[false,false], rocketHistory=[];
 const rocketMultEl=$('rocketMult'), rocketStatusEl=$('rocketStatus'), rocketFrame=$('rocketFrame');
@@ -1440,7 +1619,7 @@ bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('
 
 /* ================= МАГАЗИН ================= */
 const SHOP_ITEMS=[
-  {id:'cyberStart', name:'КиберНачало', price:1000, image:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png'}
+  {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5'}
 ];
 
 const CASE_PRIZES=[
@@ -1451,20 +1630,21 @@ const CASE_PRIZES=[
   {value:50000, weight:1, coins:15}
 ];
 
-function renderShop(){
+async function renderShop(){
   const grid=$('shopGrid');
   grid.innerHTML='';
-  SHOP_ITEMS.forEach(item=>{
+  for(const item of SHOP_ITEMS){
     const el=document.createElement('div');
     el.className='shop-item';
+    const imgUrl=await getResourceURL(item.image);
     el.innerHTML=`
-      <img src="${item.image}" alt="${item.name}">
+      <img src="${imgUrl}" alt="${item.name}">
       <div class="shop-item-title">${item.name}</div>
       <div class="shop-item-price"><i class="fa-solid fa-coins"></i> ${item.price.toLocaleString('ru-RU')}</div>
     `;
     el.onclick=()=>openCase(item);
     grid.appendChild(el);
-  });
+  }
 }
 
 function pickCasePrize(){
@@ -1487,88 +1667,58 @@ function createCoinStack(count){
     coin.textContent='K';
     coins.push(coin);
   }
-  
-  if(count===1){
-    container.appendChild(coins[0]);
-  } else if(count===3){
+  if(count===1){ container.appendChild(coins[0]); }
+  else if(count===3){
     const wrap=document.createElement('div');
     wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
     const top=document.createElement('div');
     top.style.cssText='display:flex;gap:2px;margin-bottom:-4px';
-    top.appendChild(coins[1]);
-    top.appendChild(coins[2]);
-    wrap.appendChild(top);
-    wrap.appendChild(coins[0]);
+    top.appendChild(coins[1]);top.appendChild(coins[2]);
+    wrap.appendChild(top);wrap.appendChild(coins[0]);
     container.appendChild(wrap);
   } else if(count===5){
     const wrap=document.createElement('div');
     wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
     const row1=document.createElement('div');
     row1.style.cssText='display:flex;gap:2px;margin-bottom:-6px';
-    row1.appendChild(coins[0]);
-    row1.appendChild(coins[1]);
-    row1.appendChild(coins[2]);
+    row1.appendChild(coins[0]);row1.appendChild(coins[1]);row1.appendChild(coins[2]);
     const row2=document.createElement('div');
     row2.style.cssText='display:flex;gap:2px;margin-bottom:-4px';
-    row2.appendChild(coins[3]);
-    row2.appendChild(coins[4]);
-    wrap.appendChild(row1);
-    wrap.appendChild(row2);
+    row2.appendChild(coins[3]);row2.appendChild(coins[4]);
+    wrap.appendChild(row1);wrap.appendChild(row2);
     container.appendChild(wrap);
   } else if(count===8){
     const wrap=document.createElement('div');
     wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
     const row1=document.createElement('div');
     row1.style.cssText='display:flex;gap:2px;margin-bottom:-6px';
-    row1.appendChild(coins[0]);
-    row1.appendChild(coins[1]);
-    row1.appendChild(coins[2]);
-    row1.appendChild(coins[3]);
+    row1.appendChild(coins[0]);row1.appendChild(coins[1]);row1.appendChild(coins[2]);row1.appendChild(coins[3]);
     const row2=document.createElement('div');
     row2.style.cssText='display:flex;gap:2px;margin-bottom:-6px';
-    row2.appendChild(coins[4]);
-    row2.appendChild(coins[5]);
-    row2.appendChild(coins[6]);
+    row2.appendChild(coins[4]);row2.appendChild(coins[5]);row2.appendChild(coins[6]);
     const row3=document.createElement('div');
     row3.style.cssText='display:flex;gap:2px';
     row3.appendChild(coins[7]);
-    wrap.appendChild(row1);
-    wrap.appendChild(row2);
-    wrap.appendChild(row3);
+    wrap.appendChild(row1);wrap.appendChild(row2);wrap.appendChild(row3);
     container.appendChild(wrap);
   } else if(count===15){
     const wrap=document.createElement('div');
     wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0';
     const row1=document.createElement('div');
     row1.style.cssText='display:flex;gap:1px;margin-bottom:-8px';
-    row1.appendChild(coins[0]);
-    row1.appendChild(coins[1]);
-    row1.appendChild(coins[2]);
-    row1.appendChild(coins[3]);
-    row1.appendChild(coins[4]);
+    row1.appendChild(coins[0]);row1.appendChild(coins[1]);row1.appendChild(coins[2]);row1.appendChild(coins[3]);row1.appendChild(coins[4]);
     const row2=document.createElement('div');
     row2.style.cssText='display:flex;gap:1px;margin-bottom:-8px';
-    row2.appendChild(coins[5]);
-    row2.appendChild(coins[6]);
-    row2.appendChild(coins[7]);
-    row2.appendChild(coins[8]);
+    row2.appendChild(coins[5]);row2.appendChild(coins[6]);row2.appendChild(coins[7]);row2.appendChild(coins[8]);
     const row3=document.createElement('div');
     row3.style.cssText='display:flex;gap:1px;margin-bottom:-8px';
-    row3.appendChild(coins[9]);
-    row3.appendChild(coins[10]);
-    row3.appendChild(coins[11]);
+    row3.appendChild(coins[9]);row3.appendChild(coins[10]);row3.appendChild(coins[11]);
     const row4=document.createElement('div');
     row4.style.cssText='display:flex;gap:1px';
-    row4.appendChild(coins[12]);
-    row4.appendChild(coins[13]);
-    row4.appendChild(coins[14]);
-    wrap.appendChild(row1);
-    wrap.appendChild(row2);
-    wrap.appendChild(row3);
-    wrap.appendChild(row4);
+    row4.appendChild(coins[12]);row4.appendChild(coins[13]);row4.appendChild(coins[14]);
+    wrap.appendChild(row1);wrap.appendChild(row2);wrap.appendChild(row3);wrap.appendChild(row4);
     container.appendChild(wrap);
   }
-  
   return container;
 }
 
@@ -1580,12 +1730,10 @@ function renderCaseChances(){
   if(!table) return;
   table.innerHTML = '';
   const totalWeight = CASE_PRIZES.reduce((s,p) => s + p.weight, 0);
-  
   CASE_PRIZES.forEach(prize => {
     const row = document.createElement('div');
     row.className = 'chance-row';
     const percent = ((prize.weight / totalWeight) * 100).toFixed(0);
-    
     let coinsHtml = '';
     const displayCoins = Math.min(prize.coins, 4);
     for(let i=0; i<displayCoins; i++){
@@ -1594,7 +1742,6 @@ function renderCaseChances(){
     if(prize.coins > 4){
       coinsHtml += `<span class="chance-coin-extra">+${prize.coins - 4}</span>`;
     }
-    
     row.innerHTML = `
       <div class="chance-prize">
         <div class="chance-coins">${coinsHtml}</div>
@@ -1606,19 +1753,14 @@ function renderCaseChances(){
   });
 }
 
-// Функция закрытия модалки кейса
 function closeCaseModal(){
-  if(caseOpening) return; // не даём закрыть во время анимации
+  if(caseOpening) return;
   $('caseModal').classList.remove('show');
-  // Восстанавливаем BackButton в режим навигации по экранам
   try{ 
     if(tg && tg.BackButton){
       const currentScreen = document.querySelector('.screen.active');
-      if(currentScreen && currentScreen.id === 'menuScreen'){
-        tg.BackButton.hide();
-      } else {
-        tg.BackButton.show();
-      }
+      if(currentScreen && currentScreen.id === 'menuScreen'){ tg.BackButton.hide(); }
+      else { tg.BackButton.show(); }
     }
   }catch(e){}
   haptic('light');
@@ -1626,26 +1768,17 @@ function closeCaseModal(){
 
 function openCase(item){
   if(caseOpening) return;
-  if(balance<item.price){
-    errShake();
-    return;
-  }
-  
+  if(balance<item.price){ errShake(); return; }
   currentCaseItem=item;
-  $('caseImage').src=item.image;
+  getResourceURL(item.image).then(u=>{ $('caseImage').src=u; });
   $('caseResult').classList.remove('show');
   $('caseOpenBtn').disabled=false;
   $('caseOpenBtn').innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ';
-  
   const strip=$('caseStrip');
-  // ЖЕСТКИЙ СБРОС АНИМАЦИИ И ПОЗИЦИИ
   strip.style.transition='none';
   strip.style.transform='translateX(0)';
-  void strip.offsetWidth; // force reflow
-  
+  void strip.offsetWidth;
   strip.innerHTML='';
-  
-  const cells=[];
   for(let i=0;i<50;i++){
     const prize=CASE_PRIZES[Math.floor(Math.random()*CASE_PRIZES.length)];
     const cell=document.createElement('div');
@@ -1656,100 +1789,65 @@ function openCase(item){
     `;
     cell.querySelector('.case-prize-coins').appendChild(createCoinStack(prize.coins));
     strip.appendChild(cell);
-    cells.push({element:cell, prize:prize});
   }
-  
   $('caseModal').classList.add('show');
   renderCaseChances();
-  
-  // Показываем BackButton в Telegram для выхода из модалки
   try{ if(tg && tg.BackButton) tg.BackButton.show(); }catch(e){}
 }
 
-// Кнопка закрытия (крестик)
 $('caseClose').onclick=closeCaseModal;
 
 $('caseOpenBtn').onclick=()=>{
   if(caseOpening||!currentCaseItem) return;
-  if(balance<currentCaseItem.price){
-    errShake();
-    return;
-  }
-  
+  if(balance<currentCaseItem.price){ errShake(); return; }
   caseOpening=true;
   $('caseOpenBtn').disabled=true;
   $('caseOpenBtn').innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> ОТКРЫВАЕТСЯ...';
-  
   balance-=currentCaseItem.price;
-  save();
-  renderBalance();
-  checkState();
-  
+  save();renderBalance();checkState();
   const prize=pickCasePrize();
   const strip=$('caseStrip');
   const cellWidth=120;
   const containerWidth=strip.parentElement.clientWidth;
-  
   const cells=Array.from(strip.children);
-  // Целевая ячейка ближе к концу, чтобы лента долго крутилась
-  const winIndex=40+Math.floor(Math.random()*5); 
+  const winIndex=40+Math.floor(Math.random()*5);
   cells[winIndex].innerHTML=`
     <div class="case-prize-coins"></div>
     <div class="case-prize-value">+${prize.value.toLocaleString('ru-RU')}</div>
   `;
   cells[winIndex].querySelector('.case-prize-coins').appendChild(createCoinStack(prize.coins));
-  
   const targetOffset=-(winIndex*cellWidth)+(containerWidth/2)-(cellWidth/2);
-  const jitter=(Math.random()*0.6-0.3)*cellWidth; 
+  const jitter=(Math.random()*0.6-0.3)*cellWidth;
   const finalOffset=targetOffset+jitter;
-  
-  const duration=5000; // 5 СЕКУНД
-  
-  // Сброс transition перед запуском новой анимации
+  const duration=5000;
   strip.style.transition='none';
   strip.style.transform='translateX(0)';
   void strip.offsetWidth;
-  
   strip.style.transition=`transform ${duration}ms cubic-bezier(0.4, 0.0, 0.2, 1.0)`;
-  
   let tickInterval;
   const startTime=performance.now();
-  
   tickInterval=setInterval(()=>{
     const elapsed=performance.now()-startTime;
     const progress=Math.min(1,elapsed/duration);
-    // Звук тиков: медленно в начале, быстро в середине, замедляется к концу
     const frequency=200+progress*800;
     tone(frequency,.03,'square',.04);
   },60);
-  
   requestAnimationFrame(()=>{
     strip.style.transform=`translateX(${finalOffset}px)`;
   });
-  
   setTimeout(()=>{
     clearInterval(tickInterval);
-    
     balance+=prize.value;
-    save();
-    renderBalance();
-    checkState();
-    
+    save();renderBalance();checkState();
     $('caseResultValue').textContent='+'+prize.value.toLocaleString('ru-RU');
     const coinsContainer=$('caseResultCoins');
     coinsContainer.innerHTML='';
     coinsContainer.appendChild(createCoinStack(prize.coins));
     $('caseResult').classList.add('show');
-    
     haptic(prize.value>=10000?'heavy':'success');
     winSound();
-    if(prize.value>=50000){
-      spawnConfetti(190,true);
-      jackpotSound();
-    } else if(prize.value>=5000){
-      spawnConfetti(90);
-    }
-    
+    if(prize.value>=50000){ spawnConfetti(190,true); jackpotSound(); }
+    else if(prize.value>=5000){ spawnConfetti(90); }
     caseOpening=false;
     $('caseOpenBtn').innerHTML='<i class="fa-solid fa-rotate-right"></i> КРУТИТЬ ЕЩЁ';
     $('caseOpenBtn').disabled=false;
@@ -1757,44 +1855,105 @@ $('caseOpenBtn').onclick=()=>{
 };
 
 $('caseModal').onclick=(e)=>{
-  if(e.target===$('caseModal')&&!caseOpening){
-    closeCaseModal();
-  }
+  if(e.target===$('caseModal')&&!caseOpening){ closeCaseModal(); }
 };
 
-/* ================= ЗАГРУЗЧИК ================= */
-(function(){
-  const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg');
-  let prog=0,progDone=false,allDone=false;
-  function msgFor(p){ if(p<35)return '// Загрузка ресурсов'; if(p<75)return '// Проверка целостности ресурсов'; return '// Инициализация KillerCasino'; }
-  function tryFinish(){
-    if(progDone&&allDone){
-      loader.classList.add('done');
-      document.getElementById('app').classList.add('ready');
-      setTimeout(()=>loader.remove(),700);
-    }
+/* ==================================================================
+   ЗАГРУЗОЧНЫЙ ЭКРАН + СИСТЕМА РЕСУРСОВ + ПЕРЕЗАПУСК ДВИЖКА
+================================================================== */
+let appLoaded=false, loaderBusy=false, hiddenAt=0;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+async function runLoader(mode){
+  if(loaderBusy)return;
+  loaderBusy=true;
+  const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
+  // Показываем лоадер и СБРАСЫВАЕМ инлайн-стили, оставшиеся от фейдов
+  loader.classList.remove('done');
+  loader.style.cssText='';
+  lbSize.style.display='none';
+  fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
+  startLoaderMusic();
+  applyResourceImages();
+
+  let prog=0;
+  await new Promise(res=>{
+    const iv=setInterval(()=>{
+      prog=Math.min(100,prog+1.2+Math.random()*2.8);
+      fill.style.transform=`scaleX(${prog/100})`;
+      pct.textContent=`(${prog.toFixed(2).padStart(5,'0')}%)`;
+      if(mode==='restart') msg.textContent='// Перезапускаем движок игры';
+      else if(prog<25) msg.textContent='// Инициализация игры';
+      else if(prog<50) msg.textContent='// Запуск движка';
+      else msg.textContent='// Проверка ресурсов игры';
+      if(prog>=100){clearInterval(iv);res();}
+    },80);
+  });
+
+  // Проверка ресурсов в IndexedDB
+  const missing=await getMissingResources();
+  if(missing.length){
+    // МУЗЫКА НЕ ОСТАНАВЛИВАЕТСЯ — играет и во время уведомления, и при скачивании
+    let totalSize=0;
+    for(const r of missing) totalSize+=await getResourceSize(r.url);
+    $('lnSize').textContent=formatSize(totalSize);
+    $('loaderNotification').classList.add('show');
+    await new Promise(res=>{ $('lnBtn').onclick=res; });
+    $('loaderNotification').classList.remove('show');
+    haptic('medium');
+
+    // Тухнет за 0.5с и "перезапускается" в режим скачивания
+    loader.style.transition='opacity .5s';
+    loader.style.opacity='0';
+    await sleep(500);
+    loader.style.opacity='1';
+    msg.textContent='// Скачивание ресурсов игры';
+    fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
+    lbSize.style.display='block';
+    lbSize.textContent='0 B / 0 B';
+
+    await downloadMissingResources((dl,tot)=>{
+      const p=tot?Math.min(100,dl/tot*100):100;
+      lbSize.textContent=`${formatSize(dl)} / ${formatSize(tot)}`;
+      fill.style.transform=`scaleX(${p/100})`;
+      pct.textContent=`(${p.toFixed(2).padStart(5,'0')}%)`;
+    });
+    await sleep(600);
+    lbSize.style.display='none';
+    loader.style.opacity='0';
+    await sleep(500);
+    loader.style.cssText=''; // сброс инлайн-стилей перед новым циклом
+    loaderBusy=false;
+    await runLoader('normal'); // обычный загрузочный экран
+    return;
   }
-  const iv=setInterval(()=>{
-    prog=Math.min(100,prog+1.2+Math.random()*2.8);
-    fill.style.transform=`scaleX(${prog/100})`;
-    pct.textContent=`(${prog.toFixed(2)}%)`;
-    msg.textContent=msgFor(prog);
-    if(prog>=100){clearInterval(iv);progDone=true;tryFinish();}
-  },80);
-  const winLoad = document.readyState==='complete' ? Promise.resolve()
-    : new Promise(r=>window.addEventListener('load',r,{once:true}));
-  const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-  const fontsLoad = document.fonts ? Promise.all([
-    document.fonts.load('900 20px "Font Awesome 6 Free"'),
-    document.fonts.load('800 20px "Unbounded"'),
-    document.fonts.load('900 20px "Inter"'),
-    document.fonts.load('700 14px "Manrope"')
-  ]).catch(()=>{}) : Promise.resolve();
-  const imgs = Array.from(document.images).map(im => im.complete ? Promise.resolve()
-    : new Promise(r=>{im.addEventListener('load',r,{once:true});im.addEventListener('error',r,{once:true});}));
-  Promise.all([winLoad,fontsReady,fontsLoad,...imgs]).then(()=>{allDone=true;tryFinish();});
-  setTimeout(()=>{allDone=true;progDone=true;fill.style.transform='scaleX(1)';pct.textContent='(100.00%)';tryFinish();},12000);
-})();
+
+  // ===== ВСЁ НА МЕСТЕ: ОТКРЫВАЕМ МЕНЮ =====
+  loader.style.cssText='';      // иначе инлайн opacity перебьёт класс .done
+  loader.classList.add('done'); // лоадер плавно скрывается (0.6s)
+  document.getElementById('app').classList.add('ready'); // меню появляется
+  applyResourceImages();
+  renderShop();
+  appLoaded=true;
+  loaderBusy=false;
+  stopLoaderMusic(); // музыка завершается В МОМЕНТ открытия меню
+}
+
+/* СВОРАЧИВАНИЕ / РАЗВОРАЧИВАНИЕ MINI APP */
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    hiddenAt=Date.now();
+    document.body.classList.add('paused');
+  }else{
+    document.body.classList.remove('paused');
+    if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
+      runLoader('restart');
+    }
+    hiddenAt=0;
+  }
+});
+
+runLoader('normal');
 
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
 </script>
