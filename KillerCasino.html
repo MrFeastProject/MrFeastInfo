@@ -851,6 +851,7 @@ async function downloadMissingResources(onProgress){
       const ok=await resSet(r.id,blob);
       if(ok){
         if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
+        if(r.id==='music')musicBlob=blob;
         downloaded+=blob.size||sizes[r.id];
       }else{
         console.warn('IndexedDB не сохранил ресурс:',r.id);
@@ -863,23 +864,51 @@ async function downloadMissingResources(onProgress){
   onProgress(downloaded,total);
 }
 
-/* ================= МУЗЫКА ЗАГРУЗЧИКА ================= */
-let loaderMusic=null,loaderMusicURL=null;
-async function startLoaderMusic(){
-  if(loaderMusic)return;
-  let src=null;
-  const blob=await resGet('music');
-  if(blob){loaderMusicURL=URL.createObjectURL(blob);src=loaderMusicURL;}
-  else src=RESOURCE_MAP.music.url;
-  const a=new Audio(src);
-  a.loop=true;a.volume=.4;
-  a.play().catch(()=>{});
+/* ================= МУЗЫКА ЗАГРУЗЧИКА: МГНОВЕННЫЙ СТАРТ ================= */
+let loaderMusic=null, musicBlob=null;
+
+function tryPlay(a){ try{ const p=a.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){} }
+
+/* Если WebView запрещает автоплей без жеста — стартуем при первом тапе */
+function unlockMusic(a){
+  const evs=['pointerdown','touchend','keydown'];
+  const h=()=>{ if(loaderMusic===a) tryPlay(a); };
+  const off=()=>evs.forEach(e=>document.removeEventListener(e,h,true));
+  evs.forEach(e=>document.addEventListener(e,h,true));
+  a.addEventListener('play',off,{once:true});
+}
+
+function startLoaderMusic(){
+  if(loaderMusic) return;
+  // 1) НОЛЬ ЗАДЕРЖКИ: плеер создаётся и стартует СРАЗУ
+  const a=new Audio();
+  a.loop=true; a.volume=.4; a.preload='auto';
+  if(musicBlob){
+    // Blob уже в памяти (повторный запуск / рестарт движка) — мгновенно и офлайн
+    a.src=URL.createObjectURL(musicBlob);
+  }else{
+    // Первый заход: стартуем с сети ПРЯМО СЕЙЧАС, не ждём IndexedDB
+    a.src=RESOURCE_MAP.music.url;
+    resGet('music').then(blob=>{            // кэш проверяется ПАРАЛЛЕЛЬНО
+      if(!blob) return;
+      musicBlob=blob;
+      if(loaderMusic===a && a.currentTime<0.3){
+        a.src=URL.createObjectURL(blob);    // подмена на кэш (рестарт незаметен)
+        tryPlay(a);
+      }
+    }).catch(()=>{});
+  }
   loaderMusic=a;
+  tryPlay(a);
+  unlockMusic(a);
 }
+
 function stopLoaderMusic(){
-  if(loaderMusic){try{loaderMusic.pause();}catch(e){}loaderMusic=null;}
-  if(loaderMusicURL){try{URL.revokeObjectURL(loaderMusicURL);}catch(e){}loaderMusicURL=null;}
+  if(loaderMusic){ try{loaderMusic.pause();}catch(e){} loaderMusic=null; }
 }
+
+// Музыка стартует как можно раньше — ещё до запуска загрузчика
+startLoaderMusic();
 
 /* ================= ПРОФИЛЬ + МОДАЛКА ================= */
 const TG_USER = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
