@@ -14,8 +14,16 @@
   html,body{overscroll-behavior:none}
   body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;user-select:none}
 
-  /* ПАУЗА АНИМАЦИЙ ПРИ СВОРАЧИВАНИИ */
   body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
+
+  /* ================= SPLASH ЭКРАН ================= */
+  #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
+    transition:opacity .3s;pointer-events:none}
+  #splash.hidden{opacity:0}
+  #splash img{width:min(90%,400px);height:auto;opacity:0;transition:opacity 3s ease-in-out;
+    filter:drop-shadow(0 0 40px rgba(139,92,246,.6))}
+  #splash img.show{opacity:1}
+  #splash img.hide{opacity:0}
 
   /* ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= */
   #loader{position:fixed;inset:0;z-index:200;background:#f2f2f3;overflow:hidden;transition:opacity .6s,visibility .6s}
@@ -60,7 +68,6 @@
   #lbMsg::after{content:'...';animation:dots 1.2s steps(4) infinite}
   @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
   #lbPct{color:#9a9a9a;margin-left:6px;font-variant-numeric:tabular-nums}
-  /* СКОЛЬКО СКАЧАЛОСЬ (N / N) — под статусом и % */
   .lb-size{text-align:center;color:#bbb;font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
   .csspin{width:18px;height:18px;border-radius:50%;border:3px solid #333;border-top-color:#fff;animation:rot .9s linear infinite}
   @keyframes rot{to{transform:rotate(360deg)}}
@@ -69,7 +76,6 @@
   .lb-progress{flex:1;height:3px;position:relative;background:repeating-linear-gradient(90deg,#3a3a3a 0 6px,transparent 6px 10px)}
   .lb-progress i{position:absolute;inset:0;background:linear-gradient(90deg,#fff,#9a9a9a);transform-origin:left;transform:scaleX(0);transition:transform .15s}
 
-  /* УВЕДОМЛЕНИЕ О РЕСУРСАХ */
   .loader-notification{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.96);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;
     opacity:0;pointer-events:none;transition:opacity .3s}
@@ -93,7 +99,6 @@
     .load-logo{top:auto;bottom:12%;transform:none;animation:logoFade .8s .6s both}
   }
 
-  /* ================= ФОН ПРИЛОЖЕНИЯ ================= */
   .orb{position:fixed;border-radius:50%;filter:blur(70px);opacity:.45;z-index:0;pointer-events:none;animation:float 12s ease-in-out infinite}
   .orb1{width:280px;height:280px;background:#7c3aed;top:-90px;left:-90px}
   .orb2{width:240px;height:240px;background:#d946ef;bottom:8%;right:-100px;animation-delay:-4s}
@@ -108,7 +113,6 @@
     opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
   .app.ready{opacity:1;transform:none}
 
-  /* ================= ШАПКА ================= */
   .topbar{display:flex;align-items:center;gap:10px}
   .profile{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;transition:transform .15s;
     background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(217,70,239,.06));
@@ -141,7 +145,6 @@
   .bnum{font-family:'Unbounded';font-size:25px;font-weight:800;color:#f3e8ff;text-shadow:0 0 20px rgba(168,85,247,.6)}
   .blabel{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8b7bb8;text-align:center;margin-top:2px}
 
-  /* ================= ЭКРАНЫ ================= */
   .screen{display:none;flex-direction:column;gap:14px}
   .screen.active{display:flex;animation:screenIn .35s ease}
   @keyframes screenIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -150,7 +153,6 @@
     background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
     filter:drop-shadow(0 0 12px rgba(168,85,247,.5))}
 
-  /* ===== МЕНЮ ===== */
   .menu-sub{text-align:center;font-size:11px;letter-spacing:.3em;color:#8b7bb8;text-transform:uppercase}
   .mode-card{position:relative;border-radius:20px;overflow:hidden;height:140px;cursor:pointer;
     border:1px solid rgba(139,92,246,.45);box-shadow:0 12px 36px rgba(0,0,0,.55),0 0 22px rgba(124,58,237,.25);transition:transform .2s}
@@ -167,7 +169,6 @@
   .mc-play i{margin-left:5px;animation:nudge 1.2s ease-in-out infinite}
   @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 
-  /* ================= КОЛЕСО ================= */
   .wheel-wrap{position:relative;width:min(84vw,330px);aspect-ratio:1;margin:2px auto}
   .wheel-glow{position:absolute;inset:-16%;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle,rgba(139,92,246,.4),transparent 62%);filter:blur(18px);animation:glowPulse 3s ease-in-out infinite}
@@ -188,7 +189,6 @@
   .hub::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px dashed rgba(168,85,247,.45);animation:spinSlow 14s linear infinite}
   @keyframes spinSlow{to{transform:rotate(360deg)}}
 
-  /* ================= КОЛОДЫ ================= */
   .deck{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px;margin:4px auto;position:relative}
   .card{aspect-ratio:3/4;perspective:900px;cursor:pointer;transition:opacity .4s,filter .4s}
   .deck.locked .card{pointer-events:none}
@@ -209,7 +209,6 @@
   .card-front i{font-size:28px;filter:drop-shadow(0 0 10px var(--c))}
   .card-front b{font-family:'Unbounded';font-size:15px}
 
-  /* ================= СЛОТЫ ================= */
   .paytable{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
   .pt{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:9px;
     background:rgba(30,15,60,.6);border:1px solid rgba(139,92,246,.25);font-size:11px;font-weight:800;color:#c4b5fd}
@@ -244,7 +243,6 @@
     border:1px solid rgba(139,92,246,.35);background:rgba(30,15,60,.6);color:#d8c7ff}
   .bp-btn:active{transform:scale(.94)}
 
-  /* ================= РАКЕТА ================= */
   .rocket-frame{position:relative;height:280px;border-radius:20px;overflow:hidden;
     border:1px solid rgba(168,85,247,.4);background:linear-gradient(180deg,#0b0618,#06030d);
     box-shadow:inset 0 0 40px rgba(0,0,0,.7);transition:border-color .3s,box-shadow .3s}
@@ -271,7 +269,6 @@
   .rk-cash:disabled{filter:grayscale(.7) brightness(.6);animation:none}
   .rk-cash.hidden{display:none}
 
-  /* ================= СТАВКИ / КНОПКИ ================= */
   .history{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:24px}
   .hchip{padding:2px 8px;border-radius:8px;font-size:11px;font-weight:800;border:1px solid}
   .bets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
@@ -296,7 +293,6 @@
   .bonus-btn i{margin-right:8px}
   .disclaimer{text-align:center;font-size:10px;color:#5b4a80}
 
-  /* ================= МОДАЛКА ПРОФИЛЯ ================= */
   .modal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
     background:rgba(5,2,10,.8);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .25s}
   .modal.show{opacity:1;pointer-events:auto}
@@ -324,7 +320,6 @@
   .pm-row .k{color:#8b7bb8;width:56px;flex:none}
   .pm-row .v{color:#e9d5ff;font-weight:600;word-break:break-all}
 
-  /* ================= ОВЕРЛЕИ ================= */
   .overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
     background:rgba(5,2,10,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s}
   .overlay.show{opacity:1;pointer-events:auto}
@@ -354,7 +349,6 @@
   .shake-err{animation:shakeX .4s}
   @keyframes shakeX{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 
-  /* ================= МАГАЗИН ================= */
   .shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
   .shop-item{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;
     border:1px solid rgba(139,92,246,.35);background:linear-gradient(160deg,rgba(30,15,60,.6),rgba(10,5,20,.85));
@@ -367,7 +361,6 @@
     display:flex;align-items:center;justify-content:center;gap:6px}
   .shop-item-price i{font-size:12px}
 
-  /* ================= ОТКРЫТИЕ КЕЙСА ================= */
   .case-modal{position:fixed;inset:0;z-index:100;background:rgba(5,2,10,.92);backdrop-filter:blur(14px);
     display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;padding:20px 0}
   .case-modal.show{opacity:1;pointer-events:auto}
@@ -419,7 +412,6 @@
     filter:drop-shadow(0 0 14px rgba(251,191,36,.6))}
   .case-result-coins{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px;flex-wrap:wrap}
 
-  /* ================= ШАНСЫ КЕЙСА ================= */
   .case-chances{margin-top:20px;padding:14px;border-radius:14px;
     background:rgba(30,15,60,.6);border:1px solid rgba(255,60,60,.3);
     box-shadow:inset 0 0 20px rgba(0,0,0,.4)}
@@ -445,6 +437,12 @@
 </style>
 </head>
 <body>
+
+<!-- ================= SPLASH ЭКРАН ================= -->
+<div id="splash">
+  <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png" alt="" data-resource="splash">
+</div>
+
 <canvas id="confetti"></canvas>
 
 <!-- ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= -->
@@ -467,7 +465,6 @@
       <div class="lb-text"><span id="lbMsg">// Инициализация игры</span><span id="lbPct">(00.00%)</span></div>
       <div class="csspin"></div>
     </div>
-    <!-- СКОЛЬКО СКАЧАЛОСЬ (N / N) — под статусом и % -->
     <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
       <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.0_K8097503_E8083962</span>
@@ -476,7 +473,6 @@
   </div>
 </div>
 
-<!-- УВЕДОМЛЕНИЕ О РЕСУРСАХ -->
 <div class="loader-notification" id="loaderNotification">
   <div class="ln-icon"><i class="fa-solid fa-exclamation-triangle"></i></div>
   <div class="ln-title">Внимание</div>
@@ -508,7 +504,6 @@
     </div>
   </div>
 
-  <!-- ===== ГЛАВНОЕ МЕНЮ ===== -->
   <section class="screen active" id="menuScreen">
     <div class="menu-sub">Выбери режим</div>
     <div class="mode-card" id="goWheel">
@@ -549,7 +544,6 @@
     <div class="disclaimer">Виртуальная валюта · Не является азартной игрой на реальные деньги</div>
   </section>
 
-  <!-- ===== КОЛЕСО ===== -->
   <section class="screen" id="wheelScreen">
     <div class="game-head">
       <button class="icon-btn back-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -568,7 +562,6 @@
     <button class="action-btn" id="spinBtn"><i class="fa-solid fa-rotate-right"></i>КРУТИТЬ</button>
   </section>
 
-  <!-- ===== КОЛОДЫ ===== -->
   <section class="screen" id="cardsScreen">
     <div class="game-head">
       <button class="icon-btn back-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -582,7 +575,6 @@
     <button class="action-btn" id="cardsBtn"><i class="fa-solid fa-layer-group"></i>НАЧАТЬ РАУНД</button>
   </section>
 
-  <!-- ===== СЛОТЫ ===== -->
   <section class="screen" id="slotsScreen">
     <div class="game-head">
       <button class="icon-btn back-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -611,7 +603,6 @@
     <button class="action-btn" id="slotsBtn"><i class="fa-solid fa-bolt"></i>КРУТИТЬ · 10</button>
   </section>
 
-  <!-- ===== РАКЕТА ===== -->
   <section class="screen" id="rocketScreen">
     <div class="game-head">
       <button class="icon-btn back-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -643,7 +634,6 @@
     </div>
   </section>
 
-  <!-- ===== МАГАЗИН ===== -->
   <section class="screen" id="shopScreen">
     <div class="game-head">
       <button class="icon-btn back-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -656,7 +646,6 @@
   <button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
 </div>
 
-<!-- ================= МОДАЛКА ПРОФИЛЯ ================= -->
 <div class="modal" id="profileModal">
   <div class="pm-card">
     <div class="pm-id">ID: <b id="pmId">—</b></div>
@@ -672,7 +661,6 @@
   </div>
 </div>
 
-<!-- ================= ОТКРЫТИЕ КЕЙСА ================= -->
 <div class="case-modal" id="caseModal">
   <div class="case-container">
     <button class="case-close" id="caseClose"><i class="fa-solid fa-xmark"></i></button>
@@ -695,7 +683,6 @@
   </div>
 </div>
 
-<!-- Результат -->
 <div class="overlay" id="resultOverlay">
   <div class="result-card">
     <div class="result-icon"><i class="fa-solid fa-sack-dollar" id="resIcon"></i></div>
@@ -704,7 +691,6 @@
     <div class="result-sub" id="resSub">ВЫИГРЫШ</div>
   </div>
 </div>
-<!-- Джекпот -->
 <div class="overlay" id="jackpotOverlay">
   <div class="result-card">
     <div class="jackpot-title"><i class="fa-solid fa-fire"></i> ДЖЕКПОТ <i class="fa-solid fa-fire"></i></div>
@@ -715,23 +701,21 @@
 </div>
 
 <script>
-/* ================= TELEGRAM ================= */
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){} }
 function haptic(t){ try{ if(!tg||!tg.HapticFeedback)return;
   if(t==='success'||t==='error') tg.HapticFeedback.notificationOccurred(t); else tg.HapticFeedback.impactOccurred(t); }catch(e){} }
 
-/* ================= ФУЛЛСКРИН WINDOWS ================= */
 function tryTelegramFS(){ try{ if(tg && typeof tg.requestFullscreen==='function'){ tg.requestFullscreen(); return true; } }catch(e){} return false; }
 function tryBrowserFS(){ try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().then(()=>window.removeEventListener('pointerdown',fsHandler)).catch(()=>{}); } }catch(e){} }
 function fsHandler(){ if(document.fullscreenElement){window.removeEventListener('pointerdown',fsHandler);return;} if(!tryTelegramFS()) tryBrowserFS(); }
 if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventListener('pointerdown',fsHandler); }
 
 /* ==================================================================
-   INDEXEDDB — ХРАНИЛИЩЕ РЕСУРСОВ (музыка на raw.githubusercontent —
-   там есть CORS, байты читаются и сохраняются)
+   INDEXEDDB — ХРАНИЛИЩЕ РЕСУРСОВ
 ================================================================== */
 const RESOURCE_LIST=[
+  {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
   {id:'img1', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png'},
   {id:'img2', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg'},
   {id:'img3', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg'},
@@ -816,6 +800,7 @@ async function applyResourceImages(){
   const els=document.querySelectorAll('[data-resource]');
   for(const el of els){
     const id=el.getAttribute('data-resource');
+    if(id==='splash') continue; // splash обрабатывается отдельно
     const u=await getResourceURL(id);
     if(u)el.src=u;
   }
@@ -864,12 +849,10 @@ async function downloadMissingResources(onProgress){
   onProgress(downloaded,total);
 }
 
-/* ================= МУЗЫКА ЗАГРУЗЧИКА: МГНОВЕННЫЙ СТАРТ ================= */
+/* ================= МУЗЫКА ЗАГРУЗЧИКА ================= */
 let loaderMusic=null, musicBlob=null;
 
 function tryPlay(a){ try{ const p=a.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){} }
-
-/* Если WebView запрещает автоплей без жеста — стартуем при первом тапе */
 function unlockMusic(a){
   const evs=['pointerdown','touchend','keydown'];
   const h=()=>{ if(loaderMusic===a) tryPlay(a); };
@@ -880,20 +863,17 @@ function unlockMusic(a){
 
 function startLoaderMusic(){
   if(loaderMusic) return;
-  // 1) НОЛЬ ЗАДЕРЖКИ: плеер создаётся и стартует СРАЗУ
   const a=new Audio();
   a.loop=true; a.volume=.4; a.preload='auto';
   if(musicBlob){
-    // Blob уже в памяти (повторный запуск / рестарт движка) — мгновенно и офлайн
     a.src=URL.createObjectURL(musicBlob);
   }else{
-    // Первый заход: стартуем с сети ПРЯМО СЕЙЧАС, не ждём IndexedDB
     a.src=RESOURCE_MAP.music.url;
-    resGet('music').then(blob=>{            // кэш проверяется ПАРАЛЛЕЛЬНО
+    resGet('music').then(blob=>{
       if(!blob) return;
       musicBlob=blob;
       if(loaderMusic===a && a.currentTime<0.3){
-        a.src=URL.createObjectURL(blob);    // подмена на кэш (рестарт незаметен)
+        a.src=URL.createObjectURL(blob);
         tryPlay(a);
       }
     }).catch(()=>{});
@@ -907,10 +887,7 @@ function stopLoaderMusic(){
   if(loaderMusic){ try{loaderMusic.pause();}catch(e){} loaderMusic=null; }
 }
 
-// Музыка стартует как можно раньше — ещё до запуска загрузчика
-startLoaderMusic();
-
-/* ================= ПРОФИЛЬ + МОДАЛКА ================= */
+/* ================= ПРОФИЛЬ ================= */
 const TG_USER = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
 function detectOS(){
   const ua=navigator.userAgent; let m;
@@ -965,7 +942,6 @@ const SEGMENTS=[
 const WEIGHTS={0:.44,1:.25,1.5:.13,2:.10,3:.05,8:.03};
 const colorFor=m=>m===8?'#fbbf24':m===3?'#c084fc':m===2?'#a78bfa':m>0?'#8b5cf6':'#6b7280';
 
-/* ================= СЛОТЫ: СИМВОЛЫ ================= */
 const SVG_CHERRY=`<svg class="ssvg" style="--gl:rgba(255,60,90,.55)" viewBox="0 0 64 64"><defs><linearGradient id="kcChG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8fa3"/><stop offset="1" stop-color="#d90429"/></linearGradient></defs><path d="M30 12 C32 24 26 32 22 40" stroke="#2d6a4f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M34 12 C36 26 42 32 44 40" stroke="#2d6a4f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 12 C36 7 43 7 47 12 C41 15 36 15 34 16 Z" fill="#40916c"/><circle cx="20" cy="47" r="12" fill="url(#kcChG)"/><circle cx="44" cy="47" r="12" fill="url(#kcChG)"/><circle cx="16" cy="43" r="4" fill="#fff" opacity=".5"/><circle cx="40" cy="43" r="4" fill="#fff" opacity=".5"/></svg>`;
 const SVG_GRAPE=`<svg class="ssvg" style="--gl:rgba(180,90,255,.55)" viewBox="0 0 64 64"><defs><linearGradient id="kcGrG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c77dff"/><stop offset="1" stop-color="#5a189a"/></linearGradient></defs><path d="M32 6 C34 11 34 14 32 18" stroke="#2d6a4f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M32 10 C38 5 45 7 47 12 C41 14 36 14 32 14 Z" fill="#40916c"/><circle cx="22" cy="27" r="9" fill="url(#kcGrG)"/><circle cx="42" cy="27" r="9" fill="url(#kcGrG)"/><circle cx="32" cy="35" r="9" fill="url(#kcGrG)"/><circle cx="22" cy="45" r="9" fill="url(#kcGrG)"/><circle cx="42" cy="45" r="9" fill="url(#kcGrG)"/><circle cx="32" cy="53" r="9" fill="url(#kcGrG)"/><circle cx="19" cy="24" r="3" fill="#fff" opacity=".45"/><circle cx="39" cy="24" r="3" fill="#fff" opacity=".45"/></svg>`;
 const SVG_SEVEN=`<svg class="ssvg" style="--gl:rgba(255,80,80,.6)" viewBox="0 0 64 64"><defs><linearGradient id="kcSvG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8787"/><stop offset=".5" stop-color="#e5383b"/><stop offset="1" stop-color="#a4161a"/></linearGradient></defs><path d="M12 8 H52 L50 16 L34 56 H20 L36 20 H12 Z" fill="url(#kcSvG)" stroke="#ffd166" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
@@ -980,7 +956,6 @@ const SYMS=[
 function rndSym(){let r=Math.random(),a=0;for(const s of SYMS){a+=s.w;if(r<=a)return s;}return SYMS[0];}
 const SLOT_LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
-/* ================= КОЛЕСО SVG ================= */
 const NS='http://www.w3.org/2000/svg';
 function polar(cx,cy,r,deg){const a=deg*Math.PI/180;return{x:cx+r*Math.sin(a),y:cy-r*Math.cos(a)};}
 (function buildWheel(){
@@ -1022,7 +997,6 @@ function polar(cx,cy,r,deg){const a=deg*Math.PI/180;return{x:cx+r*Math.sin(a),y:
   }
 })();
 
-/* ================= СОСТОЯНИЕ ================= */
 const CHIP_VALUES=[1,5,10,15,20,25,50,100,250,500,'MAX'];
 let balance=parseInt(localStorage.getItem('kc_balance'));
 if(isNaN(balance)){balance=5000;localStorage.setItem('kc_balance',balance);}
@@ -1083,7 +1057,6 @@ function checkState(){
 }
 function errShake(){haptic('error');balanceCard.classList.add('shake-err');setTimeout(()=>balanceCard.classList.remove('shake-err'),450);}
 
-/* ================= ЗВУК ================= */
 let audioCtx=null,muted=localStorage.getItem('kc_muted')==='1';
 function ac(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}
 function tone(f,d,type,vol,when){if(muted)return;try{const c=ac(),o=c.createOscillator(),g=c.createGain(),t=c.currentTime+(when||0);
@@ -1097,7 +1070,6 @@ function renderSound(){sb.innerHTML=muted?'<i class="fa-solid fa-volume-xmark"><
 renderSound();
 sb.onclick=()=>{muted=!muted;localStorage.setItem('kc_muted',muted?'1':'0');renderSound();haptic('light');};
 
-/* ================= КОНФЕТТИ ================= */
 const cv=$('confetti'),cctx=cv.getContext('2d');let parts=[],confAnim=null;
 function spawnConfetti(n,gold){
   cv.width=innerWidth;cv.height=innerHeight;
@@ -1114,7 +1086,6 @@ function confLoop(){confAnim=requestAnimationFrame(confLoop);cctx.clearRect(0,0,
     cctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cctx.restore();});
   if(!parts.length){cancelAnimationFrame(confAnim);confAnim=null;}}
 
-/* ================= НАВИГАЦИЯ ================= */
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   $(id).classList.add('active');
@@ -1152,7 +1123,6 @@ $('goRocket').onclick=()=>showScreen('rocketScreen');
 $('goShop').onclick=()=>showScreen('shopScreen');
 document.querySelectorAll('.back-btn').forEach(b=>b.onclick=()=>showScreen('menuScreen'));
 
-/* ================= КОЛЕСО ================= */
 function pickMultiplier(){let r=Math.random(),acc=0;
   for(const[m,w]of Object.entries(WEIGHTS)){acc+=w;if(r<=acc)return parseFloat(m);}return 0;}
 function wheelEase(x){
@@ -1197,7 +1167,6 @@ spinBtn.onclick=()=>{
   setTimeout(()=>finish(m,bet),D+150);
 };
 
-/* ================= КОЛОДЫ ================= */
 function faName(m){return m===8?'fa-fire':m===3?'fa-crown':m===2?'fa-gem':m===1.5?'fa-bolt':m===1?'fa-star':'fa-skull';}
 function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 let x8Queue=[];
@@ -1293,7 +1262,6 @@ function flipCard(card){
   setTimeout(()=>finish(m,currentRoundBet),900);
 }
 
-/* ================= СЛОТЫ ================= */
 (function paytable(){
   const box=$('paytable');
   SYMS.forEach(s=>{ const el=document.createElement('span');el.className='pt';el.innerHTML=s.html+`<b>x${s.mult}</b>`;box.appendChild(el); });
@@ -1433,7 +1401,6 @@ function showJackpotCustom(m,win){
   setTimeout(()=>jo.classList.remove('show'),4000);
 }
 
-/* ================= РАКЕТА (CRASH) ================= */
 let rocketBet=10, rMult=1, rCrash=1.5, rStart=0, rAnim=null, rCrashAnim=null;
 let rBetAmounts=[0,0], rCashed=[false,false], rocketHistory=[];
 const rocketMultEl=$('rocketMult'), rocketStatusEl=$('rocketStatus'), rocketFrame=$('rocketFrame');
@@ -1613,7 +1580,6 @@ function endRocket(){
   },1700);
 }
 
-/* ================= ФИНИШ (колесо/колоды) ================= */
 function finish(m,bet){
   spinning=false;wheelWrap.classList.remove('spinning');
   const win=Math.round(bet*m);
@@ -1629,7 +1595,6 @@ function finish(m,bet){
   setTimeout(checkState,400);
 }
 
-/* ================= ОВЕРЛЕИ ================= */
 const ro=$('resultOverlay'),jo=$('jackpotOverlay');
 function showResult(m,amount){
   const ic=$('resIcon');
@@ -1646,7 +1611,6 @@ function showResult(m,amount){
 
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
 
-/* ================= МАГАЗИН ================= */
 const SHOP_ITEMS=[
   {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5'}
 ];
@@ -1888,16 +1852,60 @@ $('caseModal').onclick=(e)=>{
 };
 
 /* ==================================================================
-   ЗАГРУЗОЧНЫЙ ЭКРАН + СИСТЕМА РЕСУРСОВ + ПЕРЕЗАПУСК ДВИЖКА
+   SPLASH + ЗАГРУЗОЧНЫЙ ЭКРАН + ПЕРЕЗАПУСК ДВИЖКА
 ================================================================== */
 let appLoaded=false, loaderBusy=false, hiddenAt=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* SPLASH: только при первом запуске (полное закрытие окна).
+   Музыка НЕ играет, но загружается параллельно в кэш (вместе со splash фоткой) */
+function showSplash(){
+  const splash=$('splash');
+  const img=splash.querySelector('img');
+  
+  if(sessionStorage.getItem('kc_splash_shown')){
+    splash.remove();
+    runLoader('normal');
+    return;
+  }
+  
+  // Подгружаем фотку splash из кэша (если уже сохранена)
+  getResourceURL('splash').then(u=>{ if(u)img.src=u; });
+  
+  // Параллельная загрузка фотки и музыки БЕЗ воспроизведения
+  Promise.all([
+    fetchBlob(RESOURCE_MAP.splash.url).then(blob=>{
+      if(blob) resSet('splash',blob);
+    }).catch(()=>null),
+    fetchBlob(RESOURCE_MAP.music.url).then(blob=>{
+      if(blob){ musicBlob=blob; resSet('music',blob); }
+    }).catch(()=>null)
+  ]);
+  
+  // 1 сек черный экран (музыка уже качается)
+  setTimeout(()=>{
+    img.classList.add('show'); // 3 сек fade-in
+    
+    setTimeout(()=>{
+      img.classList.add('hide'); // 3 сек fade-out
+      
+      setTimeout(()=>{
+        splash.classList.add('hidden');
+        sessionStorage.setItem('kc_splash_shown','1');
+        
+        setTimeout(()=>{
+          splash.remove();
+          runLoader('normal'); // запускаем обычный загрузчик (с музыкой)
+        },300);
+      },3000);
+    },3000);
+  },1000);
+}
 
 async function runLoader(mode){
   if(loaderBusy)return;
   loaderBusy=true;
   const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
-  // Показываем лоадер и СБРАСЫВАЕМ инлайн-стили, оставшиеся от фейдов
   loader.classList.remove('done');
   loader.style.cssText='';
   lbSize.style.display='none';
@@ -1919,10 +1927,8 @@ async function runLoader(mode){
     },80);
   });
 
-  // Проверка ресурсов в IndexedDB
   const missing=await getMissingResources();
   if(missing.length){
-    // МУЗЫКА НЕ ОСТАНАВЛИВАЕТСЯ — играет и во время уведомления, и при скачивании
     let totalSize=0;
     for(const r of missing) totalSize+=await getResourceSize(r.url);
     $('lnSize').textContent=formatSize(totalSize);
@@ -1931,7 +1937,6 @@ async function runLoader(mode){
     $('loaderNotification').classList.remove('show');
     haptic('medium');
 
-    // Тухнет за 0.5с и "перезапускается" в режим скачивания
     loader.style.transition='opacity .5s';
     loader.style.opacity='0';
     await sleep(500);
@@ -1951,24 +1956,22 @@ async function runLoader(mode){
     lbSize.style.display='none';
     loader.style.opacity='0';
     await sleep(500);
-    loader.style.cssText=''; // сброс инлайн-стилей перед новым циклом
+    loader.style.cssText='';
     loaderBusy=false;
-    await runLoader('normal'); // обычный загрузочный экран
+    await runLoader('normal');
     return;
   }
 
-  // ===== ВСЁ НА МЕСТЕ: ОТКРЫВАЕМ МЕНЮ =====
-  loader.style.cssText='';      // иначе инлайн opacity перебьёт класс .done
-  loader.classList.add('done'); // лоадер плавно скрывается (0.6s)
-  document.getElementById('app').classList.add('ready'); // меню появляется
+  loader.style.cssText='';
+  loader.classList.add('done');
+  document.getElementById('app').classList.add('ready');
   applyResourceImages();
   renderShop();
   appLoaded=true;
   loaderBusy=false;
-  stopLoaderMusic(); // музыка завершается В МОМЕНТ открытия меню
+  stopLoaderMusic();
 }
 
-/* СВОРАЧИВАНИЕ / РАЗВОРАЧИВАНИЕ MINI APP */
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden){
     hiddenAt=Date.now();
@@ -1982,7 +1985,8 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
-runLoader('normal');
+// Запуск: splash (первый раз) или сразу загрузчик (повторный)
+showSplash();
 
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
 </script>
