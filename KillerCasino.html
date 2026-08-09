@@ -496,7 +496,7 @@
     </div>
     <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
-      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.0_K8097503_E8083962</span>
+      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.1_K8097503_E8083963</span>
       <div class="lb-progress"><i id="lbFill"></i></div>
     </div>
   </div>
@@ -2022,7 +2022,7 @@ async function runLoader(mode){
     loader.style.opacity='0';
     await sleep(500);
     loader.style.opacity='1';
-    msg.textContent='// Скачивание ресурсов игры';
+    msg.textContent='// Обращение к базе данных MrFeastProject';
     fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
     lbSize.style.display='block';
     lbSize.textContent='0 B / 0 B';
