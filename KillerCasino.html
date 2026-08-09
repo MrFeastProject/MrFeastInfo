@@ -12,7 +12,18 @@
   :root{ --violet:#8b5cf6; --fuchsia:#d946ef; --gold:#fbbf24; --bg:#06030d; }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
   html,body{overscroll-behavior:none}
-  body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;user-select:none}
+  
+  /* === FIX #2: BLOCK COPY/LONG-PRESS === */
+  body{
+    font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;
+    user-select:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;
+    -webkit-touch-callout:none; /* iOS Safari block callout */
+  }
+  img, video {
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: auto; /* Keep clicks but disable drag context usually handled by JS too */
+  }
 
   body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
 
@@ -29,15 +40,16 @@
     filter: contrast(1.15) saturate(1.2) brightness(1.08) drop-shadow(0 0 2px rgba(255,255,255,0.15));
     transform: translateZ(0);
   }
-  /* MUQ (Android HDR Enhance) - ОБНОВЛЁННЫЙ */
-  body.muq-active .app, 
-  body.muq-active #splash img, 
-  body.muq-active video {
+  
+  /* === FIX #3: MUQ MAX PERFORMANCE === */
+  body.muq-active .app, body.muq-active #splash img, body.muq-active video {
     filter: contrast(1.08) saturate(1.12) brightness(1.03);
     image-rendering: high-quality;
     transform: translateZ(0);
-    -webkit-transform: translateZ(0); /* Для старых Android WebView */
-    backface-visibility: hidden;      /* Фикс мерцания на Mali GPU */
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, filter; /* Hint GPU for layers */
+    contain: layout style paint; /* Isolate rendering context for FPS */
   }
 
   #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
@@ -330,7 +342,6 @@
     transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
   .modal.show .pm-card{transform:scale(1)}
   
-  /* FIXED CLOSE BUTTON STYLES */
   .pm-close{
     position:absolute;
     top:16px;
@@ -386,13 +397,18 @@
   .ios-switch input:checked+.ios-track{background:#34c759}
   .ios-switch input:checked+.ios-track::after{left:22px}
   
+  /* === FIX #1: ANIMATED GRADIENT TOGGLE === */
   .shuq-switch input:checked+.ios-track{
-    background:linear-gradient(135deg,#ef4444,#dc2626,#991b1b);
-    background-size:200% 200%;
-    animation:shuqGradient 3s ease infinite;
-    box-shadow:0 0 15px rgba(239,68,68,.6);
+    background: linear-gradient(270deg, #ff0000, #ff8c00, #ff00ff, #ff0000);
+    background-size: 600% 600%;
+    animation: shuqGradientFlow 4s ease infinite;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
   }
-  @keyframes shuqGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  @keyframes shuqGradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
   .set-section{padding:14px;border-radius:14px;background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom:14px}
   .set-section.disabled{opacity:0.5;pointer-events:none;filter:grayscale(1)}
@@ -552,7 +568,7 @@
     </div>
     <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
-      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.2_K8097504_E8083965</span>
+      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.3_K8097506_E8083973</span>
       <div class="lb-progress"><i id="lbFill"></i></div>
     </div>
   </div>
@@ -781,7 +797,8 @@
     <!-- MUQ Section (Android Only) -->
     <div class="set-section" id="muqSection" style="display:none">
       <div class="set-section-title"><i class="fa-solid fa-mobile-screen"></i>MUQ-Medium Upscaler Quality</div>
-      <div class="set-desc">Технология повышения качества для Android и IOS устройств</div>
+      <!-- FIX #3: UPDATED DESCRIPTION -->
+      <div class="set-desc">Технология для улучшение качества графики фоток,видио,текстов,а так-же ускорение движка Telegram Mini App для более высокой производительности</div>
       <div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
         <div class="set-name" style="font-size:13px">Активировать MUQ</div>
         <label class="ios-switch"><input type="checkbox" id="muqToggle"><span class="ios-track"></span></label>
@@ -844,6 +861,15 @@ if (tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackg
 const isAndroid = /Android/.test(navigator.userAgent);
 if(isAndroid) document.body.classList.add('is-android');
 
+/* === FIX #2: DISABLE CONTEXT MENU & DRAG === */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
+// Specific handler for images to prevent long press save on mobile
+document.querySelectorAll('img').forEach(img => {
+  img.addEventListener('touchstart', e => { e.preventDefault(); }, {passive: false});
+});
+
 function haptic(t){ try{ if(!tg||!tg.HapticFeedback)return;
   if(t==='success'||t==='error') tg.HapticFeedback.notificationOccurred(t); else tg.HapticFeedback.impactOccurred(t); }catch(e){} }
 
@@ -880,10 +906,9 @@ const RESOURCE_LIST=[
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
 
-// Отдельное хранилище индекса готовности ресурсов
 const DB_NAME = 'KillerCasinoResources';
 const STORE_RESOURCES = 'resources';
-const STORE_INDEX = 'resource_index'; // Флаг готовности
+const STORE_INDEX = 'resource_index';
 
 function altUrls(u){
   const list=[u];
@@ -939,7 +964,7 @@ let _db=null;
 function idb(){
   if(_db)return Promise.resolve(_db);
   return new Promise((res,rej)=>{
-    const rq=indexedDB.open(DB_NAME, 2); // Версия 2 для поддержки store_index
+    const rq=indexedDB.open(DB_NAME, 2);
     rq.onupgradeneeded=(e)=>{ 
       const db = rq.result;
       if(!db.objectStoreNames.contains(STORE_RESOURCES)) db.createObjectStore(STORE_RESOURCES); 
@@ -972,14 +997,13 @@ async function resGet(id){
   }catch(e){return null;}
 }
 
-// Атомарная запись: сначала blob, потом флаг готовности
 async function resSet(id,blob){
   try{
     const db=await idb();
     return await new Promise(res=>{
       const tx=db.transaction([STORE_RESOURCES, STORE_INDEX],'readwrite');
       tx.objectStore(STORE_RESOURCES).put(blob,id);
-      tx.objectStore(STORE_INDEX).put(true, id); // Флаг готовности
+      tx.objectStore(STORE_INDEX).put(true, id);
       tx.oncomplete=()=>res(true);
       tx.onerror=()=>res(false);
       tx.onabort=()=>res(false);
@@ -1023,10 +1047,8 @@ async function getMissingResources(){
   return RESOURCE_LIST.filter(r=>!keys.includes(r.id));
 }
 
-// Жесткая таблица размеров + динамический пересчет total
 async function getResourceSize(resObj){
-  if(resObj.size) return resObj.size; // Приоритет жесткому размеру
-  
+  if(resObj.size) return resObj.size;
   for(const u of altUrls(resObj.url)){
     try{
       const r=await fetch(u,{method:'HEAD'});
@@ -1034,7 +1056,6 @@ async function getResourceSize(resObj){
       if(len>0)return len;
     }catch(e){}
   }
-  // Fallback для старых записей без size
   if(resObj.url.includes('/200MB/')&&resObj.url.includes('Voice')) return 20489598;
   return resObj.url.includes('.m4a')?3000000: resObj.url.includes('.mp4')?6000000:300000;
 }
@@ -1046,7 +1067,6 @@ function formatSize(b){
   return (b/1073741824).toFixed(2)+' GB';
 }
 
-// Единая функция отрисовки прогресса
 function paintProgress(dl, tot, fillEl, pctEl, sizeEl, force=false){
   const p = tot > 0 ? Math.min(100, (dl / tot) * 100) : 100;
   fillEl.style.transform = `scaleX(${p/100})`;
@@ -1068,7 +1088,6 @@ async function downloadMissingResources(onProgress){
   let downloaded=0;
   let lastUpdate=0;
   
-  // Принудительный старт с 0
   onProgress(0, totalExpected);
 
   for(const r of missing){
@@ -1077,7 +1096,6 @@ async function downloadMissingResources(onProgress){
       const expectedSize = sizes[r.id];
       
       const blob=await fetchBlobWithProgress(r.url, expectedSize, (received)=>{
-        // Динамический пересчет total если реальный размер больше ожидаемого
         if(received > expectedSize){
           const diff = received - expectedSize;
           totalExpected += diff;
@@ -1096,7 +1114,6 @@ async function downloadMissingResources(onProgress){
       if(ok){
         if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
         if(r.id==='music')musicBlob=blob;
-        // Финализация размера файла после скачивания
         downloaded = startDownloaded + blob.size;
       }else{
         console.warn('IndexedDB не сохранил ресурс:',r.id);
@@ -1105,7 +1122,6 @@ async function downloadMissingResources(onProgress){
       console.warn('Ресурс не скачался:',r.id,e);
     }
   }
-  // Принудительный финиш 100%
   onProgress(totalExpected, totalExpected, true);
 }
 
@@ -1345,14 +1361,13 @@ settingsModal.onclick=e=>{ if(e.target===settingsModal) settingsModal.classList.
 soundToggle.onchange=()=>{ muted=!soundToggle.checked; localStorage.setItem('kc_muted',muted?'1':'0'); haptic('light'); };
 
 /* ==================================================================
-   SHUQ & MUQ SETTINGS LOGIC
+   SHUQ & MUQ SETTINGS LOGIC (FIX #4: NO FLICKER)
 ================================================================== */
 const shuqSection=$('shuqSection'), muqSection=$('muqSection');
 const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
 const shuqModes=$('shuqModes');
 const shuqModeBtns=document.querySelectorAll('.shuq-mode-btn');
 
-// Platform detection logic for settings
 if(isAndroid){
   shuqSection.classList.add('disabled');
   muqSection.style.display='block';
@@ -1361,12 +1376,17 @@ if(isAndroid){
   muqSection.style.display='none';
 }
 
-function applyGraphicsSettings(){
+// FIX #4: Apply styles immediately without transitions to prevent flicker
+function applyGraphicsSettings(init = false){
   const shuqOn = !isAndroid && shuqToggle.checked;
   const muqOn = isAndroid && muqToggle.checked;
   const shuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
 
-  // Reset classes
+  // Disable transitions temporarily if init to prevent flash
+  if(init) {
+    document.body.style.transition = 'none';
+  }
+
   document.body.classList.remove('shuq-low','shuq-med','shuq-high','muq-active');
 
   if(shuqOn){
@@ -1375,17 +1395,20 @@ function applyGraphicsSettings(){
     document.body.classList.add('muq-active');
   }
 
-  // Save state
   localStorage.setItem('kc_shuq', shuqToggle.checked?'1':'0');
   localStorage.setItem('kc_muq', muqToggle.checked?'1':'0');
+
+  if(init) {
+    // Force reflow then restore transitions
+    void document.body.offsetWidth;
+    document.body.style.transition = '';
+  }
 }
 
-// Init toggles from storage
 shuqToggle.checked = localStorage.getItem('kc_shuq')==='1';
 muqToggle.checked = localStorage.getItem('kc_muq')==='1';
 let savedShuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
 
-// SHUQ Mode Selection UI Logic
 function updateShuqUI(){
   if(shuqToggle.checked){
     shuqModes.classList.add('visible');
@@ -1404,16 +1427,16 @@ muqToggle.onchange = ()=>{ haptic('light'); applyGraphicsSettings(); };
 shuqModeBtns.forEach(btn=>{
   btn.onclick = ()=>{
     if(!shuqToggle.checked) return;
-    savedShuqMode = btn.dataset.mode; // Update local var immediately
+    savedShuqMode = btn.dataset.mode;
     localStorage.setItem('kc_shuq_mode', savedShuqMode);
-    updateShuqUI(); // Force UI update
+    updateShuqUI();
     applyGraphicsSettings();
     haptic('light');
   };
 });
 
-// Apply on load
-applyGraphicsSettings();
+// Apply on load with init flag to prevent flicker
+applyGraphicsSettings(true);
 
 const cv=$('confetti'),cctx=cv.getContext('2d');let parts=[],confAnim=null;
 function spawnConfetti(n,gold){
@@ -2235,10 +2258,9 @@ async function runLoader(mode){
       paintProgress(dl, tot, fill, pct, lbSize);
     });
     
-    // Убран лишний sleep и повторный runLoader - переход сразу
     lbSize.style.display='none';
     loader.style.opacity='0';
-    await sleep(500); // Минимальная пауза для визуального завершения
+    await sleep(500);
     loader.classList.add('done');
     document.getElementById('app').classList.add('ready');
     applyResourceImages();
@@ -2298,7 +2320,6 @@ async function validateResource(r,blob){
       im.src=u;
     });
   }
-  /* voice/sig txt-файлы: минимальный размер 10 байт (пустые/битые — в баню) */
   if(r.id.indexOf('voice')===0||r.id.indexOf('sig')===0){
     return blob.size>=10;
   }
@@ -2378,7 +2399,6 @@ async function runFixHelper(){
     paintProgress(dl, tot, fill, pct, lbSize);
   });
   
-  // Убран лишний sleep
   lbSize.style.display='none';
   loader.classList.add('done');
   document.getElementById('app').classList.add('ready');
