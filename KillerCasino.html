@@ -121,6 +121,8 @@
   .loader-notification.show{opacity:1;pointer-events:auto}
   .ln-icon{font-size:48px;color:#fbbf24;filter:drop-shadow(0 0 20px rgba(251,191,36,.6));animation:pulse 1.5s ease-in-out infinite}
   .ln-icon.ok{color:#4ade80;filter:drop-shadow(0 0 20px rgba(74,222,128,.65))}
+  /* === NEW: иконка для окна обновления === */
+  .ln-icon.update{color:#60a5fa;filter:drop-shadow(0 0 20px rgba(96,165,250,.6))}
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
   .ln-title{font-family:'Unbounded';font-weight:800;font-size:24px;color:#fff;text-shadow:0 0 14px rgba(251,191,36,.5)}
   .ln-text{font-size:14px;color:#ccc;text-align:center;max-width:320px;line-height:1.7}
@@ -130,6 +132,8 @@
     font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 8px 24px rgba(124,58,237,.4);
     animation:btnPulseN 2s ease-in-out infinite}
   @keyframes btnPulseN{0%,100%{box-shadow:0 8px 24px rgba(124,58,237,.4)}50%{box-shadow:0 8px 40px rgba(217,70,239,.8)}}
+  /* === NEW: синяя кнопка Fast UPD === */
+  .ln-btn.upd{background:linear-gradient(135deg,#2563eb,#3b82f6);box-shadow:0 8px 24px rgba(37,99,235,.4)}
 
   @media (min-width:760px){
     .shot1{left:6%;top:4%;right:auto;width:24%;max-width:400px}
@@ -568,7 +572,7 @@
     </div>
     <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
-      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.3_K8097506_E8083973</span>
+      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.5_K8097567_E8083955</span>
       <div class="lb-progress"><i id="lbFill"></i></div>
     </div>
   </div>
@@ -579,6 +583,14 @@
   <div class="ln-title">Внимание</div>
   <div class="ln-text">Мы обнаружили что у вас нехватает парочку ресурсов игры (<b id="lnSize">0 KB</b>) и вам надо их установить для корректной работы</div>
   <button class="ln-btn" id="lnBtn">УСТАНОВИТЬ</button>
+</div>
+
+<!-- === NEW: Окно "Срочное обновление" — устаревшие ресурсы === -->
+<div class="loader-notification" id="updateNotification">
+  <div class="ln-icon update"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+  <div class="ln-title">Срочное обновление</div>
+  <div class="ln-text">Наша система проверки (Fix Helper) обнаружила что <b id="updCount">0</b> ресурсов игры устарело, пожалуйста, обновитесь для дальнейшей корректной работы игры</div>
+  <button class="ln-btn upd" id="updBtn"><i class="fa-solid fa-bolt"></i> Fast UPD</button>
 </div>
 
 <div class="loader-notification" id="fixNotification">
@@ -880,6 +892,7 @@ if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventLis
 
 /* ==================================================================
    INDEXEDDB & RESOURCE MANAGER (OPTIMIZED)
+   === NEW: версия 3, хранилище URL для сравнения версий ===
 ================================================================== */
 const RESOURCE_LIST=[
   {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
@@ -888,7 +901,7 @@ const RESOURCE_LIST=[
   {id:'img3', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg'},
   {id:'img4', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg'},
   {id:'img5', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png'},
-  {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'},
+  {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Music.m4a'},
   {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'},
   {id:'img6', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260809_011439496.jpg'},
   {id:'video2',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/a9ad66d1-f321-441a-9e60-dc63c054628f.mp4'},
@@ -909,6 +922,7 @@ const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
 const DB_NAME = 'KillerCasinoResources';
 const STORE_RESOURCES = 'resources';
 const STORE_INDEX = 'resource_index';
+/* === NEW === */ const STORE_URLS = 'resource_urls';
 
 function altUrls(u){
   const list=[u];
@@ -964,11 +978,19 @@ let _db=null;
 function idb(){
   if(_db)return Promise.resolve(_db);
   return new Promise((res,rej)=>{
-    const rq=indexedDB.open(DB_NAME, 2);
+    /* === NEW: версия 3, при апгрейде чистим старый кэш === */
+    const rq=indexedDB.open(DB_NAME, 3);
     rq.onupgradeneeded=(e)=>{ 
       const db = rq.result;
+      const oldVer = e.oldVersion;
+      if(oldVer > 0){
+        if(db.objectStoreNames.contains(STORE_RESOURCES)) db.deleteObjectStore(STORE_RESOURCES);
+        if(db.objectStoreNames.contains(STORE_INDEX)) db.deleteObjectStore(STORE_INDEX);
+        if(db.objectStoreNames.contains(STORE_URLS)) db.deleteObjectStore(STORE_URLS);
+      }
       if(!db.objectStoreNames.contains(STORE_RESOURCES)) db.createObjectStore(STORE_RESOURCES); 
       if(!db.objectStoreNames.contains(STORE_INDEX)) db.createObjectStore(STORE_INDEX);
+      /* === NEW === */ if(!db.objectStoreNames.contains(STORE_URLS)) db.createObjectStore(STORE_URLS);
     };
     rq.onsuccess=()=>{_db=rq.result;res(_db);};
     rq.onerror=()=>rej(rq.error);
@@ -1001,9 +1023,11 @@ async function resSet(id,blob){
   try{
     const db=await idb();
     return await new Promise(res=>{
-      const tx=db.transaction([STORE_RESOURCES, STORE_INDEX],'readwrite');
+      /* === NEW: сохраняем URL вместе с blob === */
+      const tx=db.transaction([STORE_RESOURCES, STORE_INDEX, STORE_URLS],'readwrite');
       tx.objectStore(STORE_RESOURCES).put(blob,id);
       tx.objectStore(STORE_INDEX).put(true, id);
+      if(RESOURCE_MAP[id]) tx.objectStore(STORE_URLS).put(RESOURCE_MAP[id].url, id);
       tx.oncomplete=()=>res(true);
       tx.onerror=()=>res(false);
       tx.onabort=()=>res(false);
@@ -1015,13 +1039,99 @@ async function resDelete(id){
   try{
     const db=await idb();
     return await new Promise(res=>{
-      const tx=db.transaction([STORE_RESOURCES, STORE_INDEX],'readwrite');
+      /* === NEW: удаляем и URL === */
+      const tx=db.transaction([STORE_RESOURCES, STORE_INDEX, STORE_URLS],'readwrite');
       tx.objectStore(STORE_RESOURCES).delete(id);
       tx.objectStore(STORE_INDEX).delete(id);
+      tx.objectStore(STORE_URLS).delete(id);
       tx.oncomplete=()=>res(true);
       tx.onerror=()=>res(false);
     });
   }catch(e){return false;}
+}
+
+/* === NEW: получить сохранённый URL ресурса из IDB === */
+async function resGetUrl(id){
+  try{
+    const db=await idb();
+    return await new Promise(res=>{
+      const rq=db.transaction(STORE_URLS,'readonly').objectStore(STORE_URLS).get(id);
+      rq.onsuccess=()=>res(rq.result||null);
+      rq.onerror=()=>res(null);
+    });
+  }catch(e){return null;}
+}
+
+/* === NEW: найти ресурсы где URL в IDB ≠ URL в коде === */
+async function getOutdatedResources(){
+  const keys = await resKeys();
+  const outdated = [];
+  for(const r of RESOURCE_LIST){
+    if(!keys.includes(r.id)) continue;
+    const savedUrl = await resGetUrl(r.id);
+    if(savedUrl && savedUrl !== r.url) outdated.push(r);
+  }
+  return outdated;
+}
+
+/* === NEW: Fast Update — 3 фазы: удаление → скачивание → проверка === */
+async function runFastUpdate(outdatedList, loader, fill, pct, msg, lbSize){
+  const total = outdatedList.length;
+  // ФАЗА 1: Удаляем старые патчи (0–15%)
+  for(let i=0; i<total; i++){
+    const r = outdatedList[i];
+    await resDelete(r.id);
+    if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
+    if(r.id==='music') musicBlob=null;
+    const p = ((i+1)/Math.max(1,total))*15;
+    msg.textContent = `// Удаляем старые патчи игры ${i+1}/${total}`;
+    paintProgress(p, 100, fill, pct, null);
+    await sleep(80);
+  }
+  if(total===0){ msg.textContent='// Удаляем старые патчи игры 0/0'; paintProgress(15,100,fill,pct,null); await sleep(200); }
+
+  // ФАЗА 2: Скачиваем новые патчи (15–75%)
+  let totalExpected=0; const sizes={};
+  for(const r of outdatedList){ sizes[r.id]=await getResourceSize(r); totalExpected+=sizes[r.id]; }
+  let downloaded=0; let lastUpdate=0;
+  lbSize.style.display='block'; lbSize.textContent='0 B / 0 B';
+  for(const r of outdatedList){
+    try{
+      const startDownloaded=downloaded; const expectedSize=sizes[r.id];
+      msg.textContent=`// Скачиваем новые патчи ${outdatedList.indexOf(r)+1}/${total}`;
+      const blob=await fetchBlobWithProgress(r.url, expectedSize, (received)=>{
+        if(received>expectedSize){ totalExpected+=(received-expectedSize); sizes[r.id]=received; }
+        downloaded=startDownloaded+received;
+        const now=performance.now();
+        if(now-lastUpdate>60){ lastUpdate=now; const phaseP=15+(downloaded/Math.max(1,totalExpected))*60; paintProgress(phaseP,100,fill,pct,lbSize); lbSize.textContent=`${formatSize(downloaded)} / ${formatSize(totalExpected)}`; }
+      });
+      const ok=await resSet(r.id,blob);
+      if(ok){ if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];} if(r.id==='music')musicBlob=blob; downloaded=startDownloaded+blob.size; }
+    }catch(e){ console.warn('Патч не скачался:',r.id,e); }
+  }
+  paintProgress(75,100,fill,pct,lbSize); lbSize.textContent=`${formatSize(totalExpected)} / ${formatSize(totalExpected)}`;
+
+  // ФАЗА 3: Проверяем (75–100%)
+  msg.textContent='// Проверяем целостность обновлений';
+  for(let i=0;i<total;i++){
+    const r=outdatedList[i]; const blob=await resGet(r.id); const savedUrl=await resGetUrl(r.id);
+    const ok=blob&&blob.size>0&&savedUrl===r.url;
+    const p=75+((i+1)/Math.max(1,total))*25;
+    msg.textContent=`// Проверяем ${r.id}... ${ok?'✓':'✗'}`;
+    paintProgress(p,100,fill,pct,lbSize); await sleep(120);
+  }
+  paintProgress(100,100,fill,pct,lbSize); msg.textContent='// Обновление завершено'; await sleep(400);
+  lbSize.style.display='none';
+}
+
+/* === NEW: показать окно "Срочное обновление" и ждать нажатия Fast UPD === */
+function showUpdateNotification(count){
+  return new Promise(resolve=>{
+    $('updCount').textContent=count;
+    $('updateNotification').classList.add('show');
+    haptic('medium');
+    $('updBtn').onclick=()=>{ $('updateNotification').classList.remove('show'); resolve(true); };
+  });
 }
 
 const urlCache={};
@@ -1244,6 +1354,7 @@ const SLOT_LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6
 
 const NS='http://www.w3.org/2000/svg';
 function polar(cx,cy,r,deg){const a=deg*Math.PI/180;return{x:cx+r*Math.sin(a),y:cy-r*Math.cos(a)};}
+
 (function buildWheel(){
   const svg=document.getElementById('wheel'),cx=160,cy=160,r=140;
   const defs=document.createElementNS(NS,'defs');
@@ -2271,6 +2382,18 @@ async function runLoader(mode){
     return;
   }
 
+  /* === NEW: проверка устаревших ресурсов при загрузке === */
+  const outdated=await getOutdatedResources();
+  if(outdated.length){
+    const go=await showUpdateNotification(outdated.length);
+    if(go){
+      loader.style.transition='opacity .5s';loader.style.opacity='0';await sleep(500);
+      loader.style.opacity='1';
+      await runFastUpdate(outdated,loader,fill,pct,msg,lbSize);
+      loader.style.opacity='0';await sleep(500);
+    }
+  }
+
   loader.style.cssText='';
   loader.classList.add('done');
   document.getElementById('app').classList.add('ready');
@@ -2369,14 +2492,30 @@ async function runFixHelper(){
   }
   if(!present.length){ for(let p=10;p<=65;p+=5){ setProg(p); await sleep(40); } }
 
+  /* === NEW: проверка на устаревшие ресурсы (65–75%) === */
+  msg.textContent='// Проверка на устаревшие ресурсы';
+  const outdated=await getOutdatedResources();
+  for(let p=65;p<=75;p+=2){ setProg(p); await sleep(50); }
+
+  /* === NEW: проверка на недостающие (75–85%) === */
   msg.textContent='// Проверка на наличие файлов игры';
-  for(let p=65;p<=100;p++){ setProg(p); await sleep(35); }
+  for(let p=75;p<=100;p+=2){ setProg(p); await sleep(35); }
   const keys2=await resKeys();
   const missing=RESOURCE_LIST.filter(r=>!keys2.includes(r.id));
   await sleep(400);
 
-  if(!missing.length){
-    showFixNotification('Все хорошо','Мы не обнаружили битые/недостоющие ресурсы игры,можете продолжить играть',()=>{
+  /* === NEW: если есть устаревшие — показываем окно Fast UPD === */
+  if(outdated.length){
+    const go=await showUpdateNotification(outdated.length);
+    if(go){
+      msg.textContent='// Запуск Fast Update';
+      await runFastUpdate(outdated,loader,fill,pct,msg,lbSize);
+    }
+  }
+
+  /* === NEW: обновлённая логика финального сообщения === */
+  if(!missing.length&&!outdated.length){
+    showFixNotification('Все хорошо','Мы не обнаружили битые, устаревшие или недостающие ресурсы игры, можете продолжить играть',()=>{
       loader.classList.add('done');
       stopLoaderMusic();
       loaderBusy=false; fixBusy=false;
@@ -2407,7 +2546,8 @@ async function runFixHelper(){
   appLoaded=true;
   stopLoaderMusic();
   loaderBusy=false;
-  showFixNotification('Все хорошо','Мы скачали недостающие ресурсы игры для корректной работы,в остальном проблем не нашли',()=>{
+  /* === NEW: обновлённый текст === */
+  showFixNotification('Все хорошо','Мы обновили и скачали все необходимые ресурсы игры для корректной работы',()=>{
     fixBusy=false;
   });
 }
