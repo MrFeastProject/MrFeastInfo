@@ -29,8 +29,15 @@
     filter: contrast(1.15) saturate(1.2) brightness(1.08) drop-shadow(0 0 2px rgba(255,255,255,0.15));
     transform: translateZ(0);
   }
-  body.muq-active .app, body.muq-active #splash img, body.muq-active video {
+  /* MUQ (Android HDR Enhance) - ОБНОВЛЁННЫЙ */
+  body.muq-active .app, 
+  body.muq-active #splash img, 
+  body.muq-active video {
     filter: contrast(1.08) saturate(1.12) brightness(1.03);
+    image-rendering: high-quality;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0); /* Для старых Android WebView */
+    backface-visibility: hidden;      /* Фикс мерцания на Mali GPU */
   }
 
   #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
