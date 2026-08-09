@@ -24,11 +24,9 @@
     filter:drop-shadow(0 0 40px rgba(139,92,246,.6))}
   #splash img.show{opacity:1}
   #splash img.hide{opacity:0}
-  /* НА WINDOWS/ДЕСКТОП — КРУПНЕЕ */
   @media (min-width:760px){
     #splash img{width:min(85%,1000px)}
   }
-  /* НА ANDROID — ВСЁ ВЛЕЗАЕТ В ЭКРАН (contain вместо cover) */
   body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit:contain}
   body.is-android #caseVideo{object-fit:contain}
 
@@ -767,7 +765,6 @@
 <script>
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){} }
-/* ANDROID: всё влезает в экран (contain), Windows остаётся как было */
 if(/Android/.test(navigator.userAgent)) document.body.classList.add('is-android');
 function haptic(t){ try{ if(!tg||!tg.HapticFeedback)return;
   if(t==='success'||t==='error') tg.HapticFeedback.notificationOccurred(t); else tg.HapticFeedback.impactOccurred(t); }catch(e){} }
@@ -789,7 +786,6 @@ const RESOURCE_LIST=[
   {id:'img5', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png'},
   {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'},
   {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'},
-  /* НОВЫЕ РЕСУРСЫ КЕЙСА «КиперЗаряд» — поздняя загрузка (загрузочный экран, НЕ splash) */
   {id:'img6', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260809_011439496.jpg'},
   {id:'video2',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/a9ad66d1-f321-441a-9e60-dc63c054628f.mp4'}
 ];
@@ -812,6 +808,34 @@ async function fetchBlob(url){
       const r=await fetch(u,{cache:'no-store'});
       if(!r.ok) throw new Error('HTTP '+r.status);
       return await r.blob();
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr||new Error('fetch failed');
+}
+
+/* === НОВАЯ ФУНКЦИЯ: потоковое скачивание с живым прогрессом === */
+async function fetchBlobWithProgress(url, expectedSize, onProgress){
+  let lastErr=null;
+  for(const u of altUrls(url)){
+    try{
+      const r=await fetch(u,{cache:'no-store'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      if(!r.body){
+        const blob = await r.blob();
+        onProgress(blob.size);
+        return blob;
+      }
+      const reader = r.body.getReader();
+      const chunks = [];
+      let received = 0;
+      while(true){
+        const {done, value} = await reader.read();
+        if(done) break;
+        chunks.push(value);
+        received += value.length;
+        onProgress(Math.min(received, expectedSize));
+      }
+      return new Blob(chunks, {type: r.headers.get('content-type') || 'application/octet-stream'});
     }catch(e){ lastErr=e; }
   }
   throw lastErr||new Error('fetch failed');
@@ -906,19 +930,34 @@ function formatSize(b){
   if(b<1073741824)return (b/1048576).toFixed(2)+' MB';
   return (b/1073741824).toFixed(2)+' GB';
 }
+
+/* === ОБНОВЛЁННАЯ ФУНКЦИЯ: скачивание с живым прогрессом по чанкам === */
 async function downloadMissingResources(onProgress){
   const missing=await getMissingResources();
   let total=0;const sizes={};
   for(const r of missing){sizes[r.id]=await getResourceSize(r.url);total+=sizes[r.id];}
   let downloaded=0;
+  let lastUpdate=0;
+  const throttledProgress=(dl,tot)=>{
+    const now=performance.now();
+    if(now-lastUpdate>80 || dl>=tot){
+      lastUpdate=now;
+      onProgress(dl,tot);
+    }
+  };
   for(const r of missing){
     try{
-      const blob=await fetchBlob(r.url);
+      const startDownloaded = downloaded;
+      const expectedSize = sizes[r.id];
+      const blob=await fetchBlobWithProgress(r.url, expectedSize, (received)=>{
+        downloaded = startDownloaded + received;
+        throttledProgress(downloaded, total);
+      });
       const ok=await resSet(r.id,blob);
       if(ok){
         if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
         if(r.id==='music')musicBlob=blob;
-        downloaded+=blob.size||sizes[r.id];
+        downloaded = startDownloaded + (blob.size || sizes[r.id]);
       }else{
         console.warn('IndexedDB не сохранил ресурс:',r.id);
       }
@@ -1160,7 +1199,6 @@ const winSound=()=>[523,659,784,1046].forEach((f,i)=>tone(f,.18,'triangle',.18,i
 const loseSound=()=>{tone(220,.25,'sawtooth',.07);tone(160,.32,'sawtooth',.07,.13);};
 const jackpotSound=()=>[523,659,784,1046,1318,1568].forEach((f,i)=>{tone(f,.24,'triangle',.2,i*.11);tone(f/2,.24,'square',.05,i*.11);});
 
-/* ================= НАСТРОЙКИ (вместо кнопки звука) ================= */
 const settingsBtn=$('settingsBtn'),settingsModal=$('settingsModal'),soundToggle=$('soundToggle');
 function renderSound(){ soundToggle.checked=!muted; }
 renderSound();
@@ -1529,7 +1567,6 @@ function renderRocketHistory(){
   rocketHistory.forEach(v=>{
     const c=document.createElement('span');c.className='hchip';c.textContent=v.toFixed(2)+'x';
     c.style.cssText=v>=2?'background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(34,197,94,.5)':'background:rgba(255,100,100,.12);color:#ff6b6b;border-color:rgba(255,100,100,.4)';
-    c.appendChild(document.createTextNode(''));
     box.appendChild(c);
   });
 }
@@ -1716,7 +1753,6 @@ function showResult(m,amount){
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
 
 /* ================= МАГАЗИН + КЕЙСЫ С ВИДЕО ================= */
-/* У каждого кейса СВОИ призы и СВОЁ видео открытия */
 const SHOP_ITEMS=[
   {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5', video:'video', prizes:[
     {value:1000,  weight:65, coins:1},
@@ -1725,8 +1761,7 @@ const SHOP_ITEMS=[
     {value:10000, weight:4,  coins:8},
     {value:50000, weight:1,  coins:15}
   ]},
-  /* НОВЫЙ КЕЙС */
-  {id:'keeperCharge', name:'ГиперЗаряд', price:10000, image:'img6', video:'video2', prizes:[
+  {id:'keeperCharge', name:'КиперЗаряд', price:10000, image:'img6', video:'video2', prizes:[
     {value:10000,  weight:65, coins:1},
     {value:20000,  weight:15, coins:3},
     {value:50000,  weight:10, coins:5},
@@ -1823,12 +1858,11 @@ function openCase(item){
 $('caseClose').onclick=closeCaseModal;
 $('caseOpenBtn').onclick=()=>{ openCaseVideo(currentCaseItem); };
 
-/* ---- ОТКРЫТИЕ КЕЙСА: ПОЛНОЭКРАННОЕ ВИДЕО + НАГРАДА С АУРОЙ ---- */
 function openCaseVideo(item){
   if(caseVideoBusy||!item) return;
   if(balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
   caseVideoBusy=true; caseOpening=true;
-  document.body.classList.add('paused'); // ПРАВКА: отключаем фоновые анимации
+  document.body.classList.add('paused');
   balance-=item.price; save(); renderBalance(); checkState();
   const prizes=item.prizes||SHOP_ITEMS[0].prizes;
   const prize=pickCasePrize(prizes);
@@ -1846,16 +1880,16 @@ function openCaseVideo(item){
   const handleEnd=()=>{
     if(endHandled||my!==caseVideoToken) return;
     endHandled=true;
-    setTimeout(()=>{ // +1 сек после конца видео
+    setTimeout(()=>{
       if(my!==caseVideoToken) return;
       $('cvAmount').textContent='+'+prize.value.toLocaleString('ru-RU');
       $('cvChance').textContent='Шанс: '+Math.round(prize.weight/totalW*100)+'%';
-      reward.classList.add('show'); // 3 сек плавное появление (чёрным по светлой ауре)
+      reward.classList.add('show');
       balance+=prize.value; save(); renderBalance();
       haptic(prize.value>=10000?'heavy':'success'); winSound();
       if(prize.value>=50000){ spawnConfetti(190,true); jackpotSound(); }
       else if(prize.value>=5000){ spawnConfetti(90); }
-      setTimeout(()=>{ // после появления — кнопки
+      setTimeout(()=>{
         if(my!==caseVideoToken) return;
         btns.classList.add('show');
         caseVideoBusy=false; caseOpening=false;
@@ -1872,13 +1906,13 @@ function openCaseVideo(item){
     vid.currentTime=0;
     const p=vid.play();
     if(p&&p.catch)p.catch(()=>setTimeout(handleEnd,1000));
-    setTimeout(handleEnd,6000); // страховка: видео ~5 сек
+    setTimeout(handleEnd,6000);
   });
 }
 
 $('cvOk').onclick=()=>{
   caseVideoToken++;
-  document.body.classList.remove('paused'); // ПРАВКА: включаем фоновые анимации обратно
+  document.body.classList.remove('paused');
   const ov=$('caseVideoOverlay'),vid=$('caseVideo');
   ov.classList.remove('show');
   try{ vid.pause(); vid.removeAttribute('src'); vid.load(); }catch(e){}
@@ -1887,7 +1921,7 @@ $('cvOk').onclick=()=>{
 };
 $('cvMore').onclick=()=>{
   caseVideoToken++;
-  document.body.classList.remove('paused'); // ПРАВКА: включаем фоновые анимации обратно
+  document.body.classList.remove('paused');
   $('caseVideoOverlay').classList.remove('show');
   haptic('light');
   openCaseVideo(currentCaseItem);
@@ -1898,7 +1932,7 @@ $('caseModal').onclick=(e)=>{
 };
 
 /* ==================================================================
-   SPLASH (СРОЧНЫЕ РЕСУРСЫ) + ЗАГРУЗОЧНИК (РЕСУРСЫ ИГРЫ) + РЕСТАРТ
+   SPLASH + ЗАГРУЗОЧНИК + РЕСТАРТ
 ================================================================== */
 let appLoaded=false, loaderBusy=false, hiddenAt=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -1917,7 +1951,6 @@ function showSplash(){
   
   (async()=>{
     const keys=await resKeys();
-    /* СРОЧНЫЕ (splash) — img6 и video2 сюда НЕ входят, они качаются на загрузочном экране */
     const URGENT=['splash','music','img1','img2','img3','img4','img5'];
     const missing=RESOURCE_LIST.filter(r=>!keys.includes(r.id)&&URGENT.includes(r.id));
     const ordered=[...missing.filter(r=>r.id==='music'),...missing.filter(r=>r.id!=='music')];
@@ -1951,7 +1984,7 @@ function showSplash(){
 
 async function runLoader(mode){
   if(loaderBusy)return;
-  document.body.classList.remove('paused'); // ПРАВКА: страховка — снимаем паузу при любом рестарте
+  document.body.classList.remove('paused');
   loaderBusy=true;
   const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
   loader.classList.remove('done');
@@ -1975,7 +2008,6 @@ async function runLoader(mode){
     },80);
   });
 
-  // РЕСУРСЫ ИГРЫ: проверка ВСЕГО (включая видео и новые ресурсы Кейса «КиперЗаряд»)
   const missing=await getMissingResources();
   if(missing.length){
     let totalSize=0;
@@ -2035,7 +2067,7 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 /* ==================================================================
-   FIX HELPER — ПРОВЕРКА И ПОЧИНКА РЕСУРСОВ (из настроек)
+   FIX HELPER
 ================================================================== */
 let fixBusy=false;
 const fixNotif=$('fixNotification');
@@ -2051,11 +2083,9 @@ function showFixNotification(title,text,onClose){
   };
 }
 
-/* проверка целостности ресурса (битый ли файл) */
 async function validateResource(r,blob){
   if(!blob||blob.size===0)return false;
   if(r.id==='splash'||r.id.indexOf('img')===0){
-    // картинки проверяем декодом
     return await new Promise(res=>{
       const u=URL.createObjectURL(blob);
       const im=new Image();
@@ -2065,7 +2095,6 @@ async function validateResource(r,blob){
       im.src=u;
     });
   }
-  // музыка/видео — по минимальному размеру (video, video2 и т.д.)
   const min=r.id==='music'?50000:r.id.indexOf('video')===0?100000:1000;
   return blob.size>=min;
 }
@@ -2083,7 +2112,7 @@ async function runFixHelper(){
   loader.style.cssText='';
   lbSize.style.display='none';
   fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
-  startLoaderMusic(); // музыка как у загрузочного экрана
+  startLoaderMusic();
   applyResourceImages();
   const setProg=p=>{
     const q=Math.min(100,Math.max(0,p));
@@ -2091,11 +2120,9 @@ async function runFixHelper(){
     pct.textContent=`(${q.toFixed(2).padStart(5,'0')}%)`;
   };
 
-  /* ---- 0-10% : Инициализация Fix Helper ---- */
   msg.textContent='// Инициализация Fix Helper';
   for(let p=0;p<=10;p++){ setProg(p); await sleep(45); }
 
-  /* ---- 10-65% : Проверка на битые файлы ---- */
   msg.textContent='// Проверка на битые файлы';
   const keys=await resKeys();
   const present=RESOURCE_LIST.filter(r=>keys.includes(r.id));
@@ -2104,7 +2131,6 @@ async function runFixHelper(){
     const blob=await resGet(r.id);
     const ok=await validateResource(r,blob);
     if(!ok){
-      // автоматическая починка: удаляем битый — он скачается заново
       await resDelete(r.id);
       if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
       if(r.id==='music')musicBlob=null;
@@ -2115,14 +2141,12 @@ async function runFixHelper(){
   }
   if(!present.length){ for(let p=10;p<=65;p+=5){ setProg(p); await sleep(40); } }
 
-  /* ---- 65-100% : Проверка на наличие файлов игры ---- */
   msg.textContent='// Проверка на наличие файлов игры';
   for(let p=65;p<=100;p++){ setProg(p); await sleep(35); }
   const keys2=await resKeys();
   const missing=RESOURCE_LIST.filter(r=>!keys2.includes(r.id));
   await sleep(400);
 
-  /* ---- ВСЁ ХОРОШО ---- */
   if(!missing.length){
     showFixNotification('Все хорошо','Мы не обнаружили битые/недостоющие ресурсы игры,можете продолжить играть',()=>{
       loader.classList.add('done');
@@ -2132,7 +2156,6 @@ async function runFixHelper(){
     return;
   }
 
-  /* ---- НЕХВАТАЕТ РЕСУРСОВ: скачивание ---- */
   let totalSize=0;
   for(const r of missing) totalSize+=await getResourceSize(r.url);
   $('lnSize').textContent=formatSize(totalSize);
@@ -2152,7 +2175,6 @@ async function runFixHelper(){
   await sleep(600);
   lbSize.style.display='none';
 
-  /* загрузка завершается → главное меню → окно "Все хорошо" */
   loader.classList.add('done');
   document.getElementById('app').classList.add('ready');
   applyResourceImages();
@@ -2170,4 +2192,4 @@ showSplash();
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
 </script>
 </body>
-  </html>
+</html>
