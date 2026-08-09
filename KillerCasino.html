@@ -16,7 +16,23 @@
 
   body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
 
-  /* ================= SPLASH ЭКРАН ================= */
+  /* === SHUQ & MUQ VISUAL EFFECTS === */
+  body.shuq-low .app, body.shuq-low #splash img, body.shuq-low video {
+    filter: contrast(1.05) saturate(1.1) brightness(1.02);
+    image-rendering: -webkit-optimize-contrast;
+  }
+  body.shuq-med .app, body.shuq-med #splash img, body.shuq-med video {
+    filter: contrast(1.1) saturate(1.15) brightness(1.05) drop-shadow(0 0 1px rgba(255,255,255,0.1));
+    image-rendering: high-quality;
+  }
+  body.shuq-high .app, body.shuq-high #splash img, body.shuq-high video {
+    filter: contrast(1.15) saturate(1.2) brightness(1.08) drop-shadow(0 0 2px rgba(255,255,255,0.15));
+    transform: translateZ(0);
+  }
+  body.muq-active .app, body.muq-active #splash img, body.muq-active video {
+    filter: contrast(1.08) saturate(1.12) brightness(1.03);
+  }
+
   #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
     transition:opacity .3s;pointer-events:none}
   #splash.hidden{opacity:0}
@@ -30,7 +46,6 @@
   body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit:contain}
   body.is-android #caseVideo{object-fit:contain}
 
-  /* ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= */
   #loader{position:fixed;inset:0;z-index:200;background:#f2f2f3;overflow:hidden;transition:opacity .6s,visibility .6s}
   #loader.done{opacity:0;visibility:hidden}
   #loader::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -307,8 +322,29 @@
     border:1px solid rgba(168,85,247,.45);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(124,58,237,.25);
     transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
   .modal.show .pm-card{transform:scale(1)}
-  .pm-close{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:12px;border:1px solid rgba(139,92,246,.35);
-    background:rgba(30,15,60,.6);color:#e9d5ff;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  
+  /* FIXED CLOSE BUTTON STYLES */
+  .pm-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    border:1px solid rgba(139,92,246,.35);
+    background:rgba(30,15,60,.6);
+    color:#e9d5ff;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:10;
+    transition: transform .1s, background .2s;
+  }
+  .pm-close:active{transform:scale(0.9);}
+  .pm-close:hover{background:rgba(139,92,246,.2);}
+
   .pm-id{position:absolute;top:20px;left:16px;font-size:11px;color:#8b7bb8}
   .pm-id b{color:#c4b5fd}
   .pm-avatar{width:110px;height:110px;border-radius:50%;margin:4px auto 12px;overflow:hidden;
@@ -326,7 +362,6 @@
   .pm-row .k{color:#8b7bb8;width:56px;flex:none}
   .pm-row .v{color:#e9d5ff;font-weight:600;word-break:break-all}
 
-  /* ================= НАСТРОЙКИ ================= */
   .settings-card{padding:26px 20px 20px;text-align:left}
   .settings-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
     background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -335,6 +370,7 @@
     background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom:14px}
   .set-name{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:800;color:#e9d5ff}
   .set-name i{color:#c084fc;width:18px;text-align:center}
+  
   .ios-switch{position:relative;display:inline-block;flex:none;cursor:pointer}
   .ios-switch input{display:none}
   .ios-track{display:block;width:51px;height:31px;border-radius:31px;background:#39393d;transition:background .25s;position:relative}
@@ -342,10 +378,28 @@
     box-shadow:0 3px 8px rgba(0,0,0,.35);transition:left .25s cubic-bezier(.3,1.2,.4,1)}
   .ios-switch input:checked+.ios-track{background:#34c759}
   .ios-switch input:checked+.ios-track::after{left:22px}
-  .set-section{padding:14px;border-radius:14px;background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2)}
+  
+  .shuq-switch input:checked+.ios-track{
+    background:linear-gradient(135deg,#ef4444,#dc2626,#991b1b);
+    background-size:200% 200%;
+    animation:shuqGradient 3s ease infinite;
+    box-shadow:0 0 15px rgba(239,68,68,.6);
+  }
+  @keyframes shuqGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+  .set-section{padding:14px;border-radius:14px;background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom:14px}
+  .set-section.disabled{opacity:0.5;pointer-events:none;filter:grayscale(1)}
   .set-section-title{font-size:14px;font-weight:800;color:#e9d5ff;display:flex;align-items:center;gap:10px;margin-bottom:8px}
   .set-section-title i{color:#c084fc;width:18px;text-align:center}
   .set-desc{font-size:11.5px;color:#8b7bb8;line-height:1.6;margin-bottom:14px}
+  
+  .shuq-modes{display:flex;gap:8px;margin-top:12px;overflow:hidden;max-height:0;opacity:0;transition:all .4s ease}
+  .shuq-modes.visible{max-height:60px;opacity:1;margin-bottom:4px}
+  .shuq-mode-btn{flex:1;padding:8px 4px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.1);
+    border-radius:8px;color:#fca5a5;font-size:11px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s}
+  .shuq-mode-btn.active{background:rgba(239,68,68,.8);color:#fff;border-color:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.4)}
+  .shuq-mode-btn span{display:block;font-size:9px;opacity:.7;margin-top:2px}
+
   .scanfix-btn{width:100%;padding:14px;border:none;border-radius:14px;cursor:pointer;font-family:'Unbounded';
     font-weight:700;font-size:14px;letter-spacing:.06em;color:#fff;
     background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 8px 24px rgba(124,58,237,.4);transition:transform .15s}
@@ -392,7 +446,6 @@
     display:flex;align-items:center;justify-content:center;gap:6px}
   .shop-item-price i{font-size:12px}
 
-  /* ================= ОТКРЫТИЕ КЕЙСА (БЕЗ КРУТИЛКИ) ================= */
   .case-modal{position:fixed;inset:0;z-index:100;background:rgba(5,2,10,.92);backdrop-filter:blur(14px);
     display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;padding:20px 0}
   .case-modal.show{opacity:1;pointer-events:auto}
@@ -415,7 +468,6 @@
   .case-open-btn:disabled{filter:grayscale(.6) brightness(.65);animation:none;cursor:default}
   @keyframes btnPulseRed{0%,100%{box-shadow:0 8px 26px rgba(220,38,38,.45)}50%{box-shadow:0 8px 46px rgba(239,68,68,.8)}}
 
-  /* ================= ШАНСЫ КЕЙСА ================= */
   .case-chances{margin-top:20px;padding:14px;border-radius:14px;
     background:rgba(30,15,60,.6);border:1px solid rgba(255,60,60,.3);
     box-shadow:inset 0 0 20px rgba(0,0,0,.4)}
@@ -439,7 +491,6 @@
   .chance-percent{font-family:'Unbounded';font-weight:800;font-size:14px;color:#ff6b6b;
     text-shadow:0 0 10px rgba(255,60,60,.6);min-width:45px;text-align:right}
 
-  /* ================= ВИДЕО ОТКРЫТИЯ КЕЙСА ================= */
   #caseVideoOverlay{position:fixed;inset:0;z-index:150;background:#000;
     display:none;align-items:center;justify-content:center}
   #caseVideoOverlay.show{display:flex}
@@ -467,14 +518,12 @@
 </head>
 <body>
 
-<!-- ================= SPLASH ================= -->
 <div id="splash">
   <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png" alt="" data-resource="splash">
 </div>
 
 <canvas id="confetti"></canvas>
 
-<!-- ================= ЗАГРУЗОЧНЫЙ ЭКРАН ================= -->
 <div id="loader">
   <div class="shot shot1"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png" alt="" data-resource="img1"></div>
   <div class="shot shot2"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt="" data-resource="img2"></div>
@@ -496,7 +545,7 @@
     </div>
     <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
-      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.1_K8097503_E8083963</span>
+      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.2_K8097503_E8083964</span>
       <div class="lb-progress"><i id="lbFill"></i></div>
     </div>
   </div>
@@ -509,7 +558,6 @@
   <button class="ln-btn" id="lnBtn">УСТАНОВИТЬ</button>
 </div>
 
-<!-- ================= УВЕДОМЛЕНИЕ FIX HELPER ================= -->
 <div class="loader-notification" id="fixNotification">
   <div class="ln-icon ok"><i class="fa-solid fa-check"></i></div>
   <div class="ln-title" id="fixTitle">Все хорошо</div>
@@ -683,7 +731,6 @@
   <button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
 </div>
 
-<!-- ================= МОДАЛКА ПРОФИЛЯ ================= -->
 <div class="modal" id="profileModal">
   <div class="pm-card">
     <div class="pm-id">ID: <b id="pmId">—</b></div>
@@ -699,15 +746,41 @@
   </div>
 </div>
 
-<!-- ================= НАСТРОЙКИ ================= -->
 <div class="modal" id="settingsModal">
   <div class="pm-card settings-card">
     <button class="pm-close" id="settingsClose"><i class="fa-solid fa-xmark"></i></button>
     <div class="settings-title">НАСТРОЙКИ</div>
+    
     <div class="set-row">
       <div class="set-name"><i class="fa-solid fa-volume-high"></i>Звук</div>
       <label class="ios-switch"><input type="checkbox" id="soundToggle"><span class="ios-track"></span></label>
     </div>
+
+    <!-- SHUQ Section (Non-Android) -->
+    <div class="set-section" id="shuqSection">
+      <div class="set-section-title"><i class="fa-solid fa-wand-magic-sparkles"></i>SHUQ-Super High Upscaler Quality</div>
+      <div class="set-desc">Включите технологию сглаживания от MrFeastProject для повышения качества изображения или же для повышения FPS</div>
+      <div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
+        <div class="set-name" style="font-size:13px">Активировать SHUQ</div>
+        <label class="ios-switch shuq-switch"><input type="checkbox" id="shuqToggle"><span class="ios-track"></span></label>
+      </div>
+      <div class="shuq-modes" id="shuqModes">
+        <div class="shuq-mode-btn" data-mode="low">Low<span>2K Scale</span></div>
+        <div class="shuq-mode-btn" data-mode="med">Medium<span>4K Scale</span></div>
+        <div class="shuq-mode-btn" data-mode="high">High<span>8K Scale</span></div>
+      </div>
+    </div>
+
+    <!-- MUQ Section (Android Only) -->
+    <div class="set-section" id="muqSection" style="display:none">
+      <div class="set-section-title"><i class="fa-solid fa-mobile-screen"></i>MUQ-Medium Upscaler Quality</div>
+      <div class="set-desc">Технология повышения качества для Android и IOS устройств</div>
+      <div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
+        <div class="set-name" style="font-size:13px">Активировать MUQ</div>
+        <label class="ios-switch"><input type="checkbox" id="muqToggle"><span class="ios-track"></span></label>
+      </div>
+    </div>
+
     <div class="set-section">
       <div class="set-section-title"><i class="fa-solid fa-screwdriver-wrench"></i>Проверка и починка ресурсов игры</div>
       <div class="set-desc">Проверьте ресурсов игры и нахождение сломанных ресурсов и их автоматическая починка,а так-же скачивание нехватающих ресурсов</div>
@@ -716,7 +789,6 @@
   </div>
 </div>
 
-<!-- ================= ОТКРЫТИЕ КЕЙСА ================= -->
 <div class="case-modal" id="caseModal">
   <div class="case-container">
     <button class="case-close" id="caseClose"><i class="fa-solid fa-xmark"></i></button>
@@ -730,7 +802,6 @@
   </div>
 </div>
 
-<!-- ================= ВИДЕО ОТКРЫТИЯ КЕЙСА ================= -->
 <div id="caseVideoOverlay">
   <video id="caseVideo" playsinline></video>
   <div class="cv-reward" id="cvReward">
@@ -743,7 +814,6 @@
   </div>
 </div>
 
-<!-- Результат -->
 <div class="overlay" id="resultOverlay">
   <div class="result-card">
     <div class="result-icon"><i class="fa-solid fa-sack-dollar" id="resIcon"></i></div>
@@ -752,7 +822,6 @@
     <div class="result-sub" id="resSub">ВЫИГРЫШ</div>
   </div>
 </div>
-<!-- Джекпот -->
 <div class="overlay" id="jackpotOverlay">
   <div class="result-card">
     <div class="jackpot-title"><i class="fa-solid fa-fire"></i> ДЖЕКПОТ <i class="fa-solid fa-fire"></i></div>
@@ -765,7 +834,9 @@
 <script>
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){} }
-if(/Android/.test(navigator.userAgent)) document.body.classList.add('is-android');
+const isAndroid = /Android/.test(navigator.userAgent);
+if(isAndroid) document.body.classList.add('is-android');
+
 function haptic(t){ try{ if(!tg||!tg.HapticFeedback)return;
   if(t==='success'||t==='error') tg.HapticFeedback.notificationOccurred(t); else tg.HapticFeedback.impactOccurred(t); }catch(e){} }
 
@@ -775,7 +846,7 @@ function fsHandler(){ if(document.fullscreenElement){window.removeEventListener(
 if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventListener('pointerdown',fsHandler); }
 
 /* ==================================================================
-   INDEXEDDB — ХРАНИЛИЩЕ РЕСУРСОВ
+   INDEXEDDB & RESOURCE MANAGER (OPTIMIZED)
 ================================================================== */
 const RESOURCE_LIST=[
   {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
@@ -787,9 +858,25 @@ const RESOURCE_LIST=[
   {id:'music',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Protocol%20Flow%20%20%20Metal%20Scar%20Radio%20Hybrid%20(1).m4a'},
   {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'},
   {id:'img6', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260809_011439496.jpg'},
-  {id:'video2',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/a9ad66d1-f321-441a-9e60-dc63c054628f.mp4'}
+  {id:'video2',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/a9ad66d1-f321-441a-9e60-dc63c054628f.mp4'},
+  /* === ОЗВУЧКА: ТОЧНЫЙ РАЗМЕР 20489598 === */
+  {id:'voice1', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice1.txt', size: 20489598},
+  {id:'voice2', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice2.txt', size: 20489598},
+  {id:'voice3', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice3.txt', size: 20489598},
+  {id:'voice4', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice4.txt', size: 20489598},
+  {id:'voice5', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice5.txt', size: 20489598},
+  {id:'voice6', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice6.txt', size: 20489598},
+  {id:'voice7', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice7.txt', size: 20489598},
+  {id:'voice8', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice8.txt', size: 20489598},
+  {id:'voice9', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice9.txt', size: 20489598},
+  {id:'voice10',url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice10.txt', size: 20489598}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
+
+// Отдельное хранилище индекса готовности ресурсов
+const DB_NAME = 'KillerCasinoResources';
+const STORE_RESOURCES = 'resources';
+const STORE_INDEX = 'resource_index'; // Флаг готовности
 
 function altUrls(u){
   const list=[u];
@@ -801,6 +888,7 @@ function altUrls(u){
   }
   return list;
 }
+
 async function fetchBlob(url){
   let lastErr=null;
   for(const u of altUrls(url)){
@@ -813,8 +901,7 @@ async function fetchBlob(url){
   throw lastErr||new Error('fetch failed');
 }
 
-/* === НОВАЯ ФУНКЦИЯ: потоковое скачивание с живым прогрессом === */
-async function fetchBlobWithProgress(url, expectedSize, onProgress){
+async function fetchBlobWithProgress(url, expectedSize, onChunk){
   let lastErr=null;
   for(const u of altUrls(url)){
     try{
@@ -822,7 +909,7 @@ async function fetchBlobWithProgress(url, expectedSize, onProgress){
       if(!r.ok) throw new Error('HTTP '+r.status);
       if(!r.body){
         const blob = await r.blob();
-        onProgress(blob.size);
+        onChunk(blob.size);
         return blob;
       }
       const reader = r.body.getReader();
@@ -833,7 +920,7 @@ async function fetchBlobWithProgress(url, expectedSize, onProgress){
         if(done) break;
         chunks.push(value);
         received += value.length;
-        onProgress(Math.min(received, expectedSize));
+        onChunk(received);
       }
       return new Blob(chunks, {type: r.headers.get('content-type') || 'application/octet-stream'});
     }catch(e){ lastErr=e; }
@@ -845,55 +932,67 @@ let _db=null;
 function idb(){
   if(_db)return Promise.resolve(_db);
   return new Promise((res,rej)=>{
-    const rq=indexedDB.open('KillerCasinoResources',1);
-    rq.onupgradeneeded=()=>{ if(!rq.result.objectStoreNames.contains('resources')) rq.result.createObjectStore('resources'); };
+    const rq=indexedDB.open(DB_NAME, 2); // Версия 2 для поддержки store_index
+    rq.onupgradeneeded=(e)=>{ 
+      const db = rq.result;
+      if(!db.objectStoreNames.contains(STORE_RESOURCES)) db.createObjectStore(STORE_RESOURCES); 
+      if(!db.objectStoreNames.contains(STORE_INDEX)) db.createObjectStore(STORE_INDEX);
+    };
     rq.onsuccess=()=>{_db=rq.result;res(_db);};
     rq.onerror=()=>rej(rq.error);
   });
 }
+
 async function resKeys(){
   try{
     const db=await idb();
     return await new Promise(res=>{
-      const rq=db.transaction('resources','readonly').objectStore('resources').getAllKeys();
+      const rq=db.transaction(STORE_INDEX,'readonly').objectStore(STORE_INDEX).getAllKeys();
       rq.onsuccess=()=>res(rq.result||[]);
       rq.onerror=()=>res([]);
     });
   }catch(e){return [];}
 }
+
 async function resGet(id){
   try{
     const db=await idb();
     return await new Promise(res=>{
-      const rq=db.transaction('resources','readonly').objectStore('resources').get(id);
+      const rq=db.transaction(STORE_RESOURCES,'readonly').objectStore(STORE_RESOURCES).get(id);
       rq.onsuccess=()=>res(rq.result||null);
       rq.onerror=()=>res(null);
     });
   }catch(e){return null;}
 }
+
+// Атомарная запись: сначала blob, потом флаг готовности
 async function resSet(id,blob){
   try{
     const db=await idb();
     return await new Promise(res=>{
-      const tx=db.transaction('resources','readwrite');
-      tx.objectStore('resources').put(blob,id);
+      const tx=db.transaction([STORE_RESOURCES, STORE_INDEX],'readwrite');
+      tx.objectStore(STORE_RESOURCES).put(blob,id);
+      tx.objectStore(STORE_INDEX).put(true, id); // Флаг готовности
       tx.oncomplete=()=>res(true);
       tx.onerror=()=>res(false);
       tx.onabort=()=>res(false);
     });
   }catch(e){return false;}
 }
+
 async function resDelete(id){
   try{
     const db=await idb();
     return await new Promise(res=>{
-      const tx=db.transaction('resources','readwrite');
-      tx.objectStore('resources').delete(id);
+      const tx=db.transaction([STORE_RESOURCES, STORE_INDEX],'readwrite');
+      tx.objectStore(STORE_RESOURCES).delete(id);
+      tx.objectStore(STORE_INDEX).delete(id);
       tx.oncomplete=()=>res(true);
       tx.onerror=()=>res(false);
     });
   }catch(e){return false;}
 }
+
 const urlCache={};
 async function getResourceURL(id){
   if(urlCache[id])return urlCache[id];
@@ -901,6 +1000,7 @@ async function getResourceURL(id){
   if(blob){urlCache[id]=URL.createObjectURL(blob);return urlCache[id];}
   return RESOURCE_MAP[id]?RESOURCE_MAP[id].url:'';
 }
+
 async function applyResourceImages(){
   const els=document.querySelectorAll('[data-resource]');
   for(const el of els){
@@ -910,20 +1010,28 @@ async function applyResourceImages(){
     if(u)el.src=u;
   }
 }
+
 async function getMissingResources(){
   const keys=await resKeys();
   return RESOURCE_LIST.filter(r=>!keys.includes(r.id));
 }
-async function getResourceSize(url){
-  for(const u of altUrls(url)){
+
+// Жесткая таблица размеров + динамический пересчет total
+async function getResourceSize(resObj){
+  if(resObj.size) return resObj.size; // Приоритет жесткому размеру
+  
+  for(const u of altUrls(resObj.url)){
     try{
       const r=await fetch(u,{method:'HEAD'});
       const len=parseInt(r.headers.get('content-length')||'0',10);
       if(len>0)return len;
     }catch(e){}
   }
-  return url.includes('.m4a')?3000000: url.includes('.mp4')?6000000:300000;
+  // Fallback для старых записей без size
+  if(resObj.url.includes('/200MB/')&&resObj.url.includes('Voice')) return 20489598;
+  return resObj.url.includes('.m4a')?3000000: resObj.url.includes('.mp4')?6000000:300000;
 }
+
 function formatSize(b){
   if(b<1024)return b.toFixed(0)+' B';
   if(b<1048576)return (b/1024).toFixed(1)+' KB';
@@ -931,45 +1039,69 @@ function formatSize(b){
   return (b/1073741824).toFixed(2)+' GB';
 }
 
-/* === ОБНОВЛЁННАЯ ФУНКЦИЯ: скачивание с живым прогрессом по чанкам === */
+// Единая функция отрисовки прогресса
+function paintProgress(dl, tot, fillEl, pctEl, sizeEl, force=false){
+  const p = tot > 0 ? Math.min(100, (dl / tot) * 100) : 100;
+  fillEl.style.transform = `scaleX(${p/100})`;
+  pctEl.textContent = `(${p.toFixed(2).padStart(5,'0')}%)`;
+  if(sizeEl) sizeEl.textContent = `${formatSize(dl)} / ${formatSize(tot)}`;
+}
+
 async function downloadMissingResources(onProgress){
   const missing=await getMissingResources();
-  let total=0;const sizes={};
-  for(const r of missing){sizes[r.id]=await getResourceSize(r.url);total+=sizes[r.id];}
+  if(!missing.length) { onProgress(0,0,true); return; }
+
+  let totalExpected=0;
+  const sizes={};
+  for(const r of missing){
+    sizes[r.id] = await getResourceSize(r);
+    totalExpected += sizes[r.id];
+  }
+  
   let downloaded=0;
   let lastUpdate=0;
-  const throttledProgress=(dl,tot)=>{
-    const now=performance.now();
-    if(now-lastUpdate>80 || dl>=tot){
-      lastUpdate=now;
-      onProgress(dl,tot);
-    }
-  };
+  
+  // Принудительный старт с 0
+  onProgress(0, totalExpected);
+
   for(const r of missing){
     try{
       const startDownloaded = downloaded;
       const expectedSize = sizes[r.id];
+      
       const blob=await fetchBlobWithProgress(r.url, expectedSize, (received)=>{
+        // Динамический пересчет total если реальный размер больше ожидаемого
+        if(received > expectedSize){
+          const diff = received - expectedSize;
+          totalExpected += diff;
+          sizes[r.id] = received;
+        }
+        
         downloaded = startDownloaded + received;
-        throttledProgress(downloaded, total);
+        const now = performance.now();
+        if(now - lastUpdate > 80){
+          lastUpdate = now;
+          onProgress(downloaded, totalExpected);
+        }
       });
+      
       const ok=await resSet(r.id,blob);
       if(ok){
         if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
         if(r.id==='music')musicBlob=blob;
-        downloaded = startDownloaded + (blob.size || sizes[r.id]);
+        // Финализация размера файла после скачивания
+        downloaded = startDownloaded + blob.size;
       }else{
         console.warn('IndexedDB не сохранил ресурс:',r.id);
       }
     }catch(e){
       console.warn('Ресурс не скачался:',r.id,e);
     }
-    onProgress(downloaded,total);
   }
-  onProgress(downloaded,total);
+  // Принудительный финиш 100%
+  onProgress(totalExpected, totalExpected, true);
 }
 
-/* ================= МУЗЫКА ЗАГРУЗЧИКА ================= */
 let loaderMusic=null, musicBlob=null;
 
 function tryPlay(a){ try{ const p=a.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){} }
@@ -1020,7 +1152,6 @@ function stopLoaderMusic(){
   if(loaderMusic){ try{loaderMusic.pause();}catch(e){} loaderMusic=null; }
 }
 
-/* ================= ПРОФИЛЬ ================= */
 const TG_USER = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
 function detectOS(){
   const ua=navigator.userAgent; let m;
@@ -1057,7 +1188,6 @@ document.getElementById('profileBtn').onclick=()=>{profileModal.classList.add('s
 document.getElementById('pmClose').onclick=()=>profileModal.classList.remove('show');
 profileModal.onclick=e=>{if(e.target===profileModal)profileModal.classList.remove('show');};
 
-/* ================= ДАННЫЕ ================= */
 const SEGMENTS=[
   {m:0,  icon:'\uf54c', label:'x0',   color:'#161022'},
   {m:1,  icon:'\uf005', label:'x1',   color:'#33205c'},
@@ -1206,6 +1336,77 @@ settingsBtn.onclick=()=>{ settingsModal.classList.add('show'); haptic('light'); 
 $('settingsClose').onclick=()=>settingsModal.classList.remove('show');
 settingsModal.onclick=e=>{ if(e.target===settingsModal) settingsModal.classList.remove('show'); };
 soundToggle.onchange=()=>{ muted=!soundToggle.checked; localStorage.setItem('kc_muted',muted?'1':'0'); haptic('light'); };
+
+/* ==================================================================
+   SHUQ & MUQ SETTINGS LOGIC
+================================================================== */
+const shuqSection=$('shuqSection'), muqSection=$('muqSection');
+const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
+const shuqModes=$('shuqModes');
+const shuqModeBtns=document.querySelectorAll('.shuq-mode-btn');
+
+// Platform detection logic for settings
+if(isAndroid){
+  shuqSection.classList.add('disabled');
+  muqSection.style.display='block';
+} else {
+  shuqSection.classList.remove('disabled');
+  muqSection.style.display='none';
+}
+
+function applyGraphicsSettings(){
+  const shuqOn = !isAndroid && shuqToggle.checked;
+  const muqOn = isAndroid && muqToggle.checked;
+  const shuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
+
+  // Reset classes
+  document.body.classList.remove('shuq-low','shuq-med','shuq-high','muq-active');
+
+  if(shuqOn){
+    document.body.classList.add(`shuq-${shuqMode}`);
+  } else if(muqOn){
+    document.body.classList.add('muq-active');
+  }
+
+  // Save state
+  localStorage.setItem('kc_shuq', shuqToggle.checked?'1':'0');
+  localStorage.setItem('kc_muq', muqToggle.checked?'1':'0');
+}
+
+// Init toggles from storage
+shuqToggle.checked = localStorage.getItem('kc_shuq')==='1';
+muqToggle.checked = localStorage.getItem('kc_muq')==='1';
+let savedShuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
+
+// SHUQ Mode Selection UI Logic
+function updateShuqUI(){
+  if(shuqToggle.checked){
+    shuqModes.classList.add('visible');
+  } else {
+    shuqModes.classList.remove('visible');
+  }
+  shuqModeBtns.forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.mode === savedShuqMode);
+  });
+}
+updateShuqUI();
+
+shuqToggle.onchange = ()=>{ haptic('light'); updateShuqUI(); applyGraphicsSettings(); };
+muqToggle.onchange = ()=>{ haptic('light'); applyGraphicsSettings(); };
+
+shuqModeBtns.forEach(btn=>{
+  btn.onclick = ()=>{
+    if(!shuqToggle.checked) return;
+    savedShuqMode = btn.dataset.mode; // Update local var immediately
+    localStorage.setItem('kc_shuq_mode', savedShuqMode);
+    updateShuqUI(); // Force UI update
+    applyGraphicsSettings();
+    haptic('light');
+  };
+});
+
+// Apply on load
+applyGraphicsSettings();
 
 const cv=$('confetti'),cctx=cv.getContext('2d');let parts=[],confAnim=null;
 function spawnConfetti(n,gold){
@@ -1752,7 +1953,6 @@ function showResult(m,amount){
 
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
 
-/* ================= МАГАЗИН + КЕЙСЫ С ВИДЕО ================= */
 const SHOP_ITEMS=[
   {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5', video:'video', prizes:[
     {value:1000,  weight:65, coins:1},
@@ -1761,7 +1961,7 @@ const SHOP_ITEMS=[
     {value:10000, weight:4,  coins:8},
     {value:50000, weight:1,  coins:15}
   ]},
-  {id:'keeperCharge', name:'КиперЗаряд', price:10000, image:'img6', video:'video2', prizes:[
+  {id:'keeperCharge', name:'ГиперЗаряд', price:10000, image:'img6', video:'video2', prizes:[
     {value:10000,  weight:65, coins:1},
     {value:20000,  weight:15, coins:3},
     {value:50000,  weight:10, coins:5},
@@ -1931,9 +2131,6 @@ $('caseModal').onclick=(e)=>{
   if(e.target===$('caseModal')&&!caseOpening){ closeCaseModal(); }
 };
 
-/* ==================================================================
-   SPLASH + ЗАГРУЗОЧНИК + РЕСТАРТ
-================================================================== */
 let appLoaded=false, loaderBusy=false, hiddenAt=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -2011,7 +2208,7 @@ async function runLoader(mode){
   const missing=await getMissingResources();
   if(missing.length){
     let totalSize=0;
-    for(const r of missing) totalSize+=await getResourceSize(r.url);
+    for(const r of missing) totalSize+=await getResourceSize(r);
     $('lnSize').textContent=formatSize(totalSize);
     $('loaderNotification').classList.add('show');
     await new Promise(res=>{ $('lnBtn').onclick=res; });
@@ -2028,18 +2225,20 @@ async function runLoader(mode){
     lbSize.textContent='0 B / 0 B';
 
     await downloadMissingResources((dl,tot)=>{
-      const p=tot?Math.min(100,dl/tot*100):100;
-      lbSize.textContent=`${formatSize(dl)} / ${formatSize(tot)}`;
-      fill.style.transform=`scaleX(${p/100})`;
-      pct.textContent=`(${p.toFixed(2).padStart(5,'0')}%)`;
+      paintProgress(dl, tot, fill, pct, lbSize);
     });
-    await sleep(600);
+    
+    // Убран лишний sleep и повторный runLoader - переход сразу
     lbSize.style.display='none';
     loader.style.opacity='0';
-    await sleep(500);
-    loader.style.cssText='';
+    await sleep(500); // Минимальная пауза для визуального завершения
+    loader.classList.add('done');
+    document.getElementById('app').classList.add('ready');
+    applyResourceImages();
+    renderShop();
+    appLoaded=true;
     loaderBusy=false;
-    await runLoader('normal');
+    stopLoaderMusic();
     return;
   }
 
@@ -2066,9 +2265,6 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
-/* ==================================================================
-   FIX HELPER
-================================================================== */
 let fixBusy=false;
 const fixNotif=$('fixNotification');
 function showFixNotification(title,text,onClose){
@@ -2094,6 +2290,10 @@ async function validateResource(r,blob){
       im.onerror=()=>{clearTimeout(to);URL.revokeObjectURL(u);res(false);};
       im.src=u;
     });
+  }
+  /* voice/sig txt-файлы: минимальный размер 10 байт (пустые/битые — в баню) */
+  if(r.id.indexOf('voice')===0||r.id.indexOf('sig')===0){
+    return blob.size>=10;
   }
   const min=r.id==='music'?50000:r.id.indexOf('video')===0?100000:1000;
   return blob.size>=min;
@@ -2157,7 +2357,7 @@ async function runFixHelper(){
   }
 
   let totalSize=0;
-  for(const r of missing) totalSize+=await getResourceSize(r.url);
+  for(const r of missing) totalSize+=await getResourceSize(r);
   $('lnSize').textContent=formatSize(totalSize);
   $('loaderNotification').classList.add('show');
   await new Promise(res=>{ $('lnBtn').onclick=res; });
@@ -2168,13 +2368,11 @@ async function runFixHelper(){
   fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
   lbSize.style.display='block';lbSize.textContent='0 B / 0 B';
   await downloadMissingResources((dl,tot)=>{
-    const p=tot?Math.min(100,dl/tot*100):100;
-    lbSize.textContent=`${formatSize(dl)} / ${formatSize(tot)}`;
-    setProg(p);
+    paintProgress(dl, tot, fill, pct, lbSize);
   });
-  await sleep(600);
+  
+  // Убран лишний sleep
   lbSize.style.display='none';
-
   loader.classList.add('done');
   document.getElementById('app').classList.add('ready');
   applyResourceImages();
