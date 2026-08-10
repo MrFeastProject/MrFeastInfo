@@ -143,7 +143,7 @@
     .load-logo{top:auto;bottom:12%;transform:none;animation:logoFade .8s .6s both}
   }
 
-  .orb{position:fixed;border-radius:50%;filter:blur(70px);opacity:.45;z-index:0;pointer-events:none;animation:float 12s ease-in-out infinite}
+  .orb{position:fixed;border-radius:50%;opacity:.25;z-index:0;pointer-events:none;animation:float 12s ease-in-out infinite}
   .orb1{width:280px;height:280px;background:#7c3aed;top:-90px;left:-90px}
   .orb2{width:240px;height:240px;background:#d946ef;bottom:8%;right:-100px;animation-delay:-4s}
   .orb3{width:200px;height:200px;background:#4c1d95;top:42%;left:-80px;animation-delay:-8s}
@@ -160,7 +160,7 @@
   .topbar{display:flex;align-items:center;gap:10px}
   .profile{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;transition:transform .15s;
     background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(217,70,239,.06));
-    border:1px solid rgba(139,92,246,.3);padding:7px 14px 7px 7px;border-radius:16px;backdrop-filter:blur(12px)}
+    border:1px solid rgba(139,92,246,.3);padding:7px 14px 7px 7px;border-radius:16px}
   .profile:active{transform:scale(.97)}
   .avatar{flex:none;width:42px;height:42px;border-radius:50%;overflow:hidden;
     background:conic-gradient(from 200deg,#7c3aed,#d946ef,#7c3aed);
@@ -180,7 +180,7 @@
   @keyframes shine{to{background-position:250% 0}}
 
   .balance-card{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px;border-radius:18px;
-    border:1px solid rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(76,29,149,.35),rgba(20,10,40,.6));backdrop-filter:blur(10px)}
+    border:1px solid rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(76,29,149,.35),rgba(20,10,40,.6))}
   .coin{flex:none;width:38px;height:38px;border-radius:50%;border:2px solid #c084fc;
     background:radial-gradient(circle at 30% 25%,#e9d5ff,#a855f7 45%,#6d28d9 80%);
     display:flex;align-items:center;justify-content:center;font-size:16px;color:#2e1065;
@@ -205,7 +205,7 @@
   .mode-card:active img{transform:scale(1.07)}
   .mc-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,3,13,.05) 20%,rgba(6,3,13,.9) 88%)}
   .mc-badge{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:12px;
-    background:rgba(10,5,20,.65);backdrop-filter:blur(6px);border:1px solid rgba(217,70,239,.5);
+    background:rgba(10,5,20,.65);border:1px solid rgba(217,70,239,.5);
     display:flex;align-items:center;justify-content:center;color:#f0abfc;font-size:17px}
   .mc-title{position:absolute;left:16px;bottom:14px;font-family:'Unbounded';font-weight:800;font-size:17px;
     text-shadow:0 0 14px rgba(217,70,239,.9)}
@@ -215,7 +215,7 @@
 
   .wheel-wrap{position:relative;width:min(84vw,330px);aspect-ratio:1;margin:2px auto}
   .wheel-glow{position:absolute;inset:-16%;border-radius:50%;pointer-events:none;
-    background:radial-gradient(circle,rgba(139,92,246,.4),transparent 62%);filter:blur(18px);animation:glowPulse 3s ease-in-out infinite}
+    background:radial-gradient(circle,rgba(139,92,246,.4),transparent 62%);animation:glowPulse 3s ease-in-out infinite}
   @keyframes glowPulse{0%,100%{opacity:.6}50%{opacity:1}}
   #wheel{width:100%;height:100%;display:block;will-change:transform;filter:drop-shadow(0 0 22px rgba(139,92,246,.35))}
   .bulb{animation:blink 1.2s ease-in-out infinite}
@@ -338,7 +338,7 @@
   .disclaimer{text-align:center;font-size:10px;color:#5b4a80}
 
   .modal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
-    background:rgba(5,2,10,.8);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .25s}
+    background:rgba(5,2,10,.8);opacity:0;pointer-events:none;transition:opacity .25s}
   .modal.show{opacity:1;pointer-events:auto}
   .pm-card{position:relative;width:min(92%,380px);border-radius:24px;padding:44px 20px 20px;text-align:center;
     background:linear-gradient(160deg,rgba(76,29,149,.5),rgba(15,8,30,.94));
@@ -433,7 +433,7 @@
   .scanfix-btn:active{transform:scale(.96)}
 
   .overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
-    background:rgba(5,2,10,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s}
+    background:rgba(5,2,10,.75);opacity:0;pointer-events:none;transition:opacity .25s}
   .overlay.show{opacity:1;pointer-events:auto}
   .result-card{text-align:center;transform:scale(.7);transition:transform .35s cubic-bezier(.34,1.56,.64,1);padding:20px}
   .overlay.show .result-card{transform:scale(1)}
@@ -473,7 +473,7 @@
     display:flex;align-items:center;justify-content:center;gap:6px}
   .shop-item-price i{font-size:12px}
 
-  .case-modal{position:fixed;inset:0;z-index:100;background:rgba(5,2,10,.92);backdrop-filter:blur(14px);
+  .case-modal{position:fixed;inset:0;z-index:100;background:rgba(5,2,10,.92);
     display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;padding:20px 0}
   .case-modal.show{opacity:1;pointer-events:auto}
   .case-container{position:relative;width:min(94%,420px);text-align:center;padding:20px;margin:auto 0}
@@ -572,7 +572,7 @@
     </div>
     <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
     <div class="lb-row2">
-      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.5_K8097567_E8083955</span>
+      <span class="lb-ver">MRFEAST_PROJECT_REL_1.0.6_K8097568_E8083905</span>
       <div class="lb-progress"><i id="lbFill"></i></div>
     </div>
   </div>
