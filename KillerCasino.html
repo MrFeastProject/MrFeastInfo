@@ -882,7 +882,7 @@ const RESOURCE_LIST=[
 {id:'voice10',url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice10.txt', size: 20489598}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
-const CURRENT_VERSION = 'MRFEAST_PROJECT_REL_1.0.6_K8097568_E8083906';
+const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelector('.lb-ver').textContent.trim() : 'MRFEAST_PROJECT_REL_1.0.7_K8097568_E8083906');
 const UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/KillerCasino.html';
 let updateCheckInterval = null;
 let updateCheckBusy = false;
