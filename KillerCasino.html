@@ -549,7 +549,7 @@ opacity:0;pointer-events:none;transition:opacity .4s}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.0.7_K8097568_E9083908</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.0.7_K9097568_E9083909</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -879,7 +879,8 @@ const RESOURCE_LIST=[
 {id:'voice7', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice7.txt', size: 20489598},
 {id:'voice8', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice8.txt', size: 20489598},
 {id:'voice9', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice9.txt', size: 20489598},
-{id:'voice10',url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice10.txt', size: 20489598}
+{id:'voice10',url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice10.txt', size: 20489598},
+{id:'bgMusic',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Classic_Easter.mp3'}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
 const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelector('.lb-ver').textContent.trim() : 'MRFEAST_PROJECT_REL_1.0.7_K8097568_E8083906');
@@ -1032,6 +1033,7 @@ const r = outdatedList[i];
 await resDelete(r.id);
 if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
 if(r.id==='music') musicBlob=null;
+if(r.id==='bgMusic') bgMusicBlob=null;
 const p = ((i+1)/Math.max(1,total))*15;
 msg.textContent = `// Удаляем старые патчи игры ${i+1}/${total}`;
 paintProgress(p, 100, fill, pct, null);
@@ -1053,7 +1055,7 @@ const now=performance.now();
 if(now-lastUpdate>60){ lastUpdate=now; const phaseP=15+(downloaded/Math.max(1,totalExpected))*60; paintProgress(phaseP,100,fill,pct,lbSize); lbSize.textContent=`${formatSize(downloaded)} / ${formatSize(totalExpected)}`; }
 });
 const ok=await resSet(r.id,blob);
-if(ok){ if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];} if(r.id==='music')musicBlob=blob; downloaded=startDownloaded+blob.size; }
+if(ok){ if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];} if(r.id==='music')musicBlob=blob; if(r.id==='bgMusic')bgMusicBlob=blob; downloaded=startDownloaded+blob.size; }
 }catch(e){ console.warn('Патч не скачался:',r.id,e); }
 }
 paintProgress(75,100,fill,pct,lbSize); lbSize.textContent=`${formatSize(totalExpected)} / ${formatSize(totalExpected)}`;
@@ -1196,6 +1198,7 @@ const ok=await resSet(r.id,blob);
 if(ok){
 if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
 if(r.id==='music')musicBlob=blob;
+if(r.id==='bgMusic')bgMusicBlob=blob;
 downloaded = startDownloaded + blob.size;
 }else{
 console.warn('IndexedDB не сохранил ресурс:',r.id);
@@ -1206,7 +1209,11 @@ console.warn('Ресурс не скачался:',r.id,e);
 }
 onProgress(totalExpected, totalExpected, true);
 }
-let loaderMusic=null, musicBlob=null;
+let loaderMusic=null, musicBlob=null, bgMusicBlob=null;
+let bgAudio=null;
+let bgMusicPausedByCase=false;
+let bgMusicReady=false;
+
 function tryPlay(a){ try{ const p=a.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){} }
 function unlockMusic(a){
 const evs=['pointerdown','touchstart','touchend','mousedown','keydown'];
@@ -1252,6 +1259,78 @@ unlockMusic(a);
 function stopLoaderMusic(){
 if(loaderMusic){ try{loaderMusic.pause();}catch(e){} loaderMusic=null; }
 }
+
+// === ФОНОВАЯ МУЗЫКА ДЛЯ ИГРЫ ===
+function initBgMusic(){
+if(bgAudio) return;
+bgAudio = new Audio();
+bgAudio.loop = true;
+bgAudio.volume = 0.25;
+bgAudio.preload = 'auto';
+}
+
+async function loadBgMusicSource(){
+if(bgMusicBlob) return URL.createObjectURL(bgMusicBlob);
+const blob = await resGet('bgMusic');
+if(blob){
+bgMusicBlob = blob;
+return URL.createObjectURL(blob);
+}
+return RESOURCE_MAP.bgMusic ? RESOURCE_MAP.bgMusic.url : '';
+}
+
+async function startBgMusic(){
+if(muted) return;
+if(!bgAudio) initBgMusic();
+if(!bgAudio.src){
+const src = await loadBgMusicSource();
+if(src) bgAudio.src = src;
+else return;
+}
+try{
+const p = bgAudio.play();
+if(p && p.catch) p.catch(()=>{});
+bgMusicReady = true;
+}catch(e){
+bgMusicReady = true;
+const playAfterInteraction = ()=>{
+if(bgAudio && bgAudio.paused && !muted){
+bgAudio.play().catch(()=>{});
+}
+document.removeEventListener('pointerdown', playAfterInteraction);
+document.removeEventListener('touchstart', playAfterInteraction);
+};
+document.addEventListener('pointerdown', playAfterInteraction);
+document.addEventListener('touchstart', playAfterInteraction);
+}
+}
+
+function pauseBgMusic(){
+if(bgAudio && !bgAudio.paused){
+bgAudio.pause();
+bgMusicPausedByCase = true;
+}
+}
+
+function resumeBgMusic(){
+if(bgAudio && bgMusicPausedByCase && !muted){
+try{
+const p = bgAudio.play();
+if(p && p.catch) p.catch(()=>{});
+}catch(e){}
+bgMusicPausedByCase = false;
+}
+}
+
+function stopBgMusic(){
+if(bgAudio){
+try{bgAudio.pause();}catch(e){}
+bgAudio = null;
+bgMusicReady = false;
+}
+}
+// === КОНЕЦ ФОНОВОЙ МУЗЫКИ ===
+
 const TG_USER = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
 function detectOS(){
 const ua=navigator.userAgent; let m;
@@ -1426,7 +1505,16 @@ renderSound();
 settingsBtn.onclick=()=>{ settingsModal.classList.add('show'); haptic('light'); };
 $('settingsClose').onclick=()=>settingsModal.classList.remove('show');
 settingsModal.onclick=e=>{ if(e.target===settingsModal) settingsModal.classList.remove('show'); };
-soundToggle.onchange=()=>{ muted=!soundToggle.checked; localStorage.setItem('kc_muted',muted?'1':'0'); haptic('light'); };
+soundToggle.onchange=()=>{
+muted=!soundToggle.checked;
+localStorage.setItem('kc_muted',muted?'1':'0');
+haptic('light');
+if(muted){
+if(bgAudio && !bgAudio.paused) bgAudio.pause();
+}else{
+if(bgAudio && bgAudio.paused && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy) startBgMusic();
+}
+};
 const shuqSection=$('shuqSection'), muqSection=$('muqSection');
 const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
 const shuqModes=$('shuqModes');
@@ -2120,6 +2208,9 @@ function openCaseVideo(item){
 if(caseVideoBusy||!item) return;
 if(balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
 caseVideoBusy=true; caseOpening=true;
+
+pauseBgMusic();
+
 document.body.classList.add('paused');
 balance-=item.price; save(); renderBalance(); checkState();
 const prizes=item.prizes||SHOP_ITEMS[0].prizes;
@@ -2170,6 +2261,10 @@ document.body.classList.remove('paused');
 const ov=$('caseVideoOverlay'),vid=$('caseVideo');
 ov.classList.remove('show');
 try{ vid.pause(); vid.removeAttribute('src'); vid.load(); }catch(e){}
+
+bgMusicPausedByCase=false;
+if(!muted && bgMusicReady && !loaderBusy && !fixBusy) startBgMusic();
+
 $('caseModal').classList.add('show');
 haptic('light');
 };
@@ -2177,6 +2272,9 @@ $('cvMore').onclick=()=>{
 caseVideoToken++;
 document.body.classList.remove('paused');
 $('caseVideoOverlay').classList.remove('show');
+
+bgMusicPausedByCase=false;
+
 haptic('light');
 openCaseVideo(currentCaseItem);
 };
@@ -2233,6 +2331,10 @@ runLoader('normal');
 }
 async function runLoader(mode){
 if(loaderBusy)return;
+
+// ОСТАНОВКА ФОНОВОЙ МУЗЫКИ ВО ВРЕМЯ ЗАГРУЗКИ
+if(bgAudio && !bgAudio.paused) bgAudio.pause();
+
 document.body.classList.remove('paused');
 loaderBusy=true;
 const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
@@ -2285,6 +2387,11 @@ renderShop();
 appLoaded=true;
 loaderBusy=false;
 stopLoaderMusic();
+
+if(!muted && !fixBusy){
+setTimeout(()=>startBgMusic(), 500);
+}
+
 return;
 }
 const outdated=await getOutdatedResources();
@@ -2305,13 +2412,19 @@ renderShop();
 appLoaded=true;
 loaderBusy=false;
 stopLoaderMusic();
+
+if(!muted && !fixBusy){
+setTimeout(()=>startBgMusic(), 500);
+}
 }
 document.addEventListener('visibilitychange',()=>{
 if(document.hidden){
 hiddenAt=Date.now();
 document.body.classList.add('paused');
+if(bgAudio && !bgAudio.paused) bgAudio.pause();
 }else{
 document.body.classList.remove('paused');
+if(!muted && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy && bgAudio && bgAudio.paused) startBgMusic();
 if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
 runLoader('restart');
 }
@@ -2346,7 +2459,7 @@ im.src=u;
 if(r.id.indexOf('voice')===0||r.id.indexOf('sig')===0){
 return blob.size>=10;
 }
-const min=r.id==='music'?50000:r.id.indexOf('video')===0?100000:1000;
+const min=r.id==='music'?50000:r.id==='bgMusic'?50000:r.id.indexOf('video')===0?100000:1000;
 return blob.size>=min;
 }
 $('scanFixBtn').onclick=()=>{
@@ -2356,6 +2469,10 @@ runFixHelper();
 };
 async function runFixHelper(){
 fixBusy=true; loaderBusy=true;
+
+// ОСТАНОВКА ФОНОВОЙ МУЗЫКИ ВО ВРЕМЯ SCAN/FIX
+if(bgAudio && !bgAudio.paused) bgAudio.pause();
+
 const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
 loader.classList.remove('done');
 loader.style.cssText='';
@@ -2381,6 +2498,7 @@ if(!ok){
 await resDelete(r.id);
 if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
 if(r.id==='music')musicBlob=null;
+if(r.id==='bgMusic')bgMusicBlob=null;
 console.warn('Fix Helper: повреждённый ресурс удалён:',r.id);
 }
 setProg(10+((i+1)/Math.max(1,present.length))*55);
@@ -2407,6 +2525,9 @@ showFixNotification('Все хорошо','Мы не обнаружили бит
 loader.classList.add('done');
 stopLoaderMusic();
 loaderBusy=false; fixBusy=false;
+
+// ВОЗОБНОВЛЕНИЕ ФОНОВОЙ МУЗЫКИ ПОСЛЕ SCAN/FIX
+if(!muted && !caseOpening) startBgMusic();
 });
 return;
 }
@@ -2433,6 +2554,9 @@ stopLoaderMusic();
 loaderBusy=false;
 showFixNotification('Все хорошо','Мы обновили и скачали все необходимые ресурсы игры для корректной работы',()=>{
 fixBusy=false;
+
+// ВОЗОБНОВЛЕНИЕ ФОНОВОЙ МУЗЫКИ ПОСЛЕ SCAN/FIX
+if(!muted && !caseOpening) startBgMusic();
 });
 }
 showSplash();
