@@ -564,6 +564,10 @@ box-shadow:0 8px 30px rgba(220,38,38,.5),inset 0 1px 0 rgba(255,255,255,.25)}
 background:linear-gradient(135deg,rgba(15,23,42,.95),rgba(30,41,59,.95));backdrop-filter:blur(20px);
 opacity:0;pointer-events:none;transition:opacity .4s}
 #updateOverlay.show{opacity:1;pointer-events:auto}
+/* === ОТСТУП ПОД ПЛАВАЮЩИЕ КНОПКИ TELEGRAM В ФУЛЛСКРИНЕ === */
+body.tg-fullscreen .app{padding-top:96px}
+body.tg-fullscreen .load-news{top:96px}
+/* === КОНЕЦ ОТСТУП === */
 </style>
 </head>
 <body>
@@ -592,7 +596,7 @@ opacity:0;pointer-events:none;transition:opacity .4s}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.0_K1097568_E1097437</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.1_K2097568_E1097478</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -943,6 +947,21 @@ if (isAndroid && tg && typeof tg.requestFullscreen === 'function'){
     document.removeEventListener('pointerdown', onceFS);
   });
 }
+// === СДВИГ КОНТЕНТА ПОД ПЛАВАЮЩИЕ КНОПКИ (X / МЕНЮ) В ФУЛЛСКРИНЕ ===
+function applyFullscreenPadding(){
+  try{
+    if(tg && tg.isFullscreen) document.body.classList.add('tg-fullscreen');
+    else document.body.classList.remove('tg-fullscreen');
+  }catch(e){}
+}
+applyFullscreenPadding();
+if(tg && typeof tg.onEvent === 'function'){
+  try{ tg.onEvent('fullscreenChanged', applyFullscreenPadding); }catch(e){}
+}
+// страховка: фуллскрин включается асинхронно
+setTimeout(applyFullscreenPadding, 300);
+setTimeout(applyFullscreenPadding, 1200);
+// === КОНЕЦ СДВИГ ===
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('dragstart', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
