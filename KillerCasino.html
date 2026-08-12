@@ -592,7 +592,7 @@ opacity:0;pointer-events:none;transition:opacity .4s}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.0_K0097568_E1097438</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.0_K1097568_E1097437</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -924,9 +924,25 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 </div>
 <script>
 const tg = window.Telegram && window.Telegram.WebApp;
-if (tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){} }
 const isAndroid = /Android/.test(navigator.userAgent);
 if(isAndroid) document.body.classList.add('is-android');
+if (tg){
+  try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){}
+  // === АВТО-ФУЛЛСКРИН НА ANDROID (как у GigaChat — убирает верхнюю панель с названием) ===
+  try{
+    if (isAndroid && typeof tg.requestFullscreen === 'function' && !tg.isFullscreen){
+      tg.requestFullscreen();
+    }
+  }catch(e){}
+}
+// Фолбэк: если Telegram не дал фуллскрин сразу — пробуем ещё раз при первом тапе
+if (isAndroid && tg && typeof tg.requestFullscreen === 'function'){
+  const retryFS = ()=>{ try{ if(!tg.isFullscreen) tg.requestFullscreen(); }catch(e){} };
+  document.addEventListener('pointerdown', function onceFS(){
+    retryFS();
+    document.removeEventListener('pointerdown', onceFS);
+  });
+}
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('dragstart', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
