@@ -208,6 +208,18 @@ box-shadow:0 0 16px rgba(168,85,247,.8),inset 0 -3px 6px rgba(0,0,0,.35);animati
 background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
 filter:drop-shadow(0 0 12px rgba(168,85,247,.5))}
 .menu-sub{text-align:center;font-size:11px;letter-spacing:.3em;color:#8b7bb8;text-transform:uppercase}
+/* === БАННЕР «СОЗДАТЬ ЯРЛЫК» === */
+.home-banner{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:16px;cursor:pointer;
+border:1px solid rgba(251,191,36,.45);background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(217,70,239,.10));
+color:#fde68a;text-align:left;box-shadow:0 0 18px rgba(251,191,36,.15);transition:transform .15s}
+.home-banner:active{transform:scale(.97)}
+.home-banner > i:first-child{font-size:20px;color:#fbbf24;filter:drop-shadow(0 0 8px rgba(251,191,36,.6))}
+.hb-text{flex:1;min-width:0}
+.hb-text b{display:block;font-family:'Unbounded';font-weight:700;font-size:13px;color:#fde68a}
+.hb-text span{display:block;font-size:11px;color:#c9b57f;margin-top:2px}
+.hb-plus{font-size:14px;color:#fbbf24}
+.home-banner[hidden]{display:none}
+/* === КОНЕЦ БАННЕР === */
 .mode-card{position:relative;border-radius:20px;overflow:hidden;height:140px;cursor:pointer;
 border:1px solid rgba(139,92,246,.45);box-shadow:0 12px 36px rgba(0,0,0,.55),0 0 22px rgba(124,58,237,.25);transition:transform .2s}
 .mode-card:active{transform:scale(.97)}
@@ -596,7 +608,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.1_K2097568_E1097478</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.1_K2097568_E1097479</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -666,6 +678,11 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 </div>
 </div>
 <section class="screen active" id="menuScreen">
+<button class="home-banner" id="homeBanner" hidden>
+<i class="fa-solid fa-mobile-screen-button"></i>
+<div class="hb-text"><b>Создать ярлык</b><span>Игра будет всегда под рукой на главном экране</span></div>
+<i class="fa-solid fa-plus hb-plus"></i>
+</button>
 <div class="menu-sub">Выбери режим</div>
 <div class="mode-card" id="goWheel">
 <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt="" data-resource="img2">
@@ -2469,6 +2486,41 @@ haptic('success'); winSound(); spawnConfetti(90);
 renderCars(); checkState();
 }
 // === КОНЕЦ АВТО ===
+
+// === ЯРЛЫК НА ГЛАВНОМ ЭКРАНЕ (Telegram API) ===
+const homeBanner=$('homeBanner');
+function normalizeHomeStatus(res){
+  if(!res) return 'unknown';
+  if(typeof res==='string') return res;
+  if(typeof res==='object'){
+    if(res.status) return res.status;
+    if(res.is_added===true) return 'added';
+    if(res.is_added===false) return 'missed';
+  }
+  return 'unknown';
+}
+function maybeShowHomeBanner(){
+  try{
+    if(tg && typeof tg.checkHomeScreenStatus==='function'){
+      tg.checkHomeScreenStatus(function(res){
+        // ярлык уже есть — не предлагаем; нет — предлагаем каждый запуск
+        homeBanner.hidden = (normalizeHomeStatus(res)==='added');
+      });
+    } else {
+      homeBanner.hidden=true;
+    }
+  }catch(e){ homeBanner.hidden=true; }
+}
+homeBanner.onclick=()=>{
+  haptic('medium');
+  try{ if(tg && typeof tg.addToHomeScreen==='function') tg.addToHomeScreen(); }catch(e){}
+  homeBanner.hidden=true;
+};
+if(tg && typeof tg.onEvent==='function'){
+  try{ tg.onEvent('homeScreenAdded', ()=>{ homeBanner.hidden=true; haptic('success'); }); }catch(e){}
+}
+// === КОНЕЦ ЯРЛЫК ===
+
 async function renderShop(){
 const grid=$('shopGrid');
 grid.innerHTML='';
@@ -2733,6 +2785,7 @@ renderShop();
 appLoaded=true;
 loaderBusy=false;
 stopLoaderMusic();
+maybeShowHomeBanner();
 
 if(!muted && !fixBusy){
 setTimeout(()=>startBgMusic(), 500);
@@ -2758,6 +2811,7 @@ renderShop();
 appLoaded=true;
 loaderBusy=false;
 stopLoaderMusic();
+maybeShowHomeBanner();
 
 if(!muted && !fixBusy){
 setTimeout(()=>startBgMusic(), 500);
@@ -2870,6 +2924,7 @@ showFixNotification('Все хорошо','Мы не обнаружили бит
 loader.classList.add('done');
 stopLoaderMusic();
 loaderBusy=false; fixBusy=false;
+maybeShowHomeBanner();
 
 if(!muted && !caseOpening) startBgMusic();
 });
@@ -2898,6 +2953,7 @@ stopLoaderMusic();
 loaderBusy=false;
 showFixNotification('Все хорошо','Мы обновили и скачали все необходимые ресурсы игры для корректной работы',()=>{
 fixBusy=false;
+maybeShowHomeBanner();
 
 if(!muted && !caseOpening) startBgMusic();
 });
