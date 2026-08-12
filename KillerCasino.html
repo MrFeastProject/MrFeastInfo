@@ -119,7 +119,6 @@ object-fit:contain;
 filter:drop-shadow(0 0 20px rgba(14,165,233,.7));
 animation:pulse 1.5s ease-in-out infinite;
 }
-/* === FIX: НОРМАЛЬНЫЙ РАЗМЕР ЗНАЧКА + НЕОН-ТЕКСТЫ В СТИЛЕ ЗНАЧКА === */
 .ln-icon{width:96px;height:96px;flex:none;display:flex;align-items:center;justify-content:center}
 .ln-icon.update{width:112px;height:112px}
 @media (max-width:360px){.ln-icon.update{width:88px;height:88px}}
@@ -287,10 +286,39 @@ background:linear-gradient(90deg,transparent,rgba(251,191,36,.65),transparent)}
 .slot-banner{padding:14px;border-radius:14px;text-align:center;font-family:'Unbounded';font-weight:700;font-size:13px}
 .slot-banner.winb{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.5);color:#4ade80}
 .slot-banner.loseb{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#8b7bb8}
+/* === МИНЫ === */
+.mines-frame{position:relative;margin:2px auto;width:min(94%,360px);padding:12px;border-radius:20px;
+background:linear-gradient(160deg,rgba(30,15,60,.7),rgba(10,5,20,.92));
+border:1px solid rgba(168,85,247,.4);box-shadow:0 0 30px rgba(124,58,237,.3),inset 0 0 24px rgba(0,0,0,.6)}
+.mines-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mine-cell{aspect-ratio:1;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.3,1.3,.4,1)}
+.mine-cell .mcf{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+display:flex;align-items:center;justify-content:center}
+.mine-cell .mcf-closed{border:1px solid rgba(139,92,246,.45);
+background:radial-gradient(circle at 50% 45%,rgba(217,70,239,.18),transparent 62%),linear-gradient(160deg,#2a1454,#150a2c);
+box-shadow:0 0 10px rgba(168,85,247,.25),inset 0 0 0 3px #150a2c,inset 0 0 0 4px rgba(192,132,252,.4)}
+.mine-cell .mcf-closed i{color:rgba(192,132,252,.55);font-size:15px}
+.mine-cell:not(.revealed):active{transform:scale(.92)}
+.mine-cell .mcf-open{transform:rotateY(180deg);border:1px solid rgba(74,222,128,.55);
+background:linear-gradient(160deg,rgba(6,78,59,.55),rgba(6,78,59,.2));box-shadow:0 0 14px rgba(74,222,128,.35)}
+.mine-cell .mcf-open i{color:#4ade80;font-size:19px;filter:drop-shadow(0 0 8px rgba(74,222,128,.8))}
+.mine-cell.revealed{transform:rotateY(180deg);pointer-events:none}
+.mine-cell.boom .mcf-open{border-color:rgba(255,100,100,.7);background:linear-gradient(160deg,rgba(127,29,29,.65),rgba(127,29,29,.25));box-shadow:0 0 18px rgba(255,80,80,.6)}
+.mine-cell.boom .mcf-open i{color:#ff6b6b;filter:drop-shadow(0 0 10px rgba(255,80,80,.9))}
+.mine-cell.dimmed .mcf-open{border-color:rgba(139,92,246,.3);background:linear-gradient(160deg,rgba(30,15,60,.5),rgba(10,5,20,.6));box-shadow:none;opacity:.6}
+.mine-cell.dimmed .mcf-open i{color:#8b7bb8;filter:none}
+.mines-info{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:16px;
+border:1px solid rgba(139,92,246,.3);background:rgba(30,15,60,.5)}
+.mi-block{flex:1;text-align:center}
+.mi-label{font-size:9px;letter-spacing:.18em;color:#8b7bb8;text-transform:uppercase;margin-bottom:3px}
+.mi-value{font-family:'Unbounded';font-weight:800;font-size:15px;color:#f3e8ff}
+.mi-value.nextv{color:#4ade80}
+.mines-modes{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+/* === КОНЕЦ МИНЫ === */
 .bet-panel{display:flex;align-items:center;gap:10px;justify-content:center;padding:10px 14px;border-radius:16px;
 border:1px solid rgba(139,92,246,.3);background:rgba(30,15,60,.5)}
 .bp-label{font-size:10px;letter-spacing:.2em;color:#8b7bb8}
-#slotBet,#rocketBet{font-family:'Unbounded';font-size:21px;font-weight:800;min-width:70px;text-align:center;color:#f3e8ff}
+#slotBet,#rocketBet,#minesBet{font-family:'Unbounded';font-size:21px;font-weight:800;min-width:70px;text-align:center;color:#f3e8ff}
 .bp-btn{font-family:'Unbounded';font-size:12px;font-weight:700;padding:10px 14px;border-radius:12px;cursor:pointer;
 border:1px solid rgba(139,92,246,.35);background:rgba(30,15,60,.6);color:#d8c7ff}
 .bp-btn:active{transform:scale(.94)}
@@ -549,7 +577,7 @@ opacity:0;pointer-events:none;transition:opacity .4s}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.0.8_K9097568_E9083909</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.0.8_K9097568_E9083910</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -648,6 +676,13 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="mc-title">РАКЕТА</div>
 <div class="mc-play">ИГРАТЬ <i class="fa-solid fa-chevron-right"></i></div>
 </div>
+<div class="mode-card" id="goMines">
+<img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/14e4ec229-8a05-40bb-b308-fbba18924adb.png" alt="" data-resource="img7">
+<div class="mc-overlay"></div>
+<div class="mc-badge"><i class="fa-solid fa-bomb"></i></div>
+<div class="mc-title">МИНЫ</div>
+<div class="mc-play">ИГРАТЬ <i class="fa-solid fa-chevron-right"></i></div>
+</div>
 <div class="mode-card" id="goShop">
 <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260808_093522898.png" alt="" data-resource="img5">
 <div class="mc-overlay"></div>
@@ -742,6 +777,33 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <button class="action-btn" id="rocketStartBtn"><i class="fa-solid fa-rocket"></i>СТАРТ</button>
 <button class="action-btn rk-cash hidden" id="rocketCash2" disabled><i class="fa-solid fa-hand-holding-dollar"></i>ЗАБРАТЬ 2</button>
 </div>
+</section>
+<section class="screen" id="minesScreen">
+<div class="game-head">
+<button class="icon-btn back-btn"><i class="fa-solid fa-chevron-left"></i></button>
+<div class="game-title"><i class="fa-solid fa-bomb"></i> МИНЫ</div>
+<div style="width:42px"></div>
+</div>
+<div class="history" id="minesHistory"></div>
+<div class="mines-frame">
+<div class="mines-grid" id="minesGrid"></div>
+</div>
+<div class="mines-info">
+<div class="mi-block"><div class="mi-label">Множитель</div><div class="mi-value" id="minesMult">x1.00</div></div>
+<div class="mi-block"><div class="mi-label">След. клетка</div><div class="mi-value nextv" id="minesNextMult">x1.13</div></div>
+<div class="mi-block"><div class="mi-label">Выигрыш</div><div class="mi-value" id="minesWin">0</div></div>
+</div>
+<div class="bet-panel">
+<span class="bp-label">СТАВКА</span>
+<b id="minesBet">10</b>
+<button class="bp-btn" id="mBetHalf">1/2</button>
+<button class="bp-btn" id="mBetDouble">2x</button>
+<button class="bp-btn" id="mBetMax">MAX</button>
+</div>
+<div class="bets" id="betsMines"></div>
+<div class="menu-sub">Количество мин</div>
+<div class="mines-modes" id="minesModes"></div>
+<button class="action-btn" id="minesStartBtn"><i class="fa-solid fa-bomb"></i>СТАРТ</button>
 </section>
 <section class="screen" id="shopScreen">
 <div class="game-head">
@@ -870,6 +932,7 @@ const RESOURCE_LIST=[
 {id:'video',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/9e2bb856-c204-46c9-8259-9905fcf83737.mp4'},
 {id:'img6', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260809_011439496.jpg'},
 {id:'video2',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/a9ad66d1-f321-441a-9e60-dc63c054628f.mp4'},
+{id:'img7', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/14e4ec229-8a05-40bb-b308-fbba18924adb.png'},
 {id:'voice1', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice1.txt', size: 20489598},
 {id:'voice2', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice2.txt', size: 20489598},
 {id:'voice3', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice3.txt', size: 20489598},
@@ -1268,7 +1331,6 @@ bgAudio.loop = true;
 bgAudio.volume = 0.25;
 bgAudio.preload = 'auto';
 }
-
 async function loadBgMusicSource(){
 if(bgMusicBlob) return URL.createObjectURL(bgMusicBlob);
 const blob = await resGet('bgMusic');
@@ -1278,7 +1340,6 @@ return URL.createObjectURL(blob);
 }
 return RESOURCE_MAP.bgMusic ? RESOURCE_MAP.bgMusic.url : '';
 }
-
 async function startBgMusic(){
 if(muted) return;
 if(!bgAudio) initBgMusic();
@@ -1304,14 +1365,12 @@ document.addEventListener('pointerdown', playAfterInteraction);
 document.addEventListener('touchstart', playAfterInteraction);
 }
 }
-
 function pauseBgMusic(){
 if(bgAudio && !bgAudio.paused){
 bgAudio.pause();
 bgMusicPausedByCase = true;
 }
 }
-
 function resumeBgMusic(){
 if(bgAudio && bgMusicPausedByCase && !muted){
 try{
@@ -1321,7 +1380,6 @@ if(p && p.catch) p.catch(()=>{});
 bgMusicPausedByCase = false;
 }
 }
-
 function stopBgMusic(){
 if(bgAudio){
 try{bgAudio.pause();}catch(e){}
@@ -1484,11 +1542,13 @@ box.appendChild(c);
 }
 function checkState(){
 const broke=balance<1;
-const busy=spinning||deckBusy||roundActive||slotsSpinning||rState==='flying'||caseOpening;
+const busy=spinning||deckBusy||roundActive||slotsSpinning||rState==='flying'||caseOpening||minesState==='playing';
 bonusBtn.hidden=!(broke&&!busy);
 spinBtn.disabled=spinning||broke;
 slotsBtn.disabled=slotsSpinning||broke;
 if(!roundActive&&!deckBusy)cardsBtn.disabled=broke;
+if(minesState==='idle') minesStartBtn.disabled=broke;
+else minesStartBtn.disabled=minesPicks<1;
 }
 function errShake(){haptic('error');balanceCard.classList.add('shake-err');setTimeout(()=>balanceCard.classList.remove('shake-err'),450);}
 let audioCtx=null,muted=localStorage.getItem('kc_muted')==='1';
@@ -1594,6 +1654,7 @@ $(id).classList.add('active');
 haptic('light');
 if(id==='rocketScreen'){ sizeRocketCanvas(); drawRocketFrame(1); }
 if(id==='shopScreen') renderShop();
+if(id==='minesScreen') updateMinesInfo();
 try{
 if(tg && tg.BackButton){
 if(id==='menuScreen') tg.BackButton.hide();
@@ -1626,6 +1687,7 @@ $('goWheel').onclick=()=>showScreen('wheelScreen');
 $('goCards').onclick=()=>showScreen('cardsScreen');
 $('goSlots').onclick=()=>showScreen('slotsScreen');
 $('goRocket').onclick=()=>showScreen('rocketScreen');
+$('goMines').onclick=()=>showScreen('minesScreen');
 $('goShop').onclick=()=>showScreen('shopScreen');
 document.querySelectorAll('.back-btn').forEach(b=>b.onclick=()=>showScreen('menuScreen'));
 function pickMultiplier(){let r=Math.random(),acc=0;
@@ -2079,6 +2141,161 @@ drawRocketFrame(1);
 checkState();
 },1700);
 }
+
+// === РЕЖИМ «МИНЫ» ===
+const MINES_CELLS=25;
+const MINES_OPTIONS=[3,5,10,15,20];
+let minesBet=10, minesCount=3, minesState='idle';
+let minesField=[], minesPicks=0;
+let minesHistoryArr=[];
+const minesGrid=$('minesGrid'), minesStartBtn=$('minesStartBtn');
+const minesMultEl=$('minesMult'), minesNextEl=$('minesNextMult'), minesWinEl=$('minesWin');
+
+function minesMultiplier(picks){
+if(picks<=0) return 1;
+let m=1;
+for(let i=0;i<picks;i++){
+m*=(MINES_CELLS-i)/(MINES_CELLS-minesCount-i);
+}
+return Math.max(1, Math.floor(m*0.97*100)/100);
+}
+function buildMinesGrid(){
+minesGrid.innerHTML='';
+for(let i=0;i<MINES_CELLS;i++){
+const c=document.createElement('div');
+c.className='mine-cell';
+c.innerHTML='<div class="mcf mcf-closed"><i class="fa-solid fa-question"></i></div><div class="mcf mcf-open"><i class="fa-solid fa-gem"></i></div>';
+c.onclick=()=>mineCellClick(c,i);
+minesGrid.appendChild(c);
+}
+}
+function renderMinesBet(){
+$('minesBet').textContent=minesBet.toLocaleString('ru-RU');
+const box=$('betsMines');box.innerHTML='';
+[1,5,10,15,20,25,50,100,250,500].forEach(v=>{
+const c=document.createElement('button');
+c.className='chip'+(v===minesBet?' active':'');
+c.textContent=v;
+c.onclick=()=>{if(minesState==='playing')return; minesBet=v;haptic('light');renderMinesBet();};
+box.appendChild(c);
+});
+}
+function renderMinesModes(){
+const box=$('minesModes');box.innerHTML='';
+MINES_OPTIONS.forEach(v=>{
+const c=document.createElement('button');
+c.className='chip'+(v===minesCount?' active':'');
+c.textContent=v;
+c.onclick=()=>{if(minesState==='playing')return; minesCount=v;haptic('light');renderMinesModes();updateMinesInfo();};
+box.appendChild(c);
+});
+}
+function updateMinesInfo(){
+const cur=minesState==='playing'?minesMultiplier(minesPicks):1;
+const nxt=minesState==='playing'?minesMultiplier(minesPicks+1):minesMultiplier(1);
+minesMultEl.textContent='x'+cur.toFixed(2);
+minesNextEl.textContent='x'+nxt.toFixed(2);
+minesWinEl.textContent=minesState==='playing'?Math.floor(minesBet*cur).toLocaleString('ru-RU'):'0';
+}
+function renderMinesHistory(){
+const box=$('minesHistory');box.innerHTML='';
+minesHistoryArr.forEach(v=>{
+const c=document.createElement('span');c.className='hchip';c.textContent='x'+v.toFixed(2);
+c.style.cssText=v>=2?'background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(34,197,94,.5)':v>0?'background:rgba(124,58,237,.35);color:#e9d5ff;border-color:#a855f7':'background:rgba(255,100,100,.12);color:#ff6b6b;border-color:rgba(255,100,100,.4)';
+box.appendChild(c);
+});
+}
+$('mBetHalf').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(minesBet/2));haptic('light');renderMinesBet();};
+$('mBetDouble').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,minesBet*2);haptic('light');renderMinesBet();};
+$('mBetMax').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(balance));haptic('light');renderMinesBet();};
+minesStartBtn.onclick=()=>{
+if(minesState==='idle'){
+const bet=minesBet;
+if(bet<1||bet>balance){errShake();return;}
+ac();haptic('medium');
+balance-=bet;save();renderBalance();checkState();
+minesField=Array.from({length:MINES_CELLS},()=>false);
+let placed=0;
+while(placed<minesCount){
+const idx=(Math.random()*MINES_CELLS)|0;
+if(!minesField[idx]){minesField[idx]=true;placed++;}
+}
+minesPicks=0;minesState='playing';
+buildMinesGrid();
+minesStartBtn.classList.add('rk-cash');
+minesStartBtn.disabled=true;
+minesStartBtn.innerHTML='<i class="fa-solid fa-hand-holding-dollar"></i>ЗАБРАТЬ 0';
+updateMinesInfo();
+}else{
+minesCashout();
+}
+};
+function mineCellClick(cell,idx){
+if(minesState!=='playing'||cell.classList.contains('revealed'))return;
+if(minesField[idx]){
+cell.classList.add('revealed','boom');
+cell.querySelector('.mcf-open i').className='fa-solid fa-bomb';
+haptic('error');loseSound();
+minesRevealAll(idx);
+minesState='idle';
+minesHistoryArr.unshift(0);if(minesHistoryArr.length>12)minesHistoryArr.pop();renderMinesHistory();
+minesStartBtn.classList.remove('rk-cash');
+minesStartBtn.disabled=false;
+minesStartBtn.innerHTML='<i class="fa-solid fa-bomb"></i>СТАРТ';
+showResult(0,-minesBet);
+updateMinesInfo();
+setTimeout(()=>{buildMinesGrid();checkState();},1600);
+checkState();
+}else{
+cell.classList.add('revealed');
+cell.querySelector('.mcf-open i').className='fa-solid fa-gem';
+minesPicks++;
+haptic('light');
+tone(500+minesPicks*60,.08,'triangle',.12);
+const safeLeft=MINES_CELLS-minesCount-minesPicks;
+if(safeLeft<=0){ minesCashout(); return; }
+minesStartBtn.disabled=false;
+minesStartBtn.innerHTML=`<i class="fa-solid fa-hand-holding-dollar"></i>ЗАБРАТЬ ${Math.floor(minesBet*minesMultiplier(minesPicks)).toLocaleString('ru-RU')}`;
+updateMinesInfo();
+}
+}
+function minesRevealAll(hitIdx){
+const cells=minesGrid.children;
+for(let i=0;i<cells.length;i++){
+const cell=cells[i];
+if(i===hitIdx) continue;
+setTimeout(()=>{
+if(minesField[i]){
+cell.classList.add('revealed','boom');
+cell.querySelector('.mcf-open i').className='fa-solid fa-bomb';
+}else if(!cell.classList.contains('revealed')){
+cell.classList.add('revealed','dimmed');
+cell.querySelector('.mcf-open i').className='fa-solid fa-gem';
+}
+}, i*30);
+}
+}
+function minesCashout(){
+if(minesState!=='playing'||minesPicks<1)return;
+const mult=minesMultiplier(minesPicks);
+const win=Math.max(1,Math.round(minesBet*mult));
+balance+=win;save();renderBalance();
+haptic(mult>=5?'heavy':'success');winSound();
+if(mult>=10){spawnConfetti(190,true);jackpotSound();}
+else if(mult>=3)spawnConfetti(90);
+minesHistoryArr.unshift(mult);if(minesHistoryArr.length>12)minesHistoryArr.pop();renderMinesHistory();
+minesState='idle';
+minesRevealAll(-1);
+minesStartBtn.classList.remove('rk-cash');
+minesStartBtn.disabled=false;
+minesStartBtn.innerHTML='<i class="fa-solid fa-bomb"></i>СТАРТ';
+showResult(parseFloat(mult.toFixed(2)),win);
+updateMinesInfo();
+setTimeout(()=>{buildMinesGrid();checkState();},1200);
+checkState();
+}
+// === КОНЕЦ МИНЫ ===
+
 function finish(m,bet){
 spinning=false;wheelWrap.classList.remove('spinning');
 const win=Math.round(bet*m);
@@ -2332,7 +2549,6 @@ runLoader('normal');
 async function runLoader(mode){
 if(loaderBusy)return;
 
-// ОСТАНОВКА ФОНОВОЙ МУЗЫКИ ВО ВРЕМЯ ЗАГРУЗКИ
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
 
 document.body.classList.remove('paused');
@@ -2470,7 +2686,6 @@ runFixHelper();
 async function runFixHelper(){
 fixBusy=true; loaderBusy=true;
 
-// ОСТАНОВКА ФОНОВОЙ МУЗЫКИ ВО ВРЕМЯ SCAN/FIX
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
 
 const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
@@ -2526,7 +2741,6 @@ loader.classList.add('done');
 stopLoaderMusic();
 loaderBusy=false; fixBusy=false;
 
-// ВОЗОБНОВЛЕНИЕ ФОНОВОЙ МУЗЫКИ ПОСЛЕ SCAN/FIX
 if(!muted && !caseOpening) startBgMusic();
 });
 return;
@@ -2555,7 +2769,6 @@ loaderBusy=false;
 showFixNotification('Все хорошо','Мы обновили и скачали все необходимые ресурсы игры для корректной работы',()=>{
 fixBusy=false;
 
-// ВОЗОБНОВЛЕНИЕ ФОНОВОЙ МУЗЫКИ ПОСЛЕ SCAN/FIX
 if(!muted && !caseOpening) startBgMusic();
 });
 }
@@ -2565,6 +2778,7 @@ updateCheckInterval = setInterval(checkForGameUpdate, 3000);
 checkForGameUpdate();
 }, 5000);
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
+buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
 </html>
