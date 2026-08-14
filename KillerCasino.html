@@ -57,9 +57,21 @@ filter:drop-shadow(0 0 40px rgba(139,92,246,.6))}
 body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit:contain}
 body.is-android #caseVideo{object-fit:contain}
 
-/* === НОВЫЙ SPLASH VIDEO LOADER === */
+/* === НОВЫЙ SPLASH VIDEO LOADER (с белым фоном и узорами) === */
 #loader{position:fixed;inset:0;z-index:200;background:#ffffff;overflow:hidden;transition:opacity .6s,visibility .6s}
 #loader.done{opacity:0;visibility:hidden}
+#loader::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:#ffffff;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.08) 1px, transparent 1px);
+  background-size:42px 42px;
+  pointer-events:none;
+}
 #splashVideo{
   position:absolute;
   top:50%; left:50%;
@@ -706,7 +718,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.2_K2197568_E109781</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.2_K2297568_E109782</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
