@@ -58,7 +58,7 @@ body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit
 body.is-android #caseVideo{object-fit:contain}
 
 /* === НОВЫЙ SPLASH VIDEO LOADER === */
-#loader{position:fixed;inset:0;z-index:200;background:#000;overflow:hidden;transition:opacity .6s,visibility .6s}
+#loader{position:fixed;inset:0;z-index:200;background:#ffffff;overflow:hidden;transition:opacity .6s,visibility .6s}
 #loader.done{opacity:0;visibility:hidden}
 #splashVideo{
   position:absolute;
@@ -67,10 +67,10 @@ body.is-android #caseVideo{object-fit:contain}
   width:100%;
   height:100%;
   object-fit:contain;
-  background:#000;
+  background:transparent;
   z-index:1;
 }
-/* На телефоне/планшете — auto-fit (с чёрными полями) */
+/* На телефоне/планшете — auto-fit (с белыми полями) */
 /* На ПК (>=760px) — cover (на весь экран) */
 @media (min-width:760px){
   #splashVideo{
@@ -376,7 +376,7 @@ background:rgba(5,2,10,.8);opacity:0;pointer-events:none;transition:opacity .25s
 .pm-card{position:relative;width:min(92%,380px);border-radius:24px;padding:44px 20px 20px;text-align:center;
 background:linear-gradient(160deg,rgba(76,29,149,.5),rgba(15,8,30,.94));
 border:1px solid rgba(168,85,247,.45);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(124,58,237,.25);
-transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1);margin:auto 0}
+transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1);margin:auto 0;overflow:hidden}
 .modal.show .pm-card{transform:scale(1)}
 .pm-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:14px;
 border:1px solid rgba(139,92,246,.35);background:rgba(30,15,60,.6);color:#e9d5ff;font-size:18px;
@@ -404,6 +404,24 @@ background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);font-size:13p
 .pm-row.clickable:hover{border-color:rgba(217,70,239,.7);box-shadow:0 0 14px rgba(217,70,239,.35)}
 .pm-row.clickable .v{color:#f0abfc;font-weight:700}
 
+/* === Фон профиля с прозрачностью 89% === */
+.pm-card.with-bg {
+  position: relative;
+}
+.pm-card.with-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-image, none) center/cover no-repeat;
+  opacity: 0.89; /* 89% прозрачности */
+  z-index: 0;
+  border-radius: 24px;
+}
+.pm-card.with-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* === КАСТОМИЗАЦИЯ ПРОФИЛЯ === */
 .custom-modal{position:fixed;inset:0;z-index:75;display:flex;align-items:center;justify-content:center;
 background:rgba(5,2,10,.92);opacity:0;pointer-events:none;transition:opacity .3s;padding:16px;overflow-y:auto}
@@ -411,7 +429,7 @@ background:rgba(5,2,10,.92);opacity:0;pointer-events:none;transition:opacity .3s
 .custom-card{position:relative;width:min(96%,720px);border-radius:24px;padding:44px 20px 24px;
 background:linear-gradient(160deg,rgba(76,29,149,.55),rgba(15,8,30,.96));
 border:1px solid rgba(168,85,247,.45);box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 40px rgba(124,58,237,.25);
-transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1);margin:auto 0}
+transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1);margin:auto 0;overflow-x:hidden;max-width:100%}
 .custom-modal.show .custom-card{transform:scale(1)}
 .custom-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
 background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -419,6 +437,9 @@ filter:drop-shadow(0 0 12px rgba(168,85,247,.6))}
 .custom-body{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
 @media (max-width:600px){
 .custom-body{grid-template-columns:1fr;gap:16px}
+.custom-card{padding:44px 10px 20px}
+.custom-preview{min-height:auto}
+.custom-preview-profile{min-height:140px;padding:10px}
 }
 .custom-divider-v{display:none}
 @media (min-width:601px){
@@ -459,13 +480,24 @@ display:flex;align-items:center;justify-content:center;font-size:18px;color:#8b7
   border:1px solid rgba(139,92,246,.3);
   transition:background-image .4s;
 }
-.custom-preview-profile::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(6,3,13,.6),rgba(6,3,13,.85));
-  z-index:1;
-}
 .custom-preview-profile.base{background:#1d1038;}
 .custom-preview-profile > *{position:relative;z-index:2}
+.custom-preview-profile.with-bg{
+  background:linear-gradient(160deg,rgba(76,29,149,.5),rgba(15,8,30,.94));
+}
+.custom-preview-profile.with-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-image, none) center/cover no-repeat;
+  opacity: 0.89;
+  z-index: 0;
+  border-radius: 14px;
+}
+.custom-preview-profile.with-bg > * {
+  position: relative;
+  z-index: 1;
+}
 .preview-avatar{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;
 background:conic-gradient(from 200deg,#7c3aed,#d946ef,#7c3aed);
 display:flex;align-items:center;justify-content:center;font-family:'Unbounded';font-weight:800;font-size:20px;
@@ -674,7 +706,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.2_K2197568_E109780</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.2_K2197568_E109781</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -921,7 +953,7 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
 </div>
 <div class="modal" id="profileModal">
-<div class="pm-card">
+<div class="pm-card" id="pmCard">
 <div class="pm-id">ID: <b id="pmId">—</b></div>
 <button class="pm-close" id="pmClose"><i class="fa-solid fa-xmark"></i></button>
 <div class="pm-avatar" id="pmAvatar">?</div>
@@ -1633,6 +1665,7 @@ const customModal = document.getElementById('customModal');
 const customList = document.getElementById('customList');
 const customPreviewProfile = document.getElementById('customPreviewProfile');
 const customPreviewLabel = document.getElementById('customPreviewLabel');
+const pmCard = document.getElementById('pmCard');
 
 const PROFILE_STYLES = [
   { id: 'base',    name: 'Базовый',     img: null,                   owned: true,  exclusive: false },
@@ -1665,7 +1698,6 @@ async function getVisibleStyles(){
       if(isMrFeast()){
         visible.push({ ...s, isOwned: true, locked: false });
       }
-      // Для остальных — вообще не показываем
       continue;
     }
     const isOwned = owned.includes(s.id);
@@ -1676,48 +1708,29 @@ async function getVisibleStyles(){
 
 async function applyCurrentProfileStyle(){
   const cur = getCurrentProfileStyle();
-  const topbar = document.querySelector('.topbar');
-  const balanceCard = document.getElementById('balanceCard');
-  const logoEl = document.querySelector('.logo');
-  // Сброс
-  topbar.style.backgroundImage = '';
-  balanceCard.style.backgroundImage = '';
-  document.body.style.backgroundImage = '';
-
-  if(cur === 'ninja'){
-    const url = await getResourceURL('profileStyleNinja');
-    if(url){
-      const bg = `linear-gradient(135deg,rgba(139,92,246,.3),rgba(217,70,239,.1)), url('${url}')`;
-      topbar.style.backgroundImage = bg;
-      topbar.style.backgroundSize = 'cover';
-      topbar.style.backgroundPosition = 'center';
-      balanceCard.style.backgroundImage = bg;
-      balanceCard.style.backgroundSize = 'cover';
-      balanceCard.style.backgroundPosition = 'center';
-      document.body.style.backgroundImage = `linear-gradient(rgba(6,3,13,.88),rgba(6,3,13,.88)), url('${url}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
-    }
-  } else if(cur === 'mrfeast'){
-    const url = await getResourceURL('profileStyle1');
-    if(url){
-      const bg = `linear-gradient(135deg,rgba(251,191,36,.2),rgba(217,70,239,.15)), url('${url}')`;
-      topbar.style.backgroundImage = bg;
-      topbar.style.backgroundSize = 'cover';
-      topbar.style.backgroundPosition = 'center';
-      balanceCard.style.backgroundImage = bg;
-      balanceCard.style.backgroundSize = 'cover';
-      balanceCard.style.backgroundPosition = 'center';
-      document.body.style.backgroundImage = `linear-gradient(rgba(6,3,13,.85),rgba(6,3,13,.85)), url('${url}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
-    }
-  }
-  // Обновим имя стиля в профиле
+  // Обновляем имя стиля в профиле
   const nameEl = document.getElementById('pmStyleName');
   if(nameEl){
     const s = PROFILE_STYLES.find(x=>x.id===cur);
     nameEl.textContent = s ? s.name : 'Базовый';
+  }
+
+  // Применяем фон только к .pm-card с прозрачностью 89%
+  if(!pmCard) return;
+  pmCard.classList.remove('with-bg');
+  pmCard.style.setProperty('--bg-image', 'none');
+
+  if(cur !== 'base'){
+    let url = null;
+    if(cur === 'ninja'){
+      url = await getResourceURL('profileStyleNinja');
+    } else if(cur === 'mrfeast'){
+      url = await getResourceURL('profileStyle1');
+    }
+    if(url){
+      pmCard.style.setProperty('--bg-image', `url('${url}')`);
+      pmCard.classList.add('with-bg');
+    }
   }
 }
 
@@ -1771,26 +1784,25 @@ async function renderCustomList(selectedId){
 }
 
 async function updatePreview(styleId){
-  let bg = '';
-  if(styleId === 'ninja'){
-    const url = await getResourceURL('profileStyleNinja');
-    if(url) bg = `linear-gradient(135deg,rgba(139,92,246,.5),rgba(217,70,239,.35)), url('${url}')`;
-  } else if(styleId === 'mrfeast'){
-    const url = await getResourceURL('profileStyle1');
-    if(url) bg = `linear-gradient(135deg,rgba(251,191,36,.4),rgba(217,70,239,.3)), url('${url}')`;
-  }
-  customPreviewProfile.classList.remove('base');
-  if(bg){
-    customPreviewProfile.style.backgroundImage = bg;
-    customPreviewProfile.style.backgroundSize = 'cover';
-    customPreviewProfile.style.backgroundPosition = 'center';
-  } else {
-    customPreviewProfile.style.backgroundImage = '';
-    customPreviewProfile.classList.add('base');
+  // Применяем фон к превью с прозрачностью 89%
+  customPreviewProfile.classList.remove('with-bg');
+  customPreviewProfile.style.setProperty('--bg-image', 'none');
+  customPreviewProfile.style.background = 'linear-gradient(160deg, rgba(76,29,149,.5), rgba(15,8,30,.94))';
+
+  if(styleId !== 'base'){
+    let url = null;
+    if(styleId === 'ninja'){
+      url = await getResourceURL('profileStyleNinja');
+    } else if(styleId === 'mrfeast'){
+      url = await getResourceURL('profileStyle1');
+    }
+    if(url){
+      customPreviewProfile.style.setProperty('--bg-image', `url('${url}')`);
+      customPreviewProfile.classList.add('with-bg');
+    }
   }
   const s = PROFILE_STYLES.find(x=>x.id===styleId);
   customPreviewLabel.textContent = s ? `Стиль: ${s.name}` : 'Текущий стиль';
-  // Обновим баланс в превью
   document.getElementById('previewBalance').textContent = balance.toLocaleString('ru-RU');
 }
 
