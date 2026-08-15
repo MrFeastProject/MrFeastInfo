@@ -715,22 +715,231 @@ body.tg-fullscreen .load-news{top:96px}
 .modal-btn.close{background:linear-gradient(135deg,#4a4a6a,#6b6b8f);box-shadow:0 4px 14px rgba(0,0,0,.3)}
 .modal-btn.apply{background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 8px 24px rgba(16,185,129,.4)}
 
-/* FTAC BAN SCREEN */
-#ftacBanScreen{display:none;position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at center,#1a0a1e 0%,#0a0514 100%);flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;min-height:100vh;overflow-y:auto}
-#ftacBanScreen h1{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(24px,5vw,36px);background:linear-gradient(135deg,#ef4444,#dc2626);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px;text-shadow:0 0 40px rgba(239,68,68,0.3)}
-#ftacBanScreen p{font-family:'Manrope',sans-serif;font-size:clamp(14px,2.5vw,18px);color:#fca5a5;max-width:560px;line-height:1.7;margin-bottom:12px}
-#ftacBanScreen p b{color:#f87171}
-#ftacBanScreen .desc{font-family:'Manrope',sans-serif;font-size:clamp(13px,2vw,16px);color:#94a3b8;max-width:520px;line-height:1.6;margin-bottom:24px}
-#ftacBanScreen .btn-group{display:flex;flex-direction:column;gap:12px;width:min(100%,340px)}
-#ftacBanScreen .btn-group button{padding:16px;border:none;border-radius:14px;font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;color:#fff;cursor:pointer;transition:transform .15s;box-shadow:0 8px 30px rgba(0,0,0,0.3)}
-#ftacBanScreen .btn-group button:active{transform:scale(0.96)}
-#ftacBanScreen .btn-exit{background:linear-gradient(135deg,#dc2626,#ef4444);box-shadow:0 8px 30px rgba(220,38,38,0.4)}
-#ftacBanScreen .btn-contact{background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 8px 30px rgba(16,185,129,0.4)}
-#ftacAvatar{width:min(200px,60vw);height:auto;border-radius:50%;border:4px solid #ef4444;box-shadow:0 0 60px rgba(239,68,68,0.4);margin-bottom:24px}
-@media (max-width:480px){#ftacBanScreen{padding:16px}
-#ftacBanScreen h1{font-size:20px}
-#ftacBanScreen p{font-size:13px}
-#ftacBanScreen .desc{font-size:12px}}
+/* FTAC BAN SCREEN — УСТРАШАЮЩИЙ ДИЗАЙН */
+#ftacBanScreen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: #0a0000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  min-height: 100vh;
+  overflow-y: auto;
+  animation: bgPulse 2s ease-in-out infinite alternate;
+}
+@keyframes bgPulse {
+  0% { background: #1a0000; }
+  100% { background: #2a0000; }
+}
+#ftacBanScreen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,0,0,0.03) 0px,
+    rgba(255,0,0,0.03) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: scanLines 4s linear infinite;
+}
+@keyframes scanLines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+#ftacBanScreen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,0,0,0.04) 40px,
+      rgba(255,0,0,0.04) 41px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,0,0,0.04) 40px,
+      rgba(255,0,0,0.04) 41px
+    );
+  pointer-events: none;
+  z-index: 1;
+  animation: patternRotate 20s linear infinite;
+}
+@keyframes patternRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#ftacBanScreen > * { position: relative; z-index: 2; }
+#ftacAvatar {
+  width: min(220px, 60vw);
+  height: auto;
+  border: none;
+  border-radius: 0;
+  object-fit: contain;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 40px rgba(255,0,0,0.8)) drop-shadow(0 0 80px rgba(255,0,0,0.4));
+  animation: avatarPulse 2s ease-in-out infinite alternate;
+}
+@keyframes avatarPulse {
+  0% { filter: drop-shadow(0 0 20px rgba(255,0,0,0.6)) drop-shadow(0 0 60px rgba(255,0,0,0.3)); }
+  100% { filter: drop-shadow(0 0 60px rgba(255,50,50,1)) drop-shadow(0 0 120px rgba(255,0,0,0.6)); }
+}
+#ftacBanScreen h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 6vw, 42px);
+  background: linear-gradient(135deg, #ff0000, #ff3333, #cc0000, #ff0000);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+  text-shadow: 0 0 30px rgba(255,0,0,0.5);
+  animation: glitch 1.5s infinite, gradientShift 3s ease infinite;
+  position: relative;
+}
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-2px, 2px); }
+  94% { transform: translate(2px, -2px); }
+  96% { transform: translate(-1px, 1px); }
+  98% { transform: translate(1px, -1px); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+#ftacBanScreen h1::after {
+  content: 'FeastTurboAntiCheat Detect You!';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff0000, #ff3333, #cc0000, #ff0000);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.3;
+  transform: translate(3px, 3px);
+  z-index: -1;
+  animation: gradientShift 3s ease infinite;
+}
+#ftacBanScreen p {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: #ff9999;
+  max-width: 560px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  text-shadow: 0 0 10px rgba(255,0,0,0.2);
+}
+#ftacBanScreen p b {
+  color: #ff4444;
+  text-shadow: 0 0 20px rgba(255,0,0,0.6);
+}
+#ftacBanScreen .desc {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(13px, 2vw, 16px);
+  color: #bb8888;
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+#ftacBanScreen .corner-frame {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,0,0,0.3);
+  z-index: 3;
+  animation: cornerPulse 2s ease-in-out infinite alternate;
+}
+#ftacBanScreen .corner-frame.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+#ftacBanScreen .corner-frame.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+#ftacBanScreen .corner-frame.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+#ftacBanScreen .corner-frame.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+@keyframes cornerPulse {
+  0% { border-color: rgba(255,0,0,0.2); }
+  100% { border-color: rgba(255,50,50,0.8); }
+}
+#ftacBanScreen .btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(100%, 340px);
+  margin-top: 8px;
+}
+#ftacBanScreen .btn-group button {
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+}
+#ftacBanScreen .btn-group button:active {
+  transform: scale(0.94);
+}
+#ftacBanScreen .btn-exit {
+  background: linear-gradient(135deg, #cc0000, #ff1a1a);
+  box-shadow: 0 0 30px rgba(255,0,0,0.5);
+}
+#ftacBanScreen .btn-exit:hover {
+  box-shadow: 0 0 50px rgba(255,0,0,0.8);
+}
+#ftacBanScreen .btn-contact {
+  background: linear-gradient(135deg, #006644, #00b377);
+  box-shadow: 0 0 30px rgba(0,200,100,0.3);
+}
+#ftacBanScreen .btn-contact:hover {
+  box-shadow: 0 0 50px rgba(0,200,100,0.6);
+}
+#ftacBanScreen .btn-group button::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#ftacBanScreen .btn-group button:active::after {
+  opacity: 1;
+  animation: ripple 0.6s ease-out;
+}
+@keyframes ripple {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+@media (max-width: 480px) {
+  #ftacBanScreen { padding: 16px; }
+  #ftacBanScreen h1 { font-size: 22px; }
+  #ftacBanScreen p { font-size: 13px; }
+  #ftacBanScreen .desc { font-size: 12px; }
+  .corner-frame { width: 25px; height: 25px; }
+}
 </style>
 </head>
 <body>
@@ -759,14 +968,18 @@ body.tg-fullscreen .load-news{top:96px}
 
 <!-- FTAC БАН -->
 <div id="ftacBanScreen">
-<img id="ftacAvatar" src="" alt="FTAC">
-<h1>FeastTurboAntiCheat Detect You!</h1>
-<p>АнтиЧит система обнаружила ваш аккаунт в списке банов по причине <b id="ftacBanReasonDisplay">...</b> и заблокировала дальнейший вход в игру и различные манипуляции.</p>
-<p class="desc">Если бан ошибочный, а причина не указана (Unknown) или хотите обговорить ваш бан с возможностью получения дальнейшего доступа в игру, то нажмите на кнопку ниже "Написать нам" и обговорите бан в личном чате с владельцем игры.</p>
-<div class="btn-group">
-<button class="btn-exit" id="ftacExitBtn">Выйти</button>
-<button class="btn-contact" id="ftacContactBtn">Написать нам</button>
-</div>
+  <div class="corner-frame tl"></div>
+  <div class="corner-frame tr"></div>
+  <div class="corner-frame bl"></div>
+  <div class="corner-frame br"></div>
+  <img id="ftacAvatar" src="" alt="FTAC">
+  <h1>FeastTurboAntiCheat Detect You!</h1>
+  <p>АнтиЧит система обнаружила ваш аккаунт в списке банов по причине <b id="ftacBanReasonDisplay">...</b> и заблокировала дальнейший вход в игру и различные манипуляции.</p>
+  <p class="desc">Если бан ошибочный, а причина не указана (Unknown) или хотите обговорить ваш бан с возможностью получения дальнейшего доступа в игру, то нажмите на кнопку ниже "Написать нам" и обговорите бан в личном чате с владельцем игры.</p>
+  <div class="btn-group">
+    <button class="btn-exit" id="ftacExitBtn">Выйти</button>
+    <button class="btn-contact" id="ftacContactBtn">Написать нам</button>
+  </div>
 </div>
 
 <div class="loader-notification" id="loaderNotification">
@@ -3280,7 +3493,6 @@ await new Promise(res => {
             msg.textContent = '// Проверяем игрока (FTAC)';
             if (!ftacChecked && prog >= 48) {
                 ftacChecked = true;
-                // Выполняем проверку FTAC асинхронно
                 (async () => {
                     const banResult = await checkBan();
                     if (banResult.banned) {
@@ -3288,7 +3500,6 @@ await new Promise(res => {
                         ftacBanReason = banResult.reason;
                         ftacBannedUserId = getUserId();
                         showBanScreen();
-                        // Останавливаем загрузку
                         clearInterval(iv);
                         res();
                         return;
@@ -3305,7 +3516,6 @@ await new Promise(res => {
     }, 80);
 });
 
-// Если пользователь забанен – мы уже вышли через showBanScreen
 if (ftacBanned) {
     loaderBusy = false;
     return;
