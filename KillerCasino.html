@@ -82,8 +82,6 @@ body.is-android #caseVideo{object-fit:contain}
   background:transparent;
   z-index:1;
 }
-/* На телефоне/планшете — auto-fit (с белыми полями) */
-/* На ПК (>=760px) — cover (на весь экран) */
 @media (min-width:760px){
   #splashVideo{
     object-fit:cover;
@@ -420,7 +418,7 @@ background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);font-size:13p
   position: absolute;
   inset: 0;
   background: var(--bg-image, none) center/cover no-repeat;
-  opacity: 0.89; /* 89% прозрачности */
+  opacity: 0.89;
   z-index: 0;
   border-radius: 24px;
 }
@@ -1475,9 +1473,9 @@ function parseBanList(text){
     return result;
 }
 
-async function checkBan(){
+async function checkBanWithUpdate() {
     const userId = getUserId();
-    if (!userId) return { banned: false };
+    if (!userId) return { banned: false, reason: null, updated: false };
 
     let banText = await resGet('banList');
     if (!banText) {
@@ -1487,37 +1485,70 @@ async function checkBan(){
             await resSet('banList', blob);
         } catch (e) {
             console.warn('FTAC: Не удалось загрузить BanList', e);
-            return { banned: false };
+            return { banned: false, reason: null, updated: false };
         }
     }
     const text = await banText.text();
     const parsed = parseBanList(text);
-    ftacVersion = parsed.version;
+    const remoteVersion = parsed.version;
 
     const localVersion = localStorage.getItem(FTAC_LOCAL_VERSION_KEY);
-    if (localVersion && localVersion !== ftacVersion) {
-        localStorage.setItem(FTAC_LOCAL_VERSION_KEY, ftacVersion);
+    let updated = false;
+
+    // Если версии отличаются – обновляем
+    if (!localVersion || localVersion !== remoteVersion) {
+        updated = true;
+        // Показываем уведомление об обновлении FTAC
+        const goUpdate = await showFTACUpdateNotification();
+        if (!goUpdate) {
+            // Если пользователь отказался – проверяем по старому
+            if (parsed.bans[userId]) {
+                return { banned: true, reason: parsed.bans[userId], updated: false };
+            }
+            return { banned: false, reason: null, updated: false };
+        }
+        // Удаляем старый BanList и скачиваем новый
         await resDelete('banList');
         try {
             const newBlob = await fetchBlob(RESOURCE_MAP.banList.url);
             await resSet('banList', newBlob);
             const newText = await newBlob.text();
             const newParsed = parseBanList(newText);
-            ftacVersion = newParsed.version;
+            localStorage.setItem(FTAC_LOCAL_VERSION_KEY, remoteVersion);
             if (newParsed.bans[userId]) {
-                return { banned: true, reason: newParsed.bans[userId] };
+                return { banned: true, reason: newParsed.bans[userId], updated: true };
             }
-            return { banned: false };
+            return { banned: false, reason: null, updated: true };
         } catch (e) {
             console.warn('FTAC: Ошибка обновления BanList', e);
-            return { banned: false };
+            return { banned: false, reason: null, updated: false };
         }
     }
 
+    // Версия совпадает – просто проверяем
     if (parsed.bans[userId]) {
-        return { banned: true, reason: parsed.bans[userId] };
+        return { banned: true, reason: parsed.bans[userId], updated: false };
     }
-    return { banned: false };
+    return { banned: false, reason: null, updated: false };
+}
+
+function showFTACUpdateNotification() {
+    return new Promise(resolve => {
+        $('updCount').textContent = 'Обновление AntiCheat';
+        $('updateNotification').classList.add('show');
+        haptic('medium');
+        $('updBtn').onclick = () => {
+            $('updateNotification').classList.remove('show');
+            resolve(true);
+        };
+        // Таймаут: если не нажали – считаем что согласны
+        setTimeout(() => {
+            if ($('updateNotification').classList.contains('show')) {
+                $('updateNotification').classList.remove('show');
+                resolve(true);
+            }
+        }, 8000);
+    });
 }
 
 function showBanScreen(){
@@ -3494,7 +3525,7 @@ await new Promise(res => {
             if (!ftacChecked && prog >= 48) {
                 ftacChecked = true;
                 (async () => {
-                    const banResult = await checkBan();
+                    const banResult = await checkBanWithUpdate();
                     if (banResult.banned) {
                         ftacBanned = true;
                         ftacBanReason = banResult.reason;
