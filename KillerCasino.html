@@ -1337,10 +1337,13 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 </div>
 </div>
 <script>
-const tg = window.Telegram && window.Telegram.WebApp;
+// ============================================================
+// ИСПРАВЛЕНИЕ #4: Безопасная инициализация Telegram
+// ============================================================
+const tg = window.Telegram?.WebApp || {};
 const isAndroid = /Android/.test(navigator.userAgent);
 if(isAndroid) document.body.classList.add('is-android');
-if (tg){
+if (tg && typeof tg.ready === 'function'){
 try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){}
 try{
 if (isAndroid && typeof tg.requestFullscreen === 'function' && !tg.isFullscreen){
@@ -1575,6 +1578,270 @@ function showBanScreen(){
         window.open(url, '_blank');
     };
 }
+
+// ============================================================
+// === CLOUDSTORAGE + LOCALSTORAGE ДЛЯ СОСТОЯНИЯ ИГРЫ ========
+// ============================================================
+// Исправление #4: эмуляция CloudStorage теперь безопасна
+// Исправление #3: порядок сохранения – сначала local, потом cloud
+// Исправление #1: добавлены версия и updatedAt, выбор свежего
+
+// Эмуляция CloudStorage для локальной разработки
+if (!tg || !tg.CloudStorage) {
+    console.warn('CloudStorage недоступен, используем localStorage с эмуляцией');
+    if (!tg) window.tg = {};
+    if (!tg.CloudStorage) {
+        tg.CloudStorage = {
+            setItem: (key, value, callback) => {
+                try {
+                    localStorage.setItem('cloud_' + key, value);
+                    if (callback) callback(null);
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            },
+            getItem: (key, callback) => {
+                try {
+                    const val = localStorage.getItem('cloud_' + key);
+                    if (callback) callback(null, val);
+                } catch (e) {
+                    if (callback) callback(e, null);
+                }
+            },
+            removeItem: (key, callback) => {
+                try {
+                    localStorage.removeItem('cloud_' + key);
+                    if (callback) callback(null);
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            },
+            getKeys: (callback) => {
+                try {
+                    const keys = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const k = localStorage.key(i);
+                        if (k && k.startsWith('cloud_')) keys.push(k.slice(6));
+                    }
+                    if (callback) callback(null, keys);
+                } catch (e) {
+                    if (callback) callback(e, null);
+                }
+            }
+        };
+    }
+}
+
+function saveToCloud(key, value, callback) {
+    if (!tg || !tg.CloudStorage) {
+        console.warn('CloudStorage недоступен, сохраняем только в localStorage');
+        if (callback) callback(false);
+        return;
+    }
+    try {
+        const str = typeof value === 'string' ? value : JSON.stringify(value);
+        tg.CloudStorage.setItem(key, str, (err) => {
+            if (err) {
+                console.warn('Ошибка сохранения в CloudStorage:', err);
+                if (callback) callback(false);
+            } else {
+                if (callback) callback(true);
+            }
+        });
+    } catch (e) {
+        console.warn('Ошибка сериализации:', e);
+        if (callback) callback(false);
+    }
+}
+
+function loadFromCloud(key, callback) {
+    if (!tg || !tg.CloudStorage) {
+        if (callback) callback(null);
+        return;
+    }
+    tg.CloudStorage.getItem(key, (err, value) => {
+        if (err || value === null || value === undefined) {
+            if (callback) callback(null);
+            return;
+        }
+        try {
+            const parsed = JSON.parse(value);
+            if (callback) callback(parsed);
+        } catch (e) {
+            if (callback) callback(value);
+        }
+    });
+}
+
+function removeFromCloud(key, callback) {
+    if (!tg || !tg.CloudStorage) {
+        if (callback) callback(false);
+        return;
+    }
+    tg.CloudStorage.removeItem(key, (err) => {
+        if (err) {
+            if (callback) callback(false);
+        } else {
+            if (callback) callback(true);
+        }
+    });
+}
+
+let saveTimeout = null;
+
+function scheduleSave() {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+        saveGameState();
+        saveTimeout = null;
+    }, 500);
+}
+
+// Исправление #3: сначала локально, потом в облако
+// Исправление #1: добавлены version и updatedAt
+function saveGameState(callback) {
+    const state = {
+        balance: balance,
+        selectedChip: selectedChip,
+        slotBet: slotBet,
+        rocketBet: rocketBet,
+        minesBet: minesBet,
+        minesCount: minesCount,
+        ownedCars: getOwnedCars(),
+        ownedProfileStyles: getOwnedProfileStyles(),
+        currentProfileStyle: getCurrentProfileStyle(),
+        muted: muted,
+        shuqEnabled: shuqToggle.checked,
+        shuqMode: localStorage.getItem('kc_shuq_mode') || 'med',
+        muqEnabled: muqToggle.checked,
+        version: CURRENT_VERSION,
+        updatedAt: Date.now()
+    };
+    // 1. Мгновенно сохраняем в localStorage
+    localStorage.setItem('kc_game_state_backup', JSON.stringify(state));
+    // 2. Асинхронно сохраняем в CloudStorage
+    saveToCloud('kc_game_state', state, (ok) => {
+        if (callback) callback(ok);
+    });
+}
+
+// Исправление #1: загрузка с выбором более свежего сохранения
+function loadGameState(callback) {
+    let localData = null;
+    const localBackup = localStorage.getItem('kc_game_state_backup');
+    if (localBackup) {
+        try { localData = JSON.parse(localBackup); } catch(e) {}
+    }
+
+    loadFromCloud('kc_game_state', (cloudData) => {
+        let dataToApply = null;
+        let source = 'none';
+
+        if (cloudData && localData) {
+            const cloudTime = cloudData.updatedAt || 0;
+            const localTime = localData.updatedAt || 0;
+            if (cloudTime > localTime) {
+                dataToApply = cloudData;
+                source = 'cloud';
+            } else {
+                dataToApply = localData;
+                source = 'local';
+            }
+        } else if (cloudData) {
+            dataToApply = cloudData;
+            source = 'cloud';
+        } else if (localData) {
+            dataToApply = localData;
+            source = 'local';
+        }
+
+        if (dataToApply) {
+            applyGameState(dataToApply);
+            if (source === 'cloud') {
+                // синхронизируем локальную копию с облачной
+                localStorage.setItem('kc_game_state_backup', JSON.stringify(dataToApply));
+            }
+            if (callback) callback(true);
+        } else {
+            // нет сохранений – используем значения по умолчанию (уже заданы в коде)
+            if (callback) callback(false);
+        }
+    });
+}
+
+function applyGameState(state) {
+    if (state.balance !== undefined) {
+        balance = state.balance;
+        localStorage.setItem('kc_balance', balance);
+        renderBalance();
+    }
+    if (state.selectedChip !== undefined) {
+        selectedChip = state.selectedChip;
+        renderChips();
+    }
+    if (state.slotBet !== undefined) {
+        slotBet = state.slotBet;
+        renderSlotBet();
+    }
+    if (state.rocketBet !== undefined) {
+        rocketBet = state.rocketBet;
+        renderRocketBet();
+    }
+    if (state.minesBet !== undefined) {
+        minesBet = state.minesBet;
+        renderMinesBet();
+    }
+    // МИКРОЗАМЕЧАНИЕ: проверка корректности количества мин
+    if (state.minesCount !== undefined && MINES_OPTIONS.includes(state.minesCount)) {
+        minesCount = state.minesCount;
+        renderMinesModes();
+        updateMinesInfo();
+    }
+    if (state.ownedCars) {
+        setOwnedCars(state.ownedCars);
+        renderCars();
+    }
+    if (state.ownedProfileStyles) {
+        setOwnedProfileStyles(state.ownedProfileStyles);
+        renderCustomList();
+    }
+    if (state.currentProfileStyle) {
+        setCurrentProfileStyle(state.currentProfileStyle);
+        applyCurrentProfileStyle();
+    }
+    if (state.muted !== undefined) {
+        muted = state.muted;
+        localStorage.setItem('kc_muted', muted ? '1' : '0');
+        renderSound();
+        if (loaderVideo) loaderVideo.muted = muted;
+        if (muted) {
+            if (bgAudio && !bgAudio.paused) bgAudio.pause();
+        } else {
+            if (bgAudio && bgAudio.paused && bgMusicReady) startBgMusic();
+        }
+    }
+    if (state.shuqEnabled !== undefined) {
+        shuqToggle.checked = state.shuqEnabled;
+        localStorage.setItem('kc_shuq', state.shuqEnabled ? '1' : '0');
+        updateShuqUI();
+        applyGraphicsSettings();
+    }
+    if (state.shuqMode) {
+        savedShuqMode = state.shuqMode;
+        localStorage.setItem('kc_shuq_mode', state.shuqMode);
+        updateShuqUI();
+        applyGraphicsSettings();
+    }
+    if (state.muqEnabled !== undefined) {
+        muqToggle.checked = state.muqEnabled;
+        localStorage.setItem('kc_muq', state.muqEnabled ? '1' : '0');
+        applyGraphicsSettings();
+    }
+}
+
+// ============================================================
+// === ОСТАЛЬНОЙ СКРИПТ (оригинальный, с небольшими изменениями) ===
+// ============================================================
 
 function altUrls(u){
 const list=[u];
@@ -2173,6 +2440,7 @@ async function renderCustomList(selectedId){
         await renderCustomList(s.id);
         await updatePreview(s.id);
         haptic('success');
+        scheduleSave();
       };
     } else {
       el.onclick = ()=>{
@@ -2304,7 +2572,10 @@ const balanceEl=$('balance'),spinBtn=$('spinBtn'),cardsBtn=$('cardsBtn'),bonusBt
 wheelEl=$('wheel'),wheelWrap=$('wheelWrap'),deckEl=$('deck'),balanceCard=$('balanceCard'),
 slotsBtn=$('slotsBtn'),slotBanner=$('slotBanner');
 function currentBet(){const v=CHIP_VALUES[selectedChip];return v==='MAX'?Math.max(0,Math.floor(balance)):v;}
-function save(){localStorage.setItem('kc_balance',balance);}
+function save(){
+    localStorage.setItem('kc_balance', balance);
+    scheduleSave();
+}
 let shownBal=0;
 function renderBalance(){
 const from=shownBal,to=balance,t0=performance.now();
@@ -2320,7 +2591,7 @@ CHIP_VALUES.forEach((v,i)=>{
 const c=document.createElement('button');
 c.className='chip'+(i===selectedChip?' active':'');
 c.textContent=v==='MAX'?'MAX':v;
-c.onclick=()=>{selectedChip=i;haptic('light');renderChips();};
+c.onclick=()=>{selectedChip=i;haptic('light');renderChips();scheduleSave();};
 box.appendChild(c);
 });
 });
@@ -2375,6 +2646,7 @@ if(bgAudio && !bgAudio.paused) bgAudio.pause();
 }else{
 if(bgAudio && bgAudio.paused && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy) startBgMusic();
 }
+scheduleSave();
 };
 const shuqSection=$('shuqSection'), muqSection=$('muqSection');
 const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
@@ -2421,8 +2693,17 @@ btn.classList.toggle('active', btn.dataset.mode === savedShuqMode);
 });
 }
 updateShuqUI();
-shuqToggle.onchange = ()=>{ haptic('light'); updateShuqUI(); applyGraphicsSettings(); };
-muqToggle.onchange = ()=>{ haptic('light'); applyGraphicsSettings(); };
+shuqToggle.onchange = ()=>{
+    haptic('light');
+    updateShuqUI();
+    applyGraphicsSettings();
+    scheduleSave();
+};
+muqToggle.onchange = ()=>{
+    haptic('light');
+    applyGraphicsSettings();
+    scheduleSave();
+};
 shuqModeBtns.forEach(btn=>{
 btn.onclick = ()=>{
 if(!shuqToggle.checked) return;
@@ -2431,6 +2712,7 @@ localStorage.setItem('kc_shuq_mode', savedShuqMode);
 updateShuqUI();
 applyGraphicsSettings();
 haptic('light');
+scheduleSave();
 };
 });
 applyGraphicsSettings(true);
@@ -2660,13 +2942,13 @@ const box=$('betsSlots');box.innerHTML='';
 const c=document.createElement('button');
 c.className='chip'+(v===slotBet?' active':'');
 c.textContent=v;
-c.onclick=()=>{slotBet=v;haptic('light');renderSlotBet();};
+c.onclick=()=>{slotBet=v;haptic('light');renderSlotBet();scheduleSave();};
 box.appendChild(c);
 });
 }
-$('betHalf').onclick=()=>{slotBet=Math.max(1,Math.floor(slotBet/2));haptic('light');renderSlotBet();};
-$('betDouble').onclick=()=>{slotBet=Math.max(1,slotBet*2);haptic('light');renderSlotBet();};
-$('betMax').onclick=()=>{slotBet=Math.max(1,Math.floor(balance));haptic('light');renderSlotBet();};
+$('betHalf').onclick=()=>{slotBet=Math.max(1,Math.floor(slotBet/2));haptic('light');renderSlotBet();scheduleSave();};
+$('betDouble').onclick=()=>{slotBet=Math.max(1,slotBet*2);haptic('light');renderSlotBet();scheduleSave();};
+$('betMax').onclick=()=>{slotBet=Math.max(1,Math.floor(balance));haptic('light');renderSlotBet();scheduleSave();};
 const SPIN_FILLS=[18,26,34], SPIN_DURS=[2400,3300,4200], BOUNCE_PX=16, SETTLE_MS=260;
 slotsBtn.onclick=()=>{
 if(slotsSpinning)return;
@@ -2806,13 +3088,13 @@ const box=$('betsRocket');box.innerHTML='';
 const c=document.createElement('button');
 c.className='chip'+(v===rocketBet?' active':'');
 c.textContent=v;
-c.onclick=()=>{rocketBet=v;haptic('light');renderRocketBet();};
+c.onclick=()=>{rocketBet=v;haptic('light');renderRocketBet();scheduleSave();};
 box.appendChild(c);
 });
 }
-$('rBetHalf').onclick=()=>{rocketBet=Math.max(1,Math.floor(rocketBet/2));renderRocketBet();};
-$('rBetDouble').onclick=()=>{rocketBet=Math.max(1,rocketBet*2);renderRocketBet();};
-$('rBetMax').onclick=()=>{rocketBet=Math.max(1,Math.floor(balance));renderRocketBet();};
+$('rBetHalf').onclick=()=>{rocketBet=Math.max(1,Math.floor(rocketBet/2));renderRocketBet();scheduleSave();};
+$('rBetDouble').onclick=()=>{rocketBet=Math.max(1,rocketBet*2);renderRocketBet();scheduleSave();};
+$('rBetMax').onclick=()=>{rocketBet=Math.max(1,Math.floor(balance));renderRocketBet();scheduleSave();};
 function rocketPosFor(m){
 const w=rc.width,h=rc.height;
 const xFrac=.15+.7*Math.min(1,(m-1)/9);
@@ -2980,7 +3262,7 @@ const box=$('betsMines');box.innerHTML='';
 const c=document.createElement('button');
 c.className='chip'+(v===minesBet?' active':'');
 c.textContent=v;
-c.onclick=()=>{if(minesState==='playing')return; minesBet=v;haptic('light');renderMinesBet();};
+c.onclick=()=>{if(minesState==='playing')return; minesBet=v;haptic('light');renderMinesBet();scheduleSave();};
 box.appendChild(c);
 });
 }
@@ -2990,7 +3272,7 @@ MINES_OPTIONS.forEach(v=>{
 const c=document.createElement('button');
 c.className='chip'+(v===minesCount?' active':'');
 c.textContent=v;
-c.onclick=()=>{if(minesState==='playing')return; minesCount=v;haptic('light');renderMinesModes();updateMinesInfo();};
+c.onclick=()=>{if(minesState==='playing')return; minesCount=v;haptic('light');renderMinesModes();updateMinesInfo();scheduleSave();};
 box.appendChild(c);
 });
 }
@@ -3009,9 +3291,9 @@ c.style.cssText=v>=2?'background:rgba(34,197,94,.15);color:#4ade80;border-color:
 box.appendChild(c);
 });
 }
-$('mBetHalf').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(minesBet/2));haptic('light');renderMinesBet();};
-$('mBetDouble').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,minesBet*2);haptic('light');renderMinesBet();};
-$('mBetMax').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(balance));haptic('light');renderMinesBet();};
+$('mBetHalf').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(minesBet/2));haptic('light');renderMinesBet();scheduleSave();};
+$('mBetDouble').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,minesBet*2);haptic('light');renderMinesBet();scheduleSave();};
+$('mBetMax').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(balance));haptic('light');renderMinesBet();scheduleSave();};
 minesStartBtn.onclick=()=>{
 if(minesState==='idle'){
 const bet=minesBet;
@@ -3201,6 +3483,7 @@ balance-=car.price; save(); renderBalance();
 owned.push(car.id); setOwnedCars(owned);
 haptic('success'); winSound(); spawnConfetti(90);
 renderCars(); checkState();
+scheduleSave();
 }
 const homeBanner=$('homeBanner');
 function normalizeHomeStatus(res){
@@ -3371,6 +3654,7 @@ if(prize.type === 'nothing'){
   if(!owned.includes('ninja')){
     owned.push('ninja');
     setOwnedProfileStyles(owned);
+    scheduleSave();
   }
 } else {
   $('cvAmount').textContent='+'+prize.value.toLocaleString('ru-RU');
@@ -3506,6 +3790,15 @@ fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
 await startLoaderVideo();
 applyResourceImages();
 
+// === ЗАГРУЖАЕМ СОСТОЯНИЕ ИГРЫ (CloudStorage + localStorage) ===
+await new Promise(resolve => {
+    loadGameState((loaded) => {
+        if (loaded) console.log('Состояние загружено из CloudStorage/localStorage');
+        else console.log('Состояние по умолчанию');
+        resolve();
+    });
+});
+
 // === НОВЫЙ ПРОГРЕСС С ЭТАПАМИ ===
 let prog = 0;
 let ftacChecked = false;
@@ -3613,20 +3906,30 @@ if(!muted && !fixBusy){
 setTimeout(()=>startBgMusic(), 500);
 }
 }
-document.addEventListener('visibilitychange',()=>{
-if(document.hidden){
-hiddenAt=Date.now();
-document.body.classList.add('paused');
-if(bgAudio && !bgAudio.paused) bgAudio.pause();
-}else{
-document.body.classList.remove('paused');
-if(!muted && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy && bgAudio && bgAudio.paused) startBgMusic();
-if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
-runLoader('restart');
-}
-hiddenAt=0;
-}
+// ============================================================
+// ИСПРАВЛЕНИЕ #2: Принудительное сохранение при выходе
+// ============================================================
+window.addEventListener('pagehide', () => {
+    saveGameState();
 });
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Сохраняем состояние перед уходом в фон
+        saveGameState();
+        hiddenAt = Date.now();
+        document.body.classList.add('paused');
+        if (bgAudio && !bgAudio.paused) bgAudio.pause();
+    } else {
+        document.body.classList.remove('paused');
+        if(!muted && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy && bgAudio && bgAudio.paused) startBgMusic();
+        if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
+            runLoader('restart');
+        }
+        hiddenAt=0;
+    }
+});
+
 let fixBusy=false;
 const fixNotif=$('fixNotification');
 function showFixNotification(title,text,onClose){
