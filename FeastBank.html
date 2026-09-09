@@ -23,21 +23,13 @@ user-drag: none;
 pointer-events: auto;
 }
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
-body.muq-active .app, body.muq-active #splash img, body.muq-active video {
-image-rendering: high-quality;
-transform: translateZ(0);
--webkit-transform: translateZ(0);
-backface-visibility: hidden;
-will-change: transform;
-contain: layout style;
-}
-/* === FEASTOPTIMIZINGSERVICE (AI BOOST): приоритет GPU, вынесенные слои, точечный will-change === */
-body.muq-active .orb{filter:blur(26px);will-change:transform}
-body.muq-active .mode-card img,body.muq-active .shop-item img,body.muq-active .car-item img{image-rendering:high-quality}
+/* === FEASTOPTIMIZINGSERVICE (AI BOOST) — ЛЁГКИЙ РЕЖИМ ===
+   Правило: статике не мешать, GPU-слой создаётся ТОЛЬКО на время анимации.
+   Весь .app на GPU не выносим (гигантская текстура = фризы) —
+   вместо этого лёгкая изоляция layout и точечный will-change. */
+body.muq-active .app{contain:layout style}
 body.muq-active .wheel-glow{transform:translateZ(0)}
 .wheel-wrap.spinning #wheel{will-change:transform}
-.reel .strip{will-change:transform}
-.card-inner,.mine-cell{will-change:transform}
 /* === КОНЕЦ FEASTOPTIMIZINGSERVICE === */
 #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
 transition:opacity .3s;pointer-events:none}
@@ -255,6 +247,9 @@ background:linear-gradient(135deg,#c084fc,#f0abfc);-webkit-background-clip:text;
 .card.dim{opacity:.3;filter:grayscale(.7)}
 .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,1.3,.4,1)}
 .card.flipped .card-inner{transform:rotateY(180deg)}
+.card-inner,.mine-cell{will-change:auto}
+.card:not(.flipped) .card-inner{will-change:transform}
+.mine-cell:not(.revealed){will-change:transform}
 .card-face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;
 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
 .card-back{border:2px solid #c084fc;
@@ -280,7 +275,7 @@ border:1px solid rgba(168,85,247,.4);box-shadow:0 0 30px rgba(124,58,237,.3),ins
 .slot-grid{--cell:min(24vw,92px);display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .reel{height:calc(var(--cell)*3);overflow:hidden;border-radius:12px;background:#0d0620;border:1px solid rgba(139,92,246,.25)}
 .strip{display:flex;flex-direction:column;will-change:transform}
-.strip.blurring{filter:blur(2px)}
+.strip.blurring{filter:blur(2px);will-change:transform,filter}
 .cell{height:var(--cell);display:flex;align-items:center;justify-content:center}
 .cell .sym{font-size:calc(var(--cell)*.5);
 background:linear-gradient(180deg,var(--c1),var(--c2));
@@ -971,6 +966,12 @@ body.tg-fullscreen .load-news{top:96px}
 <div class="ln-text">Наша система проверки (Fix Helper) обнаружила что <b id="updCount">0</b> ресурсов игры устарело, пожалуйста, обновитесь для дальнейшей корректной работы игры</div>
 <button class="ln-btn upd" id="updBtn"><i class="fa-solid fa-bolt"></i> Fast UPD</button>
 </div>
+<div class="loader-notification" id="ftacUpdateNotification">
+<div class="ln-icon update"><i class="fa-solid fa-shield-halved"></i></div>
+<div class="ln-title">Обновление AntiCheat</div>
+<div class="ln-text">Доступна новая версия базы FeastTurboAntiCheat (<b id="ftacUpdVer">новая версия</b>). Обновите базу блокировок для корректной проверки аккаунта</div>
+<button class="ln-btn upd" id="ftacUpdBtn"><i class="fa-solid fa-bolt"></i> Fast UPD</button>
+</div>
 <div class="loader-notification" id="updateGameModal">
 <div class="ln-icon update">
 <img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastProject/refs/heads/main/51795-no-bg-HD%20(carve.photos).png" alt="">
@@ -1250,7 +1251,7 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 </div>
 <div class="set-section" id="muqSection">
 <div class="set-section-title"><i class="fa-solid fa-bolt"></i>FeastOptimizingService (AI Boost)</div>
-<div class="set-desc">Технология оптимизации от MrFeastProject: аппаратное ускорение GPU с приоритетом графического процессора над CPU, вынос тяжёлых эффектов (blur, тени, фильтры) на отдельный слой обработки, изоляция фоновых эффектов и умное кэширование рендеринга для ускорения движка Telegram Mini App и максимальной плавности</div>
+<div class="set-desc">Технология оптимизации от MrFeastProject: умное распределение нагрузки между CPU и GPU. GPU-слои создаются только на время анимации (колесо, спины, флипы), статичный интерфейс рендерится без лишних текстур, фоновые эффекты изолированы от игрового поля — это даёт максимальную плавность без просадок FPS на любом устройстве</div>
 <div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
 <div class="set-name" style="font-size:13px">FeastOptimizingService</div>
 <label class="ios-switch"><input type="checkbox" id="muqToggle" checked disabled><span class="ios-track"></span></label>
@@ -1419,6 +1420,8 @@ let ftacBanned = false;
 let ftacBanReason = '';
 let ftacVersion = 'v1.0.0';
 let ftacBannedUserId = null;
+let ftacSessionChecked = false;
+let ftacBusy = false;
 const FTAC_LOCAL_VERSION_KEY = 'ftac_local_version';
 const FTAC_BAN_LIST_KEY = 'ftac_ban_list';
 
@@ -1443,6 +1446,15 @@ function parseBanList(text){
     return result;
 }
 
+async function fetchBanListBlob(){
+    let lastErr = null;
+    for (let i = 0; i < 3; i++) {
+        try { return await fetchBlob(RESOURCE_MAP.banList.url); }
+        catch (e) { lastErr = e; await sleep(700 * (i + 1)); }
+    }
+    throw lastErr || new Error('banlist fetch failed');
+}
+
 async function checkBanWithUpdate() {
     const userId = getUserId();
     if (!userId) return { banned: false, reason: null, updated: false };
@@ -1450,7 +1462,7 @@ async function checkBanWithUpdate() {
     let banText = await resGet('banList');
     if (!banText) {
         try {
-            const blob = await fetchBlob(RESOURCE_MAP.banList.url);
+            const blob = await fetchBanListBlob();
             banText = blob;
             await resSet('banList', blob);
         } catch (e) {
@@ -1463,61 +1475,65 @@ async function checkBanWithUpdate() {
     const remoteVersion = parsed.version;
 
     const localVersion = localStorage.getItem(FTAC_LOCAL_VERSION_KEY);
-    let updated = false;
 
-    // Если версии отличаются – обновляем
-    if (!localVersion || localVersion !== remoteVersion) {
-        updated = true;
-        // Показываем уведомление об обновлении FTAC
-        const goUpdate = await showFTACUpdateNotification();
-        if (!goUpdate) {
-            // Если пользователь отказался – проверяем по старому
-            if (parsed.bans[userId]) {
-                return { banned: true, reason: parsed.bans[userId], updated: false };
-            }
-            return { banned: false, reason: null, updated: false };
+    // Версии совпадают – просто проверяем
+    if (localVersion && localVersion === remoteVersion) {
+        if (parsed.bans[userId]) {
+            return { banned: true, reason: parsed.bans[userId], updated: false };
         }
-        // Удаляем старый BanList и скачиваем новый
-        await resDelete('banList');
-        try {
-            const newBlob = await fetchBlob(RESOURCE_MAP.banList.url);
-            await resSet('banList', newBlob);
-            const newText = await newBlob.text();
-            const newParsed = parseBanList(newText);
-            localStorage.setItem(FTAC_LOCAL_VERSION_KEY, remoteVersion);
-            if (newParsed.bans[userId]) {
-                return { banned: true, reason: newParsed.bans[userId], updated: true };
-            }
-            return { banned: false, reason: null, updated: true };
-        } catch (e) {
-            console.warn('FTAC: Ошибка обновления BanList', e);
-            return { banned: false, reason: null, updated: false };
-        }
+        return { banned: false, reason: null, updated: false };
     }
 
-    // Версия совпадает – просто проверяем
-    if (parsed.bans[userId]) {
-        return { banned: true, reason: parsed.bans[userId], updated: false };
+    // Версии отличаются – показываем уведомление и обновляем базу
+    const goUpdate = await showFTACUpdateNotification(remoteVersion);
+    if (!goUpdate) {
+        // Отказались – проверяем по имеющемуся списку
+        if (parsed.bans[userId]) {
+            return { banned: true, reason: parsed.bans[userId], updated: false };
+        }
+        return { banned: false, reason: null, updated: false };
     }
-    return { banned: false, reason: null, updated: false };
+
+    // Перекачиваем BanList (с повторами при ошибке сети)
+    await resDelete('banList');
+    try {
+        const newBlob = await fetchBanListBlob();
+        await resSet('banList', newBlob);
+        const newParsed = parseBanList(await newBlob.text());
+        // Фиксируем версию, чтобы уведомление не появлялось по кругу
+        localStorage.setItem(FTAC_LOCAL_VERSION_KEY, newParsed.version || remoteVersion || 'unknown');
+        if (newParsed.bans[userId]) {
+            return { banned: true, reason: newParsed.bans[userId], updated: true };
+        }
+        return { banned: false, reason: null, updated: true };
+    } catch (e) {
+        console.warn('FTAC: Ошибка обновления BanList', e);
+        // Даже при сбое сети фиксируем версию, чтобы не показывать модалку бесконечно
+        localStorage.setItem(FTAC_LOCAL_VERSION_KEY, remoteVersion || 'unknown');
+        if (parsed.bans[userId]) {
+            return { banned: true, reason: parsed.bans[userId], updated: false };
+        }
+        return { banned: false, reason: null, updated: false };
+    }
 }
 
-function showFTACUpdateNotification() {
+function showFTACUpdateNotification(remoteVersion) {
     return new Promise(resolve => {
-        $('updCount').textContent = 'Обновление AntiCheat';
-        $('updateNotification').classList.add('show');
+        const modal = $('ftacUpdateNotification');
+        if (!modal) { resolve(true); return; }
+        $('ftacUpdVer').textContent = remoteVersion || 'новая версия';
+        modal.classList.add('show');
         haptic('medium');
-        $('updBtn').onclick = () => {
-            $('updateNotification').classList.remove('show');
-            resolve(true);
+        let done = false;
+        const finish = (ok) => {
+            if (done) return;
+            done = true;
+            modal.classList.remove('show');
+            resolve(ok);
         };
-        // Таймаут: если не нажали – считаем что согласны
-        setTimeout(() => {
-            if ($('updateNotification').classList.contains('show')) {
-                $('updateNotification').classList.remove('show');
-                resolve(true);
-            }
-        }, 8000);
+        $('ftacUpdBtn').onclick = () => finish(true);
+        // Не нажали – продолжаем автоматически
+        setTimeout(() => finish(true), 10000);
     });
 }
 
@@ -3692,6 +3708,7 @@ let prog = 0;
 let ftacChecked = false;
 await new Promise(res => {
     const iv = setInterval(async () => {
+        if (ftacBusy) return;
         prog = Math.min(100, prog + 1.2 + Math.random() * 2.8);
         fill.style.transform = `scaleX(${prog/100})`;
         pct.textContent = `(${prog.toFixed(2).padStart(5,'0')}%)`;
@@ -3705,18 +3722,33 @@ await new Promise(res => {
             msg.textContent = '// Проверяем игрока (FTAC)';
             if (!ftacChecked && prog >= 48) {
                 ftacChecked = true;
-                (async () => {
-                    const banResult = await checkBanWithUpdate();
-                    if (banResult.banned) {
-                        ftacBanned = true;
-                        ftacBanReason = banResult.reason;
-                        ftacBannedUserId = getUserId();
-                        showBanScreen();
-                        clearInterval(iv);
-                        res();
-                        return;
-                    }
-                })();
+                // Проверка FTAC – только один раз за сессию, а не при каждом перезапуске лоадера
+                if (!ftacSessionChecked) {
+                    ftacSessionChecked = true;
+                    ftacBusy = true;
+                    msg.textContent = '// Обновляем базу AntiCheat';
+                    (async () => {
+                        try {
+                            const banResult = await Promise.race([
+                                checkBanWithUpdate(),
+                                new Promise(r => setTimeout(() => r({ banned: false, reason: null, updated: false }), 15000))
+                            ]);
+                            if (banResult.banned) {
+                                ftacBanned = true;
+                                ftacBanReason = banResult.reason;
+                                ftacBannedUserId = getUserId();
+                                showBanScreen();
+                                clearInterval(iv);
+                                res();
+                                return;
+                            }
+                        } catch (e) {
+                            console.warn('FTAC check error:', e);
+                        } finally {
+                            ftacBusy = false;
+                        }
+                    })();
+                }
             }
         } else {
             msg.textContent = '// Проверка ресурсов игры';
