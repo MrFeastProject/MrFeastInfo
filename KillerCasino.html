@@ -517,6 +517,55 @@ display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#f3e8ff;font
 .custom-preview-label{margin-top:12px;font-size:10px;letter-spacing:.2em;color:#8b7bb8;text-transform:uppercase;text-align:center}
 /* === КОНЕЦ КАСТОМИЗАЦИИ === */
 
+/* === ID ПРОФИЛЯ: одинаково заметный и на одном месте во всех стилях === */
+.pm-card .pm-id,
+.pm-card.with-bg > .pm-id{
+  position:absolute;top:10px;left:12px;right:auto;z-index:5;
+  font-size:12px;font-weight:700;line-height:1;letter-spacing:.02em;
+  padding:5px 10px;border-radius:999px;
+  color:#e9d5ff;background:rgba(10,5,22,.72);
+  border:1px solid rgba(168,85,247,.55);
+  box-shadow:0 2px 10px rgba(0,0,0,.45);
+  text-shadow:0 1px 3px rgba(0,0,0,.9);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+.pm-card .pm-id b{color:#fff;font-weight:800}
+
+/* === АДАПТАЦИЯ ПОД ЭКРАН === */
+.modal,.custom-modal{
+  align-items:flex-start;
+  box-sizing:border-box;
+  padding-top:calc(16px + var(--kc-top,0px));
+  padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  padding-left:calc(12px + env(safe-area-inset-left,0px));
+  padding-right:calc(12px + env(safe-area-inset-right,0px));
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+}
+.pm-card,.custom-card{box-sizing:border-box;max-width:100%}
+.pm-name{word-break:break-word;overflow-wrap:anywhere}
+.custom-body>*{min-width:0}
+.preview-name{
+  white-space:normal;word-break:break-word;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  font-size:clamp(11px,3.4vw,14px);
+}
+.preview-user{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.preview-balance{max-width:100%;box-sizing:border-box;font-size:clamp(10px,3.2vw,12px)}
+.preview-balance span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:600px){
+  .custom-body{grid-template-columns:minmax(0,1fr)}
+  .custom-title{font-size:clamp(14px,5vw,20px);letter-spacing:.04em;margin-bottom:14px}
+  .custom-preview{min-height:0;padding:12px}
+  .custom-preview-profile{min-height:150px;padding:12px}
+  .custom-item{padding:12px}
+  .custom-item-name{font-size:clamp(12px,3.6vw,14px);min-width:0;overflow-wrap:anywhere}
+}
+@media (max-height:640px){
+  .pm-avatar{width:84px;height:84px;font-size:32px}
+  .pm-card{padding-top:40px}
+}
+
+
 .settings-card{padding:26px 20px 20px;text-align:left}
 .settings-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
 background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -2330,6 +2379,27 @@ const profileModal=document.getElementById('profileModal');
 document.getElementById('profileBtn').onclick=()=>{profileModal.classList.add('show');haptic('light');};
 document.getElementById('pmCloseBtn').onclick=()=>profileModal.classList.remove('show');
 profileModal.onclick=e=>{if(e.target===profileModal)profileModal.classList.remove('show');};
+
+// === ОТСТУП ПОД ШАПКУ TELEGRAM (полноэкранный режим) ===
+(function(){
+  function upd(){
+    let top=0;
+    try{
+      if(tg && tg.isFullscreen){
+        const a=(tg.safeAreaInset&&tg.safeAreaInset.top)||0;
+        const b=(tg.contentSafeAreaInset&&tg.contentSafeAreaInset.top)||0;
+        top=a+b;
+        if(!top) top=70;
+      }
+    }catch(e){}
+    document.documentElement.style.setProperty('--kc-top', top+'px');
+  }
+  upd();
+  try{
+    ['fullscreenChanged','safeAreaChanged','contentSafeAreaChanged','viewportChanged'].forEach(ev=>{ if(tg && tg.onEvent) tg.onEvent(ev, upd); });
+  }catch(e){}
+  setTimeout(upd,500); setTimeout(upd,1500); setTimeout(upd,3500);
+})();
 
 // === КАСТОМИЗАЦИЯ ПРОФИЛЯ ===
 const customModal = document.getElementById('customModal');
