@@ -23,27 +23,6 @@ user-drag: none;
 pointer-events: auto;
 }
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
-body.shuq-low .app, body.shuq-low #splash img, body.shuq-low video {
-filter: contrast(1.05) saturate(1.1) brightness(1.02);
-image-rendering: -webkit-optimize-contrast;
-}
-body.shuq-med .app, body.shuq-med #splash img, body.shuq-med video {
-filter: contrast(1.15) saturate(1.15) brightness(1.05) drop-shadow(0 0 1px rgba(255,255,255,0.1));
-image-rendering: high-quality;
-}
-body.shuq-high .app, body.shuq-high #splash img, body.shuq-high video {
-filter: contrast(1.15) saturate(1.2) brightness(1.08) drop-shadow(0 0 2px rgba(255,255,255,0.15));
-transform: translateZ(0);
-}
-body.muq-active .app, body.muq-active #splash img, body.muq-active video {
-filter: contrast(1.08) saturate(1.12) brightness(1.03);
-image-rendering: high-quality;
-transform: translateZ(0);
--webkit-transform: translateZ(0);
-backface-visibility: hidden;
-will-change: transform, filter;
-contain: layout style paint;
-}
 #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
 transition:opacity .3s;pointer-events:none}
 #splash.hidden{opacity:0}
@@ -527,7 +506,6 @@ display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#f3e8ff;font
   border:1px solid rgba(168,85,247,.55);
   box-shadow:0 2px 10px rgba(0,0,0,.45);
   text-shadow:0 1px 3px rgba(0,0,0,.9);
-  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
 }
 .pm-card .pm-id b{color:#fff;font-weight:800}
 
@@ -632,8 +610,8 @@ background:linear-gradient(135deg,#fbbf24,#f97316);color:#1a0a00;font-weight:800
 /* === КРЕСТИК МОДАЛОК В СТИЛЕ ИГРЫ + FULL RESTART === */
 .pm-close{position:absolute;top:12px;right:12px;z-index:6;width:36px;height:36px;padding:0;margin:0;
 display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;cursor:pointer;
-color:#e9d5ff;border:1px solid rgba(168,85,247,.5);border-radius:12px;background:rgba(30,15,60,.72);
-box-shadow:0 0 14px rgba(124,58,237,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+color:#e9d5ff;border:1px solid rgba(168,85,247,.5);border-radius:12px;background:rgba(30,15,60,.9);
+box-shadow:0 0 14px rgba(124,58,237,.35);
 -webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;transition:transform .15s,background .2s,box-shadow .2s}
 .pm-close:hover{background:rgba(124,58,237,.45)}
 .pm-close:active{transform:scale(.9);background:rgba(124,58,237,.6);box-shadow:0 0 18px rgba(217,70,239,.55)}
@@ -641,6 +619,49 @@ box-shadow:0 0 14px rgba(124,58,237,.35);-webkit-backdrop-filter:blur(4px);backd
 .fullrestart-btn{background:linear-gradient(135deg,#dc2626,#f97316)!important;box-shadow:0 8px 24px rgba(239,68,68,.35)!important}
 .fullrestart-btn.armed{animation:frPulse .7s ease-in-out infinite}
 @keyframes frPulse{0%,100%{box-shadow:0 8px 24px rgba(239,68,68,.35)}50%{box-shadow:0 8px 34px rgba(249,115,22,.85)}}
+
+/* === ПРОФИЛЬ: ник, юзернейм и детали в стиле ID === */
+.pm-card .pm-name,.pm-card .pm-user,.pm-card .pm-info-title{
+  display:block;width:fit-content;max-width:100%;margin-left:auto;margin-right:auto;
+  background:rgba(10,5,22,.74);border:1px solid rgba(168,85,247,.55);
+  box-shadow:0 2px 10px rgba(0,0,0,.45);text-shadow:0 1px 3px rgba(0,0,0,.9);
+}
+.pm-card .pm-name{padding:7px 16px;border-radius:16px;color:#fff}
+.pm-card .pm-user{margin-top:8px;padding:5px 14px;border-radius:999px;color:#d8c8ff;font-weight:700}
+.pm-card .pm-info-title{padding:5px 16px;border-radius:999px;color:#e3d6ff;font-weight:700;margin-bottom:12px}
+.pm-card .pm-row{background:rgba(10,5,22,.74);border:1px solid rgba(168,85,247,.5);box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.pm-card .pm-row .k{color:#b9a8e2}
+.pm-card .pm-row .v{color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.pm-card .pm-row.clickable{background:linear-gradient(135deg,rgba(91,33,182,.78),rgba(134,25,143,.62));border-color:rgba(217,70,239,.65)}
+.pm-card .pm-row.clickable .v{color:#f5d0fe}
+.custom-preview .preview-name,.custom-preview .preview-user{width:fit-content;max-width:100%;padding:3px 9px;border-radius:10px;
+  background:rgba(10,5,22,.74);border:1px solid rgba(168,85,247,.45);text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.custom-preview .preview-user{margin-top:4px}
+
+/* === БЛОКИРОВКА ПРОКРУТКИ ФОНА ПРИ ОТКРЫТОМ ОКНЕ === */
+html.kc-lock,html.kc-lock body{overflow:hidden!important;overscroll-behavior:none}
+.modal,.custom-modal,.case-modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+
+/* === ОПТИМИЗАЦИЯ: аппаратное ускорение только там, где критично === */
+#wheel,.strip,#confetti,#rocketCanvas,#upgCanvas,#invCanvas,#caseVideo,.orb{transform:translateZ(0);will-change:transform;backface-visibility:hidden}
+#lbFill{will-change:transform}
+.mode-card{contain:layout paint}
+.mode-card img,.mode-card video{transform:translateZ(0)}
+@media (prefers-reduced-motion:reduce){.orb{animation:none}}
+
+/* === НИЗКАЯ ГРАФИКА: без blur, теней и свечений === */
+html.low-gfx *,html.low-gfx *::before,html.low-gfx *::after{
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  filter:none!important;box-shadow:none!important;text-shadow:none!important;
+}
+html.low-gfx .orb{display:none!important}
+html.low-gfx .orb,html.low-gfx .ln-btn,html.low-gfx .ln-icon,html.low-gfx .logo,html.low-gfx .coin,
+html.low-gfx .wheel-glow,html.low-gfx .bulb,html.low-gfx .hub::after,html.low-gfx .action-btn,
+html.low-gfx .case-open-btn,html.low-gfx .rk-cash,html.low-gfx .mc-play i,html.low-gfx .fullrestart-btn{animation:none!important}
+html.low-gfx .wheel-glow{display:none!important}
+html.low-gfx .screen.active{animation:none!important}
+html.low-gfx .action-btn:disabled,html.low-gfx .case-open-btn:disabled,html.low-gfx .rk-cash:disabled{opacity:.45}
+html.low-gfx .upg-wrap.win{animation:none!important}
 
 
 .settings-card{padding:26px 20px 20px;text-align:left}
@@ -658,28 +679,11 @@ background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom
 box-shadow:0 3px 8px rgba(0,0,0,.35);transition:left .25s cubic-bezier(.3,1.2,.4,1)}
 .ios-switch input:checked+.ios-track{background:#34c759}
 .ios-switch input:checked+.ios-track::after{left:22px}
-.shuq-switch input:checked+.ios-track{
-background: linear-gradient(270deg, #ff0000, #ff8c00, #ff00ff, #ff0000);
-background-size: 600% 600%;
-animation: shuqGradientFlow 4s ease infinite;
-box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
-}
-@keyframes shuqGradientFlow {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
-}
 .set-section{padding:14px;border-radius:14px;background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom:14px}
 .set-section.disabled{opacity:0.5;pointer-events:none;filter:grayscale(1)}
 .set-section-title{font-size:14px;font-weight:800;color:#e9d5ff;display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .set-section-title i{color:#c084fc;width:18px;text-align:center}
 .set-desc{font-size:11.5px;color:#8b7bb8;line-height:1.6;margin-bottom:14px}
-.shuq-modes{display:flex;gap:8px;margin-top:12px;overflow:hidden;max-height:0;opacity:0;transition:all .4s ease}
-.shuq-modes.visible{max-height:60px;opacity:1;margin-bottom:4px}
-.shuq-mode-btn{flex:1;padding:8px 4px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.1);
-border-radius:8px;color:#fca5a5;font-size:11px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s}
-.shuq-mode-btn.active{background:rgba(239,68,68,.8);color:#fff;border-color:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.4)}
-.shuq-mode-btn span{display:block;font-size:9px;opacity:.7;margin-top:2px}
 .scanfix-btn{width:100%;padding:14px;border:none;border-radius:14px;cursor:pointer;font-family:'Unbounded';
 font-weight:700;font-size:14px;letter-spacing:.06em;color:#fff;
 background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 8px 24px rgba(124,58,237,.4);transition:transform .15s}
@@ -1065,6 +1069,7 @@ body.tg-fullscreen .load-news{top:96px}
   .corner-frame { width: 25px; height: 25px; }
 }
 </style>
+<script>try{if(localStorage.getItem('kc_lowgfx')==='1')document.documentElement.classList.add('low-gfx');}catch(e){}</script>
 </head>
 <body>
 <div id="splash">
@@ -1474,25 +1479,12 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="set-name"><i class="fa-solid fa-volume-high"></i>Звук</div>
 <label class="ios-switch"><input type="checkbox" id="soundToggle"><span class="ios-track"></span></label>
 </div>
-<div class="set-section" id="shuqSection">
-<div class="set-section-title"><i class="fa-solid fa-wand-magic-sparkles"></i>SHUQ-Super High Upscaler Quality</div>
-<div class="set-desc">Включите технологию сглаживания от MrFeastProject для повышения качества изображения или же для повышения FPS</div>
+<div class="set-section" id="lowGfxSection">
+<div class="set-section-title"><i class="fa-solid fa-gauge-high"></i>Низкая графика</div>
+<div class="set-desc">Отключает во всем казино высокую детализацию(тени) что существенно ухудшит вид,но и существенно увеличит плавность</div>
 <div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
-<div class="set-name" style="font-size:13px">Активировать SHUQ</div>
-<label class="ios-switch shuq-switch"><input type="checkbox" id="shuqToggle"><span class="ios-track"></span></label>
-</div>
-<div class="shuq-modes" id="shuqModes">
-<div class="shuq-mode-btn" data-mode="low">Low<span>2K Scale</span></div>
-<div class="shuq-mode-btn" data-mode="med">Medium<span>4K Scale</span></div>
-<div class="shuq-mode-btn" data-mode="high">High<span>8K Scale</span></div>
-</div>
-</div>
-<div class="set-section" id="muqSection" style="display:none">
-<div class="set-section-title"><i class="fa-solid fa-mobile-screen"></i>MUQ-Medium Upscaler Quality</div>
-<div class="set-desc">Технология для улучшение качества графики фоток,видио,текстов,а так-же ускорение движка Telegram Mini App для более высокой производительности</div>
-<div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
-<div class="set-name" style="font-size:13px">Активировать MUQ</div>
-<label class="ios-switch"><input type="checkbox" id="muqToggle"><span class="ios-track"></span></label>
+<div class="set-name" style="font-size:13px">Включить низкую графику</div>
+<label class="ios-switch"><input type="checkbox" id="lowGfxToggle"><span class="ios-track"></span></label>
 </div>
 </div>
 <div class="set-section">
@@ -1924,9 +1916,7 @@ function saveGameState(callback) {
         ownedProfileStyles: getOwnedProfileStyles(),
         currentProfileStyle: getCurrentProfileStyle(),
         muted: muted,
-        shuqEnabled: shuqToggle.checked,
-        shuqMode: localStorage.getItem('kc_shuq_mode') || 'med',
-        muqEnabled: muqToggle.checked,
+        lowGfx: lowGfxToggle.checked,
         kc2: (window.KC2 ? window.KC2.serialize() : undefined),
         version: CURRENT_VERSION,
         updatedAt: Date.now()
@@ -2035,21 +2025,8 @@ function applyGameState(state) {
             if (bgAudio && bgAudio.paused && bgMusicReady) startBgMusic();
         }
     }
-    if (state.shuqEnabled !== undefined) {
-        shuqToggle.checked = state.shuqEnabled;
-        localStorage.setItem('kc_shuq', state.shuqEnabled ? '1' : '0');
-        updateShuqUI();
-        applyGraphicsSettings();
-    }
-    if (state.shuqMode) {
-        savedShuqMode = state.shuqMode;
-        localStorage.setItem('kc_shuq_mode', state.shuqMode);
-        updateShuqUI();
-        applyGraphicsSettings();
-    }
-    if (state.muqEnabled !== undefined) {
-        muqToggle.checked = state.muqEnabled;
-        localStorage.setItem('kc_muq', state.muqEnabled ? '1' : '0');
+    if (state.lowGfx !== undefined) {
+        lowGfxToggle.checked = !!state.lowGfx;
         applyGraphicsSettings();
     }
 }
@@ -2247,7 +2224,7 @@ $('updBtn').onclick=()=>{ $('updateNotification').classList.remove('show'); reso
 });
 }
 async function checkForGameUpdate(){
-if(updateCheckBusy || updateCheckInterval === null) return;
+if(updateCheckBusy || updateCheckInterval === null || document.hidden) return;
 updateCheckBusy = true;
 try{
 const r = await fetch(UPDATE_CHECK_URL, {cache:'no-store'});
@@ -2884,74 +2861,17 @@ if(bgAudio && bgAudio.paused && bgMusicReady && !caseOpening && !loaderBusy && !
 }
 scheduleSave();
 };
-const shuqSection=$('shuqSection'), muqSection=$('muqSection');
-const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
-const shuqModes=$('shuqModes');
-const shuqModeBtns=document.querySelectorAll('.shuq-mode-btn');
-if(isAndroid){
-shuqSection.classList.add('disabled');
-muqSection.style.display='block';
-} else {
-shuqSection.classList.remove('disabled');
-muqSection.style.display='none';
+const lowGfxToggle=$('lowGfxToggle');
+['kc_shuq','kc_shuq_mode','kc_muq'].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+function applyGraphicsSettings(){
+const on=lowGfxToggle.checked;
+document.documentElement.classList.toggle('low-gfx',on);
+window.KC_LOW=on;
+try{localStorage.setItem('kc_lowgfx',on?'1':'0');}catch(e){}
 }
-function applyGraphicsSettings(init = false){
-const shuqOn = !isAndroid && shuqToggle.checked;
-const muqOn = isAndroid && muqToggle.checked;
-const shuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
-if(init) {
-document.body.style.transition = 'none';
-}
-document.body.classList.remove('shuq-low','shuq-med','shuq-high','muq-active');
-if(shuqOn){
-document.body.classList.add(`shuq-${shuqMode}`);
-} else if(muqOn){
-document.body.classList.add('muq-active');
-}
-localStorage.setItem('kc_shuq', shuqToggle.checked?'1':'0');
-localStorage.setItem('kc_muq', muqToggle.checked?'1':'0');
-if(init) {
-void document.body.offsetWidth;
-document.body.style.transition = '';
-}
-}
-shuqToggle.checked = localStorage.getItem('kc_shuq')==='1';
-muqToggle.checked = localStorage.getItem('kc_muq')==='1';
-let savedShuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
-function updateShuqUI(){
-if(shuqToggle.checked){
-shuqModes.classList.add('visible');
-} else {
-shuqModes.classList.remove('visible');
-}
-shuqModeBtns.forEach(btn=>{
-btn.classList.toggle('active', btn.dataset.mode === savedShuqMode);
-});
-}
-updateShuqUI();
-shuqToggle.onchange = ()=>{
-    haptic('light');
-    updateShuqUI();
-    applyGraphicsSettings();
-    scheduleSave();
-};
-muqToggle.onchange = ()=>{
-    haptic('light');
-    applyGraphicsSettings();
-    scheduleSave();
-};
-shuqModeBtns.forEach(btn=>{
-btn.onclick = ()=>{
-if(!shuqToggle.checked) return;
-savedShuqMode = btn.dataset.mode;
-localStorage.setItem('kc_shuq_mode', savedShuqMode);
-updateShuqUI();
+lowGfxToggle.checked=localStorage.getItem('kc_lowgfx')==='1';
+lowGfxToggle.onchange=()=>{ haptic('light'); applyGraphicsSettings(); scheduleSave(); };
 applyGraphicsSettings();
-haptic('light');
-scheduleSave();
-};
-});
-applyGraphicsSettings(true);
 const cv=$('confetti'),cctx=cv.getContext('2d');let parts=[],confAnim=null;
 function spawnConfetti(n,gold){
 cv.width=innerWidth;cv.height=innerHeight;
@@ -3355,7 +3275,7 @@ if(y>h*.12){ rctx.beginPath();rctx.moveTo(w*.12,y);rctx.lineTo(w*.96,y);rctx.str
 const p=rocketPosFor(m);
 const x0=w*.15,y0=h*.88;
 rctx.strokeStyle='#c084fc';rctx.lineWidth=3*dpr;
-rctx.shadowColor='#a855f7';rctx.shadowBlur=14*dpr;
+rctx.shadowColor='#a855f7';rctx.shadowBlur=window.KC_LOW?0:14*dpr;
 rctx.beginPath();rctx.moveTo(x0,y0);
 rctx.quadraticCurveTo(x0+(p.x-x0)*.45,y0-(y0-p.y)*.15,p.x,p.y);
 rctx.stroke();
@@ -4398,7 +4318,7 @@ if(!muted && !caseOpening) startBgMusic();
 }
 showSplash();
 setTimeout(()=>{
-updateCheckInterval = setInterval(checkForGameUpdate, 3000);
+updateCheckInterval = setInterval(checkForGameUpdate, 30000);
 checkForGameUpdate();
 }, 5000);
 /* ===== KC2: АПГРЕЙДЕР + ИНВЕСТИЦИЯ ===== */
@@ -4628,7 +4548,7 @@ c.textAlign='left';c.fillStyle='#fbbf24';c.font='800 9px Manrope,sans-serif';c.f
 }
 }
 /* линия */
-c.save();c.lineWidth=2.4;c.lineJoin='round';c.lineCap='round';c.strokeStyle='rgb('+col+')';c.shadowColor='rgba('+col+',.85)';c.shadowBlur=10;
+c.save();c.lineWidth=2.4;c.lineJoin='round';c.lineCap='round';c.strokeStyle='rgb('+col+')';c.shadowColor='rgba('+col+',.85)';c.shadowBlur=window.KC_LOW?0:10;
 trace();c.stroke();c.restore();
 /* точка и метка цены */
 const ly=yOf(lastV),pulse=1+0.35*Math.sin(performance.now()/220);
@@ -4711,7 +4631,7 @@ c.beginPath();c.arc(cx,cx,R-T/2,a1,end);c.stroke();
 /* фиолетовая часть (выигрыш) */
 c.save();c.lineCap='butt';c.lineWidth=T;
 const lg=c.createLinearGradient(0,0,S,S);lg.addColorStop(0,'#8b5cf6');lg.addColorStop(.5,'#c026d3');lg.addColorStop(1,'#f0abfc');
-c.strokeStyle=lg;c.shadowColor='rgba(217,70,239,.95)';c.shadowBlur=S*(0.05+0.015*Math.sin(t*0.003));
+c.strokeStyle=lg;c.shadowColor='rgba(217,70,239,.95)';c.shadowBlur=window.KC_LOW?0:S*(0.05+0.015*Math.sin(t*0.003));
 c.beginPath();c.arc(cx,cx,R,a0,a1);c.stroke();
 c.shadowBlur=0;c.lineWidth=T*0.22;c.strokeStyle='rgba(255,255,255,.55)';
 c.beginPath();c.arc(cx,cx,R-T*0.18,a0,a1);c.stroke();
@@ -4719,7 +4639,7 @@ c.restore();
 /* стрелка */
 c.save();c.translate(cx,cx);c.rotate(upgAng);
 const tipR=R+T*0.5+2;
-c.shadowColor='rgba(251,191,36,.9)';c.shadowBlur=S*0.03;
+c.shadowColor='rgba(251,191,36,.9)';c.shadowBlur=window.KC_LOW?0:S*0.03;
 const pg=c.createLinearGradient(0,-tipR-S*0.05,0,-tipR);pg.addColorStop(0,'#fde68a');pg.addColorStop(1,'#f59e0b');
 c.fillStyle=pg;c.beginPath();
 c.moveTo(0,-tipR);c.lineTo(-S*0.032,-tipR-S*0.052);c.lineTo(0,-tipR-S*0.036);c.lineTo(S*0.032,-tipR-S*0.052);c.closePath();c.fill();
@@ -4853,6 +4773,29 @@ return {resetBg:function(){bgSet=false;},serialize:serialize,apply:apply,busy:fu
 })();
 function kcExtraBusy(){return !!(window.KC2&&window.KC2.busy());}
 
+
+/* ===== БЛОКИРОВКА ПРОКРУТКИ ФОНА + ОПТИМИЗАЦИЯ КАРТИНОК ===== */
+(function(){
+const root=document.documentElement;
+const wins=Array.from(document.querySelectorAll('.modal,.custom-modal,.case-modal'));
+let sy=0,queued=false;
+function sync(){
+queued=false;
+const open=wins.some(w=>w.classList.contains('show'));
+if(open===root.classList.contains('kc-lock'))return;
+root.classList.toggle('kc-lock',open);
+}
+const mo=new MutationObserver(()=>{if(!queued){queued=true;requestAnimationFrame(sync);}});
+wins.forEach(w=>mo.observe(w,{attributes:true,attributeFilter:['class']}));
+sync();
+function optImgs(node){
+const list=(node&&node.querySelectorAll)?node.querySelectorAll('img:not([decoding])'):[];
+list.forEach(i=>{i.decoding='async';});
+if(node&&node.tagName==='IMG'&&!node.hasAttribute('decoding'))node.decoding='async';
+}
+optImgs(document);
+new MutationObserver(ms=>{ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)optImgs(n);}));}).observe(document.body,{childList:true,subtree:true});
+})();
 renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots();renderSlotBet();renderRocketBet();renderRocketHistory();renderShop();renderCaseChances();
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
