@@ -629,6 +629,19 @@ background:linear-gradient(135deg,#fbbf24,#f97316);color:#1a0a00;font-weight:800
 .inv-bank .bv span{display:block;font-size:11px;font-weight:800;margin-top:2px}
 @media (max-width:360px){.inv-bank canvas{width:56px}}
 
+/* === КРЕСТИК МОДАЛОК В СТИЛЕ ИГРЫ + FULL RESTART === */
+.pm-close{position:absolute;top:12px;right:12px;z-index:6;width:36px;height:36px;padding:0;margin:0;
+display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;cursor:pointer;
+color:#e9d5ff;border:1px solid rgba(168,85,247,.5);border-radius:12px;background:rgba(30,15,60,.72);
+box-shadow:0 0 14px rgba(124,58,237,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;transition:transform .15s,background .2s,box-shadow .2s}
+.pm-close:hover{background:rgba(124,58,237,.45)}
+.pm-close:active{transform:scale(.9);background:rgba(124,58,237,.6);box-shadow:0 0 18px rgba(217,70,239,.55)}
+.pm-close i{pointer-events:none}
+.fullrestart-btn{background:linear-gradient(135deg,#dc2626,#f97316)!important;box-shadow:0 8px 24px rgba(239,68,68,.35)!important}
+.fullrestart-btn.armed{animation:frPulse .7s ease-in-out infinite}
+@keyframes frPulse{0%,100%{box-shadow:0 8px 24px rgba(239,68,68,.35)}50%{box-shadow:0 8px 34px rgba(249,115,22,.85)}}
+
 
 .settings-card{padding:26px 20px 20px;text-align:left}
 .settings-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
@@ -1486,6 +1499,11 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="set-section-title"><i class="fa-solid fa-screwdriver-wrench"></i>Проверка и починка ресурсов игры</div>
 <div class="set-desc">Проверьте ресурсов игры и нахождение сломанных ресурсов и их автоматическая починка,а так-же скачивание нехватающих ресурсов</div>
 <button class="scanfix-btn" id="scanFixBtn"><i class="fa-solid fa-stethoscope"></i> Scan and Fix</button>
+</div>
+<div class="set-section">
+<div class="set-section-title"><i class="fa-solid fa-rotate"></i>Полная перезагрузка ресурсов</div>
+<div class="set-desc">Скачайте все ресурсы игры заного если по какой-то причине не обновились.Это гарантировано обновит все картинки,видио и прочие детали игры,но сохранит все ваши данные</div>
+<button class="scanfix-btn fullrestart-btn" id="fullRestartBtn"><i class="fa-solid fa-rotate-right"></i> Full Restart</button>
 </div>
 </div>
 </div>
@@ -4193,6 +4211,102 @@ if(fixBusy||loaderBusy)return;
 settingsModal.classList.remove('show');
 runFixHelper();
 };
+
+/* ===== FULL RESTART: удалить все ресурсы из хранилища и скачать заново (данные игрока не трогаются) ===== */
+let frArmed=false,frTimer=0;
+const frBtn=$('fullRestartBtn');
+const FR_LABEL='<i class="fa-solid fa-rotate-right"></i> Full Restart';
+function frReset(){frArmed=false;clearTimeout(frTimer);frBtn.classList.remove('armed');frBtn.innerHTML=FR_LABEL;}
+frBtn.onclick=()=>{
+if(fixBusy||loaderBusy)return;
+if(!frArmed){
+frArmed=true;frBtn.classList.add('armed');
+frBtn.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> Нажмите ещё раз';
+haptic('medium');
+frTimer=setTimeout(frReset,3500);
+return;
+}
+frReset();
+settingsModal.classList.remove('show');
+runFullRestart();
+};
+async function resClearAll(){
+try{
+const db=await idb();
+return await new Promise(res=>{
+const tx=db.transaction([STORE_RESOURCES,STORE_INDEX,STORE_URLS],'readwrite');
+tx.objectStore(STORE_RESOURCES).clear();
+tx.objectStore(STORE_INDEX).clear();
+tx.objectStore(STORE_URLS).clear();
+tx.oncomplete=()=>res(true);
+tx.onerror=()=>res(false);
+tx.onabort=()=>res(false);
+});
+}catch(e){return false;}
+}
+async function runFullRestart(){
+fixBusy=true; loaderBusy=true;
+if(bgAudio && !bgAudio.paused) bgAudio.pause();
+const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
+loader.classList.remove('done');
+loader.style.cssText='';
+lbSize.style.display='none';
+fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
+await startLoaderVideo();
+const setProg=p=>{
+const q=Math.min(100,Math.max(0,p));
+fill.style.transform=`scaleX(${q/100})`;
+pct.textContent=`(${q.toFixed(2).padStart(5,'0')}%)`;
+};
+msg.textContent='// Full Restart: подготовка';
+for(let p=0;p<=10;p++){ setProg(p); await sleep(40); }
+msg.textContent='// Удаление старых ресурсов игры';
+const keys=await resKeys();
+const ids=Array.from(new Set(keys.concat(RESOURCE_LIST.map(r=>r.id))));
+for(let i=0;i<ids.length;i++){
+const id=ids[i];
+await resDelete(id);
+if(urlCache[id]){try{URL.revokeObjectURL(urlCache[id]);}catch(e){}delete urlCache[id];}
+if(id==='music')musicBlob=null;
+if(id==='bgMusic')bgMusicBlob=null;
+if(id==='splashVideo')splashVideoBlob=null;
+if(id==='ftacAvatar')ftacAvatarBlob=null;
+setProg(10+((i+1)/Math.max(1,ids.length))*60);
+await sleep(40);
+}
+await resClearAll();
+if(window.KC2&&KC2.resetBg)KC2.resetBg();
+msg.textContent='// Подготовка к скачиванию';
+for(let p=70;p<=100;p+=3){ setProg(p); await sleep(30); }
+await sleep(300);
+const missing=await getMissingResources();
+let totalSize=0;
+for(const r of missing) totalSize+=await getResourceSize(r);
+$('lnSize').textContent=formatSize(totalSize);
+$('loaderNotification').classList.add('show');
+await new Promise(res=>{ $('lnBtn').onclick=res; });
+$('loaderNotification').classList.remove('show');
+haptic('medium');
+msg.textContent='// Скачивание ресурсов игры';
+fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
+lbSize.style.display='block';lbSize.textContent='0 B / 0 B';
+await downloadMissingResources((dl,tot)=>{
+paintProgress(dl, tot, fill, pct, lbSize);
+});
+lbSize.style.display='none';
+loader.classList.add('done');
+document.getElementById('app').classList.add('ready');
+applyResourceImages();
+renderShop();
+appLoaded=true;
+stopLoaderVideo();
+loaderBusy=false;
+showFixNotification('Все хорошо','Мы полностью перезагрузили и заново скачали все ресурсы игры. Ваши данные сохранены',()=>{
+fixBusy=false;
+maybeShowHomeBanner();
+if(!muted && !caseOpening) startBgMusic();
+});
+}
 async function runFixHelper(){
 fixBusy=true; loaderBusy=true;
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
@@ -4735,7 +4849,7 @@ setInterval(persistLocal,20000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)persistLocal();else{catchUp();if(cur==='investScreen')invUpdateAll();}});
 window.addEventListener('pagehide',persistLocal);
 
-return {serialize:serialize,apply:apply,busy:function(){return upgBusy||Object.keys(pos).length>0;}};
+return {resetBg:function(){bgSet=false;},serialize:serialize,apply:apply,busy:function(){return upgBusy||Object.keys(pos).length>0;}};
 })();
 function kcExtraBusy(){return !!(window.KC2&&window.KC2.busy());}
 
@@ -4743,4 +4857,4 @@ renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
-  </html>
+</html>
