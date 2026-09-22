@@ -1119,7 +1119,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.6_K3297569_E109989</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.6_K3399569_E109989</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -1708,6 +1708,49 @@ const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelec
 const UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/KillerCasino.html';
 let updateCheckInterval = null;
 let updateCheckBusy = false;
+
+/* ===== ВЕРСИЯ: кеш старой/новой версии + защита от "залипшего" reload ===== */
+const VERSION_STATE_KEY = 'kc_version_state';
+function getVersionState(){
+  try{ return JSON.parse(localStorage.getItem(VERSION_STATE_KEY) || '{}'); }catch(e){ return {}; }
+}
+function setVersionState(v){
+  try{ localStorage.setItem(VERSION_STATE_KEY, JSON.stringify(v)); }catch(e){}
+}
+function hardReload(){
+  try{
+    const url = new URL(location.href);
+    url.searchParams.set('_v', Date.now().toString(36));
+    location.replace(url.toString());
+  }catch(e){ location.reload(); }
+}
+let versionUpdateHealed = false;
+(function resolveVersionOnBoot(){
+  const st = getVersionState();
+  if(st.pending){
+    if(CURRENT_VERSION === st.pending){
+      /* обновление реально применилось — фиксируем новую версию как подтверждённую */
+      setVersionState({ confirmed: CURRENT_VERSION });
+    } else if(CURRENT_VERSION === st.from){
+      /* страница перезагрузилась, но браузер/Telegram отдал старую версию из кэша.
+         Пробуем сами долечить это жёсткой перезагрузкой с уникальным параметром (максимум 2 раза),
+         чтобы не показывать пользователю бесконечно всплывающее "доступна новая версия". */
+      const attempts = (st.attempts||0) + 1;
+      if(attempts <= 2){
+        setVersionState({ pending: st.pending, from: st.from, attempts: attempts });
+        versionUpdateHealed = true;
+        hardReload();
+      } else {
+        setVersionState({ confirmed: CURRENT_VERSION, staleUpdateFailed: st.pending });
+      }
+    } else {
+      /* какая-то иная версия — считаем текущую подтверждённой, не зацикливаемся */
+      setVersionState({ confirmed: CURRENT_VERSION });
+    }
+  } else if(st.confirmed !== CURRENT_VERSION){
+    setVersionState({ confirmed: CURRENT_VERSION });
+  }
+})();
 const DB_NAME = 'KillerCasinoResources';
 const STORE_RESOURCES = 'resources';
 const STORE_INDEX = 'resource_index';
@@ -2295,6 +2338,8 @@ const match = html.match(/MRFEAST_PROJECT_REL_[\d.]+_K\d+_E\d+/);
 if(!match){ updateCheckBusy=false; return; }
 const remoteVersion = match[0];
 if(remoteVersion !== CURRENT_VERSION){
+const vs=getVersionState();
+setVersionState({ confirmed: CURRENT_VERSION, pending: remoteVersion, from: CURRENT_VERSION, attempts:0 });
 showGameUpdateModal(CURRENT_VERSION, remoteVersion);
 if(updateCheckInterval){ clearInterval(updateCheckInterval); updateCheckInterval=null; }
 }
@@ -2313,7 +2358,7 @@ await resSet('UpdateGame', new Blob(['update_pending']));
 const overlay = $('updateOverlay');
 overlay.classList.add('show');
 haptic('success');
-setTimeout(()=>{ location.reload(); }, 800);
+setTimeout(()=>{ hardReload(); }, 800);
 };
 }
 async function checkUpdateGameFile(){
@@ -4498,11 +4543,13 @@ maybeShowHomeBanner();
 if(!muted && !caseOpening) startBgMusic();
 });
 }
+if(!versionUpdateHealed){
 showSplash();
 setTimeout(()=>{
 updateCheckInterval = setInterval(checkForGameUpdate, 30000);
 checkForGameUpdate();
 }, 5000);
+}
 /* ===== KC2: АПГРЕЙДЕР + ИНВЕСТИЦИЯ ===== */
 var KC2=(function(){
 const TICK_MS=200, UNIT=0.0004, OFFLINE_CAP=216000, HIST=300, TAU=Math.PI*2;
@@ -4995,4 +5042,4 @@ renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
-  </html>
+</html>
