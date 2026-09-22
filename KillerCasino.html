@@ -620,6 +620,29 @@ box-shadow:0 0 14px rgba(124,58,237,.35);
 .fullrestart-btn.armed{animation:frPulse .7s ease-in-out infinite}
 @keyframes frPulse{0%,100%{box-shadow:0 8px 24px rgba(239,68,68,.35)}50%{box-shadow:0 8px 34px rgba(249,115,22,.85)}}
 
+/* === АДМИНКА === */
+.card.admin-x8 .card-back{border-color:#fbbf24;
+box-shadow:0 0 22px 4px rgba(251,191,36,.75),inset 0 0 0 4px #150a2c,inset 0 0 0 5px rgba(251,191,36,.65);
+animation:adminGlow 1.1s ease-in-out infinite}
+.card.admin-x8 .card-back b,.card.admin-x8 .card-back i{color:#fbbf24;text-shadow:0 0 12px rgba(251,191,36,.9)}
+@keyframes adminGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+.admin-btn{background:linear-gradient(135deg,#f59e0b,#d97706)!important;box-shadow:0 8px 24px rgba(245,158,11,.35)!important}
+.admin-num{width:100%;box-sizing:border-box;padding:14px;border-radius:14px;border:1px solid rgba(139,92,246,.35);
+background:rgba(20,10,40,.6);color:#f3e8ff;font-family:'Unbounded';font-size:16px;font-weight:700;margin-bottom:10px;text-align:center}
+.admin-num::placeholder{color:#8b7bb8;font-family:'Manrope',sans-serif;font-size:12px}
+.admin-warn{font-size:10.5px;color:#fbbf24;line-height:1.6;margin-top:10px}
+
+/* === ЗОНА РАКЕТЫ === */
+.rocket-zone-tag{position:absolute;top:14px;right:14px;z-index:3;padding:5px 12px;border-radius:999px;
+font-family:'Unbounded';font-weight:800;font-size:11px;letter-spacing:.05em;color:#0a0410;
+background:linear-gradient(135deg,#fbbf24,#f97316);box-shadow:0 0 16px rgba(251,191,36,.6);
+opacity:0;transform:translateY(-6px) scale(.85);transition:opacity .35s,transform .35s}
+.rocket-zone-tag.show{opacity:1;transform:translateY(0) scale(1)}
+.rocket-frame{will-change:transform}
+.rocket-frame.zoomed{box-shadow:inset 0 0 70px rgba(168,85,247,.35),0 0 30px rgba(124,58,237,.3)}
+@keyframes rocketZoomPulse{0%{transform:scale(1)}40%{transform:scale(1.025)}100%{transform:scale(1)}}
+.rocket-frame.pulse{animation:rocketZoomPulse .6s ease}
+
 /* === ПРОФИЛЬ: ник, юзернейм и детали в стиле ID === */
 .pm-card .pm-name,.pm-card .pm-user,.pm-card .pm-info-title{
   display:block;width:fit-content;max-width:100%;margin-left:auto;margin-right:auto;
@@ -1089,7 +1112,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.5_K3297569_E109989</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.6_K3297569_E109989</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -1307,6 +1330,7 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <canvas id="rocketCanvas"></canvas>
 <div class="rocket-mult" id="rocketMult">1.00x</div>
 <div class="rocket-status" id="rocketStatus">Сделай ставку и жми СТАРТ</div>
+<div class="rocket-zone-tag" id="rocketZoneTag">ZONE ×10</div>
 </div>
 <div class="bet-panel">
 <span class="bp-label">СТАВКА</span>
@@ -1471,6 +1495,30 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 </div>
 </div>
 
+<div class="modal" id="adminModal">
+<div class="pm-card" style="max-width:420px">
+<button class="pm-close" id="adminClose"><i class="fa-solid fa-xmark"></i></button>
+<div class="custom-title"><i class="fa-solid fa-user-shield"></i> АДМИН-ПАНЕЛЬ</div>
+<div class="set-section">
+<div class="set-section-title"><i class="fa-solid fa-coins"></i>Баланс</div>
+<input type="number" class="admin-num" id="adminBalanceInput" placeholder="Введите новый баланс" min="0">
+<button class="scanfix-btn admin-btn" id="adminSetBalanceBtn"><i class="fa-solid fa-check"></i> Установить баланс</button>
+</div>
+<div class="set-section">
+<div class="set-section-title"><i class="fa-solid fa-lock-open"></i>Разблокировка</div>
+<div class="set-desc">Открывает все машины в гараже и все стили профиля</div>
+<button class="scanfix-btn admin-btn" id="adminUnlockAllBtn"><i class="fa-solid fa-box-open"></i> Открыть всё</button>
+</div>
+<div class="set-section">
+<div class="set-section-title"><i class="fa-solid fa-dice"></i>Шансы</div>
+<div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
+<div class="set-name" style="font-size:13px">100% шанс во всех режимах</div>
+<label class="ios-switch"><input type="checkbox" id="adminWinToggle"><span class="ios-track"></span></label>
+</div>
+<div class="admin-warn">Колесо, карты, слоты, мины, апгрейдер выигрывают всегда; ракета растёт бесконечно пока не заберёте; инвестиция в любом банке прибыльна 100–500%</div>
+</div>
+</div>
+</div>
 <div class="modal" id="settingsModal">
 <div class="pm-card settings-card">
 <button class="pm-close" id="settingsClose"><i class="fa-solid fa-xmark"></i></button>
@@ -1478,6 +1526,11 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="set-row">
 <div class="set-name"><i class="fa-solid fa-volume-high"></i>Звук</div>
 <label class="ios-switch"><input type="checkbox" id="soundToggle"><span class="ios-track"></span></label>
+</div>
+<div class="set-section" id="adminSection" hidden>
+<div class="set-section-title"><i class="fa-solid fa-user-shield"></i>Админ-панель</div>
+<div class="set-desc">Управление балансом, шансами и разблокировками. Видно только @MrFeast_Official</div>
+<button class="scanfix-btn admin-btn" id="openAdminBtn"><i class="fa-solid fa-user-shield"></i> Открыть Админ-панель</button>
 </div>
 <div class="set-section" id="lowGfxSection">
 <div class="set-section-title"><i class="fa-solid fa-gauge-high"></i>Низкая графика</div>
@@ -1638,12 +1691,13 @@ const RESOURCE_LIST=[
 // === АПГРЕЙДЕР / ИНВЕСТИЦИЯ ===
 {id:'imgUpgrader', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/Upgrader.png'},
 {id:'imgInvest', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/Investments.png'},
+{id:'adminProfileImg', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/AdminProfile.png'},
 // === FTAC РЕСУРСЫ ===
 {id:'ftacAvatar', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/file_00000000763481f4af0841c4342ab13a.png'},
 {id:'banList', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/BanList.txt'}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
-const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelector('.lb-ver').textContent.trim() : 'MRFEAST_PROJECT_REL_1.1.2_K2297568_E109783');
+const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelector('.lb-ver').textContent.trim() : 'MRFEAST_PROJECT_REL_1.1.6_K3297569_E109989');
 const UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/KillerCasino.html';
 let updateCheckInterval = null;
 let updateCheckBusy = false;
@@ -2554,7 +2608,8 @@ const pmCard = document.getElementById('pmCard');
 const PROFILE_STYLES = [
   { id: 'base',    name: 'Базовый',     img: null,                   owned: true,  exclusive: false },
   { id: 'ninja',   name: 'Ninja Style', img: 'profileStyleNinja',    owned: false, exclusive: false, unlockCase: 'darkStyle' },
-  { id: 'mrfeast', name: 'MrFeast Exclusive', img: 'profileStyle1', owned: true,  exclusive: true,  requiredUser: 'MrFeast_Official' }
+  { id: 'mrfeast', name: 'MrFeast Exclusive', img: 'profileStyle1', owned: true,  exclusive: true,  requiredUser: 'MrFeast_Official' },
+  { id: 'admin',   name: 'Admin Profile',   img: 'adminProfileImg', owned: true, exclusive: true,  requiredUser: 'MrFeast_Official' }
 ];
 
 function isMrFeast(){
@@ -2606,6 +2661,8 @@ async function applyCurrentProfileStyle(){
       url = await getResourceURL('profileStyleNinja');
     } else if(cur === 'mrfeast'){
       url = await getResourceURL('profileStyle1');
+    } else if(cur === 'admin'){
+      url = await getResourceURL('adminProfileImg');
     }
     if(url){
       pmCard.style.setProperty('--bg-image', `url('${url}')`);
@@ -2674,6 +2731,8 @@ async function updatePreview(styleId){
       url = await getResourceURL('profileStyleNinja');
     } else if(styleId === 'mrfeast'){
       url = await getResourceURL('profileStyle1');
+    } else if(styleId === 'admin'){
+      url = await getResourceURL('adminProfileImg');
     }
     if(url){
       customPreviewProfile.style.setProperty('--bg-image', `url('${url}')`);
@@ -2846,7 +2905,56 @@ const jackpotSound=()=>[523,659,784,1046,1318,1568].forEach((f,i)=>{tone(f,.24,'
 const settingsBtn=$('settingsBtn'),settingsModal=$('settingsModal'),soundToggle=$('soundToggle');
 function renderSound(){ soundToggle.checked=!muted; }
 renderSound();
-settingsBtn.onclick=()=>{ settingsModal.classList.add('show'); haptic('light'); };
+settingsBtn.onclick=()=>{ refreshAdminUI(); settingsModal.classList.add('show'); haptic('light'); };
+
+/* ===== АДМИНКА (только для @MrFeast_Official) ===== */
+function isAdmin(){ return isMrFeast(); }
+function adminWinActive(){ return isAdmin() && localStorage.getItem('kc_admin_winall')==='1'; }
+window.adminWinActive = adminWinActive;
+const adminSection=$('adminSection'), adminModal=$('adminModal'), openAdminBtn=$('openAdminBtn');
+const adminWinToggle=$('adminWinToggle');
+function refreshAdminUI(){
+if(isAdmin()){
+adminSection.hidden=false;
+adminWinToggle.checked=adminWinActive();
+}else{
+adminSection.hidden=true;
+adminModal.classList.remove('show');
+}
+}
+openAdminBtn.onclick=()=>{
+if(!isAdmin())return;
+$('adminBalanceInput').value='';
+settingsModal.classList.remove('show');
+adminModal.classList.add('show');
+haptic('light');
+};
+$('adminClose').onclick=()=>adminModal.classList.remove('show');
+adminModal.onclick=e=>{ if(e.target===adminModal) adminModal.classList.remove('show'); };
+$('adminSetBalanceBtn').onclick=()=>{
+if(!isAdmin())return;
+const v=parseInt($('adminBalanceInput').value,10);
+if(isNaN(v)||v<0){errShake();return;}
+balance=v;save();renderBalance();checkState();
+haptic('success');winSound();
+$('adminBalanceInput').value='';
+};
+$('adminUnlockAllBtn').onclick=()=>{
+if(!isAdmin())return;
+setOwnedCars(CARS.map(c=>c.id));
+setOwnedProfileStyles(['base','ninja','mrfeast','admin']);
+renderCars();
+applyCurrentProfileStyle();
+haptic('success');spawnConfetti(120,true);
+scheduleSave();
+};
+adminWinToggle.onchange=()=>{
+if(!isAdmin())return;
+localStorage.setItem('kc_admin_winall', adminWinToggle.checked?'1':'0');
+haptic('medium');
+};
+refreshAdminUI();
+
 $('settingsClose').onclick=()=>settingsModal.classList.remove('show');
 settingsModal.onclick=e=>{ if(e.target===settingsModal) settingsModal.classList.remove('show'); };
 soundToggle.onchange=()=>{
@@ -2931,11 +3039,11 @@ if($('caseModal').classList.contains('show') && !caseOpening) closeCaseModal();
 $('goWheel').onclick=()=>showScreen('wheelScreen');
 $('goCards').onclick=()=>showScreen('cardsScreen');
 $('goSlots').onclick=()=>showScreen('slotsScreen');
-$('goRocket').onclick=()=>showScreen('rocketScreen');
+$('goRocket').onclick=()=>{showScreen('rocketScreen');requestAnimationFrame(()=>requestAnimationFrame(()=>{sizeRocketCanvas();drawRocketFrame(rState==='flying'?rMult:1);}));};
 $('goMines').onclick=()=>showScreen('minesScreen');
 $('goShop').onclick=()=>showScreen('shopScreen');
 document.querySelectorAll('.back-btn').forEach(b=>b.onclick=()=>showScreen('menuScreen'));
-function pickMultiplier(){let r=Math.random(),acc=0;
+function pickMultiplier(){if(window.adminWinActive&&window.adminWinActive())return 8;let r=Math.random(),acc=0;
 for(const[m,w]of Object.entries(WEIGHTS)){acc+=w;if(r<=acc)return parseFloat(m);}return 0;}
 function wheelEase(x){
 const p1x=.12,p1y=.75,p2x=.15,p2y=1;
@@ -3044,8 +3152,10 @@ c.style.transform=`translate(${Math.random()*40-20}px,${Math.random()*26-13}px) 
 },gatherEnd);
 const jitterEnd=gatherEnd+9*30+220;
 setTimeout(()=>{
+const adminX8i=(window.adminWinActive&&window.adminWinActive())?finalValues.indexOf(8):-1;
 cards.forEach((c,i)=>{
 setCardValue(c,finalValues[i]);
+c.classList.toggle('admin-x8', i===adminX8i);
 setTimeout(()=>{
 c.style.transition='transform .45s cubic-bezier(.3,1.4,.5,1)';
 c.style.transform='none';
@@ -3114,7 +3224,7 @@ try{
 ac();slotsSpinning=true;slotsBtn.disabled=true;haptic('medium');
 balance-=bet;save();renderBalance();checkState();
 slotBanner.hidden=true;
-const res=Array.from({length:9},()=>rndSym());
+const res=(window.adminWinActive&&window.adminWinActive())?Array.from({length:9},()=>SYMS[SYMS.length-1]):Array.from({length:9},()=>rndSym());
 const reels=reelEls();
 reels.forEach((reel,c)=>{
 const strip=reel.querySelector('.strip');
@@ -3210,6 +3320,17 @@ jo.appendChild(f);setTimeout(()=>f.remove(),4200);
 setTimeout(()=>jo.classList.remove('show'),4000);
 }
 let rocketBet=10, rMult=1, rCrash=1.5, rStart=0, rAnim=null, rCrashAnim=null;
+const ROCKET_ZOOM_STEPS=[{at:1,top:15},{at:10,top:25},{at:25,top:50},{at:50,top:100},{at:100,top:150},{at:150,top:300}];
+let rDispTop=15, rZoneShown=0, rTrail=[];
+function rocketTargetTop(m){
+let top=15;
+for(const st of ROCKET_ZOOM_STEPS){ if(m>=st.at) top=st.top; }
+if(m>=300){ let cur=300; top=300; while(m>=cur){ top=cur*2; cur*=2; } }
+return top;
+}
+function rocketZoneLabel(top){
+return top<=15?'':(top+'X ZONE');
+}
 let rBetAmounts=[0,0], rCashed=[false,false], rocketHistory=[];
 const rocketMultEl=$('rocketMult'), rocketStatusEl=$('rocketStatus'), rocketFrame=$('rocketFrame');
 const rStartBtn=$('rocketStartBtn'), rCash2=$('rocketCash2');
@@ -3220,8 +3341,10 @@ const rc=$('rocketCanvas'), rctx=rc.getContext('2d');
 let rStars=[];
 function sizeRocketCanvas(){
 const dpr=window.devicePixelRatio||1;
-rc.width=rc.clientWidth*dpr; rc.height=rc.clientHeight*dpr;
-rStars=Array.from({length:70},()=>({x:Math.random(),y:Math.random(),s:Math.random()*1.6+.4}));
+const w=rc.clientWidth||rc.parentElement.clientWidth||320;
+const h=rc.clientHeight||rc.parentElement.clientHeight||280;
+rc.width=Math.round(w*dpr); rc.height=Math.round(h*dpr);
+if(!rStars.length)rStars=Array.from({length:90},()=>({x:Math.random(),y:Math.random(),s:Math.random()*1.7+.4,z:Math.random()}));
 }
 window.addEventListener('resize',()=>{ if($('rocketScreen').classList.contains('active')){ sizeRocketCanvas(); drawRocketFrame(rState==='flying'?rMult:1); } });
 function genCrash(){
@@ -3251,47 +3374,93 @@ box.appendChild(c);
 $('rBetHalf').onclick=()=>{rocketBet=Math.max(1,Math.floor(rocketBet/2));renderRocketBet();scheduleSave();};
 $('rBetDouble').onclick=()=>{rocketBet=Math.max(1,rocketBet*2);renderRocketBet();scheduleSave();};
 $('rBetMax').onclick=()=>{rocketBet=Math.max(1,Math.floor(balance));renderRocketBet();scheduleSave();};
-function rocketPosFor(m){
+function rocketPosFor(m,top){
 const w=rc.width,h=rc.height;
-const xFrac=.15+.7*Math.min(1,(m-1)/9);
-const yFrac=Math.min(1,Math.log(m)/Math.log(15));
+const t=top||rDispTop;
+const frac=Math.min(1,Math.log(Math.max(1,m))/Math.log(t));
+const xFrac=.15+.7*frac;
+const yFrac=frac;
 return {x:w*xFrac, y:h*.88-h*.7*yFrac};
 }
 function drawRocketFrame(m, pos, rot){
 const w=rc.width,h=rc.height,dpr=window.devicePixelRatio||1;
+if(!w||!h)return;
+const targetTop=rocketTargetTop(m);
+rDispTop+=(targetTop-rDispTop)*0.05;
+if(Math.abs(targetTop-rDispTop)<0.02)rDispTop=targetTop;
 rctx.clearRect(0,0,w,h);
-rctx.fillStyle='rgba(255,255,255,.8)';
+/* фон: лёгкое смещение оттенка космоса с ростом зоны */
+const zoneK=Math.min(1,(rDispTop-15)/285);
+const bgGrad=rctx.createRadialGradient(w*.5,h*.75,0,w*.5,h*.75,Math.max(w,h)*.9);
+bgGrad.addColorStop(0,`rgba(${Math.round(45+60*zoneK)},${Math.round(20+10*zoneK)},${Math.round(80+40*zoneK)},.55)`);
+bgGrad.addColorStop(1,'rgba(6,3,13,0)');
+rctx.fillStyle=bgGrad;rctx.fillRect(0,0,w,h);
+/* звёзды с лёгким параллаксом от зоны */
+rctx.fillStyle='rgba(255,255,255,.85)';
+const now=performance.now();
 rStars.forEach(s=>{
-rctx.globalAlpha=.25+.45*Math.abs(Math.sin(s.x*40+performance.now()/900));
-rctx.fillRect(s.x*w,s.y*h,s.s*dpr,s.s*dpr);
+const drift=(s.z-.5)*zoneK*14*dpr;
+rctx.globalAlpha=.22+.5*Math.abs(Math.sin(s.x*40+now/900+s.z*6));
+rctx.fillRect(s.x*w,(s.y*h+drift+h)%h,s.s*dpr*(1+zoneK*.6),s.s*dpr*(1+zoneK*.6));
 });
 rctx.globalAlpha=1;
-rctx.strokeStyle='rgba(255,255,255,.08)';rctx.fillStyle='rgba(255,255,255,.35)';
+/* сетка и метки зон */
+const marks=rDispTop<=15?[2,3,5,10]:[10,25,50,100,150,300].filter(v=>v<=rDispTop*1.02);
+rctx.strokeStyle='rgba(255,255,255,.08)';rctx.fillStyle='rgba(255,255,255,.4)';
 rctx.font=`${11*dpr}px Manrope`;
-[2,3,5,10].forEach(mk=>{
-const y=h-(Math.log(mk)/Math.log(20))*h*.8-h*.08;
-if(y>h*.12){ rctx.beginPath();rctx.moveTo(w*.12,y);rctx.lineTo(w*.96,y);rctx.stroke(); rctx.fillText(mk+'x',w*.02,y+4*dpr); }
+marks.forEach(mk=>{
+const yFrac=Math.min(1,Math.log(mk)/Math.log(rDispTop));
+const y=h*.88-h*.7*yFrac;
+if(y>h*.1 && y<h*.86){ rctx.beginPath();rctx.moveTo(w*.12,y);rctx.lineTo(w*.96,y);rctx.stroke(); rctx.fillText(mk+'x',w*.02,y+4*dpr); }
 });
-const p=rocketPosFor(m);
+const p=rocketPosFor(m,rDispTop);
 const x0=w*.15,y0=h*.88;
-rctx.strokeStyle='#c084fc';rctx.lineWidth=3*dpr;
-rctx.shadowColor='#a855f7';rctx.shadowBlur=window.KC_LOW?0:14*dpr;
+/* след ракеты: несколько точек с затуханием для "крутого" эффекта */
+rTrail.push({x:p.x,y:p.y,t:now});
+while(rTrail.length>26)rTrail.shift();
+rTrail=rTrail.filter(pt=>now-pt.t<900);
+rTrail.forEach(pt=>{
+const age=1-(now-pt.t)/900;
+rctx.globalAlpha=age*.35;
+rctx.fillStyle='#f0abfc';
+rctx.beginPath();rctx.arc(pt.x,pt.y,3.4*dpr*age,0,7);rctx.fill();
+});
+rctx.globalAlpha=1;
+/* основная кривая: цвет плавно уходит в золото на высоких множителях */
+const hue=Math.round(280-80*zoneK);
+rctx.strokeStyle=`hsl(${hue},85%,68%)`;rctx.lineWidth=3.2*dpr;
+rctx.shadowColor=`hsl(${hue},90%,60%)`;rctx.shadowBlur=window.KC_LOW?0:(14+10*zoneK)*dpr;
 rctx.beginPath();rctx.moveTo(x0,y0);
 rctx.quadraticCurveTo(x0+(p.x-x0)*.45,y0-(y0-p.y)*.15,p.x,p.y);
 rctx.stroke();
 rctx.shadowBlur=0;
 const rp=pos||p;
 const rr=rot!==undefined?rot:0.7;
-const glow=rctx.createRadialGradient(rp.x,rp.y,0,rp.x,rp.y,30*dpr);
-glow.addColorStop(0,'rgba(251,191,36,.55)');glow.addColorStop(1,'rgba(251,191,36,0)');
-rctx.fillStyle=glow;rctx.beginPath();rctx.arc(rp.x,rp.y,30*dpr,0,7);rctx.fill();
+const glow=rctx.createRadialGradient(rp.x,rp.y,0,rp.x,rp.y,(30+14*zoneK)*dpr);
+glow.addColorStop(0,`hsla(${hue},95%,65%,.55)`);glow.addColorStop(1,`hsla(${hue},95%,65%,0)`);
+rctx.fillStyle=glow;rctx.beginPath();rctx.arc(rp.x,rp.y,(30+14*zoneK)*dpr,0,7);rctx.fill();
 if(rocketImg.complete||rocketImg.readyState===4){
 rctx.save();
 rctx.translate(rp.x,rp.y);
 rctx.rotate(rr);
-const rs=46*dpr;
+const rs=(46+10*zoneK)*dpr;
 rctx.drawImage(rocketImg,-rs/2,-rs/2,rs,rs);
 rctx.restore();
+}
+/* бейдж текущей зоны */
+const zoneTag=$('rocketZoneTag');
+if(zoneTag){
+const lbl=rocketZoneLabel(targetTop);
+if(lbl && targetTop!==rZoneShown){
+zoneTag.textContent=lbl;
+zoneTag.classList.add('show');
+rocketFrame.classList.add('pulse');
+setTimeout(()=>rocketFrame.classList.remove('pulse'),650);
+rZoneShown=targetTop;
+}else if(!lbl){
+zoneTag.classList.remove('show');
+rZoneShown=0;
+}
 }
 }
 function startRocket(){
@@ -3302,7 +3471,7 @@ ac();haptic('medium');
 balance-=total;save();renderBalance();checkState();
 rBetAmounts=[rocketBet, second?rocketBet:0];
 rCashed=[false,false];
-rState='flying'; rMult=1; rCrash=genCrash(); rStart=performance.now();
+rState='flying'; rMult=1; rCrash=genCrash(); rStart=performance.now(); rDispTop=15; rZoneShown=0; rTrail=[]; $('rocketZoneTag').classList.remove('show');
 rocketStatusEl.textContent='Летим… жми ЗАБРАТЬ!';
 rocketMultEl.classList.remove('crashed');
 rocketFrame.classList.remove('crashed');
@@ -3332,7 +3501,7 @@ function loopRocket(){
 rAnim=requestAnimationFrame(loopRocket);
 const t=performance.now()-rStart;
 rMult=Math.pow(1.00012,t);
-if(rMult>=rCrash){ rMult=rCrash; endRocket(); return; }
+if(!(window.adminWinActive&&window.adminWinActive())&&rMult>=rCrash){ rMult=rCrash; endRocket(); return; }
 if($('autoCashToggle').checked){
 const ax=parseFloat($('autoCashValue').value)||2;
 if(rMult>=ax){ cashout(0); cashout(1); }
@@ -3382,6 +3551,7 @@ rocketMultEl.textContent='1.00x';
 rocketMultEl.classList.remove('crashed');
 rocketFrame.classList.remove('crashed');
 rocketStatusEl.textContent='Сделай ставку и жми СТАРТ';
+rDispTop=15; rZoneShown=0; rTrail=[]; $('rocketZoneTag').classList.remove('show');
 drawRocketFrame(1);
 checkState();
 },1700);
@@ -3457,10 +3627,12 @@ if(bet<1||bet>balance){errShake();return;}
 ac();haptic('medium');
 balance-=bet;save();renderBalance();checkState();
 minesField=Array.from({length:MINES_CELLS},()=>false);
+if(!(window.adminWinActive&&window.adminWinActive())){
 let placed=0;
 while(placed<minesCount){
 const idx=(Math.random()*MINES_CELLS)|0;
 if(!minesField[idx]){minesField[idx]=true;placed++;}
+}
 }
 minesPicks=0;minesState='playing';
 buildMinesGrid();
@@ -4101,7 +4273,7 @@ if(onClose)onClose();
 }
 async function validateResource(r,blob){
 if(!blob||blob.size===0)return false;
-if(r.id==='splash'||r.id.indexOf('img')===0||r.id==='profileStyle1'||r.id==='profileStyleNinja'||r.id==='darkStyleImg'||r.id==='ftacAvatar'){
+if(r.id==='splash'||r.id.indexOf('img')===0||r.id==='profileStyle1'||r.id==='profileStyleNinja'||r.id==='darkStyleImg'||r.id==='ftacAvatar'||r.id==='adminProfileImg'){
 return await new Promise(res=>{
 const u=URL.createObjectURL(blob);
 const im=new Image();
@@ -4342,6 +4514,7 @@ const BANKS=[
 {name:'Zero Bank',vol:10,rev:0,extra:-4e-6,risk:5}
 ];
 const N=BANKS.length;
+const ADMIN_BANK_UNIT=Math.log(2.6)/650; /* админ-режим: сильный стабильный рост ~160% за ~2 мин на любом банке */
 BANKS.forEach(b=>{const s2=UNIT*UNIT*b.vol*(b.vol+1)/3;b.drift=b.rev>0?0:(-0.5*s2+(b.extra||0));});
 
 const fmt=n=>Math.round(n).toLocaleString('ru-RU');
@@ -4356,7 +4529,8 @@ for(let i=0;i<N;i++){
 const b=BANKS[i];
 const s=((Math.random()*(2*b.vol+1))|0)-b.vol;
 let x=bx[i];
-if(b.rev>0){ba[i]+=b.adrift;x+=b.rev*(ba[i]-x)+s*UNIT;}
+if(window.adminWinActive&&window.adminWinActive()){x+=ADMIN_BANK_UNIT+s*UNIT*0.35;}
+else if(b.rev>0){ba[i]+=b.adrift;x+=b.rev*(ba[i]-x)+s*UNIT;}
 else x+=b.drift+s*UNIT;
 if(x<XMIN)x=XMIN;else if(x>XMAX)x=XMAX;
 bx[i]=x;
@@ -4702,7 +4876,7 @@ const bet=upgBet,coef=upgCoef;
 if(bet<1||bet>balance){errShake();return;}
 ac();haptic('medium');
 balance-=bet;upgBusy=true;commit();renderBalance();checkState();upgRefresh();
-const p=chanceOf(coef),win=Math.random()<p;
+const p=chanceOf(coef),win=(window.adminWinActive&&window.adminWinActive())?true:Math.random()<p;
 const frac=win?p*(0.04+Math.random()*0.92):p+(1-p)*(0.03+Math.random()*0.94);
 const target=frac*TAU;
 const from=((upgAng%TAU)+TAU)%TAU;
