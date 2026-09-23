@@ -24,16 +24,15 @@ pointer-events: auto;
 }
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
 #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
-transition:opacity .3s;pointer-events:none}
-#splash.hidden{opacity:0}
-#splash img{width:min(90%,400px);height:auto;opacity:0;transition:opacity 3s ease-in-out;
-filter:drop-shadow(0 0 40px rgba(139,92,246,.6))}
-#splash img.show{opacity:1}
-#splash img.hide{opacity:0}
+overflow:hidden;transition:opacity .55s ease,transform .55s ease,filter .55s ease;pointer-events:none}
+#splash.hidden{opacity:0;transform:scale(1.045);filter:brightness(1.6) saturate(1.25)}
+#introVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;
+opacity:0;transition:opacity .5s ease;filter:drop-shadow(0 0 40px rgba(139,92,246,.35))}
+#introVideo.show{opacity:1}
 @media (min-width:760px){
-#splash img{width:min(85%,1000px)}
+#introVideo{object-fit:cover}
 }
-body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit:contain}
+body.is-android #introVideo{object-fit:contain}
 body.is-android #caseVideo{object-fit:contain}
 
 /* === НОВЫЙ SPLASH VIDEO LOADER (с белым фоном и узорами) === */
@@ -1103,7 +1102,7 @@ body.tg-fullscreen .load-news{top:96px}
 </head>
 <body>
 <div id="splash">
-<img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png" alt="" data-resource="splash">
+<video id="introVideo" playsinline preload="auto"></video>
 </div>
 <canvas id="confetti"></canvas>
 <div id="loader">
@@ -1119,7 +1118,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.6_K3399569_E109989</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.6_K3297569_E109989</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -1647,6 +1646,7 @@ if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventLis
 
 // === РЕСУРСЫ (с добавлением FTAC) ===
 const RESOURCE_LIST=[
+{id:'introVideo', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/NewIntro.mp4'},
 {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
 {id:'img1', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png'},
 {id:'img2', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg'},
@@ -4101,7 +4101,7 @@ let appLoaded=false, loaderBusy=false, hiddenAt=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function showSplash(){
 const splash=$('splash');
-const img=splash.querySelector('img');
+const vid=$('introVideo');
 const skipSplash = await checkUpdateGameFile();
 if(skipSplash){
 splash.remove();
@@ -4113,7 +4113,6 @@ splash.remove();
 runLoader('normal');
 return;
 }
-getResourceURL('splash').then(u=>{ if(u)img.src=u; });
 // Предзагрузка FTAC
 (async()=>{
 try {
@@ -4130,9 +4129,9 @@ await resSet('banList', blob);
 })();
 (async()=>{
 const keys=await resKeys();
-const URGENT=['splash','splashVideo','music','img1','img2','img3','img4','img5'];
+const URGENT=['introVideo','splash','splashVideo','music','img1','img2','img3','img4','img5'];
 const missing=RESOURCE_LIST.filter(r=>!keys.includes(r.id)&&URGENT.includes(r.id));
-const ordered=[...missing.filter(r=>r.id==='music'||r.id==='splashVideo'),...missing.filter(r=>r.id!=='music'&&r.id!=='splashVideo')];
+const ordered=[...missing.filter(r=>r.id==='introVideo'),...missing.filter(r=>r.id==='music'||r.id==='splashVideo'),...missing.filter(r=>r.id!=='music'&&r.id!=='splashVideo'&&r.id!=='introVideo')];
 ordered.forEach(r=>{
 fetchBlob(r.url).then(b=>{
 if(!b)return;
@@ -4145,20 +4144,54 @@ if(!musicBlob && keys.includes('music')){
 resGet('music').then(b=>{ if(b)musicBlob=b; }).catch(()=>{});
 }
 })();
-setTimeout(()=>{
-img.classList.add('show');
-setTimeout(()=>{
-img.classList.add('hide');
-setTimeout(()=>{
+
+/* ===== НОВОЕ ИНТРО (видео): появляется сразу, доигрывает до конца, гаснет с эффектом ===== */
+let introFinished=false;
+const finishIntro=()=>{
+if(introFinished)return;
+introFinished=true;
+clearTimeout(introFailSafe);
 splash.classList.add('hidden');
 sessionStorage.setItem('kc_splash_shown','1');
 setTimeout(()=>{
 splash.remove();
 runLoader('normal');
-},300);
-},3000);
-},3000);
-},1000);
+},560);
+};
+const introFailSafe=setTimeout(finishIntro,9000);
+vid.loop=false;
+vid.playsInline=true;
+vid.preload='auto';
+vid.muted=true;
+vid.volume=1;
+vid.addEventListener('ended', finishIntro, {once:true});
+vid.addEventListener('error', finishIntro, {once:true});
+vid.addEventListener('playing', ()=>vid.classList.add('show'), {once:true});
+const introBlob = await resGet('introVideo');
+if(introBlob){
+vid.src = URL.createObjectURL(introBlob);
+}else{
+vid.src = RESOURCE_MAP.introVideo.url;
+resGet('introVideo').then(b=>{
+if(!b||introFinished) return;
+if(vid.currentTime<0.4){ vid.src=URL.createObjectURL(b); try{ vid.play(); }catch(e){} }
+}).catch(()=>{});
+}
+try{
+const p=vid.play();
+if(p&&p.catch){
+p.catch(()=>{
+vid.addEventListener('canplay', ()=>{ vid.play().catch(finishIntro); }, {once:true});
+});
+}
+}catch(e){ finishIntro(); }
+/* разблокировка звука по первому касанию — пока интро ещё играет */
+const introUnlockEvs=['pointerdown','touchstart','mousedown','keydown'];
+const introUnlock=()=>{
+if(vid.muted && !introFinished){ vid.muted=false; const p=vid.play(); if(p&&p.catch)p.catch(()=>{}); }
+introUnlockEvs.forEach(e=>document.removeEventListener(e,introUnlock,true));
+};
+introUnlockEvs.forEach(e=>document.addEventListener(e,introUnlock,true));
 }
 async function runLoader(mode){
 if(loaderBusy)return;
@@ -4338,7 +4371,7 @@ im.onerror=()=>{clearTimeout(to);URL.revokeObjectURL(u);res(false);};
 im.src=u;
 });
 }
-if(r.id==='splashVideo'||r.id==='darkStyleVideo'||r.id==='video'||r.id==='video2'){
+if(r.id==='splashVideo'||r.id==='darkStyleVideo'||r.id==='video'||r.id==='video2'||r.id==='introVideo'){
 return blob.size>=10000;
 }
 if(r.id.indexOf('voice')===0||r.id.indexOf('sig')===0){
@@ -5042,4 +5075,4 @@ renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
-</html>
+  </html>
