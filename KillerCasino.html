@@ -909,19 +909,19 @@ text-shadow:0 0 10px rgba(255,60,60,.6);min-width:45px;text-align:right}
 display:none;align-items:center;justify-content:center}
 #caseVideoOverlay.show{display:flex}
 #caseVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cv-reward{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-text-align:center;opacity:0;transition:opacity 3s ease;pointer-events:none;z-index:2;
-padding:26px 46px}
-.cv-reward.show{opacity:1}
-.cv-reward{border-radius:26px}
+.cv-reward{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.85);
+text-align:center;opacity:0;transition:opacity .45s ease,transform .45s cubic-bezier(.2,1.4,.4,1);pointer-events:none;z-index:2;
+padding:30px 44px;border-radius:26px;min-width:220px;
+background:linear-gradient(165deg,rgba(255,250,238,.99),rgba(255,225,175,.99));
+box-shadow:0 0 0 1px rgba(255,255,255,.7) inset,0 30px 70px rgba(0,0,0,.55),0 0 90px rgba(255,190,90,.4)}
+.cv-reward.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .cv-reward::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-width:135%;height:160%;z-index:-1;border-radius:50%;
-background:radial-gradient(circle,rgba(255,255,255,.97) 0%,rgba(255,240,210,.85) 38%,rgba(255,205,120,.45) 62%,transparent 80%);
-box-shadow:0 0 70px rgba(255,200,90,.35)}
-.cv-reward::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-width:108%;height:128%;z-index:-1;border-radius:50%;border:1px solid rgba(255,255,255,.6)}
-.cv-amount{font-family:'Unbounded';font-weight:800;font-size:clamp(42px,11vw,86px);color:#000;line-height:1.05}
-.cv-chance{font-family:'Unbounded';font-weight:700;font-size:clamp(16px,4.5vw,28px);color:#000;margin-top:8px}
+width:150%;height:190%;z-index:-1;border-radius:50%;
+background:radial-gradient(circle,rgba(255,255,255,.55) 0%,rgba(255,230,180,.3) 45%,transparent 78%);
+}
+.cv-reward::after{content:none}
+.cv-amount{font-family:'Unbounded';font-weight:800;font-size:clamp(38px,10vw,76px);color:#1a1006;line-height:1.05}
+.cv-chance{font-family:'Unbounded';font-weight:700;font-size:clamp(14px,4vw,24px);color:#5c4420;margin-top:8px}
 .cv-btns{position:absolute;left:0;right:0;bottom:5%;z-index:3;display:flex;flex-direction:column;
 align-items:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .5s;padding:0 20px}
 .cv-btns.show{opacity:1;pointer-events:auto}
@@ -4187,6 +4187,9 @@ if(endHandled||my!==caseVideoToken) return;
 endHandled=true;
 setTimeout(()=>{
 if(my!==caseVideoToken) return;
+reward.classList.remove('premium-reward');
+reward.style.removeProperty('--x');
+$('cvAmount').style.color='';
 reward.classList.toggle('premium-reward', isPremiumActive());
 if(prize.type === 'nothing'){
   $('cvAmount').textContent='Ничего';
@@ -4229,8 +4232,8 @@ if(my!==caseVideoToken) return;
 btns.classList.add('show');
 caseVideoBusy=false; caseOpening=false;
 checkState();
-},3000);
-},1000);
+},1600);
+},400);
 };
 getResourceURL(item.video||'video').then(u=>{
 if(my!==caseVideoToken) return;
@@ -5245,4 +5248,4 @@ renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
-</html>
+  </html>
