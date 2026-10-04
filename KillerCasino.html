@@ -57,7 +57,7 @@ body.is-android #caseVideo{object-fit:contain}
 
 /* === НОВЫЙ SPLASH VIDEO LOADER (с белым фоном и узорами) === */
 #loader{position:fixed;inset:0;z-index:200;background:#ffffff;overflow:hidden;transition:opacity .6s,visibility .6s}
-#loader.done{opacity:0;visibility:hidden}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
 #loader::before{
   content:'';
   position:absolute;
@@ -1198,6 +1198,7 @@ body.tg-fullscreen .load-news{top:96px}
 /* ===== ТАБЛИЦА РЕКОРДОВ KILLERCASINO ===== */
 .leaderboard-section{
   width:min(100%, 920px);
+  pointer-events:none;
   margin:28px auto 36px;
   padding:0 14px;
   box-sizing:border-box;
@@ -1376,7 +1377,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.9_K3297569_E109989</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.8_K3297569_E109989</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -1718,6 +1719,8 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="car-list" id="carList"></div>
 </section>
 
+<button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
+</div>
 <!-- ===== ТАБЛИЦА РЕКОРДОВ ===== -->
 <section class="leaderboard-section" id="leaderboardSection">
   <div class="leaderboard-card">
@@ -1737,8 +1740,6 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
   </div>
 </section>
 
-<button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
-</div>
 <div class="modal" id="profileModal">
 <div class="pm-card" id="pmCard">
 <div class="pm-id">ID: <b id="pmId">—</b></div>
