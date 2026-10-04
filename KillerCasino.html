@@ -463,6 +463,12 @@ display:flex;align-items:center;justify-content:center;font-size:18px;color:#8b7
 .custom-item-thumb img{width:100%;height:100%;object-fit:cover}
 .custom-item-name{font-family:'Unbounded';font-weight:700;font-size:14px;color:var(--ph8);flex:1}
 .custom-item-status{font-size:11px;letter-spacing:.1em;color:#8b7bb8;font-weight:700;text-transform:uppercase}
+.theme-switch{margin-top:14px;padding:12px;border-radius:16px;border:1px solid rgba(var(--p2),.35);background:rgba(var(--pd1),.35)}
+.theme-switch-title{font-size:11px;font-weight:800;letter-spacing:.08em;color:#a78bfa;margin-bottom:9px;text-transform:uppercase}
+.theme-switch-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.theme-switch-btn{appearance:none;border:1px solid rgba(var(--p2),.3);border-radius:12px;padding:10px 8px;background:rgba(10,5,22,.55);color:#c4b5fd;font:700 11px 'Unbounded',sans-serif;cursor:pointer;transition:all .18s}
+.theme-switch-btn.active{border-color:#f4d03f;background:linear-gradient(135deg,rgba(244,208,63,.18),rgba(124,58,237,.2));color:#fff6c8;box-shadow:0 0 14px rgba(244,208,63,.18)}
+.theme-switch-btn.locked{opacity:.45;cursor:not-allowed}
 .custom-item.selected .custom-item-status{color:#4ade80}
 .custom-item.locked .custom-item-status{color:#ff6b6b}
 .custom-preview{
@@ -907,31 +913,24 @@ display:flex;align-items:center;justify-content:center;font-size:7px;color:#2e10
 text-shadow:0 0 8px rgba(255,255,255,.2)}
 .chance-percent{font-family:'Unbounded';font-weight:800;font-size:14px;color:#ff6b6b;
 text-shadow:0 0 10px rgba(255,60,60,.6);min-width:45px;text-align:right}
-#caseVideoOverlay{position:fixed;inset:0;z-index:150;background:#030305;
-display:none;align-items:center;justify-content:center;overflow:hidden}
+#caseVideoOverlay{position:fixed;inset:0;z-index:150;background:#000;
+display:none;align-items:center;justify-content:center}
 #caseVideoOverlay.show{display:flex}
-#caseVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-transition:opacity .28s ease,filter .28s ease;will-change:opacity;transform:translateZ(0)}
-#caseVideoOverlay::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-background:radial-gradient(circle at 50% 45%,rgba(var(--p2),.12),transparent 48%),
-linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.58))}
+#caseVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .25s ease}
 #caseVideo.cv-hide{opacity:0}
-.cv-reward{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%) scale(.88);
-text-align:center;opacity:0;transition:opacity .45s ease,transform .45s cubic-bezier(.2,1.4,.4,1);
-pointer-events:none;z-index:2;padding:28px 34px;border-radius:24px;min-width:min(340px,82vw);
-background:linear-gradient(145deg,rgba(24,15,38,.94),rgba(8,8,15,.92));
-border:1px solid rgba(255,255,255,.14);
-box-shadow:0 22px 70px rgba(0,0,0,.58),0 0 55px rgba(var(--p2),.2),inset 0 1px 0 rgba(255,255,255,.12);
-backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.cv-reward{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.85);
+text-align:center;opacity:0;transition:opacity .45s ease,transform .45s cubic-bezier(.2,1.4,.4,1);pointer-events:none;z-index:2;
+padding:30px 44px;border-radius:26px;min-width:220px;
+background:linear-gradient(165deg,rgba(255,250,238,.99),rgba(255,225,175,.99));
+box-shadow:0 0 0 1px rgba(255,255,255,.7) inset,0 30px 70px rgba(0,0,0,.55),0 0 90px rgba(255,190,90,.4)}
 .cv-reward.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.cv-reward::before{content:'';position:absolute;inset:-2px;border-radius:26px;padding:1px;z-index:-1;
-background:linear-gradient(135deg,rgba(var(--p3),.65),transparent 38%,rgba(255,255,255,.18),rgba(var(--p2),.45));
--webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.cv-reward::after{content:'';position:absolute;left:15%;right:15%;bottom:-28px;height:42px;z-index:-2;
-background:radial-gradient(ellipse,rgba(var(--p2),.35),transparent 70%);filter:blur(10px)}
-.cv-amount{font-family:'Unbounded';font-weight:800;font-size:clamp(36px,9vw,68px);color:#fff;line-height:1.05;
-text-shadow:0 0 22px rgba(255,255,255,.18)}
-.cv-chance{font-family:'Unbounded';font-weight:700;font-size:clamp(12px,3.3vw,18px);color:#d8c8ee;margin-top:12px}
+.cv-reward::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+width:150%;height:190%;z-index:-1;border-radius:50%;
+background:radial-gradient(circle,rgba(255,255,255,.55) 0%,rgba(255,230,180,.3) 45%,transparent 78%);
+}
+.cv-reward::after{content:none}
+.cv-amount{font-family:'Unbounded';font-weight:800;font-size:clamp(38px,10vw,76px);color:#1a1006;line-height:1.05}
+.cv-chance{font-family:'Unbounded';font-weight:700;font-size:clamp(14px,4vw,24px);color:#5c4420;margin-top:8px}
 .cv-btns{position:absolute;left:0;right:0;bottom:5%;z-index:3;display:flex;flex-direction:column;
 align-items:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .5s;padding:0 20px}
 .cv-btns.show{opacity:1;pointer-events:auto}
@@ -1216,7 +1215,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.7_K3297569_E109989</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.8_K3297569_E109989</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -1582,6 +1581,14 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="custom-title">КАСТОМИЗАЦИЯ ПРОФИЛЯ</div>
 <div class="custom-body">
 <div class="custom-list" id="customList"></div>
+<div class="theme-switch">
+  <div class="theme-switch-title"><i class="fa-solid fa-circle-half-stroke"></i> Тема игры</div>
+  <div class="theme-switch-options">
+    <button type="button" class="theme-switch-btn" id="themeOrdinaryBtn">ОБЫЧНАЯ</button>
+    <button type="button" class="theme-switch-btn" id="themePremiumBtn">PREMIUM</button>
+  </div>
+  <div id="themePremiumHint" style="font-size:10px;color:#8b7bb8;margin-top:7px;line-height:1.4">Premium-тема доступна только Premium-аккаунтам.</div>
+</div>
 <div class="custom-preview">
 <div class="custom-preview-title">Предварительный просмотр</div>
 <div class="custom-preview-profile base" id="customPreviewProfile">
@@ -2730,7 +2737,7 @@ for(const api of apis){ try{ const g=await api(); if(g&&g.ip){ document.getEleme
 document.getElementById('pmIp').textContent='—'; document.getElementById('pmCity').textContent='—';
 })();
 const profileModal=document.getElementById('profileModal');
-document.getElementById('profileBtn').onclick=()=>{profileModal.classList.add('show');haptic('light');};
+document.getElementById('profileBtn').onclick=()=>{refreshPremiumBadges(); profileModal.classList.add('show');haptic('light');};
 document.getElementById('pmCloseBtn').onclick=()=>profileModal.classList.remove('show');
 profileModal.onclick=e=>{if(e.target===profileModal)profileModal.classList.remove('show');};
 
@@ -2805,7 +2812,11 @@ async function getVisibleStyles(){
 }
 
 async function applyCurrentProfileStyle(){
-  const cur = getCurrentProfileStyle();
+  let cur = getCurrentProfileStyle();
+  if(cur === 'premium' && !isPremiumActive()){
+    cur='base';
+    setCurrentProfileStyle('base');
+  }
   const nameEl = document.getElementById('pmStyleName');
   if(nameEl){
     const s = PROFILE_STYLES.find(x=>x.id===cur);
@@ -2912,6 +2923,7 @@ document.getElementById('pmStyleBtn').onclick = async ()=>{
   customModal.classList.add('show');
   haptic('light');
   const cur = getCurrentProfileStyle();
+  refreshThemeSwitcher();
   await renderCustomList(cur);
   await updatePreview(cur);
 };
@@ -2925,7 +2937,7 @@ customModal.onclick = (e)=>{
   }
 };
 
-setTimeout(()=>applyCurrentProfileStyle(), 1500);
+setTimeout(()=>{ applyCurrentProfileStyle(); refreshPremiumBadges(); refreshThemeSwitcher(); }, 1500);
 
 const SEGMENTS=[
 {m:0,  icon:'\uf54c', label:'x0',   color:'#161022'},
@@ -3092,25 +3104,53 @@ function isPremiumActive(){ return isAdmin() || localStorage.getItem('kc_premium
 window.isPremiumActive = isPremiumActive;
 function premiumMoney(v){ return isPremiumActive() ? Math.round(v*(1+PREMIUM_MONEY_BONUS)) : v; }
 window.premiumMoney = premiumMoney;
+function getThemeMode(){
+  const saved=localStorage.getItem('kc_theme_mode');
+  if(saved==='ordinary') return 'ordinary';
+  if(saved==='premium' && isPremiumActive()) return 'premium';
+  return isPremiumActive() ? 'premium' : 'ordinary';
+}
+function setThemeMode(mode){
+  if(mode==='premium' && !isPremiumActive()){
+    mode='ordinary';
+    haptic('error');
+  }
+  localStorage.setItem('kc_theme_mode',mode);
+  applyPremiumTheme();
+  refreshThemeSwitcher();
+}
+function refreshThemeSwitcher(){
+  const mode=getThemeMode(), premium=isPremiumActive();
+  const ordinaryBtn=$('themeOrdinaryBtn'), premiumBtn=$('themePremiumBtn'), hint=$('themePremiumHint');
+  if(ordinaryBtn){ ordinaryBtn.classList.toggle('active',mode==='ordinary'); }
+  if(premiumBtn){ premiumBtn.classList.toggle('active',mode==='premium'); premiumBtn.classList.toggle('locked',!premium); premiumBtn.title=premium?'Включить Premium-тему':'Нужен Premium'; }
+  if(hint){ hint.textContent=premium?'Можно переключаться между обычной и Premium-темой.':'Premium-тема доступна только аккаунтам с Premium.'; }
+}
 function grantPremium(){
 localStorage.setItem('kc_premium','1');
+localStorage.setItem('kc_theme_mode','premium');
 applyPremiumTheme();
 refreshAdminUI();
 refreshPremiumBadges();
+refreshThemeSwitcher();
 }
 function refreshPremiumBadges(){
-const on=isPremiumActive();
-const b1=$('premiumBadgeWrap'); if(b1) b1.hidden=!on;
-const b2=$('premiumBadgeProfile'); if(b2) b2.hidden=!on;
+  const on=!!isPremiumActive();
+  const b1=$('premiumBadgeWrap'); if(b1) b1.hidden=!on;
+  const b2=$('premiumBadgeProfile'); if(b2) b2.hidden=!on;
 }
 async function applyPremiumTheme(){
-const on=isPremiumActive();
-document.body.classList.toggle('premium-active',on);
-if(on){
-try{ const url=await getResourceURL('luxBg'); if(url) document.documentElement.style.setProperty('--premium-bg-url',`url('${url}')`); }catch(e){}
+  const premiumTheme=isPremiumActive() && getThemeMode()==='premium';
+  document.body.classList.toggle('premium-active',premiumTheme);
+  if(premiumTheme){
+    try{ const url=await getResourceURL('luxBg'); if(url) document.documentElement.style.setProperty('--premium-bg-url',`url('${url}')`); }catch(e){}
+  }
+  refreshPremiumBadges();
 }
-refreshPremiumBadges();
-}
+const _themeOrdinaryBtn=$('themeOrdinaryBtn'), _themePremiumBtn=$('themePremiumBtn');
+if(_themeOrdinaryBtn) _themeOrdinaryBtn.onclick=()=>setThemeMode('ordinary');
+if(_themePremiumBtn) _themePremiumBtn.onclick=()=>setThemeMode('premium');
+refreshThemeSwitcher();
 const adminSection=$('adminSection'), adminModal=$('adminModal'), openAdminBtn=$('openAdminBtn');
 const adminWinToggle=$('adminWinToggle');
 function refreshAdminUI(){
@@ -3193,7 +3233,7 @@ if(!confAnim)confAnim=requestAnimationFrame(confLoop);
 function confLoop(){confAnim=requestAnimationFrame(confLoop);cctx.clearRect(0,0,cv.width,cv.height);
 parts=parts.filter(p=>p.y<cv.height+30);
 parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
-cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.r);cctx.fillStyle=p.c;
+cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.r);cctx.fillStyle(p.c);
 cctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cctx.restore();});
 if(!parts.length){cancelAnimationFrame(confAnim);confAnim=null;}}
 function showScreen(id){
@@ -4174,13 +4214,7 @@ $('caseClose').onclick=closeCaseModal;
 $('caseOpenBtn').onclick=()=>{ openCaseVideo(currentCaseItem); };
 function openCaseVideo(item){
 if(caseVideoBusy||!item) return;
-if(item.price > 0 && balance<item.price){
-  errShake();
-  $('caseVideoOverlay').classList.remove('show');
-  $('caseModal').classList.add('show');
-  caseVideoBusy=false; caseOpening=false;
-  return;
-}
+if(item.price > 0 && balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
 caseVideoBusy=true; caseOpening=true;
 pauseBgMusic();
 document.body.classList.add('paused');
@@ -4195,17 +4229,12 @@ $('caseModal').classList.remove('show');
 const ov=$('caseVideoOverlay'),vid=$('caseVideo'),reward=$('cvReward'),btns=$('cvBtns');
 reward.classList.remove('show');
 btns.classList.remove('show');
-vid.classList.remove('cv-hide');
-vid.style.visibility='visible';
-try{ vid.pause(); vid.currentTime=0; }catch(e){}
 ov.classList.add('show');
 haptic('medium');
 let endHandled=false;
-let endTimer=null;
 const handleEnd=()=>{
 if(endHandled||my!==caseVideoToken) return;
 endHandled=true;
-if(endTimer) clearTimeout(endTimer);
 try{ vid.pause(); }catch(e){}
 vid.classList.add('cv-hide');
 setTimeout(()=>{ if(my===caseVideoToken){ try{ vid.style.visibility='hidden'; }catch(e){} } },260);
@@ -4262,14 +4291,12 @@ checkState();
 getResourceURL(item.video||'video').then(u=>{
 if(my!==caseVideoToken) return;
 vid.onended=handleEnd;
-vid.onerror=()=>setTimeout(handleEnd,700);
+vid.onerror=()=>setTimeout(handleEnd,1000);
 vid.src=u;
 vid.currentTime=0;
-vid.classList.remove('cv-hide');
-vid.style.visibility='visible';
 const p=vid.play();
-if(p&&p.catch)p.catch(()=>setTimeout(handleEnd,700));
-endTimer=setTimeout(handleEnd,15000);
+if(p&&p.catch)p.catch(()=>setTimeout(handleEnd,1000));
+setTimeout(handleEnd,6000);
 });
 }
 $('cvOk').onclick=()=>{
@@ -4277,35 +4304,22 @@ caseVideoToken++;
 document.body.classList.remove('paused');
 const ov=$('caseVideoOverlay'),vid=$('caseVideo');
 ov.classList.remove('show');
-try{ vid.pause(); vid.currentTime=0; }catch(e){}
-vid.classList.remove('cv-hide'); vid.style.visibility='visible';
-$('cvReward').classList.remove('show');
-$('cvBtns').classList.remove('show');
+try{ vid.pause(); vid.removeAttribute('src'); vid.load(); }catch(e){}
+vid.classList.remove('cv-hide'); vid.style.visibility='';
 $('cvAmount').style.color = '';
-caseVideoBusy=false; caseOpening=false;
 bgMusicPausedByCase=false;
 if(!muted && bgMusicReady && !loaderBusy && !fixBusy) startBgMusic();
 $('caseModal').classList.add('show');
 haptic('light');
 };
 $('cvMore').onclick=()=>{
-if(caseVideoBusy||!currentCaseItem) return;
-const item=currentCaseItem;
 caseVideoToken++;
 document.body.classList.remove('paused');
 $('caseVideoOverlay').classList.remove('show');
-$('cvReward').classList.remove('show');
-$('cvBtns').classList.remove('show');
 $('cvAmount').style.color = '';
-const vid=$('caseVideo');
-try{ vid.pause(); vid.currentTime=0; }catch(e){}
-vid.classList.remove('cv-hide');
-vid.style.visibility='visible';
 bgMusicPausedByCase=false;
-caseVideoBusy=false;
-caseOpening=false;
 haptic('light');
-openCaseVideo(item);
+openCaseVideo(currentCaseItem);
 };
 $('caseModal').onclick=(e)=>{
 if(e.target===$('caseModal')&&!caseOpening){ closeCaseModal(); }
