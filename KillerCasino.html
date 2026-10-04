@@ -3100,8 +3100,12 @@ window.adminWinActive = adminWinActive;
 /* ===== PREMIUM ===== */
 const PREMIUM_CHANCE_BONUS=0.05; /* +5 процентных пунктов к шансу выигрыша в любом режиме */
 const PREMIUM_MONEY_BONUS=0.14;  /* +14% к любым начислениям монет */
-function isPremiumActive(){ return isAdmin() || localStorage.getItem('kc_premium')==='1'; }
+function hasPremiumAccount(){
+  return localStorage.getItem('kc_premium')==='1';
+}
+function isPremiumActive(){ return isAdmin() || hasPremiumAccount(); }
 window.isPremiumActive = isPremiumActive;
+window.hasPremiumAccount = hasPremiumAccount;
 function premiumMoney(v){ return isPremiumActive() ? Math.round(v*(1+PREMIUM_MONEY_BONUS)) : v; }
 window.premiumMoney = premiumMoney;
 function getThemeMode(){
@@ -3135,7 +3139,9 @@ refreshPremiumBadges();
 refreshThemeSwitcher();
 }
 function refreshPremiumBadges(){
-  const on=!!isPremiumActive();
+  // Бейдж отображается только при реально выданном Premium-статусе.
+  // Админские права сами по себе Premium-статусом не считаются.
+  const on=hasPremiumAccount();
   const b1=$('premiumBadgeWrap'); if(b1) b1.hidden=!on;
   const b2=$('premiumBadgeProfile'); if(b2) b2.hidden=!on;
 }
@@ -3149,7 +3155,10 @@ async function applyPremiumTheme(){
 }
 const _themeOrdinaryBtn=$('themeOrdinaryBtn'), _themePremiumBtn=$('themePremiumBtn');
 if(_themeOrdinaryBtn) _themeOrdinaryBtn.onclick=()=>setThemeMode('ordinary');
-if(_themePremiumBtn) _themePremiumBtn.onclick=()=>setThemeMode('premium');
+if(_themePremiumBtn) _themePremiumBtn.onclick=()=>{
+  if(!hasPremiumAccount()){ haptic('error'); refreshThemeSwitcher(); return; }
+  setThemeMode('premium');
+};
 refreshThemeSwitcher();
 const adminSection=$('adminSection'), adminModal=$('adminModal'), openAdminBtn=$('openAdminBtn');
 const adminWinToggle=$('adminWinToggle');
@@ -4326,21 +4335,36 @@ if(e.target===$('caseModal')&&!caseOpening){ closeCaseModal(); }
 };
 let appLoaded=false, loaderBusy=false, hiddenAt=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let splashRunToken=0;
+let splashFailSafe=0;
+
 async function showSplash(){
 const splash=$('splash');
 const vid=$('introVideo');
+if(!splash||!vid){ runLoader('normal'); return; }
+
+const myRun=++splashRunToken;
 const skipSplash = await checkUpdateGameFile();
 if(skipSplash){
-splash.remove();
-runLoader('normal');
-return;
+  splash.classList.add('hidden');
+  runLoader('normal');
+  return;
 }
-if(sessionStorage.getItem('kc_splash_shown')){
-splash.remove();
-runLoader('normal');
-return;
-}
-// Предзагрузка FTAC
+
+// Каждый вызов showSplash() является новым запуском интро.
+// Старый splash не удаляем из DOM — это устраняет чёрный экран при повторном открытии.
+splash.classList.remove('hidden');
+splash.style.opacity='1';
+splash.style.transform='none';
+splash.style.filter='none';
+vid.classList.remove('show');
+vid.style.visibility='';
+try{
+  vid.pause();
+  vid.removeAttribute('src');
+  vid.load();
+}catch(e){}
+
 (async()=>{
 try {
 const keys = await resKeys();
@@ -4354,6 +4378,7 @@ await resSet('banList', blob);
 }
 } catch(e){ console.warn('FTAC предзагрузка:', e); }
 })();
+
 (async()=>{
 const keys=await resKeys();
 const URGENT=['introVideo','splash','splashVideo','music','img1','img2','img3','img4','img5'];
@@ -4372,54 +4397,55 @@ resGet('music').then(b=>{ if(b)musicBlob=b; }).catch(()=>{});
 }
 })();
 
-/* ===== НОВОЕ ИНТРО (видео): появляется сразу, доигрывает до конца, гаснет с эффектом ===== */
 let introFinished=false;
 const finishIntro=()=>{
-if(introFinished)return;
+if(introFinished || myRun!==splashRunToken)return;
 introFinished=true;
-clearTimeout(introFailSafe);
+clearTimeout(splashFailSafe);
 splash.classList.add('hidden');
-sessionStorage.setItem('kc_splash_shown','1');
 setTimeout(()=>{
-splash.remove();
-runLoader('normal');
+  if(myRun!==splashRunToken)return;
+  splash.classList.add('hidden');
+  runLoader('normal');
 },560);
 };
-const introFailSafe=setTimeout(finishIntro,9000);
+
+clearTimeout(splashFailSafe);
+splashFailSafe=setTimeout(finishIntro,9000);
 vid.loop=false;
 vid.playsInline=true;
 vid.preload='auto';
 vid.muted=true;
 vid.volume=1;
-vid.addEventListener('ended', finishIntro, {once:true});
-vid.addEventListener('error', finishIntro, {once:true});
-vid.addEventListener('playing', ()=>vid.classList.add('show'), {once:true});
+vid.onended=finishIntro;
+vid.onerror=finishIntro;
+vid.onplaying=()=>vid.classList.add('show');
+
 const introBlob = await resGet('introVideo');
+if(myRun!==splashRunToken)return;
 if(introBlob){
-vid.src = URL.createObjectURL(introBlob);
+  vid.src = URL.createObjectURL(introBlob);
 }else{
-vid.src = RESOURCE_MAP.introVideo.url;
-resGet('introVideo').then(b=>{
-if(!b||introFinished) return;
-if(vid.currentTime<0.4){ vid.src=URL.createObjectURL(b); try{ vid.play(); }catch(e){} }
-}).catch(()=>{});
+  vid.src = RESOURCE_MAP.introVideo.url;
+  resGet('introVideo').then(b=>{
+    if(!b||introFinished||myRun!==splashRunToken)return;
+    try{
+      vid.src=URL.createObjectURL(b);
+      vid.currentTime=0;
+      const p=vid.play();
+      if(p&&p.catch)p.catch(finishIntro);
+    }catch(e){ finishIntro(); }
+  }).catch(()=>{});
 }
 try{
-const p=vid.play();
-if(p&&p.catch){
-p.catch(()=>{
-vid.addEventListener('canplay', ()=>{ vid.play().catch(finishIntro); }, {once:true});
-});
-}
+  vid.currentTime=0;
+  const p=vid.play();
+  if(p&&p.catch)p.catch(()=>{
+    vid.addEventListener('canplay',()=>{ if(myRun===splashRunToken)vid.play().catch(finishIntro); },{once:true});
+  });
 }catch(e){ finishIntro(); }
-/* разблокировка звука по первому касанию — пока интро ещё играет */
-const introUnlockEvs=['pointerdown','touchstart','mousedown','keydown'];
-const introUnlock=()=>{
-if(vid.muted && !introFinished){ vid.muted=false; const p=vid.play(); if(p&&p.catch)p.catch(()=>{}); }
-introUnlockEvs.forEach(e=>document.removeEventListener(e,introUnlock,true));
-};
-introUnlockEvs.forEach(e=>document.addEventListener(e,introUnlock,true));
 }
+
 async function runLoader(mode){
 if(loaderBusy)return;
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
@@ -4567,7 +4593,9 @@ document.addEventListener('visibilitychange', () => {
         document.body.classList.remove('paused');
         if(!muted && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy && bgAudio && bgAudio.paused) startBgMusic();
         if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
-            runLoader('restart');
+            // При повторном открытии Telegram Mini App снова проигрываем интро,
+            // а не показываем старый/чёрный splash.
+            showSplash();
         }
         hiddenAt=0;
     }
