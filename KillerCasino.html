@@ -1194,6 +1194,167 @@ body.tg-fullscreen .load-news{top:96px}
   #ftacBanScreen .desc { font-size: 12px; }
   .corner-frame { width: 25px; height: 25px; }
 }
+
+/* ===== ТАБЛИЦА РЕКОРДОВ KILLERCASINO ===== */
+.leaderboard-section{
+  width:min(100%, 920px);
+  margin:28px auto 36px;
+  padding:0 14px;
+  box-sizing:border-box;
+}
+.leaderboard-card{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(168,85,247,.28);
+  border-radius:24px;
+  padding:22px;
+  background:linear-gradient(145deg,rgba(19,10,34,.96),rgba(8,8,17,.94));
+  box-shadow:0 18px 60px rgba(0,0,0,.35),0 0 45px rgba(124,58,237,.08);
+}
+.leaderboard-card::before{
+  content:'';
+  position:absolute;
+  inset:-80px;
+  background:radial-gradient(circle at 50% 0%,rgba(168,85,247,.12),transparent 45%);
+  pointer-events:none;
+}
+.leaderboard-head{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:16px;
+}
+.leaderboard-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Unbounded',sans-serif;
+  font-size:17px;
+  font-weight:900;
+  letter-spacing:.4px;
+  color:#fff;
+}
+.leaderboard-title i{color:#fbbf24}
+.leaderboard-refresh{
+  font-size:10px;
+  line-height:1.35;
+  color:#9b8bb8;
+  text-align:right;
+}
+.leaderboard-refresh strong{color:#d8c8ef}
+.leaderboard-list{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.leaderboard-row{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  min-height:52px;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:15px;
+  background:rgba(255,255,255,.025);
+  box-sizing:border-box;
+}
+.leaderboard-row.me{
+  border-color:rgba(168,85,247,.42);
+  background:linear-gradient(90deg,rgba(124,58,237,.14),rgba(168,85,247,.045));
+}
+.leaderboard-rank{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(255,255,255,.055);
+  color:#b7a7cc;
+  font-weight:900;
+  font-size:12px;
+}
+.leaderboard-row:nth-child(1) .leaderboard-rank{
+  color:#211000;
+  background:linear-gradient(135deg,#fde68a,#f59e0b);
+}
+.leaderboard-row:nth-child(2) .leaderboard-rank{
+  color:#111827;
+  background:linear-gradient(135deg,#f1f5f9,#94a3b8);
+}
+.leaderboard-row:nth-child(3) .leaderboard-rank{
+  color:#291506;
+  background:linear-gradient(135deg,#fdba74,#b45309);
+}
+.leaderboard-player{
+  min-width:0;
+}
+.leaderboard-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#f4effb;
+  font-size:13px;
+  font-weight:800;
+}
+.leaderboard-user{
+  margin-top:2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#75678a;
+  font-size:10px;
+}
+.leaderboard-balance{
+  white-space:nowrap;
+  color:#fbbf24;
+  font-size:13px;
+  font-weight:900;
+}
+.leaderboard-balance i{margin-right:5px}
+.leaderboard-empty,.leaderboard-loading{
+  position:relative;
+  padding:24px 12px;
+  text-align:center;
+  color:#89799f;
+  font-size:12px;
+}
+.leaderboard-error{
+  position:relative;
+  padding:14px;
+  border-radius:13px;
+  color:#fca5a5;
+  background:rgba(127,29,29,.16);
+  border:1px solid rgba(248,113,113,.18);
+  font-size:11px;
+  text-align:center;
+}
+.leaderboard-footer{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:13px;
+  color:#675978;
+  font-size:9px;
+}
+.leaderboard-updated{min-width:0}
+.leaderboard-count{white-space:nowrap}
+@media(max-width:600px){
+  .leaderboard-section{padding:0 10px;margin-top:20px}
+  .leaderboard-card{padding:16px;border-radius:20px}
+  .leaderboard-head{align-items:flex-start}
+  .leaderboard-title{font-size:14px}
+  .leaderboard-refresh{font-size:9px}
+  .leaderboard-row{grid-template-columns:40px minmax(0,1fr) auto;gap:9px;padding:7px 9px}
+  .leaderboard-rank{width:30px;height:30px}
+  .leaderboard-name{font-size:12px}
+  .leaderboard-balance{font-size:11px}
+}
+
 </style>
 <script>try{if(localStorage.getItem('kc_lowgfx')==='1')document.documentElement.classList.add('low-gfx');}catch(e){}</script>
 </head>
@@ -1215,7 +1376,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.8_K3297569_E109989</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.9_K3297569_E109989</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -1556,6 +1717,26 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="shop-section-title">НЕДВИЖИМОСТЬ</div>
 <div class="car-list" id="carList"></div>
 </section>
+
+<!-- ===== ТАБЛИЦА РЕКОРДОВ ===== -->
+<section class="leaderboard-section" id="leaderboardSection">
+  <div class="leaderboard-card">
+    <div class="leaderboard-head">
+      <div class="leaderboard-title"><i class="fa-solid fa-trophy"></i> ТАБЛИЦА РЕКОРДОВ</div>
+      <div class="leaderboard-refresh">
+        Обновление списка: <strong id="leaderboardNextUpdate">—</strong>
+      </div>
+    </div>
+    <div class="leaderboard-list" id="leaderboardList">
+      <div class="leaderboard-loading"><i class="fa-solid fa-spinner fa-spin"></i> Загрузка рейтинга…</div>
+    </div>
+    <div class="leaderboard-footer">
+      <span class="leaderboard-updated" id="leaderboardUpdated">Данные ещё не загружены</span>
+      <span class="leaderboard-count" id="leaderboardCount">ТОП 100</span>
+    </div>
+  </div>
+</section>
+
 <button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
 </div>
 <div class="modal" id="profileModal">
@@ -3022,6 +3203,226 @@ const CHIP_VALUES=[1,5,10,15,20,25,50,100,250,500,'MAX'];
 let balance=parseInt(localStorage.getItem('kc_balance'));
 if(isNaN(balance)){balance=5000;localStorage.setItem('kc_balance',balance);}
 let selectedChip=2,spinning=false,rotation=0,history=[],roundActive=false,currentRoundBet=0,deckBusy=false;
+
+/* ============================================================
+   === KILLERCASINO LEADERBOARD / SUPABASE ====================
+   ============================================================ */
+const KC_SUPABASE_URL = 'https://jzybgrczvipokeovcwpt.supabase.co';
+const KC_SUPABASE_KEY = 'sb_publishable_aNuL5IQsgEL-0DzdMHByGA_CJ0qLFFW';
+const KC_LEADERBOARD_TABLE = 'kc_leaderboard';
+const KC_LEADERBOARD_REFRESH_MS = 60 * 60 * 1000;
+const KC_BALANCE_PUSH_MS = 60 * 1000;
+
+let kcLeaderboardLastLoad = 0;
+let kcLeaderboardNextLoad = 0;
+let kcLeaderboardLoading = false;
+let kcBalancePushBusy = false;
+
+function kcLeaderboardHeaders(extra){
+  return Object.assign({
+    'apikey': KC_SUPABASE_KEY,
+    'Authorization': 'Bearer ' + KC_SUPABASE_KEY,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }, extra || {});
+}
+
+function kcLeaderboardUser(){
+  const u = (typeof TG_USER !== 'undefined' && TG_USER) ? TG_USER : null;
+  if(!u || !u.id) return null;
+
+  const displayName = [u.first_name || '', u.last_name || ''].join(' ').trim()
+    || (u.username ? '@' + u.username : 'Игрок');
+
+  return {
+    player_id: String(u.id),
+    username: u.username ? '@' + u.username : '',
+    display_name: displayName
+  };
+}
+
+async function kcSendBalanceToServer(reason){
+  const user = kcLeaderboardUser();
+  if(!user || kcBalancePushBusy) return false;
+
+  const currentBalance = Number.isFinite(Number(balance)) ? Math.max(0, Math.floor(Number(balance))) : 0;
+  const payload = {
+    player_id: user.player_id,
+    username: user.username || null,
+    display_name: user.display_name || 'Игрок',
+    balance: currentBalance,
+    updated_at: new Date().toISOString()
+  };
+
+  kcBalancePushBusy = true;
+  try{
+    const r = await fetch(
+      KC_SUPABASE_URL + '/rest/v1/' + KC_LEADERBOARD_TABLE + '?on_conflict=player_id',
+      {
+        method:'POST',
+        headers:kcLeaderboardHeaders({
+          'Prefer':'resolution=merge-duplicates,return=minimal'
+        }),
+        body:JSON.stringify(payload),
+        keepalive: reason === 'pagehide' || reason === 'hidden'
+      }
+    );
+
+    if(!r.ok){
+      const msg = await r.text().catch(()=> '');
+      console.warn('KC leaderboard: balance save failed', r.status, msg);
+      return false;
+    }
+    return true;
+  }catch(e){
+    console.warn('KC leaderboard: balance save error', e);
+    return false;
+  }finally{
+    kcBalancePushBusy = false;
+  }
+}
+
+function kcLeaderboardSetStatus(text){
+  const el = document.getElementById('leaderboardUpdated');
+  if(el) el.textContent = text;
+}
+
+function kcLeaderboardSetCountdown(){
+  const el = document.getElementById('leaderboardNextUpdate');
+  if(!el || !kcLeaderboardNextLoad) return;
+
+  const left = Math.max(0, kcLeaderboardNextLoad - Date.now());
+  const mins = Math.floor(left / 60000);
+  const secs = Math.floor((left % 60000) / 1000);
+  el.textContent = mins + ':' + String(secs).padStart(2,'0');
+}
+
+function kcLeaderboardRender(rows){
+  const box = document.getElementById('leaderboardList');
+  const count = document.getElementById('leaderboardCount');
+  if(!box) return;
+
+  const me = kcLeaderboardUser();
+  box.innerHTML = '';
+
+  if(!Array.isArray(rows) || !rows.length){
+    box.innerHTML = '<div class="leaderboard-empty"><i class="fa-solid fa-ranking-star"></i><br>Пока нет игроков в рейтинге.</div>';
+    if(count) count.textContent = 'ТОП 100';
+    return;
+  }
+
+  rows.forEach((row,index)=>{
+    const item = document.createElement('div');
+    item.className = 'leaderboard-row' + (me && String(row.player_id) === me.player_id ? ' me' : '');
+
+    const rank = document.createElement('div');
+    rank.className = 'leaderboard-rank';
+    rank.textContent = String(index + 1);
+
+    const player = document.createElement('div');
+    player.className = 'leaderboard-player';
+
+    const name = document.createElement('div');
+    name.className = 'leaderboard-name';
+    name.textContent = row.display_name || (row.username ? row.username : 'Игрок');
+
+    const username = document.createElement('div');
+    username.className = 'leaderboard-user';
+    username.textContent = row.username || 'Игрок';
+
+    player.appendChild(name);
+    player.appendChild(username);
+
+    const bal = document.createElement('div');
+    bal.className = 'leaderboard-balance';
+    const icon = document.createElement('i');
+    icon.className = 'fa-solid fa-coins';
+    bal.appendChild(icon);
+    bal.appendChild(document.createTextNode(
+      Number(row.balance || 0).toLocaleString('ru-RU')
+    ));
+
+    item.appendChild(rank);
+    item.appendChild(player);
+    item.appendChild(bal);
+    box.appendChild(item);
+  });
+
+  if(count) count.textContent = 'ТОП ' + Math.min(100, rows.length);
+}
+
+async function kcLoadLeaderboard(force){
+  if(kcLeaderboardLoading) return;
+  if(!force && kcLeaderboardLastLoad && Date.now() - kcLeaderboardLastLoad < KC_LEADERBOARD_REFRESH_MS) return;
+
+  const box = document.getElementById('leaderboardList');
+  kcLeaderboardLoading = true;
+
+  try{
+    if(box && !kcLeaderboardLastLoad){
+      box.innerHTML = '<div class="leaderboard-loading"><i class="fa-solid fa-spinner fa-spin"></i> Загрузка рейтинга…</div>';
+    }
+
+    const query =
+      KC_SUPABASE_URL + '/rest/v1/' + KC_LEADERBOARD_TABLE +
+      '?select=player_id,username,display_name,balance,updated_at' +
+      '&order=balance.desc,updated_at.asc&limit=100';
+
+    const r = await fetch(query,{
+      method:'GET',
+      headers:kcLeaderboardHeaders()
+    });
+
+    if(!r.ok){
+      const msg = await r.text().catch(()=> '');
+      throw new Error('HTTP ' + r.status + (msg ? ': ' + msg : ''));
+    }
+
+    const rows = await r.json();
+    kcLeaderboardRender(rows);
+
+    kcLeaderboardLastLoad = Date.now();
+    kcLeaderboardNextLoad = kcLeaderboardLastLoad + KC_LEADERBOARD_REFRESH_MS;
+    kcLeaderboardSetStatus('Обновлено: ' + new Date(kcLeaderboardLastLoad).toLocaleTimeString('ru-RU',{
+      hour:'2-digit', minute:'2-digit'
+    }));
+  }catch(e){
+    console.warn('KC leaderboard: load failed', e);
+    if(box){
+      box.innerHTML =
+        '<div class="leaderboard-error"><i class="fa-solid fa-triangle-exclamation"></i><br>' +
+        'Не удалось загрузить таблицу рекордов.<br><small>Попробуем снова позже.</small></div>';
+    }
+    kcLeaderboardSetStatus('Ошибка загрузки рейтинга');
+    kcLeaderboardNextLoad = Date.now() + 60000;
+  }finally{
+    kcLeaderboardLoading = false;
+  }
+}
+
+/* Баланс отправляется сразу при входе, затем раз в минуту. */
+setTimeout(()=>kcSendBalanceToServer('startup'),1200);
+setInterval(()=>kcSendBalanceToServer('interval'),KC_BALANCE_PUSH_MS);
+
+/* При сворачивании/переключении вкладки отправляем актуальный баланс. */
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    kcSendBalanceToServer('hidden');
+  }else{
+    /* После возврата не делаем лишний запрос рейтинга — только если прошёл час. */
+    kcLoadLeaderboard(false);
+  }
+});
+
+/* pagehide — основной финальный шанс сохранить баланс перед закрытием страницы. */
+window.addEventListener('pagehide',()=>kcSendBalanceToServer('pagehide'));
+
+/* Рейтинг обновляется раз в час. */
+kcLoadLeaderboard(true);
+setInterval(()=>kcLoadLeaderboard(true),KC_LEADERBOARD_REFRESH_MS);
+setInterval(kcLeaderboardSetCountdown,1000);
+kcLeaderboardSetCountdown();
+
 let slotBet=10,slotsSpinning=false,prevCols=null;
 let rState='idle';
 const $=id=>document.getElementById(id);
